@@ -3,30 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alterum Studio — Kreativní studio Praha</title>
+  <title>Alterum — Event Production</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,400;1,700;1,800&display=swap" rel="stylesheet" />
 
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --royal-blue: #002366;
-      --pink-vivid: #d4527a;
+      --royal: #002366;
+      --royal-mid: #003080;
+      --pink: #d4527a;
       --pink-light: #f5d0de;
-      --off-white: #fafaf8;
+      --off-white: #f7f6f3;
       --near-black: #0d0d0f;
-      --gray-light: #9a9a98;
+      --gray: #9a9a98;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -34,43 +29,44 @@
       color: var(--near-black);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ─── REVEAL ANIMATION ─── */
+    /* ─── REVEAL ─── */
     .reveal {
       opacity: 0;
-      transform: translateY(36px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.22s; }
-    .reveal-delay-3 { transition-delay: 0.34s; }
-    .reveal-delay-4 { transition-delay: 0.46s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.22s; }
+    .d3 { transition-delay: 0.34s; }
+    .d4 { transition-delay: 0.46s; }
 
     /* ─── NAV ─── */
     nav {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 100;
-      background: #fff;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
+      left: 0;
+      right: 0;
+      z-index: 200;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(1.5rem, 5vw, 4rem);
-      height: 64px;
+      background: rgba(247,246,243,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: background 0.3s ease;
     }
 
     .nav-logo {
       font-family: 'Inter', sans-serif;
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--near-black);
       text-decoration: none;
@@ -83,8 +79,7 @@
     }
 
     .nav-links a {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8125rem;
+      font-size: 0.8rem;
       font-weight: 400;
       letter-spacing: 0.04em;
       color: var(--near-black);
@@ -92,81 +87,126 @@
       transition: color 0.2s ease;
     }
 
-    .nav-links a:hover {
-      color: var(--pink-vivid);
-    }
+    .nav-links a:hover { color: var(--pink); }
 
     /* ─── HERO ─── */
     .hero {
-      display: grid;
-      grid-template-columns: 60fr 40fr;
+      position: relative;
       min-height: 100svh;
       min-height: 100vh;
+      display: grid;
+      grid-template-columns: 58fr 42fr;
+      overflow: hidden;
     }
 
+    /* Diagonal band — clip-path parallelogram */
+    .hero-band {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--royal);
+      clip-path: polygon(0% 36%, 100% 16%, 100% 30%, 0% 50%);
+    }
+
+    /* Small label sitting inside the diagonal band */
+    .hero-band-label {
+      position: absolute;
+      top: 41%;
+      left: 28%;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      white-space: nowrap;
+    }
+
+    /* Left text column */
     .hero-left {
+      position: relative;
+      z-index: 3;
+      background: var(--off-white);
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 6rem clamp(2.5rem, 5vw, 5rem) 6rem clamp(2.5rem, 5vw, 5rem);
-      background: #fff;
+      justify-content: flex-start;
+      padding-top: max(120px, 14vh);
+      padding-left: clamp(2rem, 5vw, 5rem);
+      padding-right: clamp(2rem, 4vw, 4rem);
+      padding-bottom: 5rem;
     }
 
     .hero-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--royal-blue);
+      color: var(--royal);
       margin-bottom: 1.75rem;
     }
 
     .hero-heading {
-      line-height: 0.92;
-      margin-bottom: 2rem;
+      position: relative;
+      line-height: 0.91;
+      margin-bottom: 0;
     }
 
-    .hero-line-1 {
+    /* Duplicate heading clipped to the band — shows white text on diagonal */
+    .hero-heading-copy {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      line-height: 0.91;
+      /* clip to same parallelogram as band, but in the left column's coordinate space */
+      clip-path: polygon(0% 36%, 200% 16%, 200% 30%, 0% 50%);
+    }
+
+    .h1 {
       display: block;
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-weight: 800;
-      font-size: clamp(4.5rem, 9vw, 10rem);
-      color: var(--near-black);
+      font-size: clamp(4.5rem, 8.5vw, 10rem);
       letter-spacing: -0.02em;
     }
 
-    .hero-line-2 {
-      display: block;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-weight: 800;
-      font-size: clamp(4.5rem, 9vw, 10rem);
+    .h1-solid { color: var(--near-black); }
+    .h1-outline {
       color: transparent;
-      -webkit-text-stroke: 2px var(--royal-blue);
-      letter-spacing: -0.02em;
+      -webkit-text-stroke: 2.5px var(--royal);
+    }
+    .h1-copy-solid { color: #fff; }
+    .h1-copy-outline {
+      color: #fff;
+      -webkit-text-stroke: 0;
     }
 
-    .hero-line-3 {
+    .h1-accent {
       display: block;
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-weight: 700;
-      font-size: clamp(2rem, 4vw, 4.25rem);
-      color: var(--pink-vivid);
-      margin-top: 0.3em;
+      font-size: clamp(2rem, 3.8vw, 4.5rem);
+      color: var(--pink);
+      margin-top: 0.25em;
       letter-spacing: -0.01em;
     }
 
     .hero-desc {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(0.9rem, 1.2vw, 1.0625rem);
+      font-size: clamp(0.875rem, 1.1vw, 1rem);
       font-weight: 300;
-      color: var(--gray-light);
-      line-height: 1.7;
-      max-width: 420px;
-      margin-bottom: 2.75rem;
+      color: var(--gray);
+      line-height: 1.75;
+      max-width: 400px;
+      margin-top: 2.25rem;
+      margin-bottom: 2.5rem;
     }
 
     .hero-buttons {
@@ -176,43 +216,37 @@
     }
 
     .btn-primary {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8125rem;
+      font-size: 0.78rem;
       font-weight: 500;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      background: var(--royal-blue);
+      background: var(--royal);
       color: #fff;
-      border: 1.5px solid var(--royal-blue);
+      border: 1.5px solid var(--royal);
       padding: 0.875rem 2rem;
       text-decoration: none;
-      transition: background 0.25s ease, color 0.25s ease;
+      transition: background 0.25s, color 0.25s;
     }
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--royal-blue);
-    }
+    .btn-primary:hover { background: transparent; color: var(--royal); }
 
     .btn-ghost {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8125rem;
+      font-size: 0.78rem;
       font-weight: 500;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       background: transparent;
       color: var(--near-black);
       border: 1.5px solid var(--near-black);
       padding: 0.875rem 2rem;
       text-decoration: none;
-      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+      transition: background 0.25s, color 0.25s;
     }
-    .btn-ghost:hover {
-      background: var(--near-black);
-      color: #fff;
-    }
+    .btn-ghost:hover { background: var(--near-black); color: #fff; }
 
+    /* Right photo column */
     .hero-right {
       position: relative;
+      z-index: 1;
       overflow: hidden;
     }
 
@@ -221,158 +255,188 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      filter: saturate(1.05) brightness(0.95);
     }
 
-    .hero-overlay {
+    /* Subtle pink accent strip bottom-left of hero */
+    .hero-accent-line {
       position: absolute;
-      inset: 0;
-      background: var(--royal-blue);
-      opacity: 0.15;
-      mix-blend-mode: multiply;
-      pointer-events: none;
-    }
-
-    /* ─── MARQUEE TICKER ─── */
-    .ticker {
-      background: var(--royal-blue);
-      overflow: hidden;
-      padding: 0.9rem 0;
+      bottom: 3.5rem;
+      left: clamp(2rem, 5vw, 5rem);
+      z-index: 4;
       display: flex;
       align-items: center;
+      gap: 1.25rem;
+    }
+
+    .hero-accent-line::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1.5px;
+      background: var(--pink);
+    }
+
+    .hero-stat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* ─── TICKER ─── */
+    .ticker {
+      background: var(--royal);
+      overflow: hidden;
+      padding: 0.85rem 0;
+      display: flex;
     }
 
     .ticker-track {
       display: flex;
       width: max-content;
-      animation: ticker-scroll 30s linear infinite;
+      animation: ticker 32s linear infinite;
       white-space: nowrap;
     }
 
     .ticker-item {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #fff;
-      padding: 0 2.5rem;
-      opacity: 0.9;
+      color: rgba(255,255,255,0.85);
+      padding: 0 2.25rem;
     }
 
-    @keyframes ticker-scroll {
+    @keyframes ticker {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
-    /* ─── WORK SECTION ─── */
-    .work {
-      background: #fff;
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-    }
-
+    /* ─── SECTION LABEL / TITLE ─── */
     .section-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
+      display: block;
+      font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--royal-blue);
+      color: var(--royal);
       margin-bottom: 0.75rem;
-      display: block;
     }
 
     .section-title {
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-weight: 800;
-      font-size: clamp(3rem, 6vw, 6.5rem);
+      font-size: clamp(2.75rem, 5.5vw, 6rem);
       color: var(--near-black);
       line-height: 0.95;
-      margin-bottom: clamp(3rem, 6vw, 5rem);
       letter-spacing: -0.02em;
+      margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
     }
 
-    .work-grid {
+    /* ─── EVENTS GRID ─── */
+    .events {
+      background: #fff;
+      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .events-grid { display: grid; gap: 1.5rem; }
+
+    .events-row {
       display: grid;
       gap: 1.5rem;
     }
 
-    .work-row {
-      display: grid;
-      gap: 1.5rem;
-    }
+    .events-row-a { grid-template-columns: 3fr 2fr; }
+    .events-row-b { grid-template-columns: 2fr 3fr; }
 
-    .work-row-1 {
-      grid-template-columns: 3fr 2fr;
-    }
+    .event-tile { display: flex; flex-direction: column; }
 
-    .work-row-2 {
-      grid-template-columns: 2fr 3fr;
-    }
-
-    .work-tile {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .work-tile-img-wrap {
+    .event-img {
       overflow: hidden;
       display: block;
+      background: #eee;
     }
 
-    .work-tile-img-wrap img {
+    .event-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
     }
 
-    .work-tile:hover .work-tile-img-wrap img {
-      transform: scale(1.04);
-    }
+    .event-tile:hover .event-img img { transform: scale(1.04); }
 
-    .tile-1 .work-tile-img-wrap {
-      aspect-ratio: 4/5;
-    }
-    .tile-2 .work-tile-img-wrap {
-      aspect-ratio: 1/1;
-    }
-    .tile-3 .work-tile-img-wrap {
-      aspect-ratio: 5/4;
-    }
-    .tile-4 .work-tile-img-wrap {
-      aspect-ratio: 3/4;
-    }
+    .et-a .event-img { aspect-ratio: 4/5; }
+    .et-b .event-img { aspect-ratio: 1/1; }
+    .et-c .event-img { aspect-ratio: 5/4; }
+    .et-d .event-img { aspect-ratio: 3/4; }
 
-    .work-tile-meta {
-      padding: 1rem 0 0;
+    .event-meta {
+      padding: 0.9rem 0 0;
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
     }
 
-    .work-tile-cat {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
+    .event-cat {
+      font-size: 0.68rem;
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--gray-light);
+      color: var(--gray);
     }
 
-    .work-tile-name {
+    .event-name {
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-weight: 700;
-      font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+      font-size: clamp(1.05rem, 1.7vw, 1.4rem);
       color: var(--near-black);
       letter-spacing: -0.01em;
     }
 
+    /* ─── NUMBERS STRIP ─── */
+    .numbers {
+      background: var(--off-white);
+      padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .number-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .number-val {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4vw, 4.5rem);
+      color: var(--royal);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .number-label {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--gray);
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+    }
+
     /* ─── MANIFESTO ─── */
     .manifesto {
-      background: #f5f0eb;
+      background: var(--near-black);
       padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
       text-align: center;
     }
@@ -381,35 +445,39 @@
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-weight: 400;
-      font-size: clamp(1.6rem, 3.5vw, 3.5rem);
-      line-height: 1.45;
-      color: var(--near-black);
-      max-width: 900px;
-      margin: 0 auto 2.5rem;
+      font-size: clamp(1.5rem, 3vw, 3rem);
+      line-height: 1.5;
+      color: #fff;
+      max-width: 860px;
+      margin: 0 auto 2rem;
       letter-spacing: -0.01em;
     }
 
-    .manifesto-divider {
-      width: 80px;
+    .manifesto-quote em {
+      color: var(--pink);
+      font-style: italic;
+    }
+
+    .manifesto-line {
+      width: 64px;
       height: 1.5px;
-      background: var(--pink-vivid);
-      margin: 0 auto 1.5rem;
+      background: var(--pink);
+      margin: 0 auto 1.25rem;
     }
 
-    .manifesto-attribution {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8125rem;
+    .manifesto-attr {
+      font-size: 0.78rem;
       font-weight: 400;
-      letter-spacing: 0.1em;
-      color: var(--gray-light);
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
     }
 
-    /* ─── FULL BLEED IMAGE ─── */
+    /* ─── IMAGE BREAK ─── */
     .image-break {
       width: 100%;
-      height: 60vh;
+      height: 55vh;
       overflow: hidden;
-      display: block;
     }
 
     .image-break img {
@@ -417,13 +485,13 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      filter: brightness(0.9) saturate(1.1);
+      filter: brightness(0.88) saturate(1.1);
     }
 
     /* ─── ABOUT + SERVICES ─── */
     .about {
       background: #fff;
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 5vw, 4rem);
     }
 
     .about-grid {
@@ -434,21 +502,20 @@
     }
 
     .about-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
+      display: block;
+      font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--royal-blue);
+      color: var(--royal);
       margin-bottom: 1.25rem;
-      display: block;
     }
 
     .about-heading {
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-weight: 800;
-      font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+      font-size: clamp(2.5rem, 4.5vw, 4.75rem);
       color: var(--near-black);
       line-height: 1.0;
       letter-spacing: -0.02em;
@@ -456,44 +523,37 @@
     }
 
     .about-text {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(0.9rem, 1.15vw, 1rem);
+      font-size: clamp(0.875rem, 1.1vw, 1rem);
       font-weight: 300;
-      line-height: 1.75;
+      line-height: 1.8;
       color: #555;
       margin-bottom: 1rem;
     }
 
-    .services-list {
-      list-style: none;
-    }
+    .services-list { list-style: none; }
 
     .services-list li {
       display: flex;
       align-items: baseline;
       gap: 1.25rem;
-      padding: 1.25rem 0;
-      border-top: 1px solid rgba(0,0,0,0.09);
-      transition: color 0.2s ease;
+      padding: 1.2rem 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
     }
 
     .services-list li:last-child {
-      border-bottom: 1px solid rgba(0,0,0,0.09);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
     }
 
-    .services-num {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
+    .svc-num {
+      font-size: 0.68rem;
       font-weight: 500;
       letter-spacing: 0.08em;
-      color: var(--pink-vivid);
+      color: var(--pink);
       flex-shrink: 0;
-      margin-top: 0.1em;
     }
 
-    .services-name {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(0.95rem, 1.4vw, 1.125rem);
+    .svc-name {
+      font-size: clamp(0.9rem, 1.35vw, 1.1rem);
       font-weight: 400;
       color: var(--near-black);
       letter-spacing: -0.01em;
@@ -502,7 +562,7 @@
 
     /* ─── CONTACT ─── */
     .contact {
-      background: var(--royal-blue);
+      background: var(--royal);
       padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
       text-align: center;
     }
@@ -519,37 +579,32 @@
     }
 
     .contact-email {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      font-size: clamp(1.1rem, 2.2vw, 1.9rem);
       font-weight: 300;
       color: #fff;
       text-decoration: none;
       letter-spacing: -0.01em;
       border-bottom: 1px solid rgba(255,255,255,0.3);
       padding-bottom: 0.2em;
-      transition: border-color 0.25s ease, opacity 0.25s ease;
       display: inline-block;
+      transition: border-color 0.25s, opacity 0.25s;
     }
 
-    .contact-email:hover {
-      border-color: rgba(255,255,255,0.9);
-      opacity: 0.85;
-    }
+    .contact-email:hover { border-color: #fff; opacity: 0.8; }
 
     .contact-divider {
       width: 60px;
       height: 1px;
-      background: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.2);
       margin: 2.5rem auto;
     }
 
     .contact-note {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.4);
     }
 
     /* ─── FOOTER ─── */
@@ -564,30 +619,24 @@
     }
 
     .footer-copy {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: rgba(255,255,255,0.35);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
       letter-spacing: 0.04em;
     }
 
     .footer-credit {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: rgba(255,255,255,0.35);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
       letter-spacing: 0.04em;
     }
 
     .footer-credit a {
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.5);
       text-decoration: none;
-      transition: color 0.2s ease;
+      transition: color 0.2s;
     }
 
-    .footer-credit a:hover {
-      color: #fff;
-    }
+    .footer-credit a:hover { color: #fff; }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
@@ -596,37 +645,45 @@
         min-height: auto;
       }
 
+      .hero-band::before {
+        clip-path: polygon(0% 22%, 100% 10%, 100% 20%, 0% 32%);
+      }
+
+      .hero-heading-copy {
+        clip-path: polygon(0% 22%, 200% 10%, 200% 20%, 0% 32%);
+      }
+
+      .hero-band-label { display: none; }
+
       .hero-left {
-        order: 2;
-        padding: 3rem 1.75rem 4rem;
-        justify-content: flex-start;
+        padding-top: 100px;
+        padding-bottom: 4rem;
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
       }
 
       .hero-right {
-        order: 1;
-        height: 50vw;
-        min-height: 300px;
+        height: 52vw;
+        min-height: 280px;
       }
 
-      .hero-line-1,
-      .hero-line-2 {
-        font-size: clamp(3.5rem, 14vw, 6rem);
-      }
+      .hero-accent-line { display: none; }
 
-      .hero-line-3 {
-        font-size: clamp(1.75rem, 7vw, 3rem);
-      }
-
-      .work-row-1,
-      .work-row-2 {
+      .events-row-a,
+      .events-row-b {
         grid-template-columns: 1fr;
       }
 
-      .tile-1 .work-tile-img-wrap,
-      .tile-2 .work-tile-img-wrap,
-      .tile-3 .work-tile-img-wrap,
-      .tile-4 .work-tile-img-wrap {
+      .et-a .event-img,
+      .et-b .event-img,
+      .et-c .event-img,
+      .et-d .event-img {
         aspect-ratio: 4/3;
+      }
+
+      .numbers {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 1.5rem;
       }
 
       .about-grid {
@@ -637,25 +694,23 @@
       footer {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
       }
     }
 
     @media (max-width: 600px) {
-      .nav-links {
-        gap: 1.25rem;
-      }
+      .nav-links { gap: 1.25rem; }
 
       .hero-buttons {
         flex-direction: column;
         align-items: flex-start;
       }
 
-      .btn-primary,
-      .btn-ghost {
+      .btn-primary, .btn-ghost {
         width: 100%;
         text-align: center;
       }
+
+      .numbers { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -665,7 +720,7 @@
   <nav>
     <a href="#" class="nav-logo">Alterum</a>
     <ul class="nav-links">
-      <li><a href="#work">Portfolio</a></li>
+      <li><a href="#events">Události</a></li>
       <li><a href="#about">O nás</a></li>
       <li><a href="#contact">Kontakt</a></li>
     </ul>
@@ -673,155 +728,195 @@
 
   <!-- HERO -->
   <section class="hero">
+
+    <!-- Diagonal royal blue band -->
+    <div class="hero-band" aria-hidden="true">
+      <span class="hero-band-label">Praha · Since 2018</span>
+    </div>
+
+    <!-- Left: text -->
     <div class="hero-left">
-      <p class="hero-label reveal">— Kreativní studio</p>
-      <h1 class="hero-heading">
-        <span class="hero-line-1 reveal reveal-delay-1">Výjimečný</span>
-        <span class="hero-line-2 reveal reveal-delay-2">design</span>
-        <span class="hero-line-3 reveal reveal-delay-3">pro značky.</span>
-      </h1>
-      <p class="hero-desc reveal reveal-delay-3">
-        Kombinujeme strategii, typografii a vizuální identitu do projektů, které lidé nezapomenou.
+      <p class="hero-label reveal">— Event Production & Management</p>
+
+      <!-- Primary heading -->
+      <div class="hero-heading">
+        <span class="h1 h1-solid reveal d1">Výjimečné</span>
+        <span class="h1 h1-outline reveal d2">události.</span>
+        <span class="h1-accent reveal d3">od A do Z.</span>
+
+        <!-- White copy — clipped to the diagonal band area -->
+        <div class="hero-heading-copy" aria-hidden="true">
+          <span class="h1 h1-copy-solid">Výjimečné</span>
+          <span class="h1 h1-copy-outline">události.</span>
+        </div>
+      </div>
+
+      <p class="hero-desc reveal d3">
+        Plánujeme a realizujeme firemní akce, konference, galavečery
+        a kulturní projekty. Každý detail, každý okamžik — promyšlen do hloubky.
       </p>
-      <div class="hero-buttons reveal reveal-delay-4">
-        <a href="#work" class="btn-primary">Prohlédnout práce</a>
-        <a href="#contact" class="btn-ghost">Kontakt →</a>
+
+      <div class="hero-buttons reveal d4">
+        <a href="#events" class="btn-primary">Naše události</a>
+        <a href="#contact" class="btn-ghost">Kontaktovat →</a>
       </div>
     </div>
+
+    <!-- Accent line bottom-left -->
+    <div class="hero-accent-line" aria-hidden="true">
+      <span class="hero-stat">200+ realizovaných akcí</span>
+    </div>
+
+    <!-- Right: photo -->
     <div class="hero-right">
       <img
-        src="https://images.unsplash.com/photo-1614332287897-cdc485fa562d?w=1400&q=85"
-        alt="Alterum Studio — kreativní studio"
+        src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1400&q=85"
+        alt="Alterum — event production"
         loading="eager"
       />
-      <div class="hero-overlay"></div>
     </div>
   </section>
 
-  <!-- TICKER MARQUEE -->
+  <!-- TICKER -->
   <div class="ticker" aria-hidden="true">
     <div class="ticker-track">
-      <span class="ticker-item">Branding</span>
+      <span class="ticker-item">Firemní akce</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Vizuální identita</span>
+      <span class="ticker-item">Konference</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Web design</span>
+      <span class="ticker-item">Galavečery</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Editorial</span>
+      <span class="ticker-item">Teambuilding</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Typografie</span>
+      <span class="ticker-item">Produktové launche</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Motion</span>
+      <span class="ticker-item">Kulturní projekty</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Packaging</span>
+      <span class="ticker-item">Bankety</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Strategy</span>
+      <span class="ticker-item">Venkovní festivaly</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Branding</span>
+      <span class="ticker-item">Firemní akce</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Vizuální identita</span>
+      <span class="ticker-item">Konference</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Web design</span>
+      <span class="ticker-item">Galavečery</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Editorial</span>
+      <span class="ticker-item">Teambuilding</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Typografie</span>
+      <span class="ticker-item">Produktové launche</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Motion</span>
+      <span class="ticker-item">Kulturní projekty</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Packaging</span>
+      <span class="ticker-item">Bankety</span>
       <span class="ticker-item">·</span>
-      <span class="ticker-item">Strategy</span>
+      <span class="ticker-item">Venkovní festivaly</span>
       <span class="ticker-item">·</span>
     </div>
   </div>
 
-  <!-- WORK -->
-  <section class="work" id="work">
-    <div>
-      <span class="section-label reveal">Vybrané projekty</span>
-      <h2 class="section-title reveal reveal-delay-1">Práce</h2>
-    </div>
+  <!-- EVENTS GRID -->
+  <section class="events" id="events">
+    <span class="section-label reveal">Realizované projekty</span>
+    <h2 class="section-title reveal d1">Události</h2>
 
-    <div class="work-grid">
-      <!-- Row 1 -->
-      <div class="work-row work-row-1">
-        <div class="work-tile tile-1 reveal">
-          <div class="work-tile-img-wrap">
+    <div class="events-grid">
+      <div class="events-row events-row-a">
+        <div class="event-tile et-a reveal">
+          <div class="event-img">
             <img
-              src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&q=85"
-              alt="Nová identita"
+              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=85"
+              alt="Výroční konference"
               loading="lazy"
             />
           </div>
-          <div class="work-tile-meta">
-            <span class="work-tile-cat">Brand</span>
-            <span class="work-tile-name">Nová identita</span>
+          <div class="event-meta">
+            <span class="event-cat">Konference</span>
+            <span class="event-name">Výroční konference — 500 hostů</span>
           </div>
         </div>
 
-        <div class="work-tile tile-2 reveal reveal-delay-2">
-          <div class="work-tile-img-wrap">
+        <div class="event-tile et-b reveal d2">
+          <div class="event-img">
             <img
-              src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=900&q=85"
-              alt="Redesign webu"
+              src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=85"
+              alt="Galavečer"
               loading="lazy"
             />
           </div>
-          <div class="work-tile-meta">
-            <span class="work-tile-cat">Digital</span>
-            <span class="work-tile-name">Redesign webu</span>
+          <div class="event-meta">
+            <span class="event-cat">Gala</span>
+            <span class="event-name">Galavečer & předávání cen</span>
           </div>
         </div>
       </div>
 
-      <!-- Row 2 -->
-      <div class="work-row work-row-2">
-        <div class="work-tile tile-3 reveal reveal-delay-1">
-          <div class="work-tile-img-wrap">
+      <div class="events-row events-row-b">
+        <div class="event-tile et-c reveal d1">
+          <div class="event-img">
             <img
-              src="https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=900&q=85"
-              alt="Roční zpráva"
+              src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=900&q=85"
+              alt="Hudební festival"
               loading="lazy"
             />
           </div>
-          <div class="work-tile-meta">
-            <span class="work-tile-cat">Editorial</span>
-            <span class="work-tile-name">Roční zpráva</span>
+          <div class="event-meta">
+            <span class="event-cat">Festival</span>
+            <span class="event-name">Letní hudební festival</span>
           </div>
         </div>
 
-        <div class="work-tile tile-4 reveal reveal-delay-3">
-          <div class="work-tile-img-wrap">
+        <div class="event-tile et-d reveal d3">
+          <div class="event-img">
             <img
-              src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1200&q=85"
-              alt="Obalový design"
+              src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=85"
+              alt="Produktový launch"
               loading="lazy"
             />
           </div>
-          <div class="work-tile-meta">
-            <span class="work-tile-cat">Packaging</span>
-            <span class="work-tile-name">Obalový design</span>
+          <div class="event-meta">
+            <span class="event-cat">Launch event</span>
+            <span class="event-name">Produktový launch — Praha</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- NUMBERS -->
+  <div class="numbers">
+    <div class="number-item reveal">
+      <span class="number-val">200+</span>
+      <span class="number-label">realizovaných akcí</span>
+    </div>
+    <div class="number-item reveal d1">
+      <span class="number-val">8</span>
+      <span class="number-label">let na trhu</span>
+    </div>
+    <div class="number-item reveal d2">
+      <span class="number-val">50k+</span>
+      <span class="number-label">spokojených hostů</span>
+    </div>
+    <div class="number-item reveal d3">
+      <span class="number-val">98%</span>
+      <span class="number-label">klientů se vrátí</span>
+    </div>
+  </div>
+
   <!-- MANIFESTO -->
   <section class="manifesto">
     <blockquote class="manifesto-quote reveal">
-      „Design není jen o tom, jak věci vypadají —<br>
-      ale o tom, co cítíte, když je uvidíte."
+      „Každá akce je příležitost vytvořit okamžik,<br>
+      který lidé nesou v sobě <em>dlouho poté</em>."
     </blockquote>
-    <div class="manifesto-divider reveal reveal-delay-1"></div>
-    <p class="manifesto-attribution reveal reveal-delay-2">— Alterum Studio</p>
+    <div class="manifesto-line reveal d1"></div>
+    <p class="manifesto-attr reveal d2">— Alterum</p>
   </section>
 
   <!-- FULL BLEED IMAGE BREAK -->
   <div class="image-break">
     <img
-      src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=85"
+      src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=85"
       alt=""
       loading="lazy"
       aria-hidden="true"
@@ -831,41 +926,42 @@
   <!-- ABOUT + SERVICES -->
   <section class="about" id="about">
     <div class="about-grid">
-      <!-- Left: About -->
       <div>
-        <span class="about-label reveal">O studiu</span>
-        <h2 class="about-heading reveal reveal-delay-1">Myslíme<br>jinak.</h2>
-        <p class="about-text reveal reveal-delay-2">
-          Alterum vzniklo s jednou myšlenkou — dělat věci, které mají smysl. Pracujeme s vybranými klienty na projektech, kde design skutečně rozhoduje.
+        <span class="about-label reveal">O Alterum</span>
+        <h2 class="about-heading reveal d1">Věříme<br>v detail.</h2>
+        <p class="about-text reveal d2">
+          Alterum je pražská eventová agentura specializující se na komplexní přípravu
+          a realizaci firemních i kulturních událostí. Pracujeme s vámi od první vize
+          až po poslední poděkování.
         </p>
-        <p class="about-text reveal reveal-delay-3">
-          Jsme tým designérů, stratégů a typografů se základnou v Praze.
+        <p class="about-text reveal d3">
+          Náš tým kreativců, producentů a logistiků zajistí, že vaše akce bude přesně
+          taková, jakou si ji představujete — nebo ještě lepší.
         </p>
       </div>
 
-      <!-- Right: Services -->
       <div>
         <span class="about-label reveal">Služby</span>
         <ul class="services-list">
-          <li class="reveal reveal-delay-1">
-            <span class="services-num">01</span>
-            <span class="services-name">Vizuální identita &amp; branding</span>
+          <li class="reveal d1">
+            <span class="svc-num">01</span>
+            <span class="svc-name">Firemní akce &amp; teambuilding</span>
           </li>
-          <li class="reveal reveal-delay-2">
-            <span class="services-num">02</span>
-            <span class="services-name">Web design &amp; digitální prostředí</span>
+          <li class="reveal d2">
+            <span class="svc-num">02</span>
+            <span class="svc-name">Konference &amp; summity</span>
           </li>
-          <li class="reveal reveal-delay-3">
-            <span class="services-num">03</span>
-            <span class="services-name">Editorial &amp; typografie</span>
+          <li class="reveal d3">
+            <span class="svc-num">03</span>
+            <span class="svc-name">Galavečery &amp; bankety</span>
           </li>
-          <li class="reveal reveal-delay-4">
-            <span class="services-num">04</span>
-            <span class="services-name">Motion &amp; interakce</span>
+          <li class="reveal d4">
+            <span class="svc-num">04</span>
+            <span class="svc-name">Produktové launche &amp; prezentace</span>
           </li>
           <li class="reveal">
-            <span class="services-num">05</span>
-            <span class="services-name">Packaging &amp; print</span>
+            <span class="svc-num">05</span>
+            <span class="svc-name">Kulturní &amp; umělecké projekty</span>
           </li>
         </ul>
       </div>
@@ -874,51 +970,43 @@
 
   <!-- CONTACT -->
   <section class="contact" id="contact">
-    <h2 class="contact-heading reveal">Začněme<br>spolupráci.</h2>
-    <a href="mailto:hello@alterum.studio" class="contact-email reveal reveal-delay-1">
-      hello@alterum.studio
+    <h2 class="contact-heading reveal">Plánujeme<br>vaši akci.</h2>
+    <a href="mailto:hello@alterum.events" class="contact-email reveal d1">
+      hello@alterum.events
     </a>
-    <div class="contact-divider reveal reveal-delay-2"></div>
-    <p class="contact-note reveal reveal-delay-3">Praha · CZ · Přijímáme projekty 2024</p>
+    <div class="contact-divider reveal d2"></div>
+    <p class="contact-note reveal d3">Praha · CZ · Přijímáme projekty 2025</p>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-copy">© 2024 Alterum Studio</span>
+    <span class="footer-copy">© 2025 Alterum</span>
     <span class="footer-credit">
       Návrh webu: <a href="https://zaviscuchna.github.io/ksh-pitches/" target="_blank" rel="noopener">KSH Studio</a>
     </span>
   </footer>
 
   <script>
-    // ─── SCROLL REVEAL ───
     (function () {
-      var elements = document.querySelectorAll('.reveal');
+      var els = document.querySelectorAll('.reveal');
+      if (!els.length) return;
 
-      if (!elements.length) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-      var observer = new IntersectionObserver(
-        function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        {
-          threshold: 0.12,
-          rootMargin: '0px 0px -40px 0px'
-        }
-      );
+      els.forEach(function (el) { io.observe(el); });
 
-      elements.forEach(function(el) { observer.observe(el); });
-
-      // Hero elements: trigger after a short delay so initial paint completes
-      var heroElements = document.querySelectorAll('.hero .reveal');
-      setTimeout(function() {
-        heroElements.forEach(function(el) { el.classList.add('visible'); });
-      }, 120);
+      // Trigger hero elements after paint
+      var heroEls = document.querySelectorAll('.hero .reveal');
+      setTimeout(function () {
+        heroEls.forEach(function (el) { el.classList.add('visible'); });
+      }, 100);
     })();
   </script>
 </body>
