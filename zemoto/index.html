@@ -181,14 +181,39 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background-image: url('https://www.zemoto.cz/images/slideshow/slide_xk5A.jpg');
-      background-size: cover; background-position: center 30%;
+      background-image: url('https://www.zemoto.cz/images/slideshow/slide_HKd2.jpg');
+      background-size: cover; background-position: center 38%;
+      filter: brightness(0.55) saturate(1.2) contrast(1.05);
+      transform: scale(1.04);
+      transition: transform 12s ease;
     }
+    .hero:hover .hero-bg { transform: scale(1.0); }
     .hero-gradient {
       position: absolute; inset: 0;
       background:
-        linear-gradient(to top, rgba(6,6,8,1) 0%, rgba(6,6,8,0.75) 35%, rgba(6,6,8,0.3) 70%, rgba(6,6,8,0.15) 100%),
-        linear-gradient(to right, rgba(6,6,8,0.7) 0%, transparent 60%);
+        linear-gradient(to top, rgba(6,6,8,1) 0%, rgba(6,6,8,0.82) 28%, rgba(6,6,8,0.2) 62%, transparent 100%),
+        linear-gradient(to right, rgba(6,6,8,0.55) 0%, transparent 55%);
+    }
+
+    /* centered logo in hero */
+    .hero-logo-center {
+      position: absolute; z-index: 2;
+      top: 42%; left: 50%; transform: translate(-50%, -50%);
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      pointer-events: none;
+    }
+    .hero-logo-center img {
+      width: 108px; height: 108px; border-radius: 50%;
+      border: 2px solid rgba(249,115,22,0.55);
+      box-shadow:
+        0 0 0 10px rgba(249,115,22,0.07),
+        0 0 0 22px rgba(249,115,22,0.03),
+        0 20px 60px rgba(0,0,0,0.65);
+      display: block;
+    }
+    .hero-logo-label {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.4em;
+      text-transform: uppercase; color: rgba(240,237,232,0.45);
     }
 
     .hero-content {
@@ -696,6 +721,12 @@
 <section class="hero" id="uvod">
   <div class="hero-bg"></div>
   <div class="hero-gradient"></div>
+
+  <div class="hero-logo-center">
+    <img src="https://www.zemoto.cz/apple-touch-icon.png" alt="Motocykly Zeman" />
+    <div class="hero-logo-label">Motocykly Zeman</div>
+  </div>
+
   <div class="hero-content">
     <div class="hero-location">Otín 283 &nbsp;·&nbsp; Jindřichův Hradec &nbsp;·&nbsp; od roku 2005</div>
     <h1>
