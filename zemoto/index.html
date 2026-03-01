@@ -264,52 +264,110 @@
        NABÍDKA STROJŮ
     ───────────────────────────────────────── */
     .offer-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border); border-radius: 12px;
-      overflow: hidden; margin-top: 3rem;
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+      height: 580px;
+      margin-top: 3rem;
+      border-radius: 16px;
+      overflow: hidden;
     }
-    @media (max-width: 700px) { .offer-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 800px) {
+      .offer-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+      .offer-card--featured { grid-row: auto; aspect-ratio: 4/3; }
+      .offer-card { aspect-ratio: 16/9; }
+    }
 
     .offer-card {
       position: relative; overflow: hidden;
-      aspect-ratio: 3/4; background: var(--surface2);
+      background: var(--surface2);
       text-decoration: none; color: inherit;
       display: flex; flex-direction: column; justify-content: flex-end;
     }
+    .offer-card--featured { grid-row: 1 / 3; }
+
+    /* orange accent line on hover */
+    .offer-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--orange);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s ease; z-index: 3;
+    }
+    .offer-card:hover::after { transform: scaleX(1); }
+
     .offer-card-img {
       position: absolute; inset: 0;
       background-size: cover; background-position: center;
-      transition: transform 0.6s ease;
+      transition: transform 0.7s ease;
+      filter: brightness(0.8) saturate(0.85);
     }
-    .offer-card:hover .offer-card-img { transform: scale(1.05); }
+    .offer-card:hover .offer-card-img {
+      transform: scale(1.06);
+      filter: brightness(0.88) saturate(1);
+    }
+
     .offer-card-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(6,6,8,0.95) 0%, rgba(6,6,8,0.4) 50%, transparent 100%);
-      transition: opacity 0.3s;
+      background:
+        linear-gradient(to top, rgba(6,6,8,1) 0%, rgba(6,6,8,0.7) 30%, rgba(6,6,8,0.15) 65%, transparent 100%),
+        linear-gradient(145deg, rgba(6,6,8,0.45) 0%, transparent 55%);
     }
-    .offer-card:hover .offer-card-overlay { opacity: 0.85; }
+
+    /* big faded number in corner */
+    .offer-card-num {
+      position: absolute; top: 1.25rem; right: 1.5rem; z-index: 1;
+      font-family: 'Bebas Neue', sans-serif; font-size: 5.5rem; line-height: 1;
+      color: rgba(255,255,255,0.055); letter-spacing: -0.02em;
+      transition: color 0.4s; pointer-events: none; user-select: none;
+    }
+    .offer-card--featured .offer-card-num { font-size: 9rem; top: 1.75rem; right: 2rem; }
+    .offer-card:hover .offer-card-num { color: rgba(249,115,22,0.1); }
+
     .offer-card-body {
-      position: relative; z-index: 1; padding: 2rem 1.75rem;
+      position: relative; z-index: 2; padding: 1.6rem 1.75rem;
     }
+    .offer-card--featured .offer-card-body { padding: 2.25rem 2.25rem; }
+
     .offer-card-tag {
-      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem;
+      display: flex; align-items: center; gap: 0.5rem;
     }
+    .offer-card-tag::before {
+      content: ''; width: 18px; height: 1px; background: var(--orange);
+      display: inline-block; flex-shrink: 0;
+    }
+
     .offer-card h3 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem; letter-spacing: 0.04em; line-height: 1;
+      font-size: 1.85rem; letter-spacing: 0.06em; line-height: 1;
       margin-bottom: 0.5rem;
     }
-    .offer-card p { font-size: 0.78rem; color: rgba(240,237,232,0.5); line-height: 1.6; }
-    .offer-card-arrow {
-      margin-top: 1.25rem;
-      font-size: 0.75rem; font-weight: 600;
-      color: rgba(240,237,232,0.3);
-      display: flex; align-items: center; gap: 0.4rem;
-      transition: all 0.2s;
+    .offer-card--featured h3 { font-size: 3rem; margin-bottom: 0.65rem; }
+
+    .offer-card p {
+      font-size: 0.78rem; color: rgba(240,237,232,0.45); line-height: 1.65;
+      max-width: 340px;
     }
-    .offer-card:hover .offer-card-arrow { color: var(--orange); gap: 0.7rem; }
+    .offer-card--featured p { font-size: 0.85rem; max-width: 400px; }
+
+    .offer-card-arrow {
+      margin-top: 1.4rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.28);
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: all 0.25s;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+    .offer-card-arrow svg { width: 14px; height: 14px; transition: transform 0.25s; }
+    .offer-card:hover .offer-card-arrow {
+      color: var(--orange); gap: 0.75rem;
+      border-color: rgba(249,115,22,0.35);
+    }
+    .offer-card:hover .offer-card-arrow svg { transform: translateX(3px); }
 
     /* ─────────────────────────────────────────
        FEATURED BIKES
@@ -686,36 +744,52 @@
       <p class="section-lead">Nové i ojeté motocykly, skůtry a čtyřkolky. Specializujeme se na použité stroje ze Spojených států — zejména Harley-Davidson. Nové stroje a čtyřkolky Kymco.</p>
     </div>
     <div class="offer-grid">
-      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="offer-card reveal d1">
-        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-bike.jpg')"></div>
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="offer-card offer-card--featured reveal d1">
+        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-bike.jpg'); background-position: center 40%;"></div>
         <div class="offer-card-overlay"></div>
+        <div class="offer-card-num">01</div>
         <div class="offer-card-body">
-          <div class="offer-card-tag">Nabídka</div>
+          <div class="offer-card-tag">Ojeté &amp; nové</div>
           <h3>Motocykly</h3>
-          <p>Ojeté stroje z USA i Evropy. Harley-Davidson, Yamaha, Honda, Suzuki a další.</p>
-          <div class="offer-card-arrow">Zobrazit stroje</div>
+          <p>Ojeté stroje ze Spojených států i Evropy — Harley-Davidson, Yamaha, Honda, Suzuki a další. Specialisté na HD import.</p>
+          <div class="offer-card-arrow">
+            Prohlédnout nabídku
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
       </a>
+
       <a href="https://www.zemoto.cz/nabidka-stroju/ctyrkolky.html" target="_blank" class="offer-card reveal d2">
-        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-4wd.jpg')"></div>
+        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-4wd.jpg'); background-position: center 55%;"></div>
         <div class="offer-card-overlay"></div>
+        <div class="offer-card-num">02</div>
         <div class="offer-card-body">
-          <div class="offer-card-tag">Nabídka</div>
+          <div class="offer-card-tag">Kymco · nové</div>
           <h3>Čtyřkolky</h3>
-          <p>Nové čtyřkolky Kymco. Autorizovaný prodej a servis.</p>
-          <div class="offer-card-arrow">Zobrazit čtyřkolky</div>
+          <p>Autorizovaný prodej a servis Kymco.</p>
+          <div class="offer-card-arrow">
+            Zobrazit čtyřkolky
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
       </a>
+
       <a href="https://www.zemoto.cz/nabidka-stroju/skutry.html" target="_blank" class="offer-card reveal d3">
-        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-scooter.jpg')"></div>
+        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-scooter.jpg'); background-position: center 50%;"></div>
         <div class="offer-card-overlay"></div>
+        <div class="offer-card-num">03</div>
         <div class="offer-card-body">
-          <div class="offer-card-tag">Nabídka</div>
+          <div class="offer-card-tag">Kymco · nové</div>
           <h3>Skůtry</h3>
-          <p>Nové skůtry Kymco. Spolehlivost, styl a dostupné ceny.</p>
-          <div class="offer-card-arrow">Zobrazit skůtry</div>
+          <p>Spolehlivost, styl a dostupné ceny pro každého.</p>
+          <div class="offer-card-arrow">
+            Zobrazit skůtry
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
       </a>
+
     </div>
   </div>
 </section>
