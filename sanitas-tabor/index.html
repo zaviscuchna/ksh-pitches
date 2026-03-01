@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sanitas Tábor — Vodoinstalatérské práce Zdeněk Vobinuška</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #07090c;
+      --surface:  #0d1117;
+      --surface2: #131b24;
+      --border:   rgba(0,180,216,0.1);
+      --fg:       #e8f4ff;
+      --muted:    #5f7d95;
+      --primary:  #00b4d8;
+      --primary-dark: #0096c7;
+      --radius:   12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(7,9,12,0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.06em; color: var(--fg); text-decoration: none; }
+    .nav-logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-cta { background: var(--primary); color: #000; padding: 0.5rem 1.25rem; border-radius: 6px; font-weight: 700; font-size: 0.875rem; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .nav-cta:hover { background: #48cae4; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--fg); border-radius: 2px; transition: all 0.3s; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--surface); flex-direction: column; padding: 2rem; gap: 1.5rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .nav-cta { display: none; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: clamp(6rem,12vw,10rem) 2rem clamp(4rem,8vw,6rem);
+    }
+    .hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1600&q=80') center/cover; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(7,9,12,0.97) 45%, rgba(7,9,12,0.75)); }
+    .hero-content { position: relative; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,180,216,0.12); border: 1px solid rgba(0,180,216,0.3);
+      color: var(--primary); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      line-height: 0.95; letter-spacing: 0.02em; margin-bottom: 1.5rem;
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero p { color: var(--muted); font-size: clamp(1rem, 2vw, 1.15rem); max-width: 500px; line-height: 1.7; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--primary); color: #000; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; }
+    .btn-primary:hover { background: #48cae4; transform: translateY(-2px); }
+    .btn-outline { border: 1px solid var(--border); color: var(--fg); padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+    .hero-stats { display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--primary); line-height: 1; }
+    .stat-label { color: var(--muted); font-size: 0.78rem; margin-top: 0.2rem; }
+
+    /* ── SECTION BASE ── */
+    section { padding: clamp(4rem,8vw,7rem) 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.75rem; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem,5vw,3.5rem); letter-spacing: 0.04em; margin-bottom: 1rem; line-height: 1; }
+    .section-sub { color: var(--muted); font-size: 1rem; max-width: 560px; line-height: 1.7; margin-bottom: 3rem; }
+
+    /* ── SERVICES ── */
+    .services-bg { background: var(--surface); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    .service-card {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2rem; transition: all 0.25s;
+    }
+    .service-card:hover { border-color: rgba(0,180,216,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,180,216,0.08); }
+    .service-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .service-card h3 { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .service-card p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+
+    /* ── PROMO BANNER ── */
+    .promo {
+      background: linear-gradient(135deg, rgba(0,180,216,0.15), rgba(0,150,199,0.05));
+      border: 1px solid rgba(0,180,216,0.2);
+      border-radius: 16px; padding: 3rem; text-align: center;
+      margin-bottom: 0;
+    }
+    .promo h3 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem,4vw,2.8rem); margin-bottom: 0.75rem; }
+    .promo p { color: var(--muted); max-width: 500px; margin: 0 auto 1.5rem; line-height: 1.7; }
+
+    /* ── USP ── */
+    .usp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; }
+    .usp-item { text-align: center; }
+    .usp-icon { width: 56px; height: 56px; background: rgba(0,180,216,0.1); border: 1px solid rgba(0,180,216,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem; }
+    .usp-item h3 { font-weight: 700; margin-bottom: 0.4rem; }
+    .usp-item p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .contact-icon { width: 44px; height: 44px; background: rgba(0,180,216,0.1); border: 1px solid rgba(0,180,216,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .contact-item h4 { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.2rem; }
+    .contact-item p, .contact-item a { color: var(--muted); font-size: 0.875rem; text-decoration: none; }
+    .contact-item a:hover { color: var(--primary); }
+    .map-wrap { border-radius: var(--radius); overflow: hidden; height: 320px; border: 1px solid var(--border); }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; filter: grayscale(1) invert(0.85) hue-rotate(180deg); }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; }
+    footer p { color: var(--muted); font-size: 0.8rem; }
+    footer span { color: var(--primary); }
+
+    /* ── ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Sanitas <span>Tábor</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#sluzby">Služby</a></li>
+    <li><a href="#vyhody">Proč my</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="tel:+420602447092" class="nav-cta">📞 602 447 092</a>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="uvod">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Vodoinstalatérství · Tábor od roku 2010</div>
+    <h1>Voda<br />kde<span>&nbsp;patří</span></h1>
+    <p>Kompletní vodoinstalatérské práce v Táboře a okolí — rodinné domy, byty, bytové domy i firmy. Individuální přístup a záruky na každou zakázku.</p>
+    <div class="hero-btns">
+      <a href="#kontakt" class="btn-primary">Nezávazná poptávka</a>
+      <a href="#sluzby" class="btn-outline">Naše služby</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">let na trhu</div>
+      </div>
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">zakázek ročně</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">záruka na práci</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-bg" id="sluzby">
+  <div class="container">
+    <div class="section-tag reveal">Co děláme</div>
+    <h2 class="section-title reveal">Kompletní<br />vodoinstalace</h2>
+    <p class="section-sub reveal">Vodovodní i kanalizační přípojky, rekonstrukce rozvodů, montáže zařizovacích předmětů — vše včetně materiálu.</p>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🔧</div>
+        <h3>Vodovodní přípojky</h3>
+        <p>Nové vodovodní přípojky pro rodinné domy, bytové domy a průmyslové objekty včetně materiálu.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🚿</div>
+        <h3>Kanalizační přípojky</h3>
+        <p>Pokládka kanalizace, revizní šachty, napojení na veřejnou síť. Práce v bytě i ve venkovním terénu.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">🏠</div>
+        <h3>Rekonstrukce rozvodů</h3>
+        <p>Výměna starých ocelových potrubí za moderní plast nebo měď. Byty, domy, bytové domy.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-4">
+        <div class="service-icon">🛁</div>
+        <h3>Montáž zařizovacích předmětů</h3>
+        <p>Koupelny, kuchyně, toalety — instalace van, sprch, umyvadel, WC, dřezů i myček.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-5">
+        <div class="service-icon">🏢</div>
+        <h3>Bytové domy a firmy</h3>
+        <p>Zkušenosti s rozsáhlými zakázkami v bytových domech, provozovnách a komerčních objektech.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">⚙️</div>
+        <h3>Servis a havárie</h3>
+        <p>Rychlý zásah při haváriích a poruchách. Výměna vodoměrů, těsnění, odstraňování úniků.</p>
+      </div>
+    </div>
+
+    <div class="promo reveal" style="margin-top: 3rem;">
+      <h3>Kalkulace <span style="color: var(--primary)">ZDARMA</span></h3>
+      <p>Přijedeme, zaměříme a zpracujeme cenovou nabídku bez jakýchkoliv závazků. Individuální přístup ke každé zakázce.</p>
+      <a href="#kontakt" class="btn-primary">Sjednat prohlídku</a>
+    </div>
+  </div>
+</section>
+
+<!-- USP -->
+<section id="vyhody">
+  <div class="container">
+    <div class="section-tag reveal">Proč Sanitas</div>
+    <h2 class="section-title reveal">Spolehlivost<br />se zárukou</h2>
+    <p class="section-sub reveal">Každá zakázka je pro nás priorita — ať jde o výměnu kohoutku nebo celou rekonstrukci domu.</p>
+    <div class="usp-grid">
+      <div class="usp-item reveal reveal-delay-1">
+        <div class="usp-icon">📋</div>
+        <h3>Kalkulace zdarma</h3>
+        <p>Nezávazná prohlídka a cenová nabídka bez poplatku. Víte dopředu, co zaplatíte.</p>
+      </div>
+      <div class="usp-item reveal reveal-delay-2">
+        <div class="usp-icon">🤝</div>
+        <h3>Individuální přístup</h3>
+        <p>Každý zákazník, každá zakázka je jiná. Řešení šijeme na míru vašim potřebám.</p>
+      </div>
+      <div class="usp-item reveal reveal-delay-3">
+        <div class="usp-icon">🛒</div>
+        <h3>Materiál v ceně</h3>
+        <p>Práce i materiál v jedné ceně. Nemusíte nic shánět — postaráme se o vše.</p>
+      </div>
+      <div class="usp-item reveal reveal-delay-4">
+        <div class="usp-icon">✅</div>
+        <h3>Záruční servis</h3>
+        <p>Na všechny práce poskytujeme záruční dobu a stojíme za kvalitou svých výsledků.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="kontakt" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-tag reveal">Kontakt</div>
+    <h2 class="section-title reveal">Ozvěte se nám</h2>
+    <p class="section-sub reveal">Zavolejte nebo napište — odpovíme rychle a dojednáme termín prohlídky.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item reveal reveal-delay-1">
+          <div class="contact-icon">👤</div>
+          <div>
+            <h4>Zdeněk Vobinuška</h4>
+            <p>Vodoinstalatér — Sanitas Tábor</p>
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-2">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4>Telefon</h4>
+            <a href="tel:+420602447092">602 447 092</a>
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-3">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h4>E-mail</h4>
+            <a href="mailto:sanitas@seznam.cz">sanitas@seznam.cz</a>
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-4">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4>Adresa</h4>
+            <p>Na rokli 237<br />Tábor, 390 03</p>
+          </div>
+        </div>
+      </div>
+      <div class="map-wrap reveal reveal-delay-2">
+        <iframe
+          src="https://maps.google.com/maps?q=Na+rokli+237,+Tábor+390+03&output=embed"
+          allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Sanitas Tábor · Zdeněk Vobinuška · Design: <span>KSH Studio</span></p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
