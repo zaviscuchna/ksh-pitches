@@ -168,6 +168,65 @@
     }
     .project:hover .project-arrow svg { transform: translateX(3px); }
 
+    /* info strip fades out on hover */
+    .project-info {
+      transition: opacity 0.22s ease, transform 0.28s ease;
+    }
+    .project:hover .project-info {
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+    }
+
+    /* ── REVEAL PANEL ── */
+    .project-reveal {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      background: rgba(8,8,9,0.94);
+      backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      border-top: 1px solid rgba(255,255,255,0.09);
+      padding: 1.75rem;
+      transform: translateY(100%);
+      transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .project:hover .project-reveal { transform: translateY(0); }
+
+    .reveal-label {
+      display: block;
+      font-size: 0.55rem; font-weight: 600; letter-spacing: 0.24em;
+      text-transform: uppercase; color: rgba(255,255,255,0.28);
+      margin-bottom: 1.1rem;
+    }
+
+    .reveal-title {
+      font-size: 1rem; font-weight: 500; color: rgba(255,255,255,0.88);
+      margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+
+    .reveal-list {
+      list-style: none;
+      display: flex; flex-direction: column;
+    }
+    .reveal-item {
+      display: flex; align-items: flex-start; gap: 0.65rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.055);
+      font-size: 0.76rem; font-weight: 300; color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+      opacity: 0; transform: translateY(7px);
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+    .reveal-item:first-child { border-top: 1px solid rgba(255,255,255,0.055); }
+    .reveal-item::before {
+      content: '—'; color: rgba(255,255,255,0.18);
+      font-size: 0.65rem; flex-shrink: 0; margin-top: 0.05em;
+    }
+
+    /* staggered item reveal */
+    .project:hover .reveal-item:nth-child(1) { opacity:1; transform:none; transition-delay: 0.28s; }
+    .project:hover .reveal-item:nth-child(2) { opacity:1; transform:none; transition-delay: 0.36s; }
+    .project:hover .reveal-item:nth-child(3) { opacity:1; transform:none; transition-delay: 0.44s; }
+
     /* ── FOOTER ── */
     footer {
       flex-shrink: 0;
@@ -227,98 +286,140 @@
     <a href="pizza-nonno/" class="project">
       <div class="project-bg" style="background-image:url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1920&q=80')"></div>
       <span class="project-num">01</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Pizza Nonno</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Tmavý design, italské barvy</li>
+          <li class="reveal-item">Kompletní menu s fotkami</li>
+          <li class="reveal-item">Rezervace, kontakt, mapa</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Restaurace</span>
         <div class="project-title">Pizza Nonno</div>
         <div class="project-desc">Italská pizzerie, Kamenice nad Lipou</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
     <a href="alterum/" class="project">
       <div class="project-bg" style="background-image:url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80')"></div>
       <span class="project-num">02</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Alterum</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Editoriální dark layout</li>
+          <li class="reveal-item">Výrazné CSS animace</li>
+          <li class="reveal-item">Bold typografie, premium vizuál</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Kreativní agentura</span>
         <div class="project-title">Alterum</div>
         <div class="project-desc">Editoriální design, výrazné animace</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
     <a href="sanitas-tabor/" class="project">
       <div class="project-bg" style="background-image:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80')"></div>
       <span class="project-num">03</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Sanitas Tábor</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Tmavý design, modrý akcent</li>
+          <li class="reveal-item">Přehled služeb a ceník</li>
+          <li class="reveal-item">Kontakt, formulář, mapa</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Vodoinstalatérství</span>
         <div class="project-title">Sanitas Tábor</div>
         <div class="project-desc">Zdeněk Vobinuška, Tábor</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
     <a href="hotel-dyje/" class="project">
       <div class="project-bg" style="background-image:url('https://www.hoteldyje.cz/galerie/hotel01.jpg')"></div>
       <span class="project-num">04</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Hotel Dyje</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Reálné fotky a texty z webu</li>
+          <li class="reveal-item">Ceník pokojů, restaurace</li>
+          <li class="reveal-item">Aktivity, denní menu, rezervace</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Hotel</span>
         <div class="project-title">Hotel Dyje</div>
         <div class="project-desc">Rodinný hotel, centrum Dačic</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
     <a href="hotel-komornik/" class="project">
       <div class="project-bg" style="background-image:url('http://www.pocechach.cz/foto/katalog/hotel_2014.jpg')"></div>
       <span class="project-num">05</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Hotel Komorník</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Zlaté tóny, Česká Kanada</li>
+          <li class="reveal-item">Pokoje, restaurace, ceník</li>
+          <li class="reveal-item">Kontakt a rezervace</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Hotel</span>
         <div class="project-title">Hotel Komorník</div>
         <div class="project-desc">Strmilov, oblast Česká Kanada</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
     <a href="autokemp-nachod/" class="project">
       <div class="project-bg" style="background-image:url('https://www.camp.cz/photo/71/10182.jpg')"></div>
       <span class="project-num">06</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Autokemp Náchod</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Letní vizuál, zelená příroda</li>
+          <li class="reveal-item">Chatky, stany, karavany + ceník</li>
+          <li class="reveal-item">Aktivity a provozní informace</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Kemp</span>
         <div class="project-title">Autokemp Náchod</div>
         <div class="project-desc">Chatky, stany, karavany</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
     <a href="zemoto/" class="project">
       <div class="project-bg" style="background-image:url('https://www.zemoto.cz/images/inzerts/00716/1920/00001.jpg')"></div>
       <span class="project-num">07</span>
+      <div class="project-reveal">
+        <span class="reveal-label">Redesign zahrnuje</span>
+        <div class="reveal-title">Motocykly Zeman</div>
+        <ul class="reveal-list">
+          <li class="reveal-item">Galerie 20–28 fotek na motor</li>
+          <li class="reveal-item">HD import specialista z USA</li>
+          <li class="reveal-item">Servis, výbava, 17 značek</li>
+        </ul>
+      </div>
       <div class="project-info">
         <span class="project-cat">Moto dealer</span>
         <div class="project-title">Motocykly Zeman</div>
         <div class="project-desc">Prodej, servis, HD import. Jindřichův Hradec</div>
-        <div class="project-arrow">
-          Zobrazit
-          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </a>
 
