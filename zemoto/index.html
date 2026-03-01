@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://www.zemoto.cz https://maps.google.com https://www.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.zemoto.cz https:; frame-src https://maps.google.com https://www.google.com; script-src 'self' 'unsafe-inline';" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+
+  <title>Motocykly Zeman — Prodej, Servis, Výbava · Jindřichův Hradec</title>
+  <meta name="description" content="Motocykly Zeman — prodej nových a ojetých motocyklů, skůtrů a čtyřkolek. Servis, výbava, financování. Otín 283, Jindřichův Hradec." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       RESET & ROOT
+    ───────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:         #060608;
+      --surface:    #0d0d10;
+      --surface2:   #141417;
+      --border:     rgba(255,255,255,0.06);
+      --border-h:   rgba(249,115,22,0.35);
+      --fg:         #f0ede8;
+      --muted:      #6b6a67;
+      --orange:     #f97316;
+      --orange-dim: rgba(249,115,22,0.1);
+      --orange-glow:rgba(249,115,22,0.18);
+      --radius:     8px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    /* ─────────────────────────────────────────
+       UTILITIES
+    ───────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .eyebrow {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--orange);
+      display: inline-block; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: 0.04em; line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .section-lead {
+      color: var(--muted); font-size: 0.9rem;
+      max-width: 540px; line-height: 1.75;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.75rem; border-radius: var(--radius);
+      font-weight: 600; font-size: 0.875rem;
+      text-decoration: none; transition: all 0.2s; cursor: pointer;
+      border: none; font-family: 'Inter', sans-serif;
+    }
+    .btn-orange { background: var(--orange); color: #fff; }
+    .btn-orange:hover { background: #ea6a00; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(249,115,22,0.35); }
+    .btn-outline { border: 1px solid var(--border-h); color: var(--orange); background: transparent; }
+    .btn-outline:hover { background: var(--orange-dim); transform: translateY(-1px); }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 64px;
+      background: rgba(6,6,8,0.85);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    #nav.scrolled { border-color: rgba(249,115,22,0.15); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 32px; height: 32px;
+      background: var(--orange);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; color: #fff; letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+    .nav-logo-text {
+      display: flex; flex-direction: column; line-height: 1.1;
+    }
+    .nav-logo-text strong {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 0.08em; color: var(--fg);
+    }
+    .nav-logo-text span {
+      font-size: 0.6rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex; list-style: none; gap: 0.25rem;
+    }
+    .nav-links a {
+      padding: 0.4rem 0.8rem; border-radius: 6px;
+      color: var(--muted); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--fg); background: rgba(255,255,255,0.04); }
+
+    .nav-phone {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--orange); text-decoration: none;
+      padding: 0.4rem 0.9rem; border: 1px solid var(--border-h);
+      border-radius: var(--radius); transition: all 0.2s;
+    }
+    .nav-phone:hover { background: var(--orange-dim); }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 4px; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      width: 20px; height: 1.5px; background: var(--fg); border-radius: 1px; transition: all 0.3s;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none; position: fixed; top: 64px; left: 0; right: 0;
+        flex-direction: column; background: var(--surface);
+        padding: 1.5rem; gap: 0.25rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.65rem 0.8rem; }
+      .hamburger { display: flex; }
+      .nav-phone { display: none; }
+    }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 0 0;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://www.zemoto.cz/images/slideshow/slide_xk5A.jpg');
+      background-size: cover; background-position: center 30%;
+    }
+    .hero-gradient {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to top, rgba(6,6,8,1) 0%, rgba(6,6,8,0.75) 35%, rgba(6,6,8,0.3) 70%, rgba(6,6,8,0.15) 100%),
+        linear-gradient(to right, rgba(6,6,8,0.7) 0%, transparent 60%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 1;
+      padding: 0 1.5rem clamp(3.5rem,7vw,5rem);
+      max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+
+    .hero-location {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--orange);
+      margin-bottom: 1.25rem;
+    }
+    .hero-location::before {
+      content: ''; width: 4px; height: 4px;
+      background: var(--orange); border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 11vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 .line-muted { color: rgba(240,237,232,0.35); }
+    .hero h1 .line-orange { color: var(--orange); }
+
+    .hero-tagline {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      color: rgba(240,237,232,0.5);
+      letter-spacing: 0.25em; text-transform: uppercase;
+      font-weight: 300; margin-bottom: 2.5rem;
+    }
+    .hero-tagline span { color: rgba(249,115,22,0.7); margin: 0 0.5rem; }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Stats bar */
+    .stats-bar {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      divide-x: 1px solid var(--border);
+    }
+    .stat {
+      padding: 1.75rem 2rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem; color: var(--orange); line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    @media (max-width: 640px) {
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat:nth-child(2) { border-right: none; }
+    }
+
+    /* ─────────────────────────────────────────
+       SECTIONS
+    ───────────────────────────────────────── */
+    section { padding: clamp(4rem,8vw,7rem) 0; }
+
+    /* ─────────────────────────────────────────
+       NABÍDKA STROJŮ
+    ───────────────────────────────────────── */
+    .offer-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; margin-top: 3rem;
+    }
+    @media (max-width: 700px) { .offer-grid { grid-template-columns: 1fr; } }
+
+    .offer-card {
+      position: relative; overflow: hidden;
+      aspect-ratio: 3/4; background: var(--surface2);
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .offer-card-img {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transition: transform 0.6s ease;
+    }
+    .offer-card:hover .offer-card-img { transform: scale(1.05); }
+    .offer-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(6,6,8,0.95) 0%, rgba(6,6,8,0.4) 50%, transparent 100%);
+      transition: opacity 0.3s;
+    }
+    .offer-card:hover .offer-card-overlay { opacity: 0.85; }
+    .offer-card-body {
+      position: relative; z-index: 1; padding: 2rem 1.75rem;
+    }
+    .offer-card-tag {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem;
+    }
+    .offer-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.04em; line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .offer-card p { font-size: 0.78rem; color: rgba(240,237,232,0.5); line-height: 1.6; }
+    .offer-card-arrow {
+      margin-top: 1.25rem;
+      font-size: 0.75rem; font-weight: 600;
+      color: rgba(240,237,232,0.3);
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .offer-card:hover .offer-card-arrow { color: var(--orange); gap: 0.7rem; }
+
+    /* ─────────────────────────────────────────
+       FEATURED BIKES
+    ───────────────────────────────────────── */
+    .bikes-bg { background: var(--surface); }
+
+    .bikes-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 2.5rem; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .bikes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+
+    .bike-card {
+      background: var(--surface2); text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; transition: background 0.2s;
+    }
+    .bike-card:hover { background: #181820; }
+
+    .bike-img {
+      aspect-ratio: 4/3; overflow: hidden; background: #0a0a0d;
+    }
+    .bike-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .bike-card:hover .bike-img img { transform: scale(1.04); }
+
+    .bike-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+    .bike-year {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem;
+    }
+    .bike-name {
+      font-size: 0.9rem; font-weight: 700; line-height: 1.3;
+      margin-bottom: auto;
+    }
+    .bike-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 1rem; padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .bike-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 0.04em; color: var(--orange);
+    }
+    .bike-badge {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.2rem 0.5rem; border-radius: 4px;
+    }
+
+    /* ─────────────────────────────────────────
+       SERVIS
+    ───────────────────────────────────────── */
+    .servis-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    @media (max-width: 860px) { .servis-grid { grid-template-columns: 1fr; } }
+
+    .servis-img {
+      border-radius: 12px; overflow: hidden;
+      position: relative;
+    }
+    .servis-img img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+    .servis-img-tag {
+      position: absolute; bottom: 1.25rem; left: 1.25rem;
+      background: var(--orange); color: #fff;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; padding: 0.35rem 0.75rem; border-radius: 4px;
+    }
+
+    .servis-list { list-style: none; display: flex; flex-direction: column; gap: 0; margin-top: 2rem; }
+    .servis-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 0; border-bottom: 1px solid var(--border);
+    }
+    .servis-item:first-child { border-top: 1px solid var(--border); }
+    .servis-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem; color: var(--orange);
+      min-width: 28px; line-height: 1.3;
+    }
+    .servis-item h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .servis-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+    .servis-partners {
+      display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.75rem;
+    }
+    .partner-chip {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.4rem 0.8rem;
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .partner-chip:hover { border-color: var(--border-h); color: var(--orange); }
+
+    /* ─────────────────────────────────────────
+       ZNAČKY
+    ───────────────────────────────────────── */
+    .brands-bg { background: var(--surface); }
+    .brands-marquee-wrap {
+      overflow: hidden; margin-top: 2.5rem;
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .brands-marquee {
+      display: flex; gap: 0;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .brands-marquee:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .brand-pill {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 0.12em;
+      color: var(--muted); padding: 0 2rem;
+      white-space: nowrap; transition: color 0.2s;
+      border-right: 1px solid var(--border);
+    }
+    .brand-pill:hover { color: var(--fg); }
+
+    /* ─────────────────────────────────────────
+       VÝBAVA
+    ───────────────────────────────────────── */
+    .vybava-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      margin-top: 3rem;
+    }
+    .vybava-img { overflow: hidden; background: var(--surface2); }
+    .vybava-img img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1; transition: transform 0.5s; }
+    .vybava-img:hover img { transform: scale(1.05); }
+    .vybava-img.tall { grid-row: 1 / 3; aspect-ratio: unset; }
+    .vybava-img.tall img { aspect-ratio: unset; height: 100%; min-height: 300px; }
+    @media (max-width: 700px) {
+      .vybava-grid { grid-template-columns: 1fr 1fr; }
+      .vybava-img.tall { grid-row: auto; }
+      .vybava-img.tall img { min-height: auto; height: auto; aspect-ratio: 1; }
+    }
+
+    .vybava-brands { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+    .vybava-brand {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.35rem 0.75rem;
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+    }
+
+    /* ─────────────────────────────────────────
+       SLUŽBY STRIP
+    ───────────────────────────────────────── */
+    .services-strip {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .service-tile {
+      background: var(--surface); padding: 1.75rem 1.5rem;
+      transition: background 0.2s;
+    }
+    .service-tile:hover { background: var(--surface2); }
+    .service-tile-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .service-tile h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .service-tile p { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─────────────────────────────────────────
+       KONTAKT
+    ───────────────────────────────────────── */
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.5fr;
+      gap: 3rem; align-items: start; margin-top: 3rem;
+    }
+    @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+
+    .contact-cards { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .contact-row {
+      background: var(--surface); padding: 1.25rem 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: background 0.2s;
+    }
+    .contact-row:hover { background: var(--surface2); }
+    .contact-icon {
+      width: 36px; height: 36px; background: var(--orange-dim);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 0.9rem; flex-shrink: 0;
+      border: 1px solid rgba(249,115,22,0.2);
+    }
+    .contact-label {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem;
+    }
+    .contact-value { font-size: 0.875rem; font-weight: 500; }
+    .contact-value a { text-decoration: none; color: var(--fg); transition: color 0.2s; }
+    .contact-value a:hover { color: var(--orange); }
+    .contact-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+
+    .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1.5rem; margin-top: 0.4rem; }
+    .hours-row { display: flex; justify-content: space-between; font-size: 0.8rem; }
+    .hours-day { color: var(--muted); }
+    .hours-time { font-weight: 600; }
+    .hours-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.5; }
+
+    .map-wrap {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); height: 420px;
+    }
+    .map-wrap iframe {
+      width: 100%; height: 100%; border: none;
+      filter: grayscale(1) brightness(0.6) contrast(1.1);
+      transition: filter 0.3s;
+    }
+    .map-wrap:hover iframe { filter: grayscale(0.6) brightness(0.75); }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 0.6rem; }
+    .footer-brand strong {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 0.08em; color: var(--fg);
+    }
+    .footer-brand span { font-size: 0.7rem; color: var(--muted); }
+    footer p { font-size: 0.75rem; color: var(--muted); }
+    footer a { color: var(--orange); text-decoration: none; }
+
+    /* ─────────────────────────────────────────
+       REVEAL ANIMATIONS
+    ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.07s; }
+    .d2 { transition-delay: 0.14s; }
+    .d3 { transition-delay: 0.21s; }
+    .d4 { transition-delay: 0.28s; }
+    .d5 { transition-delay: 0.35s; }
+    .d6 { transition-delay: 0.42s; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     NAV
+════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#uvod" class="nav-logo">
+    <div class="nav-logo-mark">MZ</div>
+    <div class="nav-logo-text">
+      <strong>Motocykly Zeman</strong>
+      <span>Otín · Jindřichův Hradec</span>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#nabidka">Nabídka</a></li>
+    <li><a href="#stroje">Stroje</a></li>
+    <li><a href="#servis">Servis</a></li>
+    <li><a href="#vybava">Výbava</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="tel:+420608766885" class="nav-phone">
+    📞 +420 608 766 885
+  </a>
+  <div class="hamburger" id="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     HERO
+════════════════════════════════════ -->
+<section class="hero" id="uvod">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-location">Otín 283 &nbsp;·&nbsp; Jindřichův Hradec &nbsp;·&nbsp; od roku 2005</div>
+    <h1>
+      <div class="line-muted">Motocykly</div>
+      <div class="line-orange">Zeman</div>
+    </h1>
+    <p class="hero-tagline">
+      Prodej <span>·</span> Servis <span>·</span> Výbava <span>·</span> Financování
+    </p>
+    <div class="hero-btns">
+      <a href="#stroje" class="btn btn-orange">Prohlédnout nabídku</a>
+      <a href="tel:+420608766885" class="btn btn-outline">+420 608 766 885</a>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">let na trhu</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">250 m²</div>
+        <div class="stat-label">showroom</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">17</div>
+        <div class="stat-label">značek v nabídce</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">USA</div>
+        <div class="stat-label">specialista HD import</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     NABÍDKA STROJŮ
+════════════════════════════════════ -->
+<section id="nabidka">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Nabídka strojů</span>
+      <h2 class="section-title">Co u nás najdete</h2>
+      <p class="section-lead">Nové i ojeté motocykly, skůtry a čtyřkolky. Specializujeme se na použité stroje ze Spojených států — zejména Harley-Davidson. Nové stroje a čtyřkolky Kymco.</p>
+    </div>
+    <div class="offer-grid">
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="offer-card reveal d1">
+        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-bike.jpg')"></div>
+        <div class="offer-card-overlay"></div>
+        <div class="offer-card-body">
+          <div class="offer-card-tag">Nabídka</div>
+          <h3>Motocykly</h3>
+          <p>Ojeté stroje z USA i Evropy. Harley-Davidson, Yamaha, Honda, Suzuki a další.</p>
+          <div class="offer-card-arrow">Zobrazit stroje</div>
+        </div>
+      </a>
+      <a href="https://www.zemoto.cz/nabidka-stroju/ctyrkolky.html" target="_blank" class="offer-card reveal d2">
+        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-4wd.jpg')"></div>
+        <div class="offer-card-overlay"></div>
+        <div class="offer-card-body">
+          <div class="offer-card-tag">Nabídka</div>
+          <h3>Čtyřkolky</h3>
+          <p>Nové čtyřkolky Kymco. Autorizovaný prodej a servis.</p>
+          <div class="offer-card-arrow">Zobrazit čtyřkolky</div>
+        </div>
+      </a>
+      <a href="https://www.zemoto.cz/nabidka-stroju/skutry.html" target="_blank" class="offer-card reveal d3">
+        <div class="offer-card-img" style="background-image:url('https://www.zemoto.cz/images/mainlink-scooter.jpg')"></div>
+        <div class="offer-card-overlay"></div>
+        <div class="offer-card-body">
+          <div class="offer-card-tag">Nabídka</div>
+          <h3>Skůtry</h3>
+          <p>Nové skůtry Kymco. Spolehlivost, styl a dostupné ceny.</p>
+          <div class="offer-card-arrow">Zobrazit skůtry</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     FEATURED BIKES
+════════════════════════════════════ -->
+<section class="bikes-bg" id="stroje">
+  <div class="container">
+    <div class="bikes-header reveal">
+      <div>
+        <span class="eyebrow">Aktuální nabídka</span>
+        <h2 class="section-title">Stroje skladem</h2>
+      </div>
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="btn btn-outline">Celá nabídka →</a>
+    </div>
+    <div class="bikes-grid">
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="bike-card reveal d1">
+        <div class="bike-img">
+          <img src="https://www.zemoto.cz/images/inzerts/00713/200/00000.jpg" alt="Harley-Davidson FLSTC Heritage Softail Classic" loading="lazy" />
+        </div>
+        <div class="bike-body">
+          <div class="bike-year">Harley-Davidson · 2009</div>
+          <div class="bike-name">FLSTC Heritage Softail Classic</div>
+          <div class="bike-footer">
+            <div class="bike-price">239 000 Kč</div>
+            <div class="bike-badge">Ojetý</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="bike-card reveal d2">
+        <div class="bike-img">
+          <img src="https://www.zemoto.cz/images/inzerts/00564/200/00000.jpg" alt="Harley-Davidson FLSL Softail Slim" loading="lazy" />
+        </div>
+        <div class="bike-body">
+          <div class="bike-year">Harley-Davidson · 2018</div>
+          <div class="bike-name">FLSL Softail Slim</div>
+          <div class="bike-footer">
+            <div class="bike-price">319 000 Kč</div>
+            <div class="bike-badge">Ojetý</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="bike-card reveal d3">
+        <div class="bike-img">
+          <img src="https://www.zemoto.cz/images/inzerts/00716/200/00000.jpg" alt="Harley-Davidson FLSTFB Fat Boy Lo" loading="lazy" />
+        </div>
+        <div class="bike-body">
+          <div class="bike-year">Harley-Davidson · 2013</div>
+          <div class="bike-name">FLSTFB Fat Boy Lo 103CU</div>
+          <div class="bike-footer">
+            <div class="bike-price">299 000 Kč</div>
+            <div class="bike-badge">Ojetý</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="bike-card reveal d4">
+        <div class="bike-img">
+          <img src="https://www.zemoto.cz/images/inzerts/00714/200/00000.jpg" alt="Yamaha XV 1900 Star Eluder GT" loading="lazy" />
+        </div>
+        <div class="bike-body">
+          <div class="bike-year">Yamaha · 2018</div>
+          <div class="bike-name">XV 1900 Star Eluder GT Package</div>
+          <div class="bike-footer">
+            <div class="bike-price">479 000 Kč</div>
+            <div class="bike-badge">Ojetý</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="bike-card reveal d5">
+        <div class="bike-img">
+          <img src="https://www.zemoto.cz/images/inzerts/00658/200/00000.jpg" alt="Indian FTR 1200 S Race Replica" loading="lazy" />
+        </div>
+        <div class="bike-body">
+          <div class="bike-year">Indian · 2019</div>
+          <div class="bike-name">FTR 1200 S Race Replica</div>
+          <div class="bike-footer">
+            <div class="bike-price">299 000 Kč</div>
+            <div class="bike-badge">Ojetý</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.zemoto.cz/nabidka-stroju/motocykly.html" target="_blank" class="bike-card reveal d6">
+        <div class="bike-img">
+          <img src="https://www.zemoto.cz/images/inzerts/00707/200/00000.jpg" alt="Harley-Davidson FXDF Dyna Fat Bob" loading="lazy" />
+        </div>
+        <div class="bike-body">
+          <div class="bike-year">Harley-Davidson · 2010</div>
+          <div class="bike-name">FXDF Dyna Fat Bob</div>
+          <div class="bike-footer">
+            <div class="bike-price">229 000 Kč</div>
+            <div class="bike-badge">Ojetý</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     SERVIS
+════════════════════════════════════ -->
+<section id="servis">
+  <div class="container">
+    <div class="servis-grid">
+      <div>
+        <span class="eyebrow reveal">Servis</span>
+        <h2 class="section-title reveal">Opravíme<br />váš stroj</h2>
+        <p class="section-lead reveal">Provádíme běžnou údržbu a servis motocyklů a skůtrů renomovaných značek. Autorizovaný servis Kymco, specialisté na Harley-Davidson tuning.</p>
+
+        <ul class="servis-list reveal">
+          <li class="servis-item">
+            <div class="servis-num">01</div>
+            <div>
+              <h4>Pravidelná údržba</h4>
+              <p>Výměny náplní, pneumatik, brzd, řetězových sad, montáž doplňků.</p>
+            </div>
+          </li>
+          <li class="servis-item">
+            <div class="servis-num">02</div>
+            <div>
+              <h4>Diagnostika</h4>
+              <p>Elektronická diagnostika, optimalizace palivových map, odblokování imobilizérů a nahrání nových klíčů FOB.</p>
+            </div>
+          </li>
+          <li class="servis-item">
+            <div class="servis-num">03</div>
+            <div>
+              <h4>Harley-Davidson tuning</h4>
+              <p>Specialisté na úpravy a tuning strojů Harley-Davidson.</p>
+            </div>
+          </li>
+          <li class="servis-item">
+            <div class="servis-num">04</div>
+            <div>
+              <h4>Autorizovaný servis Kymco</h4>
+              <p>Každoroční technické školení výrobcem. Záruční i pozáruční servis.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="servis-partners reveal">
+          <div class="partner-chip">Motul</div>
+          <div class="partner-chip">Parts Europe</div>
+          <div class="partner-chip">Drag Specialties</div>
+          <div class="partner-chip">Diag4Bikes</div>
+        </div>
+      </div>
+
+      <div class="servis-img reveal d1">
+        <img src="https://www.zemoto.cz/images/servis-img.jpg" alt="Servis Motocykly Zeman" loading="lazy" />
+        <div class="servis-img-tag">Autorizovaný servis Kymco</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     ZNAČKY (MARQUEE)
+════════════════════════════════════ -->
+<section class="brands-bg" style="padding: clamp(2.5rem,5vw,4rem) 0;">
+  <div class="container reveal">
+    <span class="eyebrow">Značky</span>
+    <h2 class="section-title">17 značek v nabídce</h2>
+  </div>
+  <div class="brands-marquee-wrap" style="margin-top:2rem;">
+    <div class="brands-marquee">
+      <!-- doubled for infinite loop -->
+      <span class="brand-pill">Harley-Davidson</span>
+      <span class="brand-pill">Yamaha</span>
+      <span class="brand-pill">Honda</span>
+      <span class="brand-pill">Kawasaki</span>
+      <span class="brand-pill">Suzuki</span>
+      <span class="brand-pill">BMW</span>
+      <span class="brand-pill">Triumph</span>
+      <span class="brand-pill">KTM</span>
+      <span class="brand-pill">Ducati</span>
+      <span class="brand-pill">Aprilia</span>
+      <span class="brand-pill">Moto Guzzi</span>
+      <span class="brand-pill">Kymco</span>
+      <span class="brand-pill">Vespa</span>
+      <span class="brand-pill">Husqvarna</span>
+      <span class="brand-pill">Royal Enfield</span>
+      <span class="brand-pill">Fantic</span>
+      <span class="brand-pill">Buell</span>
+      <!-- repeat -->
+      <span class="brand-pill">Harley-Davidson</span>
+      <span class="brand-pill">Yamaha</span>
+      <span class="brand-pill">Honda</span>
+      <span class="brand-pill">Kawasaki</span>
+      <span class="brand-pill">Suzuki</span>
+      <span class="brand-pill">BMW</span>
+      <span class="brand-pill">Triumph</span>
+      <span class="brand-pill">KTM</span>
+      <span class="brand-pill">Ducati</span>
+      <span class="brand-pill">Aprilia</span>
+      <span class="brand-pill">Moto Guzzi</span>
+      <span class="brand-pill">Kymco</span>
+      <span class="brand-pill">Vespa</span>
+      <span class="brand-pill">Husqvarna</span>
+      <span class="brand-pill">Royal Enfield</span>
+      <span class="brand-pill">Fantic</span>
+      <span class="brand-pill">Buell</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     VÝBAVA
+════════════════════════════════════ -->
+<section id="vybava">
+  <div class="container">
+    <span class="eyebrow reveal">Výbava</span>
+    <h2 class="section-title reveal">Oblečení<br />a doplňky</h2>
+    <p class="section-lead reveal">Na ploše 250 m² nabízíme široký výběr oblečení, přileb, doplňků a příslušenství. Objednáváme HD doplňky od Parts Europe, Motorcycle Storehouse a Custom Chrome.</p>
+
+    <div class="vybava-grid reveal">
+      <div class="vybava-img tall">
+        <img src="https://www.zemoto.cz/images/vybava-1.jpg" alt="Výbava — showroom" loading="lazy" />
+      </div>
+      <div class="vybava-img">
+        <img src="https://www.zemoto.cz/images/vybava-2.jpg" alt="Výbava" loading="lazy" />
+      </div>
+      <div class="vybava-img">
+        <img src="https://www.zemoto.cz/images/vybava-3.jpg" alt="Výbava" loading="lazy" />
+      </div>
+      <div class="vybava-img">
+        <img src="https://www.zemoto.cz/images/vybava-4.jpg" alt="Výbava" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="vybava-brands reveal">
+      <div class="vybava-brand">Alpinestar</div>
+      <div class="vybava-brand">Icon</div>
+      <div class="vybava-brand">Scorpion Exo</div>
+      <div class="vybava-brand">Forma</div>
+      <div class="vybava-brand">Givi</div>
+      <div class="vybava-brand">Thor</div>
+      <div class="vybava-brand">Lookwell</div>
+      <div class="vybava-brand">Coldkillers</div>
+      <div class="vybava-brand">Billwell</div>
+      <div class="vybava-brand">Boobster</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     SLUŽBY STRIP
+════════════════════════════════════ -->
+<section class="bikes-bg" style="padding: clamp(3rem,6vw,5rem) 0;">
+  <div class="container">
+    <span class="eyebrow reveal">Další služby</span>
+    <h2 class="section-title reveal" style="margin-bottom:2rem;">Vše pod jednou střechou</h2>
+    <div class="services-strip reveal">
+      <div class="service-tile">
+        <div class="service-tile-icon">💳</div>
+        <h4>Financování</h4>
+        <p>Spolupráce s Essox. 2 doklady a za hodinu odjíždíte. Individuální podmínky.</p>
+      </div>
+      <div class="service-tile">
+        <div class="service-tile-icon">🔄</div>
+        <h4>Výkup a protiúčet</h4>
+        <p>Přijímáme motocykly do 10 let v dobrém stavu. Výkup přes vykup-moto.cz.</p>
+      </div>
+      <div class="service-tile">
+        <div class="service-tile-icon">🚚</div>
+        <h4>Doprava</h4>
+        <p>Dovezeme motocykl k vám. Cena dle vzdálenosti od Jindřichova Hradce. Platba předem.</p>
+      </div>
+      <div class="service-tile">
+        <div class="service-tile-icon">🔩</div>
+        <h4>Náhradní díly</h4>
+        <p>Originální díly všech značek. Objednávka z USA — Parts Europe, Motorcycle Storehouse, Custom Chrome.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     KONTAKT
+════════════════════════════════════ -->
+<section id="kontakt">
+  <div class="container">
+    <span class="eyebrow reveal">Kontakt</span>
+    <h2 class="section-title reveal">Najdete nás v Otíně</h2>
+    <div class="contact-grid">
+      <div class="contact-cards reveal">
+        <div class="contact-row">
+          <div class="contact-icon">👤</div>
+          <div>
+            <div class="contact-label">Majitel</div>
+            <div class="contact-value">Michal Zeman</div>
+            <div class="contact-sub">Motocykly Zeman · IČO: 721 69 320</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Telefon</div>
+            <div class="contact-value">
+              <a href="tel:+420608766885">+420 608 766 885</a>
+            </div>
+            <div class="contact-value" style="margin-top:0.15rem;">
+              <a href="tel:+420384320389">+420 384 320 389</a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-label">E-mail</div>
+            <div class="contact-value"><a href="mailto:zemoto@zemoto.cz">zemoto@zemoto.cz</a></div>
+            <div class="contact-value" style="margin-top:0.15rem;"><a href="mailto:michal.zeman@zemoto.cz">michal.zeman@zemoto.cz</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Adresa</div>
+            <div class="contact-value">Otín 283</div>
+            <div class="contact-sub">377 01 Jindřichův Hradec</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-label">Otevírací doba</div>
+            <div class="hours-grid">
+              <div class="hours-row"><span class="hours-day">Po – Pá</span><span class="hours-time">8:00 – 16:00</span></div>
+              <div class="hours-row"><span class="hours-day">Sobota</span><span class="hours-time">9:00 – 12:00</span></div>
+            </div>
+            <div class="hours-note">Sobota pouze prodej motocyklů po předchozí domluvě.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-wrap reveal d1">
+        <iframe
+          src="https://maps.google.com/maps?q=Otín+283,+377+01+Jindřichův+Hradec&output=embed"
+          allowfullscreen loading="lazy" title="Mapa — Motocykly Zeman">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     FOOTER
+════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo-mark" style="width:28px;height:28px;font-size:0.95rem;">MZ</div>
+      <div>
+        <strong>Motocykly Zeman</strong><br />
+        <span>Otín 283 · 377 01 Jindřichův Hradec</span>
+      </div>
+    </div>
+    <p>
+      <a href="mailto:zemoto@zemoto.cz">zemoto@zemoto.cz</a>
+      &nbsp;·&nbsp;
+      <a href="tel:+420608766885">+420 608 766 885</a>
+    </p>
+    <p>Návrh webu: <a href="https://zaviscuchna.github.io/ksh-pitches/">KSH Studio</a></p>
+  </div>
+</footer>
+
+
+<script>
+  /* Nav scroll */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  /* Close mobile menu on link click */
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  /* Smooth scroll with nav offset */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        const top = el.getBoundingClientRect().top + window.scrollY - 70;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* Scroll reveal */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
