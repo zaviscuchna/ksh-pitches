@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLEJNA – Energie pro váš motor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black:    #0a0a0a;
+            --dark:     #111111;
+            --dark2:    #1a1a1a;
+            --dark3:    #242424;
+            --border:   #2e2e2e;
+            --text:     #ffffff;
+            --text2:    #a3a3a3;
+            --text3:    #666;
+            --yellow:   #f5c518;
+            --yellow2:  #e8b800;
+            --green:    #22a84a;
+            --red:      #e53e3e;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ─── NAV ─────────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            height: 68px;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            gap: 2rem;
+        }
+
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--yellow);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-logo-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo-text span { color: var(--yellow); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0.25rem;
+            flex: 1;
+        }
+
+        .nav-links a {
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            background: var(--dark3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .nav-phone {
+            color: var(--text2);
+            font-size: 0.88rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-phone:hover { color: #fff; }
+
+        .btn-primary {
+            background: var(--yellow);
+            color: var(--black);
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--yellow2);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-outline:hover {
+            border-color: #555;
+            background: var(--dark3);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ─── HERO ────────────────────────────────────────────── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 5rem;
+            position: relative;
+            overflow: hidden;
+            background: var(--black);
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 70% 50%, rgba(245,197,24,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(34,168,74,0.04) 0%, transparent 50%);
+        }
+
+        .hero-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-inner {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245,197,24,0.1);
+            border: 1px solid rgba(245,197,24,0.25);
+            color: var(--yellow);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        #hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        #hero h1 .accent { color: var(--yellow); }
+        #hero h1 .accent2 { color: var(--green); }
+
+        #hero p {
+            font-size: 1.05rem;
+            color: var(--text2);
+            max-width: 480px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions .btn-primary {
+            font-size: 1rem;
+            padding: 0.85rem 2rem;
+        }
+
+        .hero-actions .btn-outline {
+            font-size: 1rem;
+            padding: 0.85rem 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .hero-stat-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text3);
+            margin-top: 0.3rem;
+            display: block;
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-visual-ring {
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,197,24,0.08) 0%, transparent 70%);
+            border: 1px solid rgba(245,197,24,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-visual-ring::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 1px dashed rgba(245,197,24,0.15);
+        }
+
+        .hero-oil-icon {
+            font-size: 8rem;
+            filter: drop-shadow(0 0 40px rgba(245,197,24,0.3));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .hero-badge {
+            position: absolute;
+            background: var(--dark2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .hero-badge.b1 { top: 40px; right: 0; }
+        .hero-badge.b2 { bottom: 80px; left: 0; }
+        .hero-badge.b3 { top: 160px; left: -20px; }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .badge-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+        .badge-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+
+        /* ─── USP BAR ─────────────────────────────────────────── */
+        #usp {
+            background: var(--dark2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+        }
+
+        .usp-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .usp-item {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .usp-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(245,197,24,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .usp-text strong {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .usp-text span {
+            font-size: 0.78rem;
+            color: var(--text3);
+        }
+
+        /* ─── KATEGORIE ───────────────────────────────────────── */
+        #kategorie {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: var(--text2);
+            max-width: 520px;
+            margin-bottom: 3.5rem;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .kat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .kat-card {
+            background: var(--dark2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem 1.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kat-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--yellow);
+            transform: scaleX(0);
+            transition: transform 0.25s;
+        }
+
+        .kat-card:hover {
+            border-color: rgba(245,197,24,0.3);
+            background: var(--dark3);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+        }
+
+        .kat-card:hover::before { transform: scaleX(1); }
+
+        .kat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .kat-card:nth-child(1) .kat-icon { background: rgba(245,197,24,0.12); }
+        .kat-card:nth-child(2) .kat-icon { background: rgba(34,168,74,0.12); }
+        .kat-card:nth-child(3) .kat-icon { background: rgba(59,130,246,0.12); }
+        .kat-card:nth-child(4) .kat-icon { background: rgba(168,85,247,0.12); }
+
+        .kat-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .kat-brands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .brand-tag {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            color: var(--text3);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            letter-spacing: 0.03em;
+        }
+
+        .kat-arrow {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--yellow);
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s;
+        }
+
+        .kat-card:hover .kat-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ─── PROČ MY ─────────────────────────────────────────── */
+        #proc-my {
+            padding: 6rem 2rem;
+            background: var(--black);
+        }
+
+        .proc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .proc-left h2 { margin-bottom: 1.5rem; }
+
+        .proc-left p {
+            color: var(--text2);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .proc-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .proc-feature {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .proc-feature-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(245,197,24,0.1);
+            border: 1px solid rgba(245,197,24,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .proc-feature-text strong {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .proc-feature-text span {
+            font-size: 0.88rem;
+            color: var(--text2);
+        }
+
+        .proc-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .proc-card {
+            background: var(--dark2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.75rem;
+        }
+
+        .proc-card-num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--yellow);
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .proc-card-label {
+            font-size: 0.82rem;
+            color: var(--text2);
+            line-height: 1.4;
+        }
+
+        .proc-card.accent-card {
+            background: linear-gradient(135deg, rgba(245,197,24,0.12), rgba(245,197,24,0.04));
+            border-color: rgba(245,197,24,0.2);
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .proc-card.accent-card .proc-card-num {
+            font-size: 2.8rem;
+            flex-shrink: 0;
+        }
+
+        /* ─── ZNAČKY ──────────────────────────────────────────── */
+        #znacky {
+            padding: 4rem 2rem;
+            background: var(--dark2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .znacky-label {
+            text-align: center;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 2.5rem;
+        }
+
+        .znacky-track {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .znacka-pill {
+            background: var(--dark3);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .znacka-pill:hover {
+            border-color: rgba(245,197,24,0.3);
+            color: var(--yellow);
+            background: rgba(245,197,24,0.06);
+        }
+
+        /* ─── MOBILE CTA ──────────────────────────────────────── */
+        #mobile-cta {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .mobile-cta-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--dark2) 0%, var(--dark3) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mobile-cta-inner::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(245,197,24,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .mobile-cta-text h2 {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .mobile-cta-text p {
+            color: var(--text2);
+            font-size: 0.95rem;
+            max-width: 440px;
+        }
+
+        .mobile-cta-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .cta-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1.4rem;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .cta-contact-item:hover {
+            border-color: var(--yellow);
+            color: var(--yellow);
+        }
+
+        /* ─── KONTAKT ─────────────────────────────────────────── */
+        #kontakt {
+            padding: 6rem 2rem;
+            background: var(--black);
+        }
+
+        .kontakt-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .kontakt-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .kontakt-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .k-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--dark2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .k-text strong {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 0.2rem;
+        }
+
+        .k-text span, .k-text a {
+            font-size: 0.98rem;
+            color: var(--text2);
+            text-decoration: none;
+        }
+
+        .k-text a:hover { color: var(--yellow); }
+
+        .doba-table {
+            background: var(--dark2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .doba-table-header {
+            background: var(--dark3);
+            padding: 1rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text3);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .doba-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.92rem;
+        }
+
+        .doba-row:last-child { border-bottom: none; }
+
+        .doba-row .den { color: var(--text2); }
+
+        .doba-row .cas {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .doba-row .cas.closed {
+            color: var(--text3);
+            font-weight: 400;
+        }
+
+        .open-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(34,168,74,0.12);
+            border: 1px solid rgba(34,168,74,0.25);
+            color: var(--green);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .open-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ─── FOOTER ──────────────────────────────────────────── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--yellow);
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .footer-logo-text {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-logo-text span { color: var(--yellow); }
+
+        .footer-copy {
+            font-size: 0.82rem;
+            color: var(--text3);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text3);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: var(--text2); }
+
+        /* ─── MOBILE MENU ─────────────────────────────────────── */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 68px; left: 0; right: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            z-index: 199;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mobile-menu.open { display: flex; }
+
+        .mobile-menu a {
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { color: #fff; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .hero-visual { display: none; }
+            .hero-inner { grid-template-columns: 1fr; }
+            .kat-grid { grid-template-columns: repeat(2, 1fr); }
+            .proc-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-phone { display: none; }
+            .hamburger { display: flex; }
+            .nav-right .btn-primary { display: none; }
+
+            .usp-grid { grid-template-columns: repeat(2, 1fr); }
+            .kat-grid { grid-template-columns: 1fr 1fr; }
+
+            .mobile-cta-inner {
+                grid-template-columns: 1fr;
+                padding: 2.5rem 2rem;
+            }
+
+            .kontakt-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+            .proc-cards { grid-template-columns: 1fr 1fr; }
+            .proc-card.accent-card { grid-column: auto; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .usp-grid { grid-template-columns: 1fr; }
+            .kat-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 1.5rem; }
+            .hero-stats .hero-stat-num { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────────────── -->
+<nav>
+    <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">🛢️</div>
+        <span class="nav-logo-text">OLE<span>JNA</span></span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="#kategorie">Oleje</a></li>
+        <li><a href="#kategorie">Baterie</a></li>
+        <li><a href="#kategorie">Filtry</a></li>
+        <li><a href="#kategorie">Autokosmetika</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <div class="nav-right">
+        <a href="tel:+420777000000" class="nav-phone">📞 +420 777 000 000</a>
+        <a href="#kontakt" class="btn-primary">Poradit se</a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#kategorie" onclick="toggleMenu()">Oleje</a>
+    <a href="#kategorie" onclick="toggleMenu()">Baterie</a>
+    <a href="#kategorie" onclick="toggleMenu()">Filtry</a>
+    <a href="#kategorie" onclick="toggleMenu()">Autokosmetika</a>
+    <a href="#kontakt" onclick="toggleMenu()">Kontakt</a>
+    <a href="tel:+420777000000" onclick="toggleMenu()">📞 +420 777 000 000</a>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-bg"></div>
+
+    <div class="hero-inner">
+        <div class="hero-text">
+            <div class="hero-tag">
+                ⚡ Energie pro váš motor
+            </div>
+            <h1>Správný olej<br>pro <span class="accent">vaše auto.</span><br><span class="accent2">Ihned.</span></h1>
+            <p>Odborné poradenství, prémiové značky a vše pro vaše auto pod jednou střechou. Jsme tu pro vás v Jindřichově Hradci.</p>
+            <div class="hero-actions">
+                <a href="#kategorie" class="btn-primary">Prohlédnout sortiment</a>
+                <a href="#kontakt" class="btn-outline">📞 Zavolat nám</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <span class="hero-stat-num">4</span>
+                    <span class="hero-stat-label">kategorie produktů</span>
+                </div>
+                <div>
+                    <span class="hero-stat-num">15+</span>
+                    <span class="hero-stat-label">prémiových značek</span>
+                </div>
+                <div>
+                    <span class="hero-stat-num">JH</span>
+                    <span class="hero-stat-label">Jindřichův Hradec</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-visual-ring">
+                <div class="hero-oil-icon">🛢️</div>
+            </div>
+            <div class="hero-badge b1">
+                <div class="badge-dot green"></div>
+                Skladem ihned
+            </div>
+            <div class="hero-badge b2">
+                <div class="badge-dot yellow"></div>
+                Odborné poradenství
+            </div>
+            <div class="hero-badge b3">
+                🏆 Prémiové značky
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── USP BAR ───────────────────────────────────────────────── -->
+<section id="usp">
+    <div class="usp-grid">
+        <div class="usp-item">
+            <div class="usp-icon">🔧</div>
+            <div class="usp-text">
+                <strong>Odborné poradenství</strong>
+                <span>Poradíme s výběrem pro váš vůz</span>
+            </div>
+        </div>
+        <div class="usp-item">
+            <div class="usp-icon">⚡</div>
+            <div class="usp-text">
+                <strong>Rychlá obsluha</strong>
+                <span>Zboží vydáme ihned na místě</span>
+            </div>
+        </div>
+        <div class="usp-item">
+            <div class="usp-icon">📍</div>
+            <div class="usp-text">
+                <strong>Osobní prodej</strong>
+                <span>Navštivte nás v Jindřichově Hradci</span>
+            </div>
+        </div>
+        <div class="usp-item">
+            <div class="usp-icon">✅</div>
+            <div class="usp-text">
+                <strong>Prověřené značky</strong>
+                <span>Pouze originální produkty</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── KATEGORIE ─────────────────────────────────────────────── -->
+<section id="kategorie">
+    <div class="container">
+        <div class="section-label">Co nabízíme</div>
+        <h2 class="section-title">Komplexní sortiment<br>pro každé auto</h2>
+        <p class="section-sub">Od motorových olejů přes baterie až po autokosmetiku. Vše pod jednou střechou s odbornou radou.</p>
+
+        <div class="kat-grid">
+            <a href="#" class="kat-card">
+                <div class="kat-icon">🛢️</div>
+                <h3>Motorové oleje</h3>
+                <p style="font-size:0.88rem; color:var(--text2);">Motorové oleje, převodovky, maziva. Pro osobní i nákladní vozidla.</p>
+                <div class="kat-brands">
+                    <span class="brand-tag">Castrol</span>
+                    <span class="brand-tag">Shell</span>
+                    <span class="brand-tag">Mobil</span>
+                    <span class="brand-tag">+ další</span>
+                </div>
+                <div class="kat-arrow">Zobrazit sortiment →</div>
+            </a>
+
+            <a href="#" class="kat-card">
+                <div class="kat-icon">🔋</div>
+                <h3>Autobaterie</h3>
+                <p style="font-size:0.88rem; color:var(--text2);">Startovací baterie pro osobní vozy, motocykly i dodávky.</p>
+                <div class="kat-brands">
+                    <span class="brand-tag">Varta</span>
+                    <span class="brand-tag">Banner</span>
+                    <span class="brand-tag">Exide</span>
+                    <span class="brand-tag">Yuasa</span>
+                </div>
+                <div class="kat-arrow">Zobrazit sortiment →</div>
+            </a>
+
+            <a href="#" class="kat-card">
+                <div class="kat-icon">🔩</div>
+                <h3>Filtry</h3>
+                <p style="font-size:0.88rem; color:var(--text2);">Olejové, vzduchové, palivové a kabinové filtry pro všechny typy vozidel.</p>
+                <div class="kat-brands">
+                    <span class="brand-tag">Mann</span>
+                    <span class="brand-tag">Clean</span>
+                    <span class="brand-tag">Donaldson</span>
+                    <span class="brand-tag">Hiflo</span>
+                </div>
+                <div class="kat-arrow">Zobrazit sortiment →</div>
+            </a>
+
+            <a href="#" class="kat-card">
+                <div class="kat-icon">✨</div>
+                <h3>Autokosmetika</h3>
+                <p style="font-size:0.88rem; color:var(--text2);">Péče o lak, interiér, sklo i pneumatiky. Profesionální produkty.</p>
+                <div class="kat-brands">
+                    <span class="brand-tag">Wynn's</span>
+                    <span class="brand-tag">Carline</span>
+                    <span class="brand-tag">Sheron</span>
+                    <span class="brand-tag">Bardahl</span>
+                </div>
+                <div class="kat-arrow">Zobrazit sortiment →</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── PROČ MY ───────────────────────────────────────────────── -->
+<section id="proc-my">
+    <div class="container">
+        <div class="proc-grid">
+            <div class="proc-left">
+                <div class="section-label">Proč Olejna</div>
+                <h2 class="section-title">Víc než jen<br>prodejna olejů</h2>
+                <p>Nejsme anonymní e-shop. Jsme místní odborníci, kteří vám pomohou vybrat přesně to, co váš motor potřebuje.</p>
+
+                <div class="proc-features">
+                    <div class="proc-feature">
+                        <div class="proc-feature-icon">🎯</div>
+                        <div class="proc-feature-text">
+                            <strong>Výběr podle vašeho vozu</strong>
+                            <span>Řeknete nám SPZ nebo typ motoru, my najdeme správný olej.</span>
+                        </div>
+                    </div>
+                    <div class="proc-feature">
+                        <div class="proc-feature-icon">🏪</div>
+                        <div class="proc-feature-text">
+                            <strong>Zboží ihned k dispozici</strong>
+                            <span>Nemusíte čekat na doručení. Přijdete a odjedete se správným olejem.</span>
+                        </div>
+                    </div>
+                    <div class="proc-feature">
+                        <div class="proc-feature-icon">💬</div>
+                        <div class="proc-feature-text">
+                            <strong>Lidský přístup</strong>
+                            <span>Poradíme i po telefonu. Stačí zavolat.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="proc-cards">
+                <div class="proc-card">
+                    <div class="proc-card-num">15+</div>
+                    <div class="proc-card-label">prémiových značek v nabídce</div>
+                </div>
+                <div class="proc-card">
+                    <div class="proc-card-num">4</div>
+                    <div class="proc-card-label">hlavní kategorie produktů</div>
+                </div>
+                <div class="proc-card accent-card">
+                    <div class="proc-card-num">JH</div>
+                    <div class="proc-card-label">Vaše lokální prodejna<br>v Jindřichově Hradci</div>
+                </div>
+                <div class="proc-card">
+                    <div class="proc-card-num">Po–Pá</div>
+                    <div class="proc-card-label">8:00–16:30 otevřeno</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── ZNAČKY ────────────────────────────────────────────────── -->
+<section id="znacky">
+    <div class="container">
+        <div class="znacky-label">Značky, které prodáváme</div>
+        <div class="znacky-track">
+            <span class="znacka-pill">CASTROL</span>
+            <span class="znacka-pill">SHELL</span>
+            <span class="znacka-pill">MOBIL</span>
+            <span class="znacka-pill">VARTA</span>
+            <span class="znacka-pill">BANNER</span>
+            <span class="znacka-pill">EXIDE</span>
+            <span class="znacka-pill">YUASA</span>
+            <span class="znacka-pill">MANN</span>
+            <span class="znacka-pill">DONALDSON</span>
+            <span class="znacka-pill">WYNN'S</span>
+            <span class="znacka-pill">BARDAHL</span>
+            <span class="znacka-pill">SHERON</span>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA BANNER ────────────────────────────────────────────── -->
+<section id="mobile-cta">
+    <div class="container">
+        <div class="mobile-cta-inner">
+            <div class="mobile-cta-text">
+                <div class="section-label">Poradenství zdarma</div>
+                <h2>Nevíte, který olej<br>pro váš vůz?</h2>
+                <p>Zavolejte nám nebo napište. Poradíme vám rychle a bez zbytečných řečí — stačí znát typ vašeho motoru.</p>
+            </div>
+            <div class="mobile-cta-actions">
+                <a href="tel:+420777000000" class="cta-contact-item">
+                    📞 +420 777 000 000
+                </a>
+                <a href="mailto:info@olejna.cz" class="cta-contact-item">
+                    ✉️ info@olejna.cz
+                </a>
+                <a href="#kontakt" class="btn-primary" style="text-align:center; padding: 0.85rem 1.4rem;">
+                    Zobrazit kontakt
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── KONTAKT ───────────────────────────────────────────────── -->
+<section id="kontakt">
+    <div class="container">
+        <div class="section-label">Kde nás najdete</div>
+        <h2 class="section-title" style="margin-bottom:3rem;">Kontakt &amp; otevírací doba</h2>
+
+        <div class="kontakt-grid">
+            <div class="kontakt-info">
+                <div class="open-badge">
+                    <span class="open-dot"></span>
+                    Dnes otevřeno do 16:30
+                </div>
+
+                <div class="kontakt-item">
+                    <div class="k-icon">📍</div>
+                    <div class="k-text">
+                        <strong>Adresa</strong>
+                        <span>Ulice 123, Jindřichův Hradec<br>377 01</span>
+                    </div>
+                </div>
+                <div class="kontakt-item">
+                    <div class="k-icon">📞</div>
+                    <div class="k-text">
+                        <strong>Telefon</strong>
+                        <a href="tel:+420777000000">+420 777 000 000</a>
+                    </div>
+                </div>
+                <div class="kontakt-item">
+                    <div class="k-icon">✉️</div>
+                    <div class="k-text">
+                        <strong>E-mail</strong>
+                        <a href="mailto:info@olejna.cz">info@olejna.cz</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="doba-table">
+                <div class="doba-table-header">Otevírací doba</div>
+                <div class="doba-row">
+                    <span class="den">Pondělí – Pátek</span>
+                    <span class="cas">8:00 – 16:30</span>
+                </div>
+                <div class="doba-row">
+                    <span class="den">Sobota</span>
+                    <span class="cas closed">Zavřeno</span>
+                </div>
+                <div class="doba-row">
+                    <span class="den">Neděle</span>
+                    <span class="cas closed">Zavřeno</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+    <div class="footer-inner">
+        <a href="#" class="footer-logo">
+            <div class="footer-logo-icon">🛢️</div>
+            <span class="footer-logo-text">OLE<span>JNA</span></span>
+        </a>
+        <span class="footer-copy">© 2025 Olejna Jindřichův Hradec · Všechna práva vyhrazena</span>
+        <ul class="footer-links">
+            <li><a href="#">Sortiment</a></li>
+            <li><a href="#">Kontakt</a></li>
+            <li><a href="#">Ochrana dat</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    // Zavři menu při kliknutí mimo
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('mobileMenu');
+        const nav = document.querySelector('nav');
+        if (!nav.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.remove('open');
+        }
+    });
+
+    // Smooth entrance animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.kat-card, .proc-feature, .proc-card, .kontakt-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>

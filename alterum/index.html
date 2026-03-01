@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterum — Beta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --royal:      #002366;
+            --royal-mid:  #0a3080;
+            --pink:       #e8a0b4;
+            --pink-vivid: #d4527a;
+            --pink-light: #f5d0de;
+            --black:      #080808;
+            --white:      #fafaf8;
+            --gray:       #2a2a2a;
+            --gray-light: #e8e4e0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* Custom cursor */
+        * { cursor: none; }
+
+        .cursor {
+            position: fixed;
+            width: 12px; height: 12px;
+            background: var(--pink-vivid);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px; height: 40px;
+            border: 1px solid rgba(212,82,122,0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+        /* ─── STICKY BAR ── */
+        .sticky-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: var(--black);
+            height: 32px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 0;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0 1.5rem;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .marquee-item a {
+            color: var(--pink-light);
+            text-decoration: none;
+        }
+
+        .marquee-dot {
+            width: 4px; height: 4px;
+            background: var(--pink-vivid);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ─── HEADER ── */
+        header {
+            position: fixed;
+            top: 32px; left: 0; right: 0;
+            z-index: 999;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 3rem;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--white); }
+
+        .nav-cta {
+            background: var(--pink-vivid) !important;
+            color: var(--white) !important;
+            padding: 0.5rem 1.4rem;
+            mix-blend-mode: normal;
+        }
+
+        /* ─── HERO ── */
+        #hero {
+            min-height: 100vh;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 0 4rem;
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px;
+        }
+
+        .hero-bg-circle {
+            position: absolute;
+            top: -20%; right: -10%;
+            width: 700px; height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,35,102,0.5) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-bg-circle2 {
+            position: absolute;
+            bottom: -10%; left: -5%;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,160,180,0.08) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        /* Abstract SVG lines */
+        .hero-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.18;
+        }
+
+        .hero-main {
+            position: relative;
+            padding: 0 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: flex-end;
+            gap: 2rem;
+        }
+
+        .hero-title-block { }
+
+        .hero-label {
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--pink);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 32px; height: 1px;
+            background: var(--pink-vivid);
+        }
+
+        .hero-h1 {
+            font-size: clamp(5rem, 12vw, 11rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            color: var(--white);
+            margin-bottom: 0;
+        }
+
+        .hero-h1 .line2 {
+            display: block;
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
+            padding-left: 1.5rem;
+        }
+
+        .hero-h1 .line3 {
+            display: block;
+            font-style: italic;
+            font-size: 0.55em;
+            color: var(--pink);
+            -webkit-text-stroke: 0;
+            letter-spacing: 0.05em;
+            margin-top: 1rem;
+            padding-left: 0.2rem;
+        }
+
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 0.5rem;
+            gap: 2.5rem;
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.9;
+            font-weight: 300;
+            max-width: 340px;
+            align-self: flex-end;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .btn-pink {
+            background: var(--pink-vivid);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 1rem 2.2rem;
+            border-radius: 1px;
+            transition: all 0.25s;
+        }
+
+        .btn-pink:hover { background: #c0426a; transform: translateY(-2px); }
+
+        .btn-ghost-white {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .btn-ghost-white:hover { color: var(--pink-light); }
+
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 3rem; right: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255,255,255,0.2);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .hero-scroll-hint::after {
+            content: '';
+            width: 1px; height: 60px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+        }
+
+        .hero-number {
+            position: absolute;
+            top: 50%; left: 3rem;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.15);
+            text-transform: uppercase;
+            transform-origin: center;
+        }
+
+        /* ─── DIVIDER STRIP ── */
+        .strip {
+            background: var(--royal);
+            padding: 1.2rem 0;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .strip-track {
+            display: flex;
+            gap: 0;
+            white-space: nowrap;
+            animation: marquee 18s linear infinite;
+        }
+
+        .strip-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0 2rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .strip-dot {
+            width: 5px; height: 5px;
+            background: var(--pink);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ─── O NÁS ── */
+        #o-nas {
+            background: var(--white);
+            padding: 9rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .o-nas-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .section-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            color: var(--pink-vivid);
+            letter-spacing: 0.1em;
+            padding-top: 0.5rem;
+            font-weight: 700;
+        }
+
+        .o-nas-left { }
+
+        .eyebrow {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--royal);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 24px; height: 1px;
+            background: var(--pink-vivid);
+        }
+
+        .big-title {
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: var(--black);
+        }
+
+        .big-title em {
+            font-style: italic;
+            color: var(--royal);
+        }
+
+        .big-title .outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--royal);
+        }
+
+        .o-nas-text {
+            padding-top: 1rem;
+        }
+
+        .pull-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.35rem;
+            line-height: 1.6;
+            color: var(--royal);
+            border-left: 2px solid var(--pink-vivid);
+            padding-left: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .body-text {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.9;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .values-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--gray-light);
+            margin-top: 3.5rem;
+        }
+
+        .value-cell {
+            background: var(--white);
+            padding: 1.75rem;
+            transition: background 0.2s;
+        }
+
+        .value-cell:hover { background: var(--royal); }
+        .value-cell:hover .value-n,
+        .value-cell:hover .value-l { color: var(--white); }
+        .value-cell:hover .value-l { opacity: 0.7; }
+
+        .value-n {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gray-light);
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .value-l {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--black);
+            margin-top: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        /* ─── GALERIE ── */
+        #galerie {
+            background: var(--black);
+            padding: 8rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .galerie-header {
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+            max-width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .galerie-header-left { }
+
+        #galerie .eyebrow { color: var(--pink-light); }
+        #galerie .eyebrow::before { background: var(--pink-vivid); }
+
+        #galerie .big-title { color: var(--white); }
+        #galerie .big-title .outline {
+            -webkit-text-stroke-color: rgba(255,255,255,0.25);
+        }
+
+        .galerie-count {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.06);
+            line-height: 1;
+        }
+
+        /* Horizontal scroll gallery */
+        .galerie-scroll {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0 3rem 2rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .galerie-scroll::-webkit-scrollbar { display: none; }
+
+        .galerie-card {
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        .galerie-card:nth-child(1) { width: 420px; height: 520px; }
+        .galerie-card:nth-child(2) { width: 280px; height: 520px; }
+        .galerie-card:nth-child(3) { width: 560px; height: 520px; }
+        .galerie-card:nth-child(4) { width: 320px; height: 520px; }
+        .galerie-card:nth-child(5) { width: 480px; height: 520px; }
+        .galerie-card:nth-child(6) { width: 360px; height: 520px; }
+
+        .galerie-card::before {
+            content: attr(data-n);
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .galerie-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,35,102,0.7) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.35s;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+        }
+
+        .galerie-card:hover .galerie-card-overlay { opacity: 1; }
+
+        .galerie-card-label {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--white);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.35s 0.05s;
+        }
+
+        .galerie-card:hover .galerie-card-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .galerie-drag-hint {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+        }
+
+        /* ─── SOCIAL ── */
+        #social {
+            background: var(--white);
+            padding: 8rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #social::before {
+            content: 'FOLLOW';
+            position: absolute;
+            top: 50%; right: -2rem;
+            transform: translateY(-50%) rotate(90deg);
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(0,35,102,0.04);
+            letter-spacing: 0.2em;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .social-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .social-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: end;
+            margin-bottom: 4rem;
+        }
+
+        .social-desc {
+            font-size: 0.95rem;
+            color: #888;
+            line-height: 1.9;
+            font-weight: 300;
+            max-width: 380px;
+            align-self: end;
+            padding-bottom: 0.5rem;
+        }
+
+        .social-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--gray-light);
+        }
+
+        .social-item {
+            background: var(--white);
+            padding: 3rem 2.5rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--pink-vivid);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .social-item:hover { background: var(--royal); }
+        .social-item:hover::after { transform: scaleX(1); }
+        .social-item:hover .social-platform,
+        .social-item:hover .social-at { color: rgba(255,255,255,0.5); }
+        .social-item:hover .social-name-big { color: var(--white); }
+        .social-item:hover .si-icon { fill: var(--pink-light); }
+
+        .si-icon {
+            width: 24px; height: 24px;
+            fill: var(--royal);
+            transition: fill 0.3s;
+        }
+
+        .social-platform {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #aaa;
+            transition: color 0.3s;
+        }
+
+        .social-name-big {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--black);
+            letter-spacing: -0.02em;
+            transition: color 0.3s;
+        }
+
+        .social-at {
+            font-size: 0.8rem;
+            color: #bbb;
+            transition: color 0.3s;
+            margin-top: auto;
+        }
+
+        /* ─── KONTAKT ── */
+        #kontakt {
+            background: var(--black);
+            padding: 9rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kontakt-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        #kontakt .eyebrow { color: var(--pink-light); }
+        #kontakt .eyebrow::before { background: var(--pink-vivid); }
+        #kontakt .big-title { color: var(--white); }
+        #kontakt .big-title em { color: var(--pink-light); }
+        #kontakt .big-title .outline { -webkit-text-stroke-color: rgba(255,255,255,0.15); }
+
+        .kontakt-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 6rem;
+            margin-top: 5rem;
+        }
+
+        /* Formulář */
+        .form-field {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 0.75rem;
+        }
+
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            padding: 0.75rem 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--white);
+            outline: none;
+            transition: border-color 0.25s;
+            border-radius: 0;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus { border-bottom-color: var(--pink-vivid); }
+
+        .form-field input::placeholder,
+        .form-field textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+        .form-field textarea { resize: none; height: 100px; font-family: 'Inter', sans-serif; }
+
+        .form-two { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+        .btn-submit {
+            background: var(--pink-vivid);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 1.2rem 3.5rem;
+            border: none;
+            border-radius: 1px;
+            transition: all 0.25s;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); }
+        .btn-submit:hover::before { transform: translateX(0); }
+
+        /* Vizitky */
+        .vizitky-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.25);
+            margin-bottom: 2rem;
+        }
+
+        .vizitka {
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 2rem;
+            margin-bottom: 1px;
+            background: rgba(255,255,255,0.02);
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vizitka::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--pink-vivid);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .vizitka:hover { background: rgba(255,255,255,0.04); }
+        .vizitka:hover::before { transform: scaleY(1); }
+
+        .vizitka-header {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .vizitka-av {
+            width: 44px; height: 44px;
+            background: rgba(0,35,102,0.4);
+            border: 1px solid rgba(0,35,102,0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--pink-light);
+            flex-shrink: 0;
+        }
+
+        .vizitka-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .vizitka-role {
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-top: 0.15rem;
+        }
+
+        .vizitka-links { display: flex; flex-direction: column; gap: 0.5rem; }
+
+        .vizitka-links a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: color 0.2s;
+        }
+
+        .vizitka-links a:hover { color: var(--pink-light); }
+
+        .vizitka-links a .licon {
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+
+        /* ─── FOOTER ── */
+        footer {
+            background: var(--black);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 3rem;
+        }
+
+        .footer-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .footer-logo span { color: var(--pink-vivid); }
+
+        .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.2); letter-spacing: 0.05em; }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.25);
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: var(--pink-light); }
+
+        /* ─── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .o-nas-inner { grid-template-columns: 1fr; }
+            .section-num { display: none; }
+            .social-row { grid-template-columns: 1fr 1fr; }
+            .kontakt-grid { grid-template-columns: 1fr; gap: 4rem; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 0 1.5rem; mix-blend-mode: normal; background: rgba(8,8,8,0.9); }
+            nav { display: none; }
+            #hero { padding: 0 0 3rem; }
+            .hero-main { grid-template-columns: 1fr; padding: 0 1.5rem; }
+            .hero-right { display: none; }
+            #o-nas, #galerie, #social, #kontakt { padding: 5rem 1.5rem; }
+            .galerie-header { padding: 0 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .galerie-scroll { padding: 0 1.5rem 2rem; }
+            .social-header { grid-template-columns: 1fr; gap: 1.5rem; }
+            .social-row { grid-template-columns: 1fr 1fr; }
+            .form-two { grid-template-columns: 1fr; gap: 0; }
+            .footer-inner { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ─── STICKY BAR ──────────────────────────────────────────── -->
+<div class="sticky-bar">
+    <div class="marquee-track" id="marqueeTrack">
+        <div class="marquee-item"><span class="marquee-dot"></span> Kontakt <a href="tel:+420777000000">+420 777 000 000</a></div>
+        <div class="marquee-item"><span class="marquee-dot"></span> Email <a href="mailto:Kurkova@alterio-booking.com">Kurkova@alterio-booking.com</a></div>
+        <div class="marquee-item"><span class="marquee-dot"></span> Beta verze — texty budou upřesněny</div>
+        <div class="marquee-item"><span class="marquee-dot"></span> Kontakt <a href="tel:+420777000000">+420 777 000 000</a></div>
+        <div class="marquee-item"><span class="marquee-dot"></span> Email <a href="mailto:Kurkova@alterio-booking.com">Kurkova@alterio-booking.com</a></div>
+        <div class="marquee-item"><span class="marquee-dot"></span> Beta verze — texty budou upřesněny</div>
+    </div>
+</div>
+
+<!-- ─── HEADER ───────────────────────────────────────────────── -->
+<header>
+    <a href="#" class="logo">Alterum</a>
+    <nav>
+        <a href="#o-nas">O nás</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#social">Sítě</a>
+        <a href="#kontakt">Kontakt</a>
+        <a href="#kontakt" class="nav-cta btn-pink" style="font-size:0.72rem; padding:0.5rem 1.2rem;">Poptávka</a>
+    </nav>
+</header>
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section id="hero">
+    <div class="hero-bg-circle"></div>
+    <div class="hero-bg-circle2"></div>
+
+    <!-- Abstract SVG lines -->
+    <svg class="hero-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="150" x2="800" y2="900" stroke="white" stroke-width="0.6"/>
+        <line x1="300" y1="0" x2="1100" y2="750" stroke="white" stroke-width="0.4"/>
+        <line x1="0" y1="500" x2="600" y2="0" stroke="white" stroke-width="0.3"/>
+        <circle cx="1100" cy="300" r="250" stroke="white" stroke-width="0.5" fill="none"/>
+        <circle cx="1100" cy="300" r="180" stroke="white" stroke-width="0.3" fill="none"/>
+        <circle cx="1100" cy="300" r="100" stroke="white" stroke-width="0.4" fill="none"/>
+        <line x1="850" y1="50" x2="1440" y2="600" stroke="white" stroke-width="0.4"/>
+        <line x1="1200" y1="0" x2="400" y2="900" stroke="white" stroke-width="0.3"/>
+        <line x1="0" y1="300" x2="1440" y2="400" stroke="white" stroke-width="0.2"/>
+        <rect x="200" y="600" width="150" height="150" stroke="white" stroke-width="0.4" fill="none" transform="rotate(15 275 675)"/>
+    </svg>
+
+    <span class="hero-number">A — 2025</span>
+
+    <div class="hero-main">
+        <div class="hero-title-block">
+            <div class="hero-label">Alterum — Beta verze</div>
+            <h1 class="hero-h1">
+                ALTER
+                <span class="line2">UM</span>
+                <span class="line3">Tvoříme výjimečné</span>
+            </h1>
+        </div>
+
+        <div class="hero-right">
+            <p class="hero-desc">Placeholder text — finální popis projektu bude doplněn. Alterum je místo, kde se setkává vize, umění a precizní realizace.</p>
+            <div class="hero-actions">
+                <a href="#kontakt" class="btn-pink">Začít spolupráci</a>
+                <a href="#o-nas" class="btn-ghost-white">Zjistit více</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll-hint">Scroll</div>
+</section>
+
+<!-- ─── STRIP ────────────────────────────────────────────────── -->
+<div class="strip">
+    <div class="strip-track">
+        <div class="strip-item"><span class="strip-dot"></span> Kreativita</div>
+        <div class="strip-item"><span class="strip-dot"></span> Vize</div>
+        <div class="strip-item"><span class="strip-dot"></span> Realizace</div>
+        <div class="strip-item"><span class="strip-dot"></span> Preciznost</div>
+        <div class="strip-item"><span class="strip-dot"></span> Autenticita</div>
+        <div class="strip-item"><span class="strip-dot"></span> Design</div>
+        <div class="strip-item"><span class="strip-dot"></span> Kreativita</div>
+        <div class="strip-item"><span class="strip-dot"></span> Vize</div>
+        <div class="strip-item"><span class="strip-dot"></span> Realizace</div>
+        <div class="strip-item"><span class="strip-dot"></span> Preciznost</div>
+        <div class="strip-item"><span class="strip-dot"></span> Autenticita</div>
+        <div class="strip-item"><span class="strip-dot"></span> Design</div>
+    </div>
+</div>
+
+<!-- ─── O NÁS ────────────────────────────────────────────────── -->
+<section id="o-nas">
+    <div style="max-width:1300px; margin:0 auto;">
+        <div class="o-nas-inner">
+            <div class="section-num">01</div>
+
+            <div class="o-nas-left">
+                <div class="eyebrow">O nás</div>
+                <h2 class="big-title">
+                    Kde vize<br>
+                    potkává<br>
+                    <em>realitu</em>
+                </h2>
+                <div class="values-row" style="margin-top:3.5rem">
+                    <div class="value-cell">
+                        <div class="value-n">01</div>
+                        <div class="value-l">Kreativita</div>
+                    </div>
+                    <div class="value-cell">
+                        <div class="value-n">02</div>
+                        <div class="value-l">Preciznost</div>
+                    </div>
+                    <div class="value-cell">
+                        <div class="value-n">03</div>
+                        <div class="value-l">Autenticita</div>
+                    </div>
+                    <div class="value-cell">
+                        <div class="value-n">04</div>
+                        <div class="value-l">Partnerství</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="o-nas-text">
+                <p class="pull-quote">
+                    "Věříme, že každý projekt je příležitost vytvořit něco, co přesahuje očekávání."
+                </p>
+                <p class="body-text">Placeholder — Alterum je projekt zaměřený na [oblast]. Naše práce stojí na třech pilířích: kreativitě, preciznosti a autenticitě. Věříme, že každý detail má svůj příběh.</p>
+                <p class="body-text">Proto přistupujeme ke každé zakázce individuálně, s plným nasazením a jasnou vizí výsledku. Každý projekt je pro nás výzva i příležitost.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── GALERIE ───────────────────────────────────────────────── -->
+<section id="galerie">
+    <div class="galerie-header">
+        <div class="galerie-header-left">
+            <div class="eyebrow">Galerie</div>
+            <h2 class="big-title">Minulé <em>akce</em><br><span class="outline">& projekty</span></h2>
+        </div>
+        <div class="galerie-count">06</div>
+    </div>
+
+    <div class="galerie-scroll" id="galerieScroll">
+        <div class="galerie-card" data-n="Fotografie">
+            <div class="galerie-card-overlay"><div class="galerie-card-label">Akce 2024</div></div>
+        </div>
+        <div class="galerie-card" data-n="Detail">
+            <div class="galerie-card-overlay"><div class="galerie-card-label">Zákulisí</div></div>
+        </div>
+        <div class="galerie-card" data-n="Fotografie">
+            <div class="galerie-card-overlay"><div class="galerie-card-label">Highlight</div></div>
+        </div>
+        <div class="galerie-card" data-n="Fotografie">
+            <div class="galerie-card-overlay"><div class="galerie-card-label">Momenty</div></div>
+        </div>
+        <div class="galerie-card" data-n="Fotografie">
+            <div class="galerie-card-overlay"><div class="galerie-card-label">Výběr 2024</div></div>
+        </div>
+        <div class="galerie-card" data-n="Detail">
+            <div class="galerie-card-overlay"><div class="galerie-card-label">Atmosféra</div></div>
+        </div>
+    </div>
+
+    <div class="galerie-drag-hint">← Přetáhněte pro zobrazení →</div>
+</section>
+
+<!-- ─── SOCIAL ────────────────────────────────────────────────── -->
+<section id="social">
+    <div class="social-inner">
+        <div class="social-header">
+            <div>
+                <div class="eyebrow">Sociální sítě</div>
+                <h2 class="big-title">Sledujte<br><em>Alterum</em><br><span class="outline">online</span></h2>
+            </div>
+            <p class="social-desc">Přidejte se k nám a sledujte naše nejnovější projekty, zákulisí a novinky přímo na vašich oblíbených platformách.</p>
+        </div>
+
+        <div class="social-row">
+            <a href="#" class="social-item">
+                <svg class="si-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <div>
+                    <div class="social-platform">Instagram</div>
+                    <div class="social-name-big">@alterum</div>
+                </div>
+                <div class="social-at">Sledovat →</div>
+            </a>
+
+            <a href="#" class="social-item">
+                <svg class="si-icon" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <div>
+                    <div class="social-platform">Facebook</div>
+                    <div class="social-name-big">Alterum</div>
+                </div>
+                <div class="social-at">Sledovat →</div>
+            </a>
+
+            <a href="#" class="social-item">
+                <svg class="si-icon" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                <div>
+                    <div class="social-platform">LinkedIn</div>
+                    <div class="social-name-big">Alterum</div>
+                </div>
+                <div class="social-at">Sledovat →</div>
+            </a>
+
+            <a href="#" class="social-item">
+                <svg class="si-icon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                <div>
+                    <div class="social-platform">TikTok</div>
+                    <div class="social-name-big">@alterum</div>
+                </div>
+                <div class="social-at">Sledovat →</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── KONTAKT ───────────────────────────────────────────────── -->
+<section id="kontakt">
+    <div class="kontakt-inner">
+        <div class="section-num" style="color:rgba(255,255,255,0.15); margin-bottom:1rem;">03</div>
+        <div class="eyebrow">Kontakt</div>
+        <h2 class="big-title" style="max-width:700px;">
+            Pojďme tvořit<br>
+            něco <em>výjimečného</em><br>
+            <span class="outline">společně</span>
+        </h2>
+
+        <div class="kontakt-grid">
+            <form onsubmit="return false;">
+                <div class="form-two">
+                    <div class="form-field">
+                        <label>Jméno</label>
+                        <input type="text" placeholder="Vaše jméno">
+                    </div>
+                    <div class="form-field">
+                        <label>Příjmení</label>
+                        <input type="text" placeholder="Vaše příjmení">
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>E-mail</label>
+                    <input type="email" placeholder="vas@email.cz">
+                </div>
+                <div class="form-field">
+                    <label>Telefon</label>
+                    <input type="tel" placeholder="+420 000 000 000">
+                </div>
+                <div class="form-field">
+                    <label>Zpráva</label>
+                    <textarea placeholder="Popište váš projekt..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Odeslat poptávku</button>
+            </form>
+
+            <div>
+                <div class="vizitky-label">Náš tým</div>
+
+                <div class="vizitka">
+                    <div class="vizitka-header">
+                        <div class="vizitka-av">RK</div>
+                        <div>
+                            <div class="vizitka-name">Radka Kůrková</div>
+                            <div class="vizitka-role">Booking & Management</div>
+                        </div>
+                    </div>
+                    <div class="vizitka-links">
+                        <a href="tel:+420777000001"><span class="licon">📞</span> +420 777 000 001</a>
+                        <a href="mailto:Kurkova@alterio-booking.com"><span class="licon">✉</span> Kurkova@alterio-booking.com</a>
+                    </div>
+                </div>
+
+                <div class="vizitka">
+                    <div class="vizitka-header">
+                        <div class="vizitka-av">JN</div>
+                        <div>
+                            <div class="vizitka-name">Jan Novák</div>
+                            <div class="vizitka-role">Kreativní ředitel</div>
+                        </div>
+                    </div>
+                    <div class="vizitka-links">
+                        <a href="tel:+420777000002"><span class="licon">📞</span> +420 777 000 002</a>
+                        <a href="mailto:novak@alterum.cz"><span class="licon">✉</span> novak@alterum.cz</a>
+                    </div>
+                </div>
+
+                <div class="vizitka">
+                    <div class="vizitka-header">
+                        <div class="vizitka-av">MP</div>
+                        <div>
+                            <div class="vizitka-name">Marie Procházková</div>
+                            <div class="vizitka-role">Produkce & Koordinace</div>
+                        </div>
+                    </div>
+                    <div class="vizitka-links">
+                        <a href="tel:+420777000003"><span class="licon">📞</span> +420 777 000 003</a>
+                        <a href="mailto:prochazkova@alterum.cz"><span class="licon">✉</span> prochazkova@alterum.cz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+    <div class="footer-inner">
+        <a href="#" class="footer-logo">ALTER<span>UM</span></a>
+        <span class="footer-copy">© 2025 Alterum — Beta verze</span>
+        <ul class="footer-links">
+            <li><a href="#o-nas">O nás</a></li>
+            <li><a href="#galerie">Galerie</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top = my + 'px';
+    });
+
+    function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top = ry + 'px';
+        requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+            ring.style.width = '60px';
+            ring.style.height = '60px';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.width = '12px';
+            cursor.style.height = '12px';
+            ring.style.width = '40px';
+            ring.style.height = '40px';
+        });
+    });
+
+    // Header scroll
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 80) {
+            header.style.mixBlendMode = 'normal';
+            header.style.background = 'rgba(8,8,8,0.92)';
+            header.style.backdropFilter = 'blur(16px)';
+        } else {
+            header.style.mixBlendMode = 'difference';
+            header.style.background = 'transparent';
+            header.style.backdropFilter = 'none';
+        }
+    });
+
+    // Drag to scroll gallery
+    const scroll = document.getElementById('galerieScroll');
+    let isDown = false, startX, scrollLeft;
+
+    scroll.addEventListener('mousedown', e => {
+        isDown = true;
+        startX = e.pageX - scroll.offsetLeft;
+        scrollLeft = scroll.scrollLeft;
+        scroll.style.cursor = 'grabbing';
+    });
+    scroll.addEventListener('mouseleave', () => { isDown = false; scroll.style.cursor = 'default'; });
+    scroll.addEventListener('mouseup', () => { isDown = false; scroll.style.cursor = 'default'; });
+    scroll.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scroll.offsetLeft;
+        scroll.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.style.opacity = '1';
+                e.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.value-cell, .vizitka, .galerie-card, .social-item, .pull-quote').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+        obs.observe(el);
+    });
+</script>
+
+</body>
+</html>

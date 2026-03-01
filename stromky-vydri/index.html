@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vánoční stromky Vydří | U Jindřichova Hradce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --green-dark:  #1a3318;
+            --green-mid:   #2e5e2a;
+            --green-light: #4a8c40;
+            --cream:       #fdf8f0;
+            --cream2:      #f2e8d8;
+            --brown:       #8b5e3c;
+            --brown-dark:  #5a3420;
+            --gold:        #c4922a;
+            --text:        #2c1a0e;
+            --text2:       #5a4030;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--green-dark);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--cream);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #c8dfc5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: #fff; }
+
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            background: linear-gradient(160deg, var(--green-dark) 0%, #0d2410 60%, #1a2e10 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232e5e2a' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        .hero-inner { position: relative; max-width: 700px; }
+
+        .hero-tree {
+            width: 160px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            filter: drop-shadow(0 8px 32px rgba(0,0,0,0.4));
+        }
+
+        #hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+        }
+
+        #hero h1 span {
+            color: var(--gold);
+            font-style: italic;
+        }
+
+        #hero p {
+            font-size: 1.15rem;
+            color: #b8d4b4;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--green-dark);
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 0.85rem 2.4rem;
+            border-radius: 4px;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+
+        .btn:hover {
+            background: #d4a030;
+            transform: translateY(-2px);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #6a9e66;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, #6a9e66, transparent);
+        }
+
+        /* ── SEKCE ── */
+        section { padding: 5rem 2rem; }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .section-label {
+            font-size: 0.78rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--green-mid);
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: var(--green-dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text2);
+            max-width: 560px;
+            margin-bottom: 3rem;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+            margin: 1rem 0 2.5rem;
+        }
+
+        /* ── O NÁS ── */
+        #o-nas {
+            background: var(--green-dark);
+            color: var(--cream);
+        }
+
+        #o-nas .section-label { color: var(--gold); }
+        #o-nas .section-title { color: #fff; }
+        #o-nas .section-subtitle { color: #b8d4b4; max-width: 100%; }
+
+        .o-nas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .o-nas-text p {
+            color: #b8d4b4;
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        .o-nas-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-box .num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-box .label {
+            font-size: 0.85rem;
+            color: #8ab88a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── STROMKY ── */
+        #stromky { background: var(--cream2); }
+
+        .stromky-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .stromek-card {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            border: 1px solid #e8d8c4;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .stromek-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+
+        .stromek-card:nth-child(2) {
+            border-top: 4px solid var(--gold);
+        }
+
+        .stromek-card:nth-child(2) .badge {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--green-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .stromek-icon {
+            width: 90px;
+            height: 110px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .stromek-card h3 {
+            font-size: 1.4rem;
+            color: var(--green-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .stromek-card p {
+            font-size: 0.95rem;
+            color: var(--text2);
+            margin-bottom: 1.5rem;
+        }
+
+        .stromek-cena {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--brown);
+            font-weight: 700;
+        }
+
+        .stromek-cena span {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text2);
+            font-weight: 400;
+        }
+
+        /* ── CENÍK ── */
+        #cenik { background: var(--cream); }
+
+        .cenik-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .cenik-table-wrap h4 {
+            font-size: 1.1rem;
+            color: var(--green-dark);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background: var(--green-dark);
+            color: var(--cream);
+            padding: 0.85rem 1.2rem;
+            text-align: left;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        thead th:first-child { border-radius: 8px 0 0 0; }
+        thead th:last-child  { border-radius: 0 8px 0 0; }
+
+        tbody tr:nth-child(even) { background: var(--cream2); }
+
+        tbody td {
+            padding: 0.85rem 1.2rem;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #e8d8c4;
+        }
+
+        tbody td:last-child {
+            font-weight: 700;
+            color: var(--brown);
+        }
+
+        .size-badge {
+            display: inline-block;
+            background: var(--green-mid);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        /* ── OTEVÍRACÍ DOBA ── */
+        #oteviraci-doba { background: var(--cream2); }
+
+        .doba-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .doba-card {
+            background: var(--cream);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            border: 1px solid #e8d8c4;
+        }
+
+        .doba-header {
+            background: var(--green-dark);
+            color: #fff;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .doba-header .icon { font-size: 1.4rem; }
+
+        .doba-header h4 {
+            font-size: 1.05rem;
+            color: #fff;
+        }
+
+        .doba-header .sub {
+            font-size: 0.78rem;
+            color: #8ab88a;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+        }
+
+        .doba-rows { padding: 1rem 0; }
+
+        .doba-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.92rem;
+            border-bottom: 1px solid #f0e8d8;
+        }
+
+        .doba-row:last-child { border-bottom: none; }
+
+        .doba-day { color: var(--text2); }
+
+        .doba-time {
+            font-weight: 700;
+            color: var(--green-mid);
+        }
+
+        .doba-note {
+            font-size: 0.8rem;
+            color: var(--gold);
+            padding: 0.5rem 1.5rem 1rem;
+            font-style: italic;
+        }
+
+        /* ── SLUŽBY ── */
+        #sluzby { background: var(--green-dark); }
+
+        #sluzby .section-label { color: var(--gold); }
+        #sluzby .section-title { color: #fff; }
+        #sluzby .divider { background: var(--gold); }
+
+        .sluzby-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .sluzba-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: background 0.2s;
+        }
+
+        .sluzba-card:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sluzba-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .sluzba-card h3 {
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 0.6rem;
+        }
+
+        .sluzba-card p {
+            font-size: 0.92rem;
+            color: #8ab88a;
+            line-height: 1.6;
+        }
+
+        .sluzba-tag {
+            display: inline-block;
+            margin-top: 1rem;
+            background: rgba(196,146,42,0.2);
+            color: var(--gold);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid rgba(196,146,42,0.3);
+        }
+
+        /* ── KONTAKT ── */
+        #kontakt { background: var(--cream); }
+
+        .kontakt-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .kontakt-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .kontakt-item {
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+        }
+
+        .kontakt-item-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--green-dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .kontakt-item-text strong {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--green-mid);
+            margin-bottom: 0.2rem;
+        }
+
+        .kontakt-item-text span {
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .kontakt-item-text a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .kontakt-item-text a:hover {
+            color: var(--green-mid);
+        }
+
+        .mapa-placeholder {
+            background: var(--cream2);
+            border: 2px dashed #c8b89a;
+            border-radius: 12px;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text2);
+            gap: 0.75rem;
+        }
+
+        .mapa-placeholder .icon { font-size: 2.5rem; }
+        .mapa-placeholder p { font-size: 0.9rem; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #0d1f0d;
+            color: #5a8a56;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            font-size: 0.88rem;
+        }
+
+        footer strong { color: #8ab88a; }
+
+        /* ── BADGE placeholder ── */
+        .badge { display: none; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .o-nas-grid,
+            .cenik-grid,
+            .kontakt-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+
+            .stromky-grid,
+            .doba-grid,
+            .sluzby-grid { grid-template-columns: 1fr 1fr; }
+
+            .o-nas-stats { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            nav { padding: 0 1.2rem; }
+            .nav-links { gap: 1.2rem; }
+            .nav-links li:nth-child(n+4) { display: none; }
+
+            .stromky-grid,
+            .doba-grid,
+            .sluzby-grid { grid-template-columns: 1fr; }
+
+            .o-nas-stats { grid-template-columns: 1fr 1fr; }
+
+            section { padding: 4rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── NAVIGACE ── -->
+<nav>
+    <a href="#" class="nav-logo">
+        <svg width="22" height="28" viewBox="0 0 22 28" fill="none">
+            <rect x="8" y="22" width="6" height="5" rx="1" fill="#8b5e3c"/>
+            <polygon points="11,1 3,12 19,12" fill="#4a8c40"/>
+            <polygon points="11,7 2,19 20,19" fill="#2e5e2a"/>
+            <polygon points="11,13 1,26 21,26" fill="#1a3318"/>
+        </svg>
+        Vánoční stromky Vydří
+    </a>
+    <ul class="nav-links">
+        <li><a href="#stromky">Stromky</a></li>
+        <li><a href="#cenik">Ceník</a></li>
+        <li><a href="#oteviraci-doba">Otevírací doba</a></li>
+        <li><a href="#sluzby">Služby</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+    <div class="hero-inner">
+        <svg class="hero-tree" viewBox="0 0 160 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Kmen -->
+            <rect x="66" y="162" width="28" height="32" rx="4" fill="#6b3a2a"/>
+            <!-- Spodní vrstva -->
+            <polygon points="80,40 18,110 142,110" fill="#1a3318"/>
+            <polygon points="80,55 10,135 150,135" fill="#1e4020"/>
+            <polygon points="80,72 4,165 156,165" fill="#1a3318"/>
+            <!-- Střední vrstva -->
+            <polygon points="80,30 25,95 135,95" fill="#2e5e2a"/>
+            <polygon points="80,48 16,120 144,120" fill="#2a5427"/>
+            <polygon points="80,66 10,152 150,152" fill="#2e5e2a"/>
+            <!-- Světlé hroty (sníh/detail) -->
+            <polygon points="80,28 75,50 85,50" fill="#4a8c40" opacity="0.6"/>
+            <!-- Hvězda -->
+            <polygon points="80,5 83,16 95,16 85,23 89,35 80,28 71,35 75,23 65,16 77,16" fill="#c4922a"/>
+            <!-- Ozdoby -->
+            <circle cx="55" cy="90" r="4" fill="#c4922a" opacity="0.8"/>
+            <circle cx="110" cy="105" r="3.5" fill="#8b1a1a" opacity="0.8"/>
+            <circle cx="72" cy="120" r="3" fill="#c4922a" opacity="0.7"/>
+            <circle cx="100" cy="130" r="4" fill="#1a5a8b" opacity="0.7"/>
+            <circle cx="60" cy="145" r="3.5" fill="#8b1a1a" opacity="0.8"/>
+            <circle cx="115" cy="148" r="3" fill="#c4922a" opacity="0.7"/>
+        </svg>
+
+        <h1>Přivezeme <span>les</span><br>až k vám domů</h1>
+        <p>Pěstujeme vánoční stromky s láskou v srdci jižních Čech.<br>Vydří, u Jindřichova Hradce.</p>
+        <a href="#stromky" class="btn">Prohlédnout nabídku</a>
+    </div>
+    <div class="scroll-hint">Sjet dolů</div>
+</section>
+
+<!-- ── O NÁS ── -->
+<section id="o-nas">
+    <div class="container">
+        <div class="o-nas-grid">
+            <div class="o-nas-text">
+                <div class="section-label">O nás</div>
+                <h2 class="section-title">Vánoční tradice<br>z jižních Čech</h2>
+                <div class="divider"></div>
+                <p>Jsme rodinná farma z Vydří u Jindřichova Hradce. Vánoční stromky pěstujeme s péčí a respektem k přírodě — aby každý stromek přinesl do vašeho domova kousek jihočeského lesa.</p>
+                <p>Přijďte si vybrat osobně, nebo se nám ozvěte. Rádi poradíme, který stromek se hodí pro vás.</p>
+            </div>
+            <div class="o-nas-stats">
+                <div class="stat-box">
+                    <span class="num">3</span>
+                    <span class="label">druhy stromků</span>
+                </div>
+                <div class="stat-box">
+                    <span class="num">∞</span>
+                    <span class="label">let tradice</span>
+                </div>
+                <div class="stat-box">
+                    <span class="num">100%</span>
+                    <span class="label">vlastní pěstování</span>
+                </div>
+                <div class="stat-box">
+                    <span class="num">JH</span>
+                    <span class="label">jižní Čechy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── STROMKY ── -->
+<section id="stromky">
+    <div class="container">
+        <div class="section-label">Naše stromky</div>
+        <h2 class="section-title">Co u nás najdete</h2>
+        <div class="divider"></div>
+        <div class="stromky-grid">
+
+            <div class="stromek-card">
+                <svg class="stromek-icon" viewBox="0 0 90 110" fill="none">
+                    <rect x="36" y="88" width="18" height="18" rx="2" fill="#8b5e3c"/>
+                    <polygon points="45,4 14,42 76,42" fill="#3a7034"/>
+                    <polygon points="45,20 10,62 80,62" fill="#2e5e2a"/>
+                    <polygon points="45,38 6,88 84,88" fill="#1a3318"/>
+                </svg>
+                <h3>Jedle kavkazská</h3>
+                <p>Královna Vánoc. Bohaté jehličí, které nepíchá a dlouho vydrží.</p>
+                <div class="stromek-cena">od 550 Kč <span>/ ks</span></div>
+            </div>
+
+            <div class="stromek-card">
+                <div class="badge">Nejoblíbenější</div>
+                <svg class="stromek-icon" viewBox="0 0 90 110" fill="none">
+                    <rect x="36" y="88" width="18" height="18" rx="2" fill="#8b5e3c"/>
+                    <polygon points="45,4 14,42 76,42" fill="#6aaa60"/>
+                    <polygon points="45,20 10,62 80,62" fill="#4a8c40"/>
+                    <polygon points="45,38 6,88 84,88" fill="#2e5e2a"/>
+                    <circle cx="30" cy="55" r="3" fill="#c4922a" opacity="0.9"/>
+                    <circle cx="62" cy="68" r="2.5" fill="#8b1a1a" opacity="0.9"/>
+                    <circle cx="42" cy="78" r="2.5" fill="#c4922a" opacity="0.8"/>
+                </svg>
+                <h3>Smrk ztepilý / Stříbrný</h3>
+                <p>Klasika s nezaměnitelnou vůní lesa a stříbřitým nádechem.</p>
+                <div class="stromek-cena">od 350 Kč <span>/ ks</span></div>
+            </div>
+
+            <div class="stromek-card">
+                <svg class="stromek-icon" viewBox="0 0 90 110" fill="none">
+                    <rect x="36" y="88" width="18" height="18" rx="2" fill="#8b5e3c"/>
+                    <polygon points="45,4 12,44 78,44" fill="#1a5a1a"/>
+                    <polygon points="45,22 8,65 82,65" fill="#1a4a1a"/>
+                    <polygon points="45,42 4,90 86,90" fill="#0d3010"/>
+                </svg>
+                <h3>Borovice černá</h3>
+                <p>Pro milovníky hustých stromků s dlouhým, pevným jehličím.</p>
+                <div class="stromek-cena">od 400 Kč <span>/ ks</span></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── CENÍK ── -->
+<section id="cenik">
+    <div class="container">
+        <div class="section-label">Ceník</div>
+        <h2 class="section-title">Orientační ceny</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Konečná cena závisí na konkrétním stromku a jeho stavu. Vždy si ho přijďte prohlédnout osobně.</p>
+
+        <div class="cenik-grid">
+            <div class="cenik-table-wrap">
+                <h4>Ceny podle výšky</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Velikost</th>
+                            <th>Výška</th>
+                            <th>Cena od–do</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="size-badge">S</span></td>
+                            <td>100 – 150 cm</td>
+                            <td>350 – 500 Kč</td>
+                        </tr>
+                        <tr>
+                            <td><span class="size-badge">M</span></td>
+                            <td>150 – 200 cm</td>
+                            <td>550 – 850 Kč</td>
+                        </tr>
+                        <tr>
+                            <td><span class="size-badge">L</span></td>
+                            <td>200 – 250 cm</td>
+                            <td>900 – 1 500 Kč</td>
+                        </tr>
+                        <tr>
+                            <td><span class="size-badge">XL</span></td>
+                            <td>250 cm a více</td>
+                            <td>Individuálně</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cenik-table-wrap">
+                <h4>Ceny podle druhu (od)</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Druh</th>
+                            <th>Cena od</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jedle kavkazská</td>
+                            <td>550 Kč</td>
+                        </tr>
+                        <tr>
+                            <td>Smrk ztepilý / Stříbrný</td>
+                            <td>350 Kč</td>
+                        </tr>
+                        <tr>
+                            <td>Borovice černá</td>
+                            <td>400 Kč</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── OTEVÍRACÍ DOBA ── -->
+<section id="oteviraci-doba">
+    <div class="container">
+        <div class="section-label">Kdy nás najdete</div>
+        <h2 class="section-title">Otevírací doba</h2>
+        <div class="divider"></div>
+        <div class="doba-grid">
+
+            <div class="doba-card">
+                <div class="doba-header">
+                    <span class="icon">🍂</span>
+                    <div>
+                        <h4>Listopad</h4>
+                        <div class="sub">Přípravná sezóna</div>
+                    </div>
+                </div>
+                <div class="doba-rows">
+                    <div class="doba-row">
+                        <span class="doba-day">Sobota – Neděle</span>
+                        <span class="doba-time">9:00 – 16:00</span>
+                    </div>
+                    <div class="doba-row">
+                        <span class="doba-day">Po – Pá</span>
+                        <span class="doba-time">Zavřeno</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="doba-card">
+                <div class="doba-header" style="background: var(--green-mid);">
+                    <span class="icon">🎄</span>
+                    <div>
+                        <h4>Prosinec</h4>
+                        <div class="sub">Hlavní sezóna</div>
+                    </div>
+                </div>
+                <div class="doba-rows">
+                    <div class="doba-row">
+                        <span class="doba-day">Pondělí – Pátek</span>
+                        <span class="doba-time">10:00 – 18:00</span>
+                    </div>
+                    <div class="doba-row">
+                        <span class="doba-day">Sobota – Neděle</span>
+                        <span class="doba-time">8:00 – 19:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="doba-card">
+                <div class="doba-header" style="background: #8b1a1a;">
+                    <span class="icon">🕯️</span>
+                    <div>
+                        <h4>24. prosince</h4>
+                        <div class="sub">Štědrý den</div>
+                    </div>
+                </div>
+                <div class="doba-rows">
+                    <div class="doba-row">
+                        <span class="doba-day">Štědrý den</span>
+                        <span class="doba-time">8:00 – 12:00</span>
+                    </div>
+                </div>
+                <div class="doba-note">* nebo do vyprodání zásob</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── DOPLŇKOVÉ SLUŽBY ── -->
+<section id="sluzby">
+    <div class="container">
+        <div class="section-label">Co nabízíme navíc</div>
+        <h2 class="section-title">Doplňkové služby</h2>
+        <div class="divider"></div>
+        <div class="sluzby-grid">
+
+            <div class="sluzba-card">
+                <div class="sluzba-icon">🪚</div>
+                <h3>Ořez kmene</h3>
+                <p>Upravíme kmen přesně na míru vašemu stojanu, aby stromek stál rovně a správně přijímal vodu.</p>
+                <span class="sluzba-tag">ZDARMA</span>
+            </div>
+
+            <div class="sluzba-card">
+                <div class="sluzba-icon">🕸️</div>
+                <h3>Balení do sítě</h3>
+                <p>Zabalíme stromek do ochranné sítě pro snadný a bezpečný převoz v autě bez ztráty jehličí.</p>
+                <span class="sluzba-tag">ZDARMA</span>
+            </div>
+
+            <div class="sluzba-card">
+                <div class="sluzba-icon">🚗</div>
+                <h3>Rozvoz domů</h3>
+                <p>Nemáte auto nebo velký kufr? Domluvíme rozvoz stromku přímo ke vašim dveřím v okolí JH.</p>
+                <span class="sluzba-tag">NA DOTAZ</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── KONTAKT ── -->
+<section id="kontakt">
+    <div class="container">
+        <div class="section-label">Kde nás najdete</div>
+        <h2 class="section-title">Kontakt</h2>
+        <div class="divider"></div>
+
+        <div class="kontakt-grid">
+            <div class="kontakt-info">
+
+                <div class="kontakt-item">
+                    <div class="kontakt-item-icon">📍</div>
+                    <div class="kontakt-item-text">
+                        <strong>Adresa</strong>
+                        <span>Vydří, okres Jindřichův Hradec<br>Jihočeský kraj</span>
+                    </div>
+                </div>
+
+                <div class="kontakt-item">
+                    <div class="kontakt-item-icon">📞</div>
+                    <div class="kontakt-item-text">
+                        <strong>Telefon</strong>
+                        <span><a href="tel:+420777000000">+420 777 000 000</a></span>
+                    </div>
+                </div>
+
+                <div class="kontakt-item">
+                    <div class="kontakt-item-icon">✉️</div>
+                    <div class="kontakt-item-text">
+                        <strong>E-mail</strong>
+                        <span><a href="mailto:info@stromkyvydri.cz">info@stromkyvydri.cz</a></span>
+                    </div>
+                </div>
+
+                <div class="kontakt-item">
+                    <div class="kontakt-item-icon">🌲</div>
+                    <div class="kontakt-item-text">
+                        <strong>Přijďte osobně</strong>
+                        <span>Výběr na místě je nejlepší —<br>každý stromek je originál.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mapa-placeholder">
+                <span class="icon">🗺️</span>
+                <p>Mapa bude doplněna</p>
+                <p style="font-size:0.8rem; opacity:0.6">Vydří u Jindřichova Hradce</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <p>© 2025 <strong>Vánoční stromky Vydří</strong> &nbsp;·&nbsp; Vydří, okres Jindřichův Hradec &nbsp;·&nbsp; <a href="mailto:info@stromkyvydri.cz" style="color:#5a8a56;">info@stromkyvydri.cz</a></p>
+</footer>
+
+</body>
+</html>
