@@ -4,477 +4,269 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KSH Studio — Ukázky webů</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,800;0,900;1,300&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:     #080809;
-      --border: rgba(255,255,255,0.07);
-      --fg:     #f0eeff;
-      --muted:  rgba(240,238,255,0.22);
+      --bg: #060608;
+      --holo: linear-gradient(135deg, #ff6ec7, #a855f7, #6366f1, #06b6d4, #10b981, #eab308, #f97316, #ff6ec7);
     }
 
-    html { height: 100%; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
-      color: var(--fg);
+      color: #f0eeff;
       font-family: 'Inter', sans-serif;
-      height: 100%;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* ── LAYOUT ── */
-    .site {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+    @keyframes holo-shift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
+
+    .holo-text {
+      background: var(--holo);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: holo-shift 5s ease infinite;
+    }
+
+    /* ── WRAP ── */
+    .wrap { max-width: 960px; margin: 0 auto; padding: clamp(3rem,8vw,6rem) 1.5rem 4rem; }
 
     /* ── HEADER ── */
-    header {
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 2rem;
-      border-bottom: 1px solid var(--border);
-      position: relative; z-index: 10;
+    header { margin-bottom: clamp(2.5rem,6vw,4.5rem); }
+
+    .ksh-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--holo); background-size: 300% 300%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: holo-shift 5s ease infinite;
+      margin-bottom: 1.5rem;
     }
-    .header-left {
-      display: flex; align-items: baseline; gap: 1.25rem;
-    }
-    .logo {
-      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--fg);
-    }
-    .logo-sub {
-      font-size: 0.65rem; color: var(--muted); font-weight: 300;
-      letter-spacing: 0.05em;
-    }
-    .header-right {
-      font-size: 0.65rem; color: var(--muted); font-weight: 300;
-      letter-spacing: 0.05em;
-    }
-    .header-right strong {
-      font-weight: 600; color: rgba(240,238,255,0.5);
+    .ksh-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--holo); background-size: 300%;
+      flex-shrink: 0; animation: holo-shift 3s ease infinite;
+      -webkit-background-clip: unset; background-clip: unset;
     }
 
-    /* ── PROJECTS STRIP ── */
-    .projects {
-      flex: 1;
-      display: flex;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: none;
-      cursor: grab;
+    h1 {
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 900; line-height: 0.95;
+      letter-spacing: -0.02em; margin-bottom: 1.25rem;
     }
-    .projects::-webkit-scrollbar { display: none; }
-    .projects.grabbing { cursor: grabbing; }
 
-    /* ── SINGLE PROJECT ── */
-    .project {
-      position: relative;
-      flex-shrink: 0;
-      width: clamp(240px, 21vw, 340px);
-      height: 100%;
-      border-right: 1px solid var(--border);
+    .sub {
+      color: rgba(240,238,255,0.4);
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      max-width: 420px; line-height: 1.7; font-weight: 300;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
       overflow: hidden;
+      margin-top: clamp(2.5rem,5vw,4rem);
+    }
+
+    /* ── CARD ── */
+    .card {
+      position: relative;
+      background: rgba(10,8,16,0.9);
+      padding: 2rem;
       text-decoration: none;
       color: inherit;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      user-select: none;
-    }
-
-    /* Background image */
-    .project-bg {
-      position: absolute; inset: 0;
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.28) saturate(0.65);
-      transition: filter 0.65s ease, transform 0.9s ease;
-    }
-    .project:hover .project-bg {
-      filter: brightness(0.52) saturate(1.05);
-      transform: scale(1.06);
-    }
-
-    /* Top number */
-    .project-num {
-      position: absolute; top: 1.75rem; left: 1.75rem;
-      z-index: 1;
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.18);
-      transition: color 0.4s;
-    }
-    .project:hover .project-num { color: rgba(255,255,255,0.45); }
-
-    /* Left vertical accent line */
-    .project::before {
-      content: '';
-      position: absolute; top: 0; left: 0;
-      width: 1px; height: 0;
-      background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
-      transition: height 0.5s ease;
-      z-index: 2;
-    }
-    .project:hover::before { height: 100%; }
-
-    /* Bottom info strip */
-    .project-info {
-      position: relative; z-index: 1;
-      padding: 3rem 1.75rem 1.75rem;
-      background: linear-gradient(to top,
-        rgba(8,8,9,0.97) 0%,
-        rgba(8,8,9,0.75) 55%,
-        transparent 100%);
-    }
-
-    .project-cat {
       display: block;
-      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: rgba(255,255,255,0.28);
-      margin-bottom: 0.45rem;
+      overflow: hidden;
+      transition: background 0.25s;
     }
-    .project-title {
-      font-size: 1.05rem; font-weight: 500;
-      color: rgba(255,255,255,0.82);
-      line-height: 1.2; letter-spacing: -0.01em;
-    }
-    .project-desc {
-      margin-top: 0.4rem;
-      font-size: 0.7rem; color: rgba(255,255,255,0.25);
-      line-height: 1.55; font-weight: 300;
-    }
+    .card:hover { background: rgba(16,12,28,0.95); }
 
-    /* CTA arrow — visible on hover */
-    .project-arrow {
-      margin-top: 1.1rem;
-      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase;
-      display: flex; align-items: center; gap: 0.45rem;
-      color: transparent;
-      transition: color 0.35s, gap 0.35s;
-    }
-    .project-arrow svg {
-      width: 12px; height: 12px; flex-shrink: 0;
-      transition: transform 0.35s;
-    }
-    .project:hover .project-arrow {
-      color: rgba(255,255,255,0.65);
-      gap: 0.65rem;
-    }
-    .project:hover .project-arrow svg { transform: translateX(3px); }
-
-    /* info strip fades out on hover */
-    .project-info {
-      transition: opacity 0.22s ease, transform 0.28s ease;
-    }
-    .project:hover .project-info {
-      opacity: 0;
-      transform: translateY(8px);
+    /* shimmer on hover */
+    .card::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      transition: left 0.5s ease;
       pointer-events: none;
     }
+    .card:hover::after { left: 150%; }
 
-    /* ── REVEAL PANEL ── */
-    .project-reveal {
-      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
-      background: rgba(8,8,9,0.94);
-      backdrop-filter: blur(20px) saturate(1.6);
-      -webkit-backdrop-filter: blur(20px) saturate(1.6);
-      border-top: 1px solid rgba(255,255,255,0.09);
-      padding: 1.75rem;
-      transform: translateY(100%);
-      transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .project:hover .project-reveal { transform: translateY(0); }
-
-    .reveal-label {
-      display: block;
-      font-size: 0.55rem; font-weight: 600; letter-spacing: 0.24em;
-      text-transform: uppercase; color: rgba(255,255,255,0.28);
-      margin-bottom: 1.1rem;
+    .card-num {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em;
+      color: rgba(240,238,255,0.15);
+      margin-bottom: 1.5rem; font-variant-numeric: tabular-nums;
     }
 
-    .reveal-title {
-      font-size: 1rem; font-weight: 500; color: rgba(255,255,255,0.88);
-      margin-bottom: 1rem; letter-spacing: -0.01em;
+    .card-tag {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 0.55rem;
+      background: var(--holo); background-size: 300% 300%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; animation: holo-shift 6s ease infinite;
+      display: inline-block;
     }
 
-    .reveal-list {
-      list-style: none;
-      display: flex; flex-direction: column;
-    }
-    .reveal-item {
-      display: flex; align-items: flex-start; gap: 0.65rem;
-      padding: 0.55rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.055);
-      font-size: 0.76rem; font-weight: 300; color: rgba(255,255,255,0.55);
-      line-height: 1.4;
-      opacity: 0; transform: translateY(7px);
-      transition: opacity 0.28s ease, transform 0.28s ease;
-    }
-    .reveal-item:first-child { border-top: 1px solid rgba(255,255,255,0.055); }
-    .reveal-item::before {
-      content: '—'; color: rgba(255,255,255,0.18);
-      font-size: 0.65rem; flex-shrink: 0; margin-top: 0.05em;
+    .card h2 {
+      font-size: 1.15rem; font-weight: 800;
+      margin-bottom: 0.5rem; color: #f0eeff; line-height: 1.2;
     }
 
-    /* staggered item reveal */
-    .project:hover .reveal-item:nth-child(1) { opacity:1; transform:none; transition-delay: 0.28s; }
-    .project:hover .reveal-item:nth-child(2) { opacity:1; transform:none; transition-delay: 0.36s; }
-    .project:hover .reveal-item:nth-child(3) { opacity:1; transform:none; transition-delay: 0.44s; }
+    .card p {
+      font-size: 0.78rem; color: rgba(240,238,255,0.3);
+      line-height: 1.65; font-weight: 300;
+    }
+
+    .card-arrow {
+      margin-top: 1.75rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em;
+      color: rgba(240,238,255,0.15);
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .card:hover .card-arrow { color: rgba(240,238,255,0.55); gap: 0.65rem; }
+    .card-arrow::after { content: '→'; }
+
+    /* Special badge for personal project */
+    .card-personal .card-tag {
+      background: linear-gradient(135deg, #e2e2e2, #999, #e2e2e2);
+      background-size: 300% 300%;
+      animation: holo-shift 4s ease infinite;
+    }
+
+    /* ── DIVIDER ── */
+    .holo-line {
+      height: 1px;
+      background: var(--holo); background-size: 300% 100%;
+      animation: holo-shift 4s linear infinite;
+      opacity: 0.25; border: none;
+      margin: clamp(2.5rem,5vw,4rem) 0 2rem;
+    }
 
     /* ── FOOTER ── */
     footer {
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.62rem; color: var(--muted);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.7rem; color: rgba(240,238,255,0.15);
     }
-    footer a { color: inherit; text-decoration: none; }
-    footer a:hover { color: rgba(240,238,255,0.55); }
 
-    /* scroll hint fades out */
-    .scroll-hint {
-      display: flex; align-items: center; gap: 0.4rem;
-      opacity: 1; transition: opacity 0.8s;
-    }
-    .scroll-hint.hidden { opacity: 0; pointer-events: none; }
-    .scroll-hint svg { width: 14px; height: 14px; }
-
-    /* ── MOBILE ── */
-    @media (max-width: 600px) {
-      body { overflow: auto; height: auto; }
-      .site { height: auto; }
-      .projects {
-        flex-direction: column;
-        overflow: visible;
-        cursor: default;
-        height: auto;
-      }
-      .project {
-        width: 100%;
-        height: 72vw;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
+    @media (max-width: 500px) {
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<div class="site">
+<div class="wrap">
 
-  <!-- HEADER -->
   <header>
-    <div class="header-left">
-      <span class="logo">KSH Studio</span>
-      <span class="logo-sub">Weby které prodávají</span>
-    </div>
-    <div class="header-right">
-      <strong>7</strong> ukázek redesignů
-    </div>
+    <div class="ksh-badge">KSH Studio</div>
+    <h1>
+      <span style="color:#f0eeff">Ukázky</span><br />
+      <span class="holo-text">redesignů</span>
+    </h1>
+    <p class="sub">Interaktivní návrhy webů pro klienty a vlastní projekty. Klikněte na ukázku pro zobrazení.</p>
   </header>
 
-  <!-- PROJECTS -->
-  <div class="projects" id="projects">
+  <div class="grid">
 
-    <a href="pizza-nonno/" class="project">
-      <div class="project-bg" style="background-image:url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1920&q=80')"></div>
-      <span class="project-num">01</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Pizza Nonno</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Tmavý design, italské barvy</li>
-          <li class="reveal-item">Kompletní menu s fotkami</li>
-          <li class="reveal-item">Rezervace, kontakt, mapa</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Restaurace</span>
-        <div class="project-title">Pizza Nonno</div>
-        <div class="project-desc">Italská pizzerie, Kamenice nad Lipou</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="pizza-nonno/" class="card">
+      <div class="card-num">01</div>
+      <div class="card-tag">Restaurace</div>
+      <h2>Pizza Nonno</h2>
+      <p>Italská pizzerie v Kamenici nad Lipou. Tmavý design, italské barvy, kompletní menu.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
-    <a href="alterum/" class="project">
-      <div class="project-bg" style="background-image:url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80')"></div>
-      <span class="project-num">02</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Alterum</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Editoriální dark layout</li>
-          <li class="reveal-item">Výrazné CSS animace</li>
-          <li class="reveal-item">Bold typografie, premium vizuál</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Kreativní agentura</span>
-        <div class="project-title">Alterum</div>
-        <div class="project-desc">Editoriální design, výrazné animace</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="alterum/" class="card">
+      <div class="card-num">02</div>
+      <div class="card-tag">Kreativní agentura</div>
+      <h2>Alterum</h2>
+      <p>Editoriální design pro kreativní agenturu s výraznými animacemi.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
-    <a href="sanitas-tabor/" class="project">
-      <div class="project-bg" style="background-image:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1920&q=80')"></div>
-      <span class="project-num">03</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Sanitas Tábor</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Tmavý design, modrý akcent</li>
-          <li class="reveal-item">Přehled služeb a ceník</li>
-          <li class="reveal-item">Kontakt, formulář, mapa</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Vodoinstalatérství</span>
-        <div class="project-title">Sanitas Tábor</div>
-        <div class="project-desc">Zdeněk Vobinuška, Tábor</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="sanitas-tabor/" class="card">
+      <div class="card-num">03</div>
+      <div class="card-tag">Vodoinstalatérství</div>
+      <h2>Sanitas Tábor</h2>
+      <p>Vodoinstalatér Zdeněk Vobinuška z Tábora. Tmavý design, modrý akcent.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
-    <a href="hotel-dyje/" class="project">
-      <div class="project-bg" style="background-image:url('https://www.hoteldyje.cz/galerie/hotel01.jpg')"></div>
-      <span class="project-num">04</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Hotel Dyje</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Reálné fotky a texty z webu</li>
-          <li class="reveal-item">Ceník pokojů, restaurace</li>
-          <li class="reveal-item">Aktivity, denní menu, rezervace</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Hotel</span>
-        <div class="project-title">Hotel Dyje</div>
-        <div class="project-desc">Rodinný hotel, centrum Dačic</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="hotel-dyje/" class="card">
+      <div class="card-num">04</div>
+      <div class="card-tag">Hotel</div>
+      <h2>Hotel Dyje</h2>
+      <p>Rodinný hotel v centru Dačic. Reálné fotky, ceny a texty přímo z jejich webu.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
-    <a href="hotel-komornik/" class="project">
-      <div class="project-bg" style="background-image:url('http://www.pocechach.cz/foto/katalog/hotel_2014.jpg')"></div>
-      <span class="project-num">05</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Hotel Komorník</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Zlaté tóny, Česká Kanada</li>
-          <li class="reveal-item">Pokoje, restaurace, ceník</li>
-          <li class="reveal-item">Kontakt a rezervace</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Hotel</span>
-        <div class="project-title">Hotel Komorník</div>
-        <div class="project-desc">Strmilov, oblast Česká Kanada</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="hotel-komornik/" class="card">
+      <div class="card-num">05</div>
+      <div class="card-tag">Hotel</div>
+      <h2>Hotel Komorník</h2>
+      <p>Hotel ve Strmilově v oblasti Česká Kanada. Zlaté tóny, pokoje, restaurace.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
-    <a href="autokemp-nachod/" class="project">
-      <div class="project-bg" style="background-image:url('https://www.camp.cz/photo/71/10182.jpg')"></div>
-      <span class="project-num">06</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Autokemp Náchod</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Letní vizuál, zelená příroda</li>
-          <li class="reveal-item">Chatky, stany, karavany + ceník</li>
-          <li class="reveal-item">Aktivity a provozní informace</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Kemp</span>
-        <div class="project-title">Autokemp Náchod</div>
-        <div class="project-desc">Chatky, stany, karavany</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="autokemp-nachod/" class="card">
+      <div class="card-num">06</div>
+      <div class="card-tag">Kemp</div>
+      <h2>Autokemp Náchod</h2>
+      <p>Letní kemp v Náchodě. Chatky, stany, karavany, kompletní ceník.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
-    <a href="zemoto/" class="project">
-      <div class="project-bg" style="background-image:url('https://www.zemoto.cz/images/inzerts/00716/1920/00001.jpg')"></div>
-      <span class="project-num">07</span>
-      <div class="project-reveal">
-        <span class="reveal-label">Redesign zahrnuje</span>
-        <div class="reveal-title">Motocykly Zeman</div>
-        <ul class="reveal-list">
-          <li class="reveal-item">Galerie 20–28 fotek na motor</li>
-          <li class="reveal-item">HD import specialista z USA</li>
-          <li class="reveal-item">Servis, výbava, 17 značek</li>
-        </ul>
-      </div>
-      <div class="project-info">
-        <span class="project-cat">Moto dealer</span>
-        <div class="project-title">Motocykly Zeman</div>
-        <div class="project-desc">Prodej, servis, HD import. Jindřichův Hradec</div>
-        <div class="project-arrow">Zobrazit <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      </div>
+    <a href="zemoto/" class="card">
+      <div class="card-num">07</div>
+      <div class="card-tag">Moto dealer</div>
+      <h2>Motocykly Zeman</h2>
+      <p>Prodej, servis a výbava. Specialisté na Harley-Davidson z USA. Jindřichův Hradec.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
+    </a>
+
+    <a href="olejna-pitch/" class="card">
+      <div class="card-num">08</div>
+      <div class="card-tag">Autopříslušenství</div>
+      <h2>Olejna.cz</h2>
+      <p>Prodejna olejů, baterií, filtrů a autokosmetiky. Jindřichův Hradec. Dark design, žlutý akcent.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
+    </a>
+
+    <a href="zavis/" class="card card-personal">
+      <div class="card-num">09</div>
+      <div class="card-tag">Osobní projekt</div>
+      <h2>ZAVIS — Design Studio</h2>
+      <p>Ukázková stránka. Designové experimenty, web, identita, motion. Magnetická typografie.</p>
+      <div class="card-arrow">Zobrazit ukázku</div>
     </a>
 
   </div>
 
-  <!-- FOOTER -->
+  <hr class="holo-line" />
+
   <footer>
-    <span>© 2026 KSH Studio</span>
-    <span id="scrollHint" class="scroll-hint">
-      Scrolluj nebo táhni
-      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </span>
+    <span>© 2026 <span class="holo-text">KSH Studio</span></span>
+    <span>Weby které prodávají.</span>
   </footer>
 
 </div>
-
-<script>
-  const strip = document.getElementById('projects');
-  const hint  = document.getElementById('scrollHint');
-
-  /* Hide scroll hint after first scroll */
-  strip.addEventListener('scroll', () => {
-    if (strip.scrollLeft > 20) hint.classList.add('hidden');
-  }, { passive: true });
-
-  /* Wheel → horizontal scroll */
-  strip.addEventListener('wheel', e => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      strip.scrollBy({ left: e.deltaY * 1.2, behavior: 'auto' });
-    }
-  }, { passive: false });
-
-  /* Drag to scroll */
-  let isDragging = false, startX = 0, startScroll = 0;
-  strip.addEventListener('mousedown', e => {
-    isDragging = true; startX = e.clientX; startScroll = strip.scrollLeft;
-    strip.classList.add('grabbing');
-  });
-  window.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    strip.scrollLeft = startScroll - (e.clientX - startX);
-  });
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-    strip.classList.remove('grabbing');
-  });
-
-  /* Prevent link click on drag */
-  strip.querySelectorAll('.project').forEach(card => {
-    card.addEventListener('click', e => {
-      if (Math.abs(strip.scrollLeft - startScroll) > 8) e.preventDefault();
-    });
-  });
-</script>
 
 </body>
 </html>
