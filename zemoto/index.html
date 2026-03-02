@@ -590,6 +590,57 @@
     .service-tile p { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
 
     /* ─────────────────────────────────────────
+       RECENZE
+    ───────────────────────────────────────── */
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    @media (max-width: 860px) { .reviews-grid { grid-template-columns: 1fr; } }
+
+    .review-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .review-card:hover { border-color: var(--border-h); background: var(--surface2); }
+
+    .review-stars { display: flex; gap: 3px; }
+    .review-stars span { color: var(--orange); font-size: 1rem; }
+
+    .review-text {
+      font-size: 0.9rem; line-height: 1.75;
+      color: var(--fg); flex: 1;
+      font-style: italic;
+    }
+
+    .review-author {
+      display: flex; align-items: center; gap: 0.75rem;
+      border-top: 1px solid var(--border); padding-top: 1rem;
+    }
+    .review-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--orange-dim); border: 1px solid var(--border-h);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: var(--orange);
+      flex-shrink: 0;
+    }
+    .review-name { font-size: 0.85rem; font-weight: 600; }
+    .review-source { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+
+    .reviews-cta {
+      text-align: center; margin-top: 2.5rem;
+    }
+    .reviews-cta a {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .reviews-cta a:hover { color: var(--orange); }
+    .reviews-cta a svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ─────────────────────────────────────────
        KONTAKT
     ───────────────────────────────────────── */
     .contact-grid {
@@ -693,6 +744,7 @@
     <li><a href="#stroje">Stroje</a></li>
     <li><a href="#servis">Servis</a></li>
     <li><a href="#vybava">Výbava</a></li>
+    <li><a href="#recenze">Recenze</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
   <a href="https://www.facebook.com/motocyklyzeman/" target="_blank" rel="noopener" class="nav-social" title="Facebook Motocykly Zeman">
@@ -1113,6 +1165,71 @@
 <!-- ═══════════════════════════════════
      KONTAKT
 ════════════════════════════════════ -->
+<!-- ═══════════════════════════════════
+     RECENZE
+════════════════════════════════════ -->
+<section id="recenze">
+  <div class="container">
+    <span class="eyebrow reveal">Co říkají zákazníci</span>
+    <h2 class="section-title reveal">Recenze</h2>
+    <p class="section-lead reveal">Přes 20 let budujeme důvěru. Přečtěte si, co o nás říkají ti, kteří u nás nakoupili.</p>
+
+    <div class="reviews-grid">
+
+      <div class="review-card reveal d1">
+        <div class="review-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="review-text">„Od pana Zemana mám již druhou motorku HD, a až budu kupovat další, tak pouze od něj. Motorky má nádherný, jednání luxusní!"</p>
+        <div class="review-author">
+          <div class="review-avatar">M</div>
+          <div>
+            <div class="review-name">Mi Jenik</div>
+            <div class="review-source">firmy.cz · červen 2020</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d2">
+        <div class="review-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="review-text">„Velká spokojenost s přístupem pana vedoucího. Vynikající servis."</p>
+        <div class="review-author">
+          <div class="review-avatar">M</div>
+          <div>
+            <div class="review-name">Milan Konir</div>
+            <div class="review-source">firmy.cz · červenec 2022</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d3">
+        <div class="review-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="review-text">„Solidní jednání. Férový přístup."</p>
+        <div class="review-author">
+          <div class="review-avatar">J</div>
+          <div>
+            <div class="review-name">Josef Pelák</div>
+            <div class="review-source">firmy.cz · listopad 2022</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="reviews-cta reveal">
+      <a href="https://www.google.com/maps/search/Motocykly+Zeman+Otín+283+Jindřichův+Hradec" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-6.97 9.99a.75.75 0 01-1.22-.04l-3.37-5.06a.75.75 0 011.22-.874l2.79 4.19 6.35-9.107a.75.75 0 011.2.901z"/></svg>
+        Zobrazit všechny Google recenze
+      </a>
+    </div>
+
+  </div>
+</section>
+
 <section id="kontakt">
   <div class="container">
     <span class="eyebrow reveal">Kontakt</span>
@@ -1151,8 +1268,12 @@
           <div class="contact-icon">📍</div>
           <div>
             <div class="contact-label">Adresa</div>
-            <div class="contact-value">Otín 283</div>
-            <div class="contact-sub">377 01 Jindřichův Hradec</div>
+            <div class="contact-value">
+              <a href="https://www.google.com/maps/search/Motocykly+Zeman+Otín+283+Jindřichův+Hradec" target="_blank" rel="noopener">Otín 283, 377 01 Jindřichův Hradec</a>
+            </div>
+            <div class="contact-sub">
+              <a href="https://www.google.com/maps/search/Motocykly+Zeman+Otín+283+Jindřichův+Hradec" target="_blank" rel="noopener" style="color:var(--orange);">⭐ Zobrazit Google recenze</a>
+            </div>
           </div>
         </div>
         <div class="contact-row">
