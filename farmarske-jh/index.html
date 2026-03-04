@@ -99,17 +99,36 @@
     /* ── Hero ── */
     .hero {
       min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 8rem 2rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr;
       position: relative; overflow: hidden;
     }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        linear-gradient(to bottom, rgba(12,18,9,0.3) 0%, rgba(12,18,9,0.6) 60%, rgba(12,18,9,1) 100%),
-        url('img/foto-01.jpg') center/cover no-repeat;
+    .hero-bg { display: none; }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(7rem, 10vw, 10rem) 3rem clamp(4rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem);
+      background: var(--bg);
+      position: relative; z-index: 1;
     }
-    .hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .hero-left::after {
+      content: '';
+      position: absolute; top: 0; right: -40px; bottom: 0;
+      width: 80px;
+      background: var(--bg);
+      clip-path: polygon(0 0, 40px 0, 100% 100%, 0 100%);
+      z-index: 2;
+    }
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+    .hero-right img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+    }
+    .hero-right::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(12,18,9,0.3) 0%, transparent 50%);
+    }
+    .hero-content { width: 100%; max-width: 580px; }
     .hero-tag {
       display: inline-flex; align-items: center; gap: 0.5rem;
       background: var(--green-d); border: 1px solid rgba(90,158,58,0.3);
@@ -419,9 +438,14 @@
       .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
       .about-img-wrap { aspect-ratio: 16/9; }
     }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+      .hero-right { height: 50vw; min-height: 260px; order: -1; }
+      .hero-left { padding: 2.5rem 1.5rem 3rem; }
+      .hero-left::after { display: none; }
+    }
     @media (max-width: 600px) {
       nav { padding: 0 1rem; top: 24px; }
-      .hero { padding: 7rem 1.25rem 4rem; }
       section { padding: 3.5rem 1.25rem; }
     }
   </style>
@@ -472,33 +496,38 @@
 <!-- ── Hero ── -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-tag">🌱 Otevřeno po-pá 9–17 · so-ne 9–16</div>
-    <h1>
-      Čerstvé přímo<br>
-      od <em>farmářů.</em>
-    </h1>
-    <p class="hero-sub">
-      Farmářský obchod na Jarošovské — maso, uzeniny, mléčné produkty a sezónní dobroty od prověřených jihočeských a vysočinských chovatelů.
-    </p>
-    <div class="hero-actions">
-      <a href="#produkty" class="btn-primary">Naše produkty →</a>
-      <a href="#kontakt" class="btn-outline">Kde nás najdete</a>
+  <div class="hero-left">
+    <div class="hero-content">
+      <div class="hero-tag">🌱 Otevřeno po-pá 9–17 · so-ne 9–16</div>
+      <h1>
+        Čerstvé přímo<br>
+        od <em>farmářů.</em>
+      </h1>
+      <p class="hero-sub">
+        Farmářský obchod na Jarošovské — maso, uzeniny, mléčné produkty a sezónní dobroty od prověřených jihočeských chovatelů.
+      </p>
+      <div class="hero-actions">
+        <a href="#produkty" class="btn-primary">Naše produkty →</a>
+        <a href="#kontakt" class="btn-outline">Kde nás najdete</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-val">100%</div>
+          <div class="hero-stat-lab">česká produkce</div>
+        </div>
+        <div>
+          <div class="hero-stat-val">Denně</div>
+          <div class="hero-stat-lab">čerstvé dodávky</div>
+        </div>
+        <div>
+          <div class="hero-stat-val">Po-Ne</div>
+          <div class="hero-stat-lab">otevřeno každý den</div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-val">100%</div>
-        <div class="hero-stat-lab">česká produkce</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">Denně</div>
-        <div class="hero-stat-lab">čerstvé dodávky</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">Po-Ne</div>
-        <div class="hero-stat-lab">otevřeno každý den</div>
-      </div>
-    </div>
+  </div>
+  <div class="hero-right">
+    <img src="img/foto-01.jpg" alt="Farmářský obchod Jindřichův Hradec" />
   </div>
 </section>
 
