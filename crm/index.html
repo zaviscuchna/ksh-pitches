@@ -7,8 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Supabase JS client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
-    /* ─── Root ─── */
     :root {
       --bg:       #0a0a0a;
       --surface:  #111111;
@@ -17,21 +18,18 @@
       --border-h: rgba(255,255,255,0.16);
       --fg:       #f0f0f0;
       --muted:    #666;
-      --quiet:    #444;
-
+      --quiet:    #3a3a3a;
       --blue:     #3b82f6;
-      --blue-d:   rgba(59,130,246,0.15);
+      --blue-d:   rgba(59,130,246,0.14);
       --green:    #22c55e;
-      --green-d:  rgba(34,197,94,0.15);
+      --green-d:  rgba(34,197,94,0.14);
       --yellow:   #eab308;
-      --yellow-d: rgba(234,179,8,0.15);
+      --yellow-d: rgba(234,179,8,0.14);
       --red:      #ef4444;
-      --red-d:    rgba(239,68,68,0.15);
-      --purple:   #a855f7;
-      --purple-d: rgba(168,85,247,0.15);
+      --red-d:    rgba(239,68,68,0.14);
     }
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; background: var(--bg); }
+    html { background: var(--bg); }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg); color: var(--fg);
@@ -40,339 +38,475 @@
     }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--quiet); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
     a { color: inherit; text-decoration: none; }
-    input, textarea, select { font-family: 'Inter', sans-serif; }
+    input, textarea, select, button { font-family: 'Inter', sans-serif; }
 
-    /* ─── Layout ─── */
-    .app { display: flex; flex-direction: column; min-height: 100vh; }
-
-    /* ─── Top bar ─── */
-    .topbar {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 1.5rem;
-      height: 56px;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
-    .topbar-logo {
-      width: 28px; height: 28px; border-radius: 6px;
-      background: var(--blue); display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 800; color: #fff; flex-shrink: 0;
-    }
-    .topbar-title { font-size: 0.95rem; font-weight: 700; }
-    .topbar-subtitle { font-size: 0.72rem; color: var(--muted); }
-    .topbar-right { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-
-    /* ─── Buttons ─── */
+    /* ── Buttons ── */
     .btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.45rem 0.9rem; border-radius: 7px;
-      font-size: 0.8rem; font-weight: 600; cursor: pointer;
-      border: none; font-family: 'Inter', sans-serif;
-      transition: all 0.18s; white-space: nowrap;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      border: none; transition: all 0.18s; white-space: nowrap;
     }
     .btn-primary { background: var(--blue); color: #fff; }
     .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-    .btn-ghost {
-      background: transparent; color: var(--muted);
-      border: 1px solid var(--border);
-    }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
     .btn-ghost:hover { border-color: var(--border-h); color: var(--fg); background: var(--surface2); }
-    .btn-danger { background: var(--red-d); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
-    .btn-danger:hover { background: rgba(239,68,68,0.25); }
+    .btn-danger { background: var(--red-d); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+    .btn-danger:hover { background: rgba(239,68,68,0.22); }
     .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.75rem; }
-    .btn-icon { padding: 0.4rem; width: 32px; height: 32px; justify-content: center; }
+    .btn-icon { padding: 0.38rem; width: 30px; height: 30px; justify-content: center; }
 
-    /* ─── Stats row ─── */
+    /* ════════════════════════════════════
+       SETUP SCREEN
+    ════════════════════════════════════ */
+    #setupScreen {
+      display: none;
+      min-height: 100vh;
+      align-items: center; justify-content: center;
+      padding: 2rem 1rem;
+      background: var(--bg);
+    }
+    #setupScreen.active { display: flex; }
+
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      width: 100%; max-width: 560px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    .setup-header {
+      padding: 2rem 2rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .setup-logo {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--blue); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; font-weight: 800;
+      color: #fff; margin-bottom: 1rem;
+    }
+    .setup-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .setup-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    .setup-steps { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .setup-step {
+      display: flex; gap: 0.85rem; align-items: flex-start;
+      padding: 0.9rem 1rem; border-radius: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+    }
+    .setup-step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--blue-d); border: 1px solid rgba(59,130,246,0.3);
+      color: var(--blue); font-size: 0.72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .setup-step-content { flex: 1; }
+    .setup-step-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .setup-step-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+    .setup-step-desc a { color: var(--blue); }
+    .setup-step-desc code {
+      background: var(--quiet); border-radius: 4px;
+      padding: 0.1rem 0.4rem; font-size: 0.75rem;
+      font-family: 'SF Mono', monospace;
+    }
+
+    .setup-sql {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.85rem 1rem;
+      font-size: 0.72rem; font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #a8d8a8; line-height: 1.7; white-space: pre; overflow-x: auto;
+    }
+    .setup-copy-btn {
+      font-size: 0.72rem; padding: 0.25rem 0.6rem; margin-top: 0.4rem;
+    }
+
+    .setup-form { padding: 0 2rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .setup-field label {
+      display: block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.35rem;
+    }
+    .setup-field input {
+      width: 100%; padding: 0.6rem 0.9rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--fg); font-size: 0.88rem;
+      transition: border-color 0.18s;
+    }
+    .setup-field input:focus { outline: none; border-color: var(--blue); }
+    .setup-field input::placeholder { color: var(--quiet); }
+
+    .setup-footer {
+      padding: 1rem 2rem 1.5rem;
+      display: flex; gap: 0.75rem; align-items: center; justify-content: space-between;
+    }
+    .setup-error {
+      font-size: 0.78rem; color: var(--red); padding: 0.6rem 0.9rem;
+      background: var(--red-d); border-radius: 7px; border: 1px solid rgba(239,68,68,0.2);
+      display: none;
+    }
+    .setup-error.visible { display: block; }
+
+    /* ════════════════════════════════════
+       MAIN APP
+    ════════════════════════════════════ */
+    #mainApp { display: none; flex-direction: column; min-height: 100vh; }
+    #mainApp.active { display: flex; }
+
+    /* Top bar */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      height: 56px; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; padding: 0 1.5rem;
+      background: rgba(10,10,10,0.94); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
+    .topbar-logo {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: var(--blue); display: flex; align-items: center;
+      justify-content: center; font-size: 0.78rem; font-weight: 800; color: #fff;
+    }
+    .topbar-title { font-size: 0.95rem; font-weight: 700; }
+    .topbar-sub { font-size: 0.7rem; color: var(--muted); }
+    .topbar-right { display: flex; align-items: center; gap: 0.5rem; }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.7rem; font-weight: 600; color: var(--green);
+      padding: 0.2rem 0.6rem; border-radius: 50px;
+      background: var(--green-d); border: 1px solid rgba(34,197,94,0.2);
+    }
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: blink 2s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Stats bar */
     .stats-row {
-      display: flex; gap: 0; border-bottom: 1px solid var(--border);
-      overflow-x: auto;
+      display: flex; border-bottom: 1px solid var(--border);
+      overflow-x: auto; flex-shrink: 0;
     }
     .stat-pill {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.65rem 1.4rem; border-right: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.6rem 1.25rem; border-right: 1px solid var(--border);
       white-space: nowrap; cursor: pointer; transition: background 0.15s;
-      font-size: 0.82rem;
+      font-size: 0.8rem; flex-shrink: 0;
     }
     .stat-pill:hover { background: var(--surface); }
     .stat-pill.active { background: var(--surface2); }
     .stat-pill:last-child { border-right: none; }
-    .stat-dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    }
-    .stat-count { font-weight: 700; font-size: 1rem; }
+    .stat-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .stat-count { font-weight: 700; font-size: 0.95rem; }
     .stat-label { color: var(--muted); }
 
-    /* ─── Toolbar ─── */
+    /* Toolbar */
     .toolbar {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.65rem 1.5rem; border-bottom: 1px solid var(--border);
+      flex-wrap: wrap; flex-shrink: 0;
     }
-    .search-wrap {
-      position: relative; flex: 1; min-width: 200px; max-width: 360px;
-    }
-    .search-wrap svg {
-      position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);
-      width: 14px; height: 14px; color: var(--muted); pointer-events: none;
-    }
+    .search-wrap { position: relative; flex: 1; min-width: 180px; max-width: 320px; }
+    .search-wrap svg { position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; color: var(--muted); pointer-events: none; }
     .search-input {
-      width: 100%; padding: 0.45rem 0.75rem 0.45rem 2.2rem;
+      width: 100%; padding: 0.42rem 0.7rem 0.42rem 2.1rem;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 7px; color: var(--fg); font-size: 0.82rem;
       transition: border-color 0.18s;
     }
     .search-input:focus { outline: none; border-color: var(--blue); }
     .search-input::placeholder { color: var(--muted); }
-
-    select.filter-select {
-      padding: 0.45rem 0.75rem; background: var(--surface);
+    select.fsel {
+      padding: 0.42rem 0.7rem; background: var(--surface);
       border: 1px solid var(--border); border-radius: 7px;
       color: var(--fg); font-size: 0.82rem; cursor: pointer;
     }
-    select.filter-select:focus { outline: none; border-color: var(--blue); }
+    select.fsel:focus { outline: none; border-color: var(--blue); }
+    .toolbar-right { margin-left: auto; display: flex; gap: 0.5rem; align-items: center; }
+    .count-lbl { font-size: 0.75rem; color: var(--muted); }
 
-    .toolbar-right { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
-
-    /* ─── Table ─── */
+    /* Table */
     .table-wrap { flex: 1; overflow: auto; }
-    table {
-      width: 100%; border-collapse: collapse;
-      font-size: 0.82rem;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     thead th {
-      position: sticky; top: 0; z-index: 10;
-      background: var(--surface); padding: 0.7rem 1rem;
-      text-align: left; font-size: 0.68rem; font-weight: 700;
+      position: sticky; top: 0; z-index: 5;
+      background: var(--surface); padding: 0.65rem 0.9rem;
+      text-align: left; font-size: 0.66rem; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--muted); border-bottom: 1px solid var(--border);
-      white-space: nowrap; user-select: none; cursor: pointer;
+      white-space: nowrap; cursor: pointer; user-select: none;
     }
     thead th:hover { color: var(--fg); }
     thead th.sorted { color: var(--blue); }
-    tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.12s;
-    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.12s; }
     tbody tr:hover { background: var(--surface); }
-    tbody td { padding: 0.8rem 1rem; vertical-align: middle; }
+    tbody td { padding: 0.75rem 0.9rem; vertical-align: middle; }
 
-    .cell-company { font-weight: 600; color: var(--fg); }
-    .cell-url { color: var(--muted); font-size: 0.78rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cell-company { font-weight: 600; }
+    .cell-url { font-size: 0.76rem; color: var(--muted); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .cell-url a:hover { color: var(--blue); }
-    .cell-notes { color: var(--muted); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .cell-date { color: var(--muted); white-space: nowrap; }
-    .cell-who {
+    .cell-notes { color: var(--muted); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.78rem; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.28rem;
+      padding: 0.2rem 0.6rem; border-radius: 50px;
+      font-size: 0.7rem; font-weight: 600; white-space: nowrap;
+    }
+    .badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+    .s-osloveno  { background:var(--blue-d);   color:var(--blue); }
+    .s-zajem     { background:var(--green-d);  color:var(--green); }
+    .s-ceka      { background:var(--yellow-d); color:var(--yellow); }
+    .s-odmitнуто { background:var(--red-d);    color:var(--red); }
+
+    .who-chip {
       display: inline-flex; align-items: center; justify-content: center;
       width: 26px; height: 26px; border-radius: 50%;
-      font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+      font-size: 0.68rem; font-weight: 700;
     }
-    .cell-actions { display: flex; gap: 0.4rem; align-items: center; }
 
-    /* ─── Status badges ─── */
-    .badge {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      padding: 0.22rem 0.65rem; border-radius: 50px;
-      font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+    .cell-actions { display: flex; gap: 0.35rem; }
+
+    /* Empty */
+    .empty {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 0.75rem; padding: 5rem 1rem; color: var(--muted);
     }
-    .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-    .badge-osloveno  { background: var(--blue-d);   color: var(--blue); }
-    .badge-zajem     { background: var(--green-d);  color: var(--green); }
-    .badge-ceka      { background: var(--yellow-d); color: var(--yellow); }
-    .badge-odmitнуто { background: var(--red-d);    color: var(--red); }
-    .badge-odmitнуто { background: var(--red-d);    color: var(--red); }
+    .empty svg { width: 44px; height: 44px; opacity: 0.25; }
+    .empty p { font-size: 0.88rem; }
 
-    /* ─── Modal ─── */
-    .modal-backdrop {
+    /* Modal */
+    .backdrop {
       display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(4px);
       align-items: center; justify-content: center; padding: 1rem;
     }
-    .modal-backdrop.open { display: flex; }
+    .backdrop.open { display: flex; }
     .modal {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; width: 100%; max-width: 520px;
-      max-height: 90vh; overflow-y: auto;
+      border-radius: 14px; width: 100%; max-width: 500px;
+      max-height: 92vh; overflow-y: auto;
       box-shadow: 0 24px 60px rgba(0,0,0,0.6);
     }
-    .modal-header {
+    .modal-head {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+      padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
       position: sticky; top: 0; background: var(--surface); z-index: 1;
     }
     .modal-title { font-size: 1rem; font-weight: 700; }
-    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .modal-footer {
-      padding: 1rem 1.5rem; border-top: 1px solid var(--border);
-      display: flex; gap: 0.75rem; justify-content: flex-end;
-    }
+    .modal-body { padding: 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.9rem; }
+    .modal-foot { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 0.6rem; justify-content: flex-end; }
 
-    /* ─── Form ─── */
-    .field { display: flex; flex-direction: column; gap: 0.4rem; }
-    .field label { font-size: 0.75rem; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
     .field input, .field textarea, .field select {
-      padding: 0.6rem 0.85rem; background: var(--surface2);
+      padding: 0.58rem 0.8rem; background: var(--surface2);
       border: 1px solid var(--border); border-radius: 8px;
-      color: var(--fg); font-size: 0.88rem;
-      transition: border-color 0.18s;
+      color: var(--fg); font-size: 0.88rem; transition: border-color 0.18s;
     }
-    .field input:focus, .field textarea:focus, .field select:focus {
-      outline: none; border-color: var(--blue);
-    }
+    .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--blue); }
     .field input::placeholder, .field textarea::placeholder { color: var(--quiet); }
-    .field textarea { resize: vertical; min-height: 80px; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field textarea { resize: vertical; min-height: 75px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
 
-    /* ─── Empty state ─── */
-    .empty-state {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 1rem; padding: 5rem 1rem; color: var(--muted);
-    }
-    .empty-state svg { width: 48px; height: 48px; opacity: 0.3; }
-    .empty-state p { font-size: 0.9rem; }
-
-    /* ─── Sync modal ─── */
-    .sync-tabs { display: flex; border-bottom: 1px solid var(--border); }
-    .sync-tab {
-      flex: 1; padding: 0.75rem; text-align: center;
-      font-size: 0.82rem; font-weight: 600; color: var(--muted);
-      cursor: pointer; border-bottom: 2px solid transparent;
-      transition: all 0.18s;
-    }
-    .sync-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
-    .sync-panel { display: none; padding: 1.25rem 1.5rem; }
-    .sync-panel.active { display: block; }
-    .code-block {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 1rem; font-size: 0.78rem;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      color: var(--muted); word-break: break-all;
-      max-height: 160px; overflow-y: auto; user-select: all;
-    }
-    .import-area {
-      width: 100%; min-height: 100px; padding: 0.75rem;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--fg); font-size: 0.82rem;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      resize: vertical;
-    }
-    .import-area:focus { outline: none; border-color: var(--blue); }
-
-    /* ─── Toast ─── */
-    .toast-container {
-      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
-      display: flex; flex-direction: column; gap: 0.5rem;
-    }
+    /* Toast */
+    .toasts { position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.4rem; }
     .toast {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 0.75rem 1.25rem;
-      font-size: 0.82rem; font-weight: 500;
+      border-radius: 9px; padding: 0.65rem 1.1rem;
+      font-size: 0.8rem; font-weight: 500;
       box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      animation: slideIn 0.25s ease;
-      display: flex; align-items: center; gap: 0.5rem;
+      animation: tin 0.22s ease; display: flex; align-items: center; gap: 0.4rem;
     }
-    .toast.success { border-color: rgba(34,197,94,0.3); }
-    .toast.error   { border-color: rgba(239,68,68,0.3); }
-    @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .toast.ok  { border-color: rgba(34,197,94,0.25); }
+    .toast.err { border-color: rgba(239,68,68,0.25); }
+    @keyframes tin { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
 
-    /* ─── Mobile ─── */
-    @media (max-width: 700px) {
+    /* Sync indicator */
+    .sync-indicator {
+      font-size: 0.7rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .sync-indicator.syncing { color: var(--yellow); }
+    .sync-indicator.syncing::before { content:''; width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:blink 1s ease infinite; }
+
+    @media(max-width:700px) {
+      .hide-m { display:none!important; }
       .topbar { padding: 0 1rem; }
-      .toolbar { padding: 0.6rem 1rem; }
-      .hide-mobile { display: none !important; }
-      tbody td { padding: 0.6rem 0.75rem; }
+      .toolbar { padding: 0.55rem 1rem; }
+      tbody td { padding: 0.6rem 0.7rem; }
       .field-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<div class="app" id="app">
 
-  <!-- TOP BAR -->
+<!-- ══════════════════════════════════════
+     SETUP SCREEN
+══════════════════════════════════════ -->
+<div id="setupScreen">
+  <div class="setup-card">
+    <div class="setup-header">
+      <div class="setup-logo">K</div>
+      <div class="setup-title">Nastavení KSH Outreach Tracker</div>
+      <div class="setup-sub">Jednorázové propojení s databází. Stačí udělat <strong>jednou</strong> — ostatní v týmu to nepotřebují.</div>
+    </div>
+
+    <div class="setup-steps">
+      <div class="setup-step">
+        <div class="setup-step-num">1</div>
+        <div class="setup-step-content">
+          <div class="setup-step-title">Vytvoř free účet na Supabase</div>
+          <div class="setup-step-desc">
+            Jdi na <a href="https://supabase.com" target="_blank">supabase.com</a> → <strong>Start your project</strong> → přihlas se přes GitHub. Pak <strong>New project</strong> (libovolný název, heslo si zapiš).
+          </div>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <div class="setup-step-num">2</div>
+        <div class="setup-step-content">
+          <div class="setup-step-title">Vytvoř tabulku — zkopíruj SQL níže</div>
+          <div class="setup-step-desc" style="margin-bottom:0.6rem;">
+            V Supabase panelu jdi do <code>SQL Editor</code> → <strong>New query</strong> → vlož tento kód a klikni <strong>Run</strong>:
+          </div>
+          <div class="setup-sql" id="sqlBlock">CREATE TABLE contacts (
+  id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  company     text NOT NULL,
+  url         text,
+  status      text DEFAULT 'osloveno',
+  method      text DEFAULT 'email',
+  who         text,
+  date        date,
+  notes       text,
+  created_at  timestamptz DEFAULT now()
+);
+
+-- Povol čtení/zápis bez přihlášení (pro tým):
+ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "public_all" ON contacts FOR ALL USING (true) WITH CHECK (true);</div>
+          <button class="btn btn-ghost setup-copy-btn" onclick="copySql()">Kopírovat SQL</button>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <div class="setup-step-num">3</div>
+        <div class="setup-step-content">
+          <div class="setup-step-title">Zkopíruj přihlašovací údaje</div>
+          <div class="setup-step-desc">
+            V Supabase: <code>Settings → API</code> → zkopíruj <strong>Project URL</strong> a <strong>anon public</strong> klíč níže.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-form">
+      <div class="setup-field">
+        <label>Project URL</label>
+        <input id="cfgUrl" placeholder="https://xxxxxxxxxxx.supabase.co" />
+      </div>
+      <div class="setup-field">
+        <label>Anon Public Key</label>
+        <input id="cfgKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV…" />
+      </div>
+      <div class="setup-error" id="setupError"></div>
+    </div>
+
+    <div class="setup-footer">
+      <div style="font-size:0.75rem;color:var(--muted);">Údaje se uloží jen do tvého prohlížeče.</div>
+      <button class="btn btn-primary" id="setupBtn" onclick="connectSupabase()">Připojit a spustit →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════ -->
+<div id="mainApp">
+
+  <!-- Top bar -->
   <div class="topbar">
     <div class="topbar-left">
       <div class="topbar-logo">K</div>
       <div>
         <div class="topbar-title">KSH Outreach</div>
-        <div class="topbar-subtitle">Tracker oslovených webů</div>
+        <div class="topbar-sub">Tracker oslovených webů</div>
       </div>
     </div>
     <div class="topbar-right">
-      <button class="btn btn-ghost btn-sm" onclick="openSync()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-        Synchronizovat
-      </button>
+      <span class="live-badge"><span class="live-dot"></span>Živě synchronizováno</span>
+      <div class="sync-indicator" id="syncIndicator"></div>
       <button class="btn btn-primary btn-sm" onclick="openModal()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Přidat kontakt
+      </button>
+      <button class="btn btn-ghost btn-sm hide-m" onclick="exportCSV()">CSV</button>
+      <button class="btn btn-ghost btn-icon" onclick="resetConfig()" title="Odpojit / změnit databázi">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- STATS -->
+  <!-- Stats -->
   <div class="stats-row" id="statsRow"></div>
 
-  <!-- TOOLBAR -->
+  <!-- Toolbar -->
   <div class="toolbar">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input class="search-input" id="searchInput" placeholder="Hledat firmu, URL, poznámku…" oninput="render()" />
     </div>
-    <select class="filter-select" id="filterStatus" onchange="render()">
+    <select class="fsel" id="filterStatus" onchange="render()">
       <option value="">Všechny stavy</option>
       <option value="osloveno">Osloveno</option>
       <option value="zajem">Zájem</option>
       <option value="ceka">Čeká na odpověď</option>
       <option value="odmitнуто">Odmítnuto</option>
     </select>
-    <select class="filter-select" id="filterWho" onchange="render()">
+    <select class="fsel" id="filterWho" onchange="render()">
       <option value="">Všichni členové</option>
     </select>
     <div class="toolbar-right">
-      <span id="countLabel" style="font-size:0.78rem;color:var(--muted);"></span>
-      <button class="btn btn-ghost btn-sm" onclick="exportCSV()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        CSV
-      </button>
+      <span class="count-lbl" id="countLbl"></span>
     </div>
   </div>
 
-  <!-- TABLE -->
+  <!-- Table -->
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th onclick="setSort('company')">Firma <span id="sort-company"></span></th>
-          <th onclick="setSort('url')" class="hide-mobile">URL <span id="sort-url"></span></th>
-          <th onclick="setSort('status')">Stav <span id="sort-status"></span></th>
-          <th onclick="setSort('who')">Kdo <span id="sort-who"></span></th>
-          <th onclick="setSort('date')" class="hide-mobile">Datum <span id="sort-date"></span></th>
-          <th class="hide-mobile">Způsob</th>
+          <th onclick="setSort('company')">Firma <span id="si-company"></span></th>
+          <th onclick="setSort('url')" class="hide-m">URL <span id="si-url"></span></th>
+          <th onclick="setSort('status')">Stav <span id="si-status"></span></th>
+          <th onclick="setSort('who')">Kdo <span id="si-who"></span></th>
+          <th onclick="setSort('date')" class="hide-m">Datum <span id="si-date"></span></th>
+          <th class="hide-m">Způsob</th>
           <th>Poznámky</th>
-          <th style="width:90px;"></th>
+          <th style="width:80px;"></th>
         </tr>
       </thead>
-      <tbody id="tableBody"></tbody>
+      <tbody id="tbody"></tbody>
     </table>
-    <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty" id="emptyState" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg>
-      <p id="emptyMsg">Zatím žádné záznamy. Přidejte první kontakt.</p>
+      <p id="emptyMsg">Žádné záznamy.</p>
     </div>
   </div>
 
 </div>
 
 <!-- ADD / EDIT MODAL -->
-<div class="modal-backdrop" id="addModal">
+<div class="backdrop" id="modal">
   <div class="modal">
-    <div class="modal-header">
+    <div class="modal-head">
       <div class="modal-title" id="modalTitle">Nový kontakt</div>
       <button class="btn btn-ghost btn-icon" onclick="closeModal()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="modal-body">
@@ -380,7 +514,7 @@
       <div class="field-row">
         <div class="field">
           <label>Název firmy *</label>
-          <input id="fCompany" placeholder="např. Pivnice U Kocoura" />
+          <input id="fCompany" placeholder="např. Kavárna Na Rohu" />
         </div>
         <div class="field">
           <label>URL webu</label>
@@ -400,12 +534,12 @@
         <div class="field">
           <label>Způsob kontaktu</label>
           <select id="fMethod">
-            <option value="email">E-mail</option>
-            <option value="telefon">Telefon</option>
-            <option value="formular">Formulář</option>
-            <option value="instagram">Instagram / DM</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="osobne">Osobně</option>
+            <option value="email">✉️ E-mail</option>
+            <option value="telefon">📞 Telefon</option>
+            <option value="formular">📋 Formulář</option>
+            <option value="instagram">📸 Instagram</option>
+            <option value="linkedin">💼 LinkedIn</option>
+            <option value="osobne">🤝 Osobně</option>
           </select>
         </div>
       </div>
@@ -424,442 +558,351 @@
         <textarea id="fNotes" placeholder="Co bylo řečeno, co bude dál…"></textarea>
       </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal()">Zrušit</button>
       <button class="btn btn-primary" onclick="saveContact()">Uložit</button>
     </div>
   </div>
 </div>
 
-<!-- SYNC MODAL -->
-<div class="modal-backdrop" id="syncModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Synchronizovat s týmem</div>
-      <button class="btn btn-ghost btn-icon" onclick="closeSync()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="sync-tabs">
-      <div class="sync-tab active" onclick="switchSyncTab('export')">📤 Exportovat data</div>
-      <div class="sync-tab" onclick="switchSyncTab('import')">📥 Importovat data</div>
-      <div class="sync-tab" onclick="switchSyncTab('info')">ℹ️ Jak to funguje</div>
-    </div>
-
-    <div class="sync-panel active" id="sync-export">
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">
-        Zkopíruj tato data a pošli je kolegovi (WhatsApp, email, Slack…).
-      </p>
-      <div class="code-block" id="exportBlock"></div>
-      <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;">
-        <button class="btn btn-primary btn-sm" onclick="copyExport()">Kopírovat do schránky</button>
-        <button class="btn btn-ghost btn-sm" onclick="downloadJSON()">Stáhnout jako soubor</button>
-      </div>
-    </div>
-
-    <div class="sync-panel" id="sync-import">
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">
-        Vlož data od kolegy (JSON text). Záznamy se <strong>sloučí</strong> — duplicity se přeskočí.
-      </p>
-      <textarea class="import-area" id="importArea" placeholder='Vlož JSON od kolegy sem… ({"records":[...]})' rows="6"></textarea>
-      <div style="display:flex;gap:0.5rem;margin-top:1rem;align-items:center;">
-        <button class="btn btn-primary btn-sm" onclick="importData()">Importovat a sloučit</button>
-        <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
-          Nahrát soubor <input type="file" accept=".json" onchange="loadFile(event)" style="display:none;" />
-        </label>
-        <label style="font-size:0.78rem;color:var(--muted);" id="mergeLabel"></label>
-      </div>
-    </div>
-
-    <div class="sync-panel" id="sync-info">
-      <div style="font-size:0.85rem;color:var(--muted);line-height:1.75;">
-        <p style="margin-bottom:0.75rem;color:var(--fg);font-weight:600;">Jak synchronizovat s týmem?</p>
-        <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:0.5rem;">
-          <li>Každý člen týmu si otevře tuto stránku ve svém prohlížeči.</li>
-          <li>Data se ukládají lokálně v prohlížeči — každý vidí svoji kopii.</li>
-          <li>Kdykoli chceš sdílet záznamy, klikni <strong>Exportovat</strong> → zkopíruj text → pošli kolegovi.</li>
-          <li>Kolega klikne <strong>Importovat</strong> → vloží text → záznamy se sloučí bez duplikátů.</li>
-          <li>Alternativně stáhni JSON soubor a sdílej ho přes disk/email.</li>
-        </ol>
-        <p style="margin-top:1rem;">💡 Tip: Domluvte se, kdo je „správce" a pravidelně sdílí master export ostatním.</p>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeSync()">Zavřít</button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST CONTAINER -->
-<div class="toast-container" id="toastContainer"></div>
+<div class="toasts" id="toasts"></div>
 
 <script>
-// ─── Config ───────────────────────────────────────────────────────
-const STORAGE_KEY = 'ksh_outreach_v1';
-const WHO_KEY     = 'ksh_last_who';
+// ─── Config ─────────────────────────────────────────────────────
+const CFG_KEY  = 'ksh_supabase_cfg';
+const WHO_KEY  = 'ksh_last_who';
 
-const STATUS_CONFIG = {
-  osloveno:   { label: 'Osloveno',          color: '#3b82f6', cls: 'badge-osloveno' },
-  zajem:      { label: 'Zájem',             color: '#22c55e', cls: 'badge-zajem' },
-  ceka:       { label: 'Čeká na odpověď',   color: '#eab308', cls: 'badge-ceka' },
-  'odmitнуто':{ label: 'Odmítnuto',         color: '#ef4444', cls: 'badge-odmitнуто' },
+const STATUS = {
+  osloveno:    { label: 'Osloveno',        color: '#3b82f6', cls: 's-osloveno' },
+  zajem:       { label: 'Zájem',           color: '#22c55e', cls: 's-zajem' },
+  ceka:        { label: 'Čeká',            color: '#eab308', cls: 's-ceka' },
+  'odmitнуто': { label: 'Odmítnuto',       color: '#ef4444', cls: 's-odmitнуто' },
 };
-
-const METHOD_LABELS = {
-  email: '✉️ E-mail', telefon: '📞 Telefon',
-  formular: '📋 Formulář', instagram: '📸 Instagram',
-  linkedin: '💼 LinkedIn', osobne: '🤝 Osobně',
+const METHOD = {
+  email:'✉️ E-mail', telefon:'📞 Telefon',
+  formular:'📋 Formulář', instagram:'📸 Instagram',
+  linkedin:'💼 LinkedIn', osobne:'🤝 Osobně',
 };
-
-// Persistent avatar colors for team members
 const WHO_COLORS = ['#3b82f6','#22c55e','#a855f7','#f59e0b','#ec4899','#14b8a6'];
-let whoColorMap = {};
-let whoColorIdx = 0;
-function getWhoColor(name) {
-  if (!whoColorMap[name]) {
-    whoColorMap[name] = WHO_COLORS[whoColorIdx % WHO_COLORS.length];
-    whoColorIdx++;
-  }
-  return whoColorMap[name];
+const whoColor = {};
+let whoIdx = 0;
+function getWhoColor(n) {
+  if (!whoColor[n]) { whoColor[n] = WHO_COLORS[whoIdx++ % WHO_COLORS.length]; }
+  return whoColor[n];
 }
-function getInitials(name) {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-}
+function initials(n) { return (n||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
 
-// ─── State ────────────────────────────────────────────────────────
+// ─── State ──────────────────────────────────────────────────────
+let db = null;
 let records = [];
-let sortKey  = 'date';
+let sortKey = 'created_at';
 let sortDesc = true;
-let editingId = null;
+let editId = null;
 
-// ─── Persistence ─────────────────────────────────────────────────
-function load() {
-  try { records = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch { records = []; }
-}
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+// ─── Setup ──────────────────────────────────────────────────────
+function copySql() {
+  navigator.clipboard.writeText(document.getElementById('sqlBlock').textContent);
+  toast('SQL zkopírováno ✓');
 }
 
-// ─── Filtering & sorting ─────────────────────────────────────────
-function getFiltered() {
-  const q      = document.getElementById('searchInput').value.toLowerCase().trim();
-  const status = document.getElementById('filterStatus').value;
-  const who    = document.getElementById('filterWho').value;
+async function connectSupabase() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+  const err = document.getElementById('setupError');
+  const btn = document.getElementById('setupBtn');
 
-  return records
-    .filter(r => {
-      if (status && r.status !== status) return false;
-      if (who && r.who !== who) return false;
-      if (q) {
-        const hay = `${r.company} ${r.url} ${r.notes} ${r.who}`.toLowerCase();
-        if (!hay.includes(q)) return false;
+  if (!url || !key) { showErr('Vyplň obě pole.'); return; }
+  if (!url.includes('supabase.co')) { showErr('URL vypadá špatně — zkopíruj ji znovu ze Settings → API.'); return; }
+
+  btn.textContent = 'Připojuji…'; btn.disabled = true;
+  err.classList.remove('visible');
+
+  try {
+    const client = supabase.createClient(url, key);
+    const { error } = await client.from('contacts').select('id').limit(1);
+    if (error) throw error;
+
+    localStorage.setItem(CFG_KEY, JSON.stringify({ url, key }));
+    db = client;
+    startApp();
+  } catch(e) {
+    showErr('Nelze se připojit: ' + (e.message || e.toString()) + '\n\nZkontroluj URL a klíč, nebo zda jsi spustil SQL v Supabase.');
+    btn.textContent = 'Připojit a spustit →'; btn.disabled = false;
+  }
+}
+
+function showErr(msg) {
+  const el = document.getElementById('setupError');
+  el.textContent = msg; el.classList.add('visible');
+}
+
+function resetConfig() {
+  if (!confirm('Odpojit databázi? Budeš muset zadat údaje znovu.')) return;
+  localStorage.removeItem(CFG_KEY);
+  location.reload();
+}
+
+// ─── Init ────────────────────────────────────────────────────────
+(function init() {
+  db = supabase.createClient(
+    'https://mpydvkooqlgeyjlmylkv.supabase.co',
+    'sb_publishable_vznr30ToMNhAS84CKLIllw_7GBjzP8J'
+  );
+  startApp();
+})();
+
+function showSetup() { document.getElementById('setupScreen').classList.add('active'); }
+
+async function startApp() {
+  document.getElementById('setupScreen').classList.remove('active');
+  document.getElementById('mainApp').classList.add('active');
+  await fetchAll();
+  subscribeRealtime();
+}
+
+// ─── Data ────────────────────────────────────────────────────────
+async function fetchAll() {
+  setSyncing(true);
+  const { data, error } = await db.from('contacts').select('*').order('created_at', { ascending: false });
+  setSyncing(false);
+  if (error) { toast('Chyba načtení: ' + error.message, 'err'); return; }
+  records = data || [];
+  render();
+}
+
+function subscribeRealtime() {
+  db.channel('contacts-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'contacts' }, payload => {
+      const { eventType, new: nw, old } = payload;
+      if (eventType === 'INSERT') {
+        if (!records.find(r => r.id === nw.id)) records.unshift(nw);
+      } else if (eventType === 'UPDATE') {
+        const i = records.findIndex(r => r.id === nw.id);
+        if (i >= 0) records[i] = nw; else records.unshift(nw);
+      } else if (eventType === 'DELETE') {
+        records = records.filter(r => r.id !== old.id);
       }
-      return true;
+      render();
     })
-    .sort((a, b) => {
-      let av = (a[sortKey] || '').toString().toLowerCase();
-      let bv = (b[sortKey] || '').toString().toLowerCase();
-      return sortDesc ? bv.localeCompare(av) : av.localeCompare(bv);
-    });
+    .subscribe();
 }
 
-function setSort(key) {
-  if (sortKey === key) { sortDesc = !sortDesc; }
-  else { sortKey = key; sortDesc = true; }
-  render();
-}
-
-// ─── Render ───────────────────────────────────────────────────────
-function render() {
-  renderStats();
-  renderWhoFilter();
-  renderTable();
-}
-
-function renderStats() {
-  const counts = { all: records.length };
-  for (const k of Object.keys(STATUS_CONFIG)) {
-    counts[k] = records.filter(r => r.status === k).length;
-  }
-  const row = document.getElementById('statsRow');
-  const active = document.getElementById('filterStatus').value || 'all';
-  row.innerHTML = `
-    <div class="stat-pill ${active === 'all' ? 'active' : ''}" onclick="filterByStatus('')">
-      <span class="stat-dot" style="background:#666"></span>
-      <span class="stat-count">${counts.all}</span>
-      <span class="stat-label">Celkem</span>
-    </div>
-    ${Object.entries(STATUS_CONFIG).map(([k, v]) => `
-      <div class="stat-pill ${active === k ? 'active' : ''}" onclick="filterByStatus('${k}')">
-        <span class="stat-dot" style="background:${v.color}"></span>
-        <span class="stat-count">${counts[k]}</span>
-        <span class="stat-label">${v.label}</span>
-      </div>
-    `).join('')}
-  `;
-}
-
-function filterByStatus(val) {
-  document.getElementById('filterStatus').value = val;
-  render();
-}
-
-function renderWhoFilter() {
-  const sel = document.getElementById('filterWho');
-  const cur = sel.value;
-  const names = [...new Set(records.map(r => r.who).filter(Boolean))].sort();
-  sel.innerHTML = `<option value="">Všichni členové</option>` +
-    names.map(n => `<option value="${n}" ${n === cur ? 'selected' : ''}>${n}</option>`).join('');
-}
-
-function renderTable() {
-  const rows = getFiltered();
-  const tbody = document.getElementById('tableBody');
-  const empty = document.getElementById('emptyState');
-  const lbl   = document.getElementById('countLabel');
-
-  lbl.textContent = rows.length !== records.length
-    ? `${rows.length} z ${records.length}`
-    : `${records.length} záznamů`;
-
-  // Sort indicators
-  for (const k of ['company','url','status','who','date']) {
-    const el = document.getElementById(`sort-${k}`);
-    if (el) el.textContent = sortKey === k ? (sortDesc ? ' ↓' : ' ↑') : '';
-  }
-
-  if (rows.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = 'flex';
-    document.getElementById('emptyMsg').textContent =
-      records.length === 0 ? 'Zatím žádné záznamy. Přidejte první kontakt.' : 'Žádné záznamy neodpovídají filtru.';
-    return;
-  }
-  empty.style.display = 'none';
-
-  tbody.innerHTML = rows.map(r => {
-    const st = STATUS_CONFIG[r.status] || STATUS_CONFIG.osloveno;
-    const whoColor = getWhoColor(r.who || '?');
-    const initials = getInitials(r.who || '?');
-    const dateStr = r.date ? new Date(r.date).toLocaleDateString('cs-CZ', { day:'numeric', month:'short' }) : '—';
-    const method = METHOD_LABELS[r.method] || r.method || '—';
-    const urlShort = r.url ? r.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') : '';
-
-    return `
-      <tr>
-        <td>
-          <div class="cell-company">${esc(r.company)}</div>
-          <div class="cell-url hide-tablet">
-            ${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" title="${esc(r.url)}">${esc(urlShort)}</a>` : ''}
-          </div>
-        </td>
-        <td class="hide-mobile">
-          ${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" class="cell-url" title="${esc(r.url)}">${esc(urlShort)}</a>` : '<span style="color:var(--quiet)">—</span>'}
-        </td>
-        <td><span class="badge ${st.cls}">${st.label}</span></td>
-        <td>
-          <div style="display:flex;align-items:center;gap:0.5rem;">
-            <span class="cell-who" style="background:${whoColor}22;color:${whoColor};" title="${esc(r.who || '')}">${initials}</span>
-            <span class="hide-mobile" style="font-size:0.8rem;">${esc(r.who || '—')}</span>
-          </div>
-        </td>
-        <td class="cell-date hide-mobile">${dateStr}</td>
-        <td class="hide-mobile" style="font-size:0.78rem;color:var(--muted);">${method}</td>
-        <td class="cell-notes" title="${esc(r.notes || '')}">${esc(r.notes || '') || '<span style="color:var(--quiet)">—</span>'}</td>
-        <td class="cell-actions">
-          <button class="btn btn-ghost btn-icon btn-sm" onclick="editContact('${r.id}')" title="Upravit">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          </button>
-          <button class="btn btn-danger btn-icon btn-sm" onclick="deleteContact('${r.id}')" title="Smazat">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-          </button>
-        </td>
-      </tr>`;
-  }).join('');
-}
-
-function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ─── Modal ────────────────────────────────────────────────────────
-function openModal(id = null) {
-  editingId = id;
-  document.getElementById('modalTitle').textContent = id ? 'Upravit kontakt' : 'Nový kontakt';
-  document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('fWho').value  = localStorage.getItem(WHO_KEY) || '';
-
-  if (id) {
-    const r = records.find(r => r.id === id);
-    if (r) {
-      document.getElementById('fCompany').value = r.company || '';
-      document.getElementById('fUrl').value     = r.url     || '';
-      document.getElementById('fStatus').value  = r.status  || 'osloveno';
-      document.getElementById('fMethod').value  = r.method  || 'email';
-      document.getElementById('fWho').value     = r.who     || '';
-      document.getElementById('fDate').value    = r.date    || '';
-      document.getElementById('fNotes').value   = r.notes   || '';
-    }
-  } else {
-    document.getElementById('fCompany').value = '';
-    document.getElementById('fUrl').value     = '';
-    document.getElementById('fStatus').value  = 'osloveno';
-    document.getElementById('fMethod').value  = 'email';
-    document.getElementById('fNotes').value   = '';
-  }
-  document.getElementById('addModal').classList.add('open');
-  setTimeout(() => document.getElementById('fCompany').focus(), 80);
-}
-
-function closeModal() { document.getElementById('addModal').classList.remove('open'); }
-
-function saveContact() {
+// ─── CRUD ────────────────────────────────────────────────────────
+async function saveContact() {
   const company = document.getElementById('fCompany').value.trim();
   const url     = document.getElementById('fUrl').value.trim();
   const status  = document.getElementById('fStatus').value;
   const method  = document.getElementById('fMethod').value;
   const who     = document.getElementById('fWho').value.trim();
-  const date    = document.getElementById('fDate').value;
+  const date    = document.getElementById('fDate').value || null;
   const notes   = document.getElementById('fNotes').value.trim();
 
-  if (!company) { toast('Zadejte název firmy.', 'error'); return; }
-  if (!who)     { toast('Zadejte jméno kontaktující osoby.', 'error'); return; }
-
+  if (!company) { toast('Zadej název firmy.', 'err'); return; }
+  if (!who)     { toast('Zadej jméno.', 'err'); return; }
   localStorage.setItem(WHO_KEY, who);
 
-  if (editingId) {
-    const idx = records.findIndex(r => r.id === editingId);
-    if (idx >= 0) records[idx] = { ...records[idx], company, url, status, method, who, date, notes, updatedAt: new Date().toISOString() };
-    toast('Záznam upraven ✓', 'success');
+  setSyncing(true);
+  const eid = document.getElementById('editId').value;
+  let error;
+
+  if (eid) {
+    ({ error } = await db.from('contacts').update({ company, url, status, method, who, date, notes }).eq('id', eid));
+    if (!error) toast('Uloženo ✓');
   } else {
-    records.unshift({
-      id: `${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
-      company, url, status, method, who, date, notes,
-      createdAt: new Date().toISOString(),
+    ({ error } = await db.from('contacts').insert({ company, url, status, method, who, date, notes }));
+    if (!error) toast('Kontakt přidán ✓');
+  }
+  setSyncing(false);
+  if (error) { toast('Chyba: ' + error.message, 'err'); return; }
+  closeModal();
+}
+
+async function deleteContact(id) {
+  if (!confirm('Smazat tento záznam?')) return;
+  setSyncing(true);
+  const { error } = await db.from('contacts').delete().eq('id', id);
+  setSyncing(false);
+  if (error) { toast('Chyba: ' + error.message, 'err'); return; }
+  toast('Smazáno');
+}
+
+// ─── Render ──────────────────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const fs = document.getElementById('filterStatus').value;
+  const fw = document.getElementById('filterWho').value;
+  return records
+    .filter(r => {
+      if (fs && r.status !== fs) return false;
+      if (fw && r.who !== fw) return false;
+      if (q) { const h = `${r.company} ${r.url} ${r.notes} ${r.who}`.toLowerCase(); if (!h.includes(q)) return false; }
+      return true;
+    })
+    .sort((a,b) => {
+      const av = String(a[sortKey]||'').toLowerCase();
+      const bv = String(b[sortKey]||'').toLowerCase();
+      return sortDesc ? bv.localeCompare(av) : av.localeCompare(bv);
     });
-    toast('Kontakt přidán ✓', 'success');
+}
+
+function setSort(k) { if (sortKey===k) sortDesc=!sortDesc; else { sortKey=k; sortDesc=true; } render(); }
+
+function render() { renderStats(); renderWhoFilter(); renderTable(); }
+
+function renderStats() {
+  const counts = { all: records.length };
+  for (const k of Object.keys(STATUS)) counts[k] = records.filter(r=>r.status===k).length;
+  const active = document.getElementById('filterStatus').value || 'all';
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-pill ${active==='all'?'active':''}" onclick="filterStatus('')">
+      <span class="stat-dot" style="background:#555"></span>
+      <span class="stat-count">${counts.all}</span>
+      <span class="stat-label">Celkem</span>
+    </div>
+    ${Object.entries(STATUS).map(([k,v])=>`
+      <div class="stat-pill ${active===k?'active':''}" onclick="filterStatus('${k}')">
+        <span class="stat-dot" style="background:${v.color}"></span>
+        <span class="stat-count">${counts[k]}</span>
+        <span class="stat-label">${v.label}</span>
+      </div>`).join('')}`;
+}
+
+function filterStatus(v) { document.getElementById('filterStatus').value=v; render(); }
+
+function renderWhoFilter() {
+  const sel = document.getElementById('filterWho');
+  const cur = sel.value;
+  const names = [...new Set(records.map(r=>r.who).filter(Boolean))].sort();
+  sel.innerHTML = `<option value="">Všichni členové</option>` +
+    names.map(n=>`<option value="${n}"${n===cur?' selected':''}>${esc(n)}</option>`).join('');
+}
+
+function renderTable() {
+  const rows = getFiltered();
+  const tbody = document.getElementById('tbody');
+  const empty = document.getElementById('emptyState');
+  document.getElementById('countLbl').textContent =
+    rows.length !== records.length ? `${rows.length} z ${records.length}` : `${records.length} záznamů`;
+
+  for (const k of ['company','url','status','who','date','created_at']) {
+    const el = document.getElementById(`si-${k}`);
+    if (el) el.textContent = sortKey===k ? (sortDesc?' ↓':' ↑') : '';
   }
-  save(); closeModal(); render();
+
+  if (!rows.length) {
+    tbody.innerHTML=''; empty.style.display='flex';
+    document.getElementById('emptyMsg').textContent =
+      records.length===0 ? 'Zatím žádné záznamy. Přidejte první kontakt.' : 'Nic neodpovídá filtru.';
+    return;
+  }
+  empty.style.display='none';
+
+  tbody.innerHTML = rows.map(r => {
+    const st = STATUS[r.status] || STATUS.osloveno;
+    const wc = getWhoColor(r.who||'?');
+    const ini = initials(r.who||'?');
+    const d = r.date ? new Date(r.date+'T12:00').toLocaleDateString('cs-CZ',{day:'numeric',month:'short'}) : '—';
+    const urlShort = r.url ? r.url.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'') : '';
+    return `<tr>
+      <td>
+        <div class="cell-company">${esc(r.company)}</div>
+        ${r.url?`<div class="cell-url hide-tablet"><a href="${esc(r.url)}" target="_blank">${esc(urlShort)}</a></div>`:''}
+      </td>
+      <td class="hide-m">
+        ${r.url?`<a href="${esc(r.url)}" target="_blank" class="cell-url" title="${esc(r.url)}">${esc(urlShort)}</a>`:'<span style="color:var(--quiet)">—</span>'}
+      </td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:0.45rem;">
+          <span class="who-chip" style="background:${wc}20;color:${wc}" title="${esc(r.who||'')}">${ini}</span>
+          <span class="hide-m" style="font-size:0.8rem;">${esc(r.who||'—')}</span>
+        </div>
+      </td>
+      <td class="hide-m" style="color:var(--muted);white-space:nowrap;font-size:0.8rem;">${d}</td>
+      <td class="hide-m" style="font-size:0.76rem;color:var(--muted);">${esc(METHOD[r.method]||r.method||'—')}</td>
+      <td class="cell-notes" title="${esc(r.notes||'')}">${esc(r.notes||'')||'<span style="color:var(--quiet)">—</span>'}</td>
+      <td class="cell-actions">
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="openModal('${r.id}')" title="Upravit">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="btn btn-danger btn-icon btn-sm" onclick="deleteContact('${r.id}')" title="Smazat">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg>
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
-function editContact(id)   { openModal(id); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-function deleteContact(id) {
-  if (!confirm('Opravdu smazat tento záznam?')) return;
-  records = records.filter(r => r.id !== id);
-  save(); render();
-  toast('Smazáno', 'error');
-}
+// ─── Modal ───────────────────────────────────────────────────────
+function openModal(id = null) {
+  editId = id;
+  document.getElementById('modalTitle').textContent = id ? 'Upravit kontakt' : 'Nový kontakt';
+  document.getElementById('editId').value = id || '';
+  document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('fWho').value  = localStorage.getItem(WHO_KEY) || '';
 
-// ─── Sync ─────────────────────────────────────────────────────────
-function openSync() {
-  const payload = JSON.stringify({ version: 1, records, exportedAt: new Date().toISOString() }, null, 2);
-  document.getElementById('exportBlock').textContent = payload;
-  document.getElementById('importArea').value = '';
-  document.getElementById('mergeLabel').textContent = '';
-  document.getElementById('syncModal').classList.add('open');
-  switchSyncTab('export');
-}
-function closeSync() { document.getElementById('syncModal').classList.remove('open'); }
-
-function switchSyncTab(tab) {
-  document.querySelectorAll('.sync-tab').forEach((el, i) => {
-    el.classList.toggle('active', ['export','import','info'][i] === tab);
-  });
-  ['export','import','info'].forEach(t => {
-    document.getElementById(`sync-${t}`).classList.toggle('active', t === tab);
-  });
-}
-
-function copyExport() {
-  const txt = document.getElementById('exportBlock').textContent;
-  navigator.clipboard.writeText(txt).then(() => toast('Zkopírováno do schránky ✓', 'success'));
-}
-
-function downloadJSON() {
-  const payload = document.getElementById('exportBlock').textContent;
-  const blob = new Blob([payload], { type: 'application/json' });
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(blob),
-    download: `ksh-outreach-${new Date().toISOString().slice(0,10)}.json`,
-  });
-  a.click();
-}
-
-function loadFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => { document.getElementById('importArea').value = ev.target.result; };
-  reader.readAsText(file);
-}
-
-function importData() {
-  const raw = document.getElementById('importArea').value.trim();
-  if (!raw) { toast('Vlož nejdříve JSON data.', 'error'); return; }
-  try {
-    const parsed = JSON.parse(raw);
-    const incoming = Array.isArray(parsed) ? parsed : (parsed.records || []);
-    const existingIds = new Set(records.map(r => r.id));
-    let added = 0, skipped = 0;
-    for (const r of incoming) {
-      if (existingIds.has(r.id)) { skipped++; }
-      else { records.push(r); added++; }
+  if (id) {
+    const r = records.find(r=>r.id===id);
+    if (r) {
+      document.getElementById('fCompany').value = r.company||'';
+      document.getElementById('fUrl').value     = r.url||'';
+      document.getElementById('fStatus').value  = r.status||'osloveno';
+      document.getElementById('fMethod').value  = r.method||'email';
+      document.getElementById('fWho').value     = r.who||'';
+      document.getElementById('fDate').value    = r.date||'';
+      document.getElementById('fNotes').value   = r.notes||'';
     }
-    save(); render();
-    document.getElementById('mergeLabel').textContent = `+${added} přidáno, ${skipped} přeskočeno`;
-    toast(`Importováno: +${added} nových záznamů`, 'success');
-  } catch {
-    toast('Neplatný formát JSON.', 'error');
+  } else {
+    ['fCompany','fUrl','fNotes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('fStatus').value='osloveno';
+    document.getElementById('fMethod').value='email';
   }
+  document.getElementById('modal').classList.add('open');
+  setTimeout(()=>document.getElementById('fCompany').focus(), 60);
 }
 
-// ─── Export CSV ───────────────────────────────────────────────────
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+// ─── CSV Export ──────────────────────────────────────────────────
 function exportCSV() {
   const rows = getFiltered();
-  const cols = ['Firma','URL','Stav','Způsob','Kdo','Datum','Poznámky'];
-  const data = rows.map(r => [
-    r.company, r.url, STATUS_CONFIG[r.status]?.label || r.status,
-    METHOD_LABELS[r.method] || r.method, r.who, r.date, r.notes,
-  ].map(v => `"${(v||'').replace(/"/g,'""')}"`).join(','));
-  const csv = [cols.join(','), ...data].join('\n');
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(blob),
-    download: `ksh-outreach-${new Date().toISOString().slice(0,10)}.csv`,
-  });
-  a.click();
-  toast('CSV exportováno ✓', 'success');
+  const hdr = ['Firma','URL','Stav','Způsob','Kdo','Datum','Poznámky'];
+  const data = rows.map(r=>[
+    r.company,r.url,STATUS[r.status]?.label||r.status,
+    METHOD[r.method]||r.method,r.who,r.date,r.notes,
+  ].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const blob = new Blob(['\uFEFF'+[hdr.join(','),...data].join('\n')],{type:'text/csv;charset=utf-8'});
+  const a = Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:`ksh-${new Date().toISOString().slice(0,10)}.csv`});
+  a.click(); toast('CSV exportováno ✓');
 }
 
-// ─── Toast ────────────────────────────────────────────────────────
-function toast(msg, type = 'success') {
-  const container = document.getElementById('toastContainer');
+// ─── Sync indicator ──────────────────────────────────────────────
+function setSyncing(v) {
+  const el = document.getElementById('syncIndicator');
+  if (!el) return;
+  el.textContent = v ? 'ukládám…' : '';
+  el.className = 'sync-indicator' + (v ? ' syncing' : '');
+}
+
+// ─── Toast ───────────────────────────────────────────────────────
+function toast(msg, type='ok') {
+  const c = document.getElementById('toasts');
   const t = document.createElement('div');
   t.className = `toast ${type}`;
   t.textContent = msg;
-  container.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(8px)'; t.style.transition = 'all 0.3s'; }, 2200);
-  setTimeout(() => t.remove(), 2600);
+  c.appendChild(t);
+  setTimeout(()=>{ t.style.transition='all .28s'; t.style.opacity='0'; t.style.transform='translateY(6px)'; },2200);
+  setTimeout(()=>t.remove(),2550);
 }
 
-// ─── Keyboard shortcuts ───────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeSync(); }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'n') { e.preventDefault(); openModal(); }
+// ─── Keyboard ────────────────────────────────────────────────────
+document.addEventListener('keydown', e=>{
+  if (e.key==='Escape') closeModal();
+  if ((e.ctrlKey||e.metaKey)&&e.key==='n') { e.preventDefault(); openModal(); }
 });
-
-// ─── Click outside modal ─────────────────────────────────────────
-document.getElementById('addModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-document.getElementById('syncModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSync(); });
-
-// ─── Init ────────────────────────────────────────────────────────
-load();
-render();
+document.getElementById('modal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
 </script>
 </body>
 </html>
