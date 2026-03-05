@@ -102,13 +102,26 @@
     /* ══ HERO ════════════════════════════════════════════════════ */
     .hero {
       min-height: 100vh;
-      display: grid; grid-template-columns: 1fr 1fr;
-      padding-top: 0;
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .hero-bg-img {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-bg-img img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+    }
+    /* layered gradient: dark bottom + subtle dark top, clear center */
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(to top, rgba(10,8,6,0.97) 0%, rgba(10,8,6,0.7) 35%, rgba(10,8,6,0.15) 60%, rgba(10,8,6,0.4) 100%);
     }
     .hero-left {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: clamp(8rem, 12vw, 12rem) clamp(2rem, 5vw, 5rem) clamp(4rem, 6vw, 6rem);
-      position: relative;
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: clamp(8rem, 12vw, 12rem) clamp(2rem, 5vw, 6rem) clamp(3.5rem, 6vw, 5.5rem);
+      max-width: 700px;
     }
     .hero-eyebrow {
       font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
@@ -119,61 +132,47 @@
     .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--terra); }
     .hero h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.2rem, 6vw, 6rem);
-      font-weight: 300; line-height: 1.0;
-      letter-spacing: -0.01em;
+      font-size: clamp(3.5rem, 7vw, 7rem);
+      font-weight: 300; line-height: 0.95;
+      letter-spacing: -0.02em;
       margin-bottom: 1.5rem;
+      color: var(--cream);
     }
-    .hero h1 em { font-style: italic; font-weight: 400; }
+    .hero h1 em { font-style: italic; font-weight: 400; color: var(--terra); }
     .hero h1 strong { font-weight: 600; display: block; }
     .hero-desc {
       font-size: 0.95rem; line-height: 1.8;
-      color: var(--ink-50); max-width: 400px;
+      color: rgba(250,247,242,0.6); max-width: 420px;
       margin-bottom: 2.5rem;
     }
     .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
     .btn-ink {
-      background: var(--ink); color: var(--cream);
+      background: var(--cream); color: var(--ink);
       padding: 0.85rem 1.75rem; border-radius: 8px;
       font-size: 0.82rem; font-weight: 600; letter-spacing: 0.03em;
       transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    .btn-ink:hover { background: var(--teal); transform: translateY(-2px); }
+    .btn-ink:hover { background: var(--terra); color: #fff; transform: translateY(-2px); }
     .btn-outline-ink {
-      border: 1px solid var(--ink-20); color: var(--ink);
+      border: 1px solid rgba(250,247,242,0.3); color: var(--cream);
       padding: 0.85rem 1.75rem; border-radius: 8px;
       font-size: 0.82rem; font-weight: 500;
       transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    .btn-outline-ink:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-outline-ink:hover { border-color: var(--terra); color: var(--terra); }
     /* Decorative SVG doodles */
     .doodle-steam {
       position: absolute; bottom: 3rem; right: 2rem;
       opacity: 0.12; width: 60px;
     }
-    /* Hero right - photo collage */
-    .hero-right {
-      position: relative; overflow: hidden;
-      display: grid; grid-template-rows: 60% 40%;
-    }
-    .hero-right-top {
-      overflow: hidden; position: relative;
-    }
-    .hero-right-top img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 6s ease; }
-    .hero-right-top:hover img { transform: scale(1.04); }
-    .hero-right-bottom {
-      display: grid; grid-template-columns: 1fr 1fr;
-    }
-    .hero-right-bottom div { overflow: hidden; position: relative; }
-    .hero-right-bottom div img { width: 100%; height: 100%; object-fit: cover; transition: transform 6s ease; }
-    .hero-right-bottom div:hover img { transform: scale(1.05); }
+    /* hero badge */
     .hero-badge {
-      position: absolute; top: 1.25rem; left: 1.25rem; z-index: 2;
-      background: rgba(250,247,242,0.92); backdrop-filter: blur(10px);
-      border: 1px solid var(--ink-20); border-radius: 10px;
-      padding: 0.6rem 0.9rem;
+      position: absolute; bottom: clamp(3.5rem,6vw,5.5rem); right: clamp(2rem,5vw,6rem); z-index: 2;
+      background: rgba(250,247,242,0.1); backdrop-filter: blur(12px);
+      border: 1px solid rgba(250,247,242,0.2); border-radius: 10px;
+      padding: 0.7rem 1rem;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.8rem; font-weight: 500;
+      font-size: 0.82rem; font-weight: 500; color: var(--cream);
     }
     .hero-badge span { color: var(--terra); font-weight: 600; }
 
@@ -482,9 +481,8 @@
       .footer-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-right { height: 60vw; }
-      .hero-left { padding: 7rem 1.5rem 3rem; }
+      .hero-left { padding: 7rem 1.5rem 4rem; max-width: 100%; }
+      .hero-badge { bottom: 1.5rem; right: 1.5rem; }
       .about-grid, .brunch-inner, .visit-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-img-float { position: static; width: 60%; margin-top: 1rem; }
       .nav-links { display: none; }
@@ -558,6 +556,10 @@
 
 <!-- ── HERO ── -->
 <section class="hero" id="uvod">
+  <div class="hero-bg-img">
+    <img src="assets/agnes-new-01.jpg" alt="Agnes CAFÉ macarons" />
+  </div>
+  <div class="hero-overlay"></div>
   <div class="hero-left">
     <div class="hero-eyebrow">Panská 111 · Jindřichův Hradec</div>
     <h1>
@@ -572,29 +574,8 @@
       <a href="#navstivte" class="btn-ink">Jak se k nám dostanete →</a>
       <a href="#nabidka" class="btn-outline-ink">Nabídka</a>
     </div>
-    <!-- steam doodle -->
-    <svg class="doodle-steam" viewBox="0 0 60 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 70 Q15 55 22 40 Q29 25 20 10" stroke="#1a1412" stroke-width="2" stroke-linecap="round" fill="none"/>
-      <path d="M35 70 Q30 52 38 35 Q46 18 35 5" stroke="#1a1412" stroke-width="2" stroke-linecap="round" fill="none"/>
-      <path d="M50 70 Q46 56 52 42 Q58 28 50 15" stroke="#1a1412" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-    </svg>
   </div>
-  <div class="hero-right">
-    <div class="hero-right-top">
-      <img src="assets/agnes-06.jpg" alt="Agnes CAFÉ exteriér, Panská 111" />
-      <div class="hero-badge">
-        ⭐ 4,5 · <span>Orlové Cukrářství 2025</span>
-      </div>
-    </div>
-    <div class="hero-right-bottom">
-      <div>
-        <img src="assets/agnes-01.jpg" alt="Agnes CAFÉ interiér" />
-      </div>
-      <div>
-        <img src="assets/agnes-03.jpg" alt="Tichý dvorek Agnes CAFÉ" />
-      </div>
-    </div>
-  </div>
+  <div class="hero-badge">⭐ 4,5 · <span>Orlové Cukrářství 2025</span></div>
 </section>
 
 <!-- ── O NÁS ── -->
@@ -711,7 +692,7 @@
         </div>
       </div>
       <div class="brunch-img reveal-right">
-        <img src="assets/agnes-01.jpg" alt="Agnes CAFÉ bar" loading="lazy" />
+        <img src="assets/agnes-new-02.jpg" alt="Víkendový brunch Agnes CAFÉ" loading="lazy" />
       </div>
     </div>
   </div>
@@ -725,25 +706,25 @@
       <h2 class="sec-title">Galerie</h2>
     </div>
     <div class="gallery-grid">
+      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-new-03.jpg', 'Domácí dezerty — Agnes CAFÉ')">
+        <img src="assets/agnes-new-03.jpg" alt="Croquembouche Agnes CAFÉ" loading="lazy" />
+        <div class="gallery-overlay"><span>Dezerty</span></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-new-02.jpg', 'Víkendový brunch')">
+        <img src="assets/agnes-new-02.jpg" alt="Brunch Agnes CAFÉ" loading="lazy" />
+        <div class="gallery-overlay"><span>Brunch</span></div>
+      </div>
       <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-04.jpg', 'Interiér Agnes CAFÉ')">
         <img src="assets/agnes-04.jpg" alt="Interiér Agnes CAFÉ" loading="lazy" />
         <div class="gallery-overlay"><span>Interiér</span></div>
       </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-06.jpg', 'Exteriér Agnes CAFÉ')">
-        <img src="assets/agnes-06.jpg" alt="Exteriér Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Exteriér</span></div>
-      </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-05.jpg', 'Vstup do Agnes CAFÉ')">
-        <img src="assets/agnes-05.jpg" alt="Vstup Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Vstup</span></div>
-      </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-01.jpg', 'Bar Agnes CAFÉ')">
-        <img src="assets/agnes-01.jpg" alt="Bar Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Bar</span></div>
-      </div>
       <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-03.jpg', 'Tichý dvorek')">
         <img src="assets/agnes-03.jpg" alt="Tichý dvorek Agnes CAFÉ" loading="lazy" />
         <div class="gallery-overlay"><span>Tichý dvorek</span></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-06.jpg', 'Exteriér Agnes CAFÉ')">
+        <img src="assets/agnes-06.jpg" alt="Exteriér Agnes CAFÉ" loading="lazy" />
+        <div class="gallery-overlay"><span>Exteriér</span></div>
       </div>
     </div>
   </div>
