@@ -556,17 +556,17 @@
 <!-- ── HERO ── -->
 <section class="hero" id="uvod">
   <div class="hero-bg-img">
-    <img src="assets/brunch-dark.jpg" alt="Agnes CAFÉ brunch" />
+    <img id="cfg-hero-photo" src="assets/brunch-dark.jpg" alt="Agnes CAFÉ brunch" />
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-left">
-    <div class="hero-eyebrow">Panská 111 · Jindřichův Hradec</div>
-    <h1>
+    <div class="hero-eyebrow" id="cfg-hero-location">Panská 111 · Jindřichův Hradec</div>
+    <h1 id="cfg-hero-title">
       Agnes<br>
       <em>CAFÉ</em><br>
       <strong>Kavárna<br>& galerie</strong>
     </h1>
-    <p class="hero-desc">
+    <p class="hero-desc" id="cfg-hero-desc">
       Výběrová káva, domácí dezerty a umělecká atmosféra v srdci Jindřichova Hradce. Místo, kam se rádi vracíte.
     </p>
     <div class="hero-actions">
@@ -574,7 +574,7 @@
       <a href="#nabidka" class="btn-outline-ink">Nabídka</a>
     </div>
   </div>
-  <div class="hero-badge">⭐ 4,5 · <span>Orlové Cukrářství 2025</span></div>
+  <div class="hero-badge" id="cfg-hero-badge">⭐ 4,5 · <span>Orlové Cukrářství 2025</span></div>
 </section>
 
 <!-- ── O NÁS ── -->
@@ -583,22 +583,22 @@
     <div class="about-grid">
       <div class="about-img reveal-left">
         <div class="about-img-main">
-          <img src="assets/agnes-04.jpg" alt="Agnes CAFÉ sala" loading="lazy" />
+          <img id="cfg-about-photo1" src="assets/agnes-04.jpg" alt="Agnes CAFÉ sala" loading="lazy" />
         </div>
         <div class="about-img-float">
-          <img src="assets/agnes-05.jpg" alt="Agnes CAFÉ vstup" loading="lazy" />
+          <img id="cfg-about-photo2" src="assets/agnes-05.jpg" alt="Agnes CAFÉ vstup" loading="lazy" />
         </div>
       </div>
       <div class="reveal-right">
         <div class="sec-eyebrow">O kavárně</div>
         <h2 class="sec-title">Místo pro ty,<br>kdo mají <em>rádi krásy</em></h2>
-        <blockquote class="about-quote">
+        <blockquote class="about-quote" id="cfg-about-quote">
           "Nedělej zágorku, dej si kávu na dvorku."
         </blockquote>
-        <p class="about-text">
+        <p class="about-text" id="cfg-about-text1">
           Agnes CAFÉ je víc než kavárna — je to prostor, kde se potkává dobrá káva, domácí pečivo a umění. V srdci Jindřichova Hradce na Panské ulici najdete útulný interiér, tichý dvorek se sochou a galerii, která se proměňuje s každou novou výstavou.
         </p>
-        <p class="about-text">
+        <p class="about-text" id="cfg-about-text2">
           Vše děláme s láskou a z kvalitních surovin. Nabízíme bezlepkové i veganské alternativy, aby si tu přišel na své každý.
         </p>
         <div class="about-awards">
@@ -678,11 +678,11 @@
           </h2>
           <div class="brunch-time">
             <div>
-              <div class="brunch-time-val">8:00 – 12:00</div>
-              <div class="brunch-time-lab">Sobota & Neděle</div>
+              <div class="brunch-time-val" id="cfg-brunch-time">8:00 – 12:00</div>
+              <div class="brunch-time-lab" id="cfg-brunch-days">Sobota & Neděle</div>
             </div>
           </div>
-          <p class="brunch-desc">
+          <p class="brunch-desc" id="cfg-brunch-desc">
             Každý víkend otevíráme hodinu dříve a chystáme pro vás plnohodnotný brunch. Čerstvé ingredience, domácí recepty, klidná atmosféra. Ideální start do víkendového dne.
           </p>
           <a href="tel:+420606032669" class="btn-cream">
@@ -691,7 +691,7 @@
         </div>
       </div>
       <div class="brunch-img reveal-right">
-        <img src="assets/brunch-stul.jpg" alt="Víkendový brunch Agnes CAFÉ" loading="lazy" />
+        <img id="cfg-brunch-photo" src="assets/brunch-stul.jpg" alt="Víkendový brunch Agnes CAFÉ" loading="lazy" />
       </div>
     </div>
   </div>
@@ -704,7 +704,7 @@
       <div class="sec-eyebrow">Atmosféra</div>
       <h2 class="sec-title">Galerie</h2>
     </div>
-    <div class="gallery-grid">
+    <div class="gallery-grid" id="cfg-gallery">
       <div class="gallery-item reveal" onclick="openLightbox('assets/hero-macarons.jpg', 'Macarony Agnes CAFÉ')">
         <img src="assets/hero-macarons.jpg" alt="Macarony Agnes CAFÉ" loading="lazy" />
         <div class="gallery-overlay"><span>Macarony</span></div>
@@ -741,31 +741,29 @@
         <div class="hours-list">
           <div class="hours-row">
             <span class="day">Pondělí – Neděle</span>
-            <span class="time">9:00 – 19:00</span>
+            <span class="time" id="cfg-hours-weekdays">9:00 – 19:00</span>
           </div>
           <div class="hours-row" style="background:rgba(196,113,74,0.06); padding: 0.8rem 0.75rem; border-radius: 6px; border: none; margin: 0.25rem 0;">
             <span class="day">🥐 Víkendový brunch (So & Ne)</span>
-            <span class="time" style="color:var(--terra);">8:00 – 12:00</span>
+            <span class="time" id="cfg-hours-brunch" style="color:var(--terra);">8:00 – 12:00</span>
           </div>
         </div>
         <div class="contact-items" style="margin-top: 2rem;">
           <div class="contact-item">
             <span class="contact-icon">📍</span>
-            <a href="https://maps.google.com/?q=Panská+111,+Jindřichův+Hradec" target="_blank">
-              Panská 111, 377 01 Jindřichův Hradec
-            </a>
+            <span id="cfg-address">Panská 111, 377 01 Jindřichův Hradec</span>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📞</span>
-            <a href="tel:+420606032669">+420 606 032 669</a>
+            <a id="cfg-phone-link" href="tel:+420606032669"><span id="cfg-phone-text">+420 606 032 669</span></a>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📘</span>
-            <a href="https://www.facebook.com/agnescafejh" target="_blank">facebook.com/agnescafejh</a>
+            <a id="cfg-fb-link" href="https://www.facebook.com/agnescafejh" target="_blank"><span id="cfg-fb-text">facebook.com/agnescafejh</span></a>
           </div>
           <div class="contact-item">
             <span class="contact-icon">📸</span>
-            <a href="https://www.instagram.com/agnescafe.jh/" target="_blank">@agnescafe.jh</a>
+            <a id="cfg-ig-link" href="https://www.instagram.com/agnescafe.jh/" target="_blank"><span id="cfg-ig-text">instagram.com/agnescafe.jh/</span></a>
           </div>
         </div>
         <a href="https://maps.google.com/?q=Panská+111,+Jindřichův+Hradec" target="_blank" class="map-btn">
@@ -773,7 +771,7 @@
         </a>
       </div>
       <div class="map-wrap reveal-right">
-        <iframe
+        <iframe id="cfg-map"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2610.1!2d15.0060!3d49.1442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470d37b3f3f7e9e9%3A0x1!2sPanská+111%2C+377+01+Jindřichův+Hradec!5e0!3m2!1scs!2scz!4v1"
           allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
@@ -790,7 +788,7 @@
       <h2 class="sec-title">@agnescafe.jh</h2>
       <p style="color:var(--ink-50);margin-top:0.75rem;font-size:0.9rem;">1 354 sledujících · 178 příspěvků</p>
     </div>
-    <div class="ig-grid">
+    <div class="ig-grid" id="cfg-ig-grid">
       <a href="https://www.instagram.com/agnescafe.jh/" target="_blank" class="ig-card reveal">
         <img src="assets/agnes-01.jpg" alt="Agnes CAFÉ Instagram" loading="lazy" />
         <div class="ig-card-overlay"><span>📸 Instagram</span></div>
@@ -824,22 +822,22 @@
     <div class="footer-col">
       <h4>Otevírací doba</h4>
       <ul>
-        <li><span>Po – Ne: 9:00 – 19:00</span></li>
-        <li><span style="color:var(--terra);">Brunch So & Ne: 8–12</span></li>
+        <li><span id="cfg-footer-hours-weekdays">Po – Ne: 9:00 – 19:00</span></li>
+        <li><span id="cfg-footer-hours-brunch" style="color:var(--terra);">Brunch So & Ne: 8–12</span></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
       <ul>
-        <li><a href="tel:+420606032669">+420 606 032 669</a></li>
+        <li><a id="cfg-footer-phone-link" href="tel:+420606032669"><span id="cfg-footer-phone">+420 606 032 669</span></a></li>
         <li><span>Panská 111, JH</span></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Sociální sítě</h4>
       <ul>
-        <li><a href="https://www.instagram.com/agnescafe.jh/" target="_blank">Instagram</a></li>
-        <li><a href="https://www.facebook.com/agnescafejh" target="_blank">Facebook</a></li>
+        <li><a id="cfg-footer-ig" href="https://www.instagram.com/agnescafe.jh/" target="_blank">Instagram</a></li>
+        <li><a id="cfg-footer-fb" href="https://www.facebook.com/agnescafejh" target="_blank">Facebook</a></li>
       </ul>
     </div>
   </div>
@@ -850,24 +848,153 @@
 </footer>
 
 <script>
-  // ── Config object ──────────────────────────────────────────────
-  const AGNES = {
-    name: "Agnes CAFÉ",
-    address: "Panská 111, 377 01 Jindřichův Hradec",
-    phone: "+420 606 032 669",
-    hours: { weekday: "9:00–19:00", weekend: "9:00–19:00", brunch: "8:00–12:00 (So & Ne)" },
-    social: {
-      instagram: "https://www.instagram.com/agnescafe.jh/",
-      facebook: "https://www.facebook.com/agnescafejh"
-    },
-    gallery: [
-      { src: "assets/agnes-01.jpg", caption: "Bar" },
-      { src: "assets/agnes-03.jpg", caption: "Tichý dvorek" },
-      { src: "assets/agnes-04.jpg", caption: "Interiér" },
-      { src: "assets/agnes-05.jpg", caption: "Vstup" },
-      { src: "assets/agnes-06.jpg", caption: "Exteriér" }
-    ]
-  };
+/* ════════════════════════════════════════════════════════════════
+   ✏️  EDITOVATELNÝ CONFIG — sem sahej pokud chceš něco změnit!
+   ════════════════════════════════════════════════════════════════ */
+const AGNES = {
+
+  /* ── HERO SEKCE ─────────────────────────────────────────────── */
+  hero: {
+    photo:    "assets/brunch-dark.jpg",   // ← cesta k fotce pozadí
+    location: "Panská 111 · Jindřichův Hradec",
+    title:    "Agnes<br><em>CAFÉ</em><br><strong>Kavárna<br>& galerie</strong>",
+    desc:     "Výběrová káva, domácí dezerty a umělecká atmosféra v srdci Jindřichova Hradce. Místo, kam se rádi vracíte.",
+    badge:    "⭐ 4,5 · Orlové Cukrářství 2025",
+  },
+
+  /* ── O NÁS SEKCE ────────────────────────────────────────────── */
+  about: {
+    photo1:   "assets/agnes-04.jpg",      // ← hlavní fotka vlevo
+    photo2:   "assets/agnes-05.jpg",      // ← plovoucí fotka vlevo dole
+    quote:    '"Nedělej zágorku, dej si kávu na dvorku."',
+    text1:    "Agnes CAFÉ je víc než kavárna — je to prostor, kde se potkává dobrá káva, domácí pečivo a umění. V srdci Jindřichova Hradce na Panské ulici najdete útulný interiér, tichý dvorek se sochou a galerii, která se proměňuje s každou novou výstavou.",
+    text2:    "Vše děláme s láskou a z kvalitních surovin. Nabízíme bezlepkové i veganské alternativy, aby si tu přišel na své každý.",
+  },
+
+  /* ── BRUNCH SEKCE ───────────────────────────────────────────── */
+  brunch: {
+    photo:    "assets/brunch-stul.jpg",   // ← fotka v brunch sekci
+    time:     "8:00 – 12:00",
+    days:     "Sobota & Neděle",
+    desc:     "Každý víkend otevíráme hodinu dříve a chystáme pro vás plnohodnotný brunch. Čerstvé ingredience, domácí recepty, klidná atmosféra. Ideální start do víkendového dne.",
+  },
+
+  /* ── GALERIE ────────────────────────────────────────────────── */
+  // Přidej/odeber fotky. Formát: { src: "assets/nazev.jpg", caption: "Popis" }
+  gallery: [
+    { src: "assets/hero-macarons.jpg",   caption: "Macarony" },
+    { src: "assets/dezerty-valentyn.jpg", caption: "Dezerty" },
+    { src: "assets/dezerty-eclairs.jpg", caption: "Éclairs" },
+    { src: "assets/brunch-stul.jpg",     caption: "Brunch" },
+    { src: "assets/agnes-03.jpg",        caption: "Tichý dvorek" },
+  ],
+
+  /* ── INSTAGRAM GRID ─────────────────────────────────────────── */
+  // Fotky zobrazené v Instagram sekci (nejlépe čtvercové)
+  igPhotos: [
+    "assets/hero-macarons.jpg",
+    "assets/dezerty-valentyn.jpg",
+    "assets/dezerty-eclairs.jpg",
+    "assets/brunch-dark.jpg",
+  ],
+
+  /* ── KONTAKT ────────────────────────────────────────────────── */
+  contact: {
+    address:   "Panská 111, 377 01 Jindřichův Hradec",
+    phone:     "+420 606 032 669",
+    phoneHref: "tel:+420606032669",
+    instagram: "https://www.instagram.com/agnescafe.jh/",
+    facebook:  "https://www.facebook.com/agnescafejh",
+    mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2610.1!2d15.0060!3d49.1442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470d37b3f3f7e9e9%3A0x1!2sPanská+111%2C+377+01+Jindřichův+Hradec!5e0!3m2!1scs!2scz!4v1",
+  },
+
+  /* ── HODINY ─────────────────────────────────────────────────── */
+  hours: {
+    weekdays: "9:00 – 19:00",
+    weekend:  "9:00 – 19:00",
+    brunch:   "8:00 – 12:00",
+  },
+
+};
+/* ════════════════════════════════════════════════════════════════
+   Konec configu — pod tímto řádkem nesahej 👇
+   ════════════════════════════════════════════════════════════════ */
+
+  // ── Aplikace configu na DOM ────────────────────────────────────
+  function applyConfig() {
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+    const setSrc = (id, src) => { const el = document.getElementById(id); if (el) el.src = src; };
+    const setHref = (id, href) => { const el = document.getElementById(id); if (el) el.href = href; };
+    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    // Hero
+    setSrc('cfg-hero-photo',     AGNES.hero.photo);
+    set('cfg-hero-title',        AGNES.hero.title);
+    setText('cfg-hero-desc',     AGNES.hero.desc);
+    setText('cfg-hero-location', AGNES.hero.location);
+    document.getElementById('cfg-hero-badge') && (document.getElementById('cfg-hero-badge').innerHTML = AGNES.hero.badge);
+
+    // About
+    setSrc('cfg-about-photo1',   AGNES.about.photo1);
+    setSrc('cfg-about-photo2',   AGNES.about.photo2);
+    setText('cfg-about-quote',   AGNES.about.quote);
+    setText('cfg-about-text1',   AGNES.about.text1);
+    setText('cfg-about-text2',   AGNES.about.text2);
+
+    // Brunch
+    setSrc('cfg-brunch-photo',   AGNES.brunch.photo);
+    setText('cfg-brunch-time',   AGNES.brunch.time);
+    setText('cfg-brunch-days',   AGNES.brunch.days);
+    setText('cfg-brunch-desc',   AGNES.brunch.desc);
+
+    // Galerie — renderuj dynamicky
+    const galleryGrid = document.getElementById('cfg-gallery');
+    if (galleryGrid) {
+      galleryGrid.innerHTML = AGNES.gallery.map((item, i) =>
+        `<div class="gallery-item reveal${i===0?' ':''}" onclick="openLightbox('${item.src}','${item.caption}')">
+          <img src="${item.src}" alt="${item.caption}" loading="lazy"/>
+          <div class="gallery-overlay"><span>${item.caption}</span></div>
+        </div>`
+      ).join('');
+    }
+
+    // Instagram grid
+    const igGrid = document.getElementById('cfg-ig-grid');
+    if (igGrid) {
+      igGrid.innerHTML = AGNES.igPhotos.map(src =>
+        `<a href="${AGNES.contact.instagram}" target="_blank" class="ig-card reveal">
+          <img src="${src}" loading="lazy"/>
+          <div class="ig-card-overlay"><span>📸 Instagram</span></div>
+        </a>`
+      ).join('');
+    }
+
+    // Kontakt
+    setText('cfg-address',    AGNES.contact.address);
+    setText('cfg-phone-text', AGNES.contact.phone);
+    setHref('cfg-phone-link', AGNES.contact.phoneHref);
+    setHref('cfg-ig-link',    AGNES.contact.instagram);
+    setText('cfg-ig-text',    AGNES.contact.instagram.replace('https://www.',''));
+    setHref('cfg-fb-link',    AGNES.contact.facebook);
+    setText('cfg-fb-text',    AGNES.contact.facebook.replace('https://www.',''));
+    const mapEl = document.getElementById('cfg-map');
+    if (mapEl) mapEl.src = AGNES.contact.mapsEmbed;
+
+    // Hodiny
+    setText('cfg-hours-weekdays', AGNES.hours.weekdays);
+    setText('cfg-hours-weekend',  AGNES.hours.weekend);
+    setText('cfg-hours-brunch',   AGNES.hours.brunch);
+
+    // Footer
+    setText('cfg-footer-phone',   AGNES.contact.phone);
+    setHref('cfg-footer-phone-link', AGNES.contact.phoneHref);
+    setHref('cfg-footer-ig',      AGNES.contact.instagram);
+    setHref('cfg-footer-fb',      AGNES.contact.facebook);
+    setText('cfg-footer-hours-weekdays', `Po – Ne: ${AGNES.hours.weekdays}`);
+    setText('cfg-footer-hours-brunch',   `Brunch So & Ne: ${AGNES.hours.brunch}`);
+  }
+
+  applyConfig();
 
   // ── Mobile menu ────────────────────────────────────────────────
   function toggleMenu() {
