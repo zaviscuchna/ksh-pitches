@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golosona | Italská restaurace Praha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #080507;
+      --surface: #110a0e;
+      --red:     #c8243a;
+      --green:   #009246;
+      --gold:    #d4a84b;
+      --white:   #fdf4f6;
+      --muted:   #9a7075;
+      --border:  rgba(253,244,246,0.07);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    h1,h2,h3 { font-family: 'Playfair Display', serif; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem,5vw,4rem); height: 68px;
+      background: rgba(8,5,7,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #009246 33.3%, #fff 33.3% 66.6%, #c8243a 66.6%);
+    }
+    .nav-logo { text-decoration: none; color: var(--white); }
+    .nav-logo .logo-main { font-family: 'Playfair Display',serif; font-size: 1.5rem; font-weight: 900; letter-spacing: -0.01em; }
+    .nav-logo .logo-sub { display: block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--red); color: #fff; padding: 0.5rem 1.2rem; border-radius: 100px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: #a81e30; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 120px 1.5rem 80px; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1920&q=80');
+      background-size: cover; background-position: center;
+    }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,5,7,0.82), rgba(8,5,7,0.55) 50%, rgba(8,5,7,0.93)); }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-loc { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.7); margin-bottom: 2rem; }
+    .hero-h1 { font-size: clamp(4.5rem,14vw,13rem); line-height: 0.88; margin-bottom: 1.2rem; }
+    .hero-h1 .l1 { display: block; color: #fff; }
+    .hero-h1 .l2 { display: block; color: transparent; -webkit-text-stroke: 2px rgba(200,36,58,0.9); font-style: italic; }
+    .tricolor { display: flex; width: 72px; height: 3px; border-radius: 100px; overflow: hidden; margin: 0 auto 1.5rem; }
+    .tricolor div { flex: 1; }
+    .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.72); max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-sub strong { color: #fff; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3.5rem; }
+    .btn-red { background: var(--red); color: #fff; font-weight: 700; padding: 0.9rem 2rem; border-radius: 100px; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 28px rgba(200,36,58,0.3); }
+    .btn-red:hover { background: #a81e30; transform: translateY(-2px); }
+    .btn-ghost { background: rgba(255,255,255,0.08); color: #fff; font-weight: 600; padding: 0.9rem 2rem; border-radius: 100px; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); transition: all 0.2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+    .hero-stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+    .stat-num { font-family: 'Playfair Display',serif; font-size: 2rem; font-weight: 900; color: var(--red); }
+    .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+    /* SECTIONS */
+    section { padding: clamp(4rem,8vw,8rem) clamp(1.5rem,5vw,4rem); }
+    .inner { max-width: 1200px; margin: 0 auto; }
+    .sec-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 0.6rem; }
+    .sec-h2 { font-size: clamp(2.2rem,5vw,4.5rem); line-height: 1; margin-bottom: 1rem; }
+    .sec-desc { color: var(--muted); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+
+    /* MENU */
+    #menu { background: var(--surface); }
+    .tabs { display: flex; gap: 4px; padding: 4px; background: var(--bg); border-radius: 100px; width: fit-content; margin: 2.5rem 0 1.5rem; flex-wrap: wrap; }
+    .tab { padding: 0.6rem 1.2rem; border-radius: 100px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--muted); transition: all 0.2s; }
+    .tab.active { background: var(--red); color: #fff; }
+    .price-badge { display: inline-flex; align-items: center; background: rgba(212,168,75,0.1); border: 1px solid rgba(212,168,75,0.25); color: var(--gold); padding: 0.3rem 1rem; border-radius: 100px; font-size: 0.82rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .menu-grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); }
+    .menu-card { display: flex; align-items: center; gap: 0.85rem; padding: 0.9rem 1.1rem; border-radius: 14px; background: var(--bg); border: 1px solid var(--border); transition: all 0.2s; }
+    .menu-card:hover { border-color: rgba(200,36,58,0.35); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,36,58,0.07); }
+    .menu-emoji { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: var(--surface); border: 1px solid var(--border); transition: transform 0.2s; }
+    .menu-card:hover .menu-emoji { transform: scale(1.1); }
+    .menu-name { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 0.92rem; margin-bottom: 2px; }
+    .menu-ing { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+    .menu-price { font-size: 0.88rem; font-weight: 900; color: var(--red); flex-shrink: 0; margin-left: auto; padding-left: 0.5rem; }
+
+    /* DENNÍ MENU BANNER */
+    #daily { background: var(--bg); padding-top: 0; }
+    .daily-card { border-radius: 20px; border: 1px solid rgba(212,168,75,0.3); display: flex; overflow: hidden; }
+    .daily-img { width: 300px; min-height: 220px; flex-shrink: 0; position: relative; }
+    .daily-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .daily-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, var(--bg)); }
+    .daily-body { flex: 1; padding: 2.5rem; background: rgba(212,168,75,0.05); }
+    .daily-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(212,168,75,0.15); border: 1px solid rgba(212,168,75,0.35); color: var(--gold); padding: 0.25rem 0.8rem; border-radius: 100px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .daily-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; display: inline-block; }
+    .daily-h3 { font-size: 1.9rem; font-weight: 900; margin-bottom: 0.7rem; }
+    .daily-text { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.8rem; max-width: 420px; line-height: 1.6; }
+    .daily-items { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.8rem; }
+    .daily-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .daily-item:last-child { border-bottom: none; }
+    .daily-item-name { color: var(--white); }
+    .daily-item-price { font-weight: 700; color: var(--gold); }
+    .btn-gold { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: #1a0d00; font-weight: 700; padding: 0.75rem 1.75rem; border-radius: 100px; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 24px rgba(212,168,75,0.25); }
+    .btn-gold:hover { background: #c09030; transform: translateY(-2px); }
+
+    /* HOURS */
+    #hours { background: var(--bg); }
+    .hours-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+    .open-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.1rem; border-radius: 100px; font-size: 0.82rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .hours-list { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .h-row { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .h-row:last-child { border-bottom: none; }
+    .h-row.today { background: rgba(200,36,58,0.07); }
+    .h-day { color: var(--muted); }
+    .h-row.today .h-day { color: var(--white); font-weight: 600; }
+    .h-time { font-weight: 700; }
+    .h-time.closed { font-weight: 400; color: var(--muted); }
+    .today-chip { background: var(--red); color: #fff; font-size: 0.65rem; font-weight: 700; padding: 1px 7px; border-radius: 100px; margin-left: 6px; }
+
+    /* CONTACT */
+    #contact { background: var(--surface); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
+    .contact-items { display: flex; flex-direction: column; gap: 1.5rem; }
+    .c-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .c-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: rgba(200,36,58,0.1); border: 1px solid rgba(200,36,58,0.22); }
+    .c-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
+    .c-val { font-weight: 600; line-height: 1.6; }
+    .c-val a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .c-val a:hover { color: var(--red); }
+    .map-box { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .map-box iframe { width: 100%; height: 320px; border: none; filter: grayscale(1) invert(1) brightness(0.8); }
+    .call-btn { display: flex; align-items: center; justify-content: center; gap: 0.6rem; background: var(--red); color: #fff; font-weight: 700; font-size: 1.05rem; padding: 1rem; border-radius: 14px; text-decoration: none; margin-top: 0.5rem; transition: all 0.2s; }
+    .call-btn:hover { background: #a81e30; transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer { padding: 2rem clamp(1.5rem,5vw,4rem); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .f-logo span:first-child { font-family: 'Playfair Display',serif; font-weight: 900; font-style: italic; }
+    .f-logo span:last-child { color: var(--red); }
+    .f-links { display: flex; gap: 1.5rem; }
+    .f-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .f-links a:hover { color: var(--white); }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media(max-width:768px) {
+      .nav-links { display: none; }
+      .hours-wrap, .contact-wrap { grid-template-columns: 1fr; }
+      .daily-card { flex-direction: column; }
+      .daily-img { width: 100%; height: 200px; }
+      .daily-img::after { background: linear-gradient(to bottom, transparent 60%, var(--bg)); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="logo-main">GoLoSoNa</span>
+    <span class="logo-sub">Italská restaurace</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#daily">Denní menu</a></li>
+    <li><a href="#hours">Otevírací doba</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+  <a href="tel:272660605" class="nav-cta">📞 272 660 605</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-loc">📍 Europark Štěrboholy · Praha 10</div>
+    <h1 class="hero-h1">
+      <span class="l1">GoLoSoNa</span>
+      <span class="l2">italská restaurace</span>
+    </h1>
+    <div class="tricolor">
+      <div style="background:#009246"></div>
+      <div style="background:#fff"></div>
+      <div style="background:#c8243a"></div>
+    </div>
+    <p class="hero-sub">
+      Pravá italská kuchyně v srdci Prahy. <strong>Čerstvé těstoviny, pizza z pece</strong> a denní menu každý den od 11:00.
+    </p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-red">Prohlédnout menu</a>
+      <a href="tel:272660605" class="btn-ghost">📞 272 660 605</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">od 49 Kč</div><div class="stat-label">denní polévka</div></div>
+      <div><div class="stat-num">od 155 Kč</div><div class="stat-label">pizza z pece</div></div>
+      <div><div class="stat-num">9–21:30</div><div class="stat-label">denně otevřeno</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="menu">
+  <div class="inner">
+    <div class="reveal">
+      <p class="sec-tag">Jídelní lístek</p>
+      <h2 class="sec-h2">Naše menu</h2>
+      <p class="sec-desc">Italská klasika z kvalitních surovin. Pizza, těstoviny, risotto a čerstvé saláty.</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('pizza',this)">🍕 Pizza</button>
+      <button class="tab" onclick="switchTab('pasta',this)">🍝 Těstoviny & Hlavní</button>
+      <button class="tab" onclick="switchTab('polévky',this)">🥗 Polévky & Saláty</button>
+    </div>
+    <div class="price-badge" id="price-badge">🍕 Pizza z pece — od 155 Kč</div>
+    <div class="menu-grid" id="menu-grid"></div>
+  </div>
+</section>
+
+<section id="daily">
+  <div class="inner reveal">
+    <div class="daily-card">
+      <div class="daily-img">
+        <img src="https://images.unsplash.com/photo-1551183053-bf91798d047e?w=600&q=80" alt="Denní menu" loading="lazy" />
+      </div>
+      <div class="daily-body">
+        <div class="daily-badge"><span class="daily-dot"></span> Každý všední den</div>
+        <h3 class="daily-h3">Denní polední menu</h3>
+        <p class="daily-text">Každý všední den připravujeme čerstvé polední menu od 11:00 do 15:00. Teplá polévka + výběr ze dvou hlavních jídel.</p>
+        <div class="daily-items">
+          <div class="daily-item"><span class="daily-item-name">🍲 Kuřecí vývar s nudlemi a zeleninou</span><span class="daily-item-price">49 Kč</span></div>
+          <div class="daily-item"><span class="daily-item-name">🥘 Čočková polévka se salsicciou</span><span class="daily-item-price">49 Kč</span></div>
+          <div class="daily-item"><span class="daily-item-name">🍝 Spaghetti Bolognese</span><span class="daily-item-price">165 Kč</span></div>
+          <div class="daily-item"><span class="daily-item-name">🥩 Smíšené řízky s bramborovým salátem</span><span class="daily-item-price">169 Kč</span></div>
+          <div class="daily-item"><span class="daily-item-name">🐟 Pangasius pečený s citronem a rozmarýnem</span><span class="daily-item-price">179 Kč</span></div>
+        </div>
+        <a href="tel:272660605" class="btn-gold">📞 Rezervovat stůl</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hours">
+  <div class="inner">
+    <div class="reveal"><p class="sec-tag">Kdy nás najdete</p><h2 class="sec-h2">Otevírací doba</h2></div>
+    <div class="hours-wrap">
+      <div class="reveal">
+        <div class="open-badge" id="open-badge"></div>
+        <p style="color:var(--muted);line-height:1.7;margin-bottom:1.5rem">
+          Jsme otevřeni každý den — od snídaně přes oběd až do večeře. Polední menu podáváme vždy ve všední dny od 11:00 do 15:00.
+        </p>
+        <p style="color:var(--muted);font-size:0.88rem;line-height:1.6">
+          Najdete nás v Obchodním centru Europark v Praze 10 – Štěrboholy.<br>
+          <strong style="color:var(--white)">Parkování zdarma</strong> přímo u centra.
+        </p>
+      </div>
+      <div class="reveal"><div class="hours-list" id="hours-list"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="inner">
+    <div class="reveal"><p class="sec-tag">Kde nás najdete</p><h2 class="sec-h2">Kontakt</h2></div>
+    <div class="contact-wrap">
+      <div class="contact-items reveal">
+        <div class="c-item">
+          <div class="c-icon">📍</div>
+          <div>
+            <div class="c-label">Adresa</div>
+            <div class="c-val">OC Europark, Nákupní 389/3<br>Praha 10 – Štěrboholy, 102 00</div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">📞</div>
+          <div>
+            <div class="c-label">Telefon</div>
+            <div class="c-val">
+              <a href="tel:272660605">272 660 605</a><br>
+              <a href="tel:773556559">773 556 559</a> <span style="font-weight:400;color:var(--muted);font-size:0.85rem">(Michal Žáček)</span>
+            </div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">✉</div>
+          <div>
+            <div class="c-label">Email</div>
+            <div class="c-val"><a href="mailto:golosona@email.cz">golosona@email.cz</a></div>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">🌐</div>
+          <div>
+            <div class="c-label">Web</div>
+            <div class="c-val"><a href="https://www.golosona.cz" target="_blank">www.golosona.cz</a></div>
+          </div>
+        </div>
+        <a href="tel:272660605" class="call-btn">📞 Rezervovat telefonicky</a>
+      </div>
+      <div class="map-box reveal">
+        <iframe
+          src="https://maps.google.com/maps?q=N%C3%A1kupn%C3%AD+389%2F3%2C+Praha+10+%C5%A0t%C4%9Brboholy&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Golosona">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">
+    <span>GoLoSoNa</span><span> ·</span>
+    <span style="font-family:Inter,sans-serif;font-weight:400;font-size:0.85rem;color:var(--muted);margin-left:4px">Italská restaurace</span>
+  </div>
+  <div class="f-links">
+    <a href="#menu">Menu</a>
+    <a href="#daily">Denní menu</a>
+    <a href="#contact">Kontakt</a>
+  </div>
+  <p>OC Europark, Praha 10 · © 2026</p>
+</footer>
+
+<script>
+const pizzaMenu = [
+  {name:"Pizza Karolina",  ing:"rajčatový základ, mozzarella, šunka, kukuřice, smetana", e:"🍕", price:"155 Kč"},
+  {name:"Pizza Fantazie",  ing:"rajčatový základ, mozzarella, šunka, žampiony, kapie, olivy", e:"🍕", price:"165 Kč"},
+  {name:"Pizza Palermo",   ing:"rajčatový základ, mozzarella, salám, žampiony, feferonky", e:"🌶️", price:"175 Kč"},
+  {name:"Margherita",      ing:"rajčatový základ, čerstvá mozzarella, bazalka", e:"🍅", price:"145 Kč"},
+  {name:"Quattro Formaggi",ing:"bílý základ, mozzarella, eidam, niva, parmazán", e:"🧀", price:"175 Kč"},
+  {name:"Prosciutto",      ing:"rajčatový základ, mozzarella, prosciutto crudo, rukola", e:"🌿", price:"175 Kč"},
+  {name:"Vegetariana",     ing:"rajčatový základ, mozzarella, paprika, cuketa, cherry rajčata, olivy", e:"🥦", price:"165 Kč"},
+  {name:"Diavola",         ing:"rajčatový základ, mozzarella, pikantní salám, jalapeños", e:"🌶️", price:"165 Kč"},
+  {name:"Tonno",           ing:"rajčatový základ, mozzarella, tuňák, cibule, kapary", e:"🐟", price:"165 Kč"},
+  {name:"BBQ Pollo",       ing:"BBQ základ, mozzarella, kuřecí maso, slanina, červená cibule", e:"🍗", price:"175 Kč"},
+];
+
+const pastaMenu = [
+  {name:"Spaghetti Bolognese",    ing:"domácí ragú z hovězího masa, parmazán, bazalka", e:"🍝", price:"165 Kč"},
+  {name:"Penne Arrabbiata",        ing:"rajčatová omáčka, česnek, chilli, olivový olej", e:"🌶️", price:"155 Kč"},
+  {name:"Rigatoni al Pesto",       ing:"domácí bazalkové pesto, cherry rajčata, parmazán", e:"🌿", price:"159 Kč"},
+  {name:"Tagliatelle Carbonara",   ing:"vejce, pancetta, parmazán, černý pepř", e:"🥓", price:"175 Kč"},
+  {name:"Gnocchi al Pollo",        ing:"kuřecí maso, špenát, smetanová omáčka", e:"🥬", price:"179 Kč"},
+  {name:"Risotto ai Funghi",       ing:"porcini houby, bílé víno, parmazán, tymián", e:"🍄", price:"179 Kč"},
+  {name:"Smíšené řízky",           ing:"vepřový a kuřecí řízek, bramborový salát", e:"🥩", price:"169 Kč"},
+  {name:"Pangasius al Forno",      ing:"pangasius pečený s citronem, rozmarýnem a olivovým olejem", e:"🐟", price:"179 Kč"},
+];
+
+const polévkyMenu = [
+  {name:"Kuřecí vývar",         ing:"nudličky, zelenina, petrželka", e:"🍲", price:"49 Kč"},
+  {name:"Čočková polévka",       ing:"salsiccia, kořenová zelenina, bylinky", e:"🥘", price:"49 Kč"},
+  {name:"Minestrone",            ing:"sezónní zelenina, fazole, parmazán, bazalka", e:"🥗", price:"59 Kč"},
+  {name:"Insalata Caprese",      ing:"čerstvá mozzarella, rajčata, bazalka, balzamikový dresink", e:"🧀", price:"165 Kč"},
+  {name:"Caesar Salát",          ing:"ledový salát, kuřecí prso, parmazán, krutony, dresink", e:"🥗", price:"159 Kč"},
+  {name:"Insalata Mista",        ing:"sezónní salátová zeleň, cherry rajčata, okurka, olivy", e:"🥗", price:"125 Kč"},
+  {name:"Tiramisù",              ing:"savoiardi, mascarpone, espresso, kakao", e:"🍮", price:"99 Kč"},
+  {name:"Panna Cotta",           ing:"vanilková smetanová panna cotta, lesní ovoce", e:"🍓", price:"89 Kč"},
+];
+
+let cur = 'pizza';
+
+function switchTab(tab, btn) {
+  cur = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const b = document.getElementById('price-badge');
+  if (tab === 'pizza') {
+    b.style.display = 'inline-flex';
+    b.textContent = '🍕 Pizza z pece — od 145 Kč';
+  } else if (tab === 'pasta') {
+    b.style.display = 'inline-flex';
+    b.textContent = '🍝 Těstoviny & hlavní jídla — od 155 Kč';
+  } else {
+    b.style.display = 'inline-flex';
+    b.textContent = '🥗 Polévky od 49 Kč · Saláty od 125 Kč';
+  }
+  renderMenu();
+}
+
+function renderMenu() {
+  const data = cur === 'pizza' ? pizzaMenu : cur === 'pasta' ? pastaMenu : polévkyMenu;
+  document.getElementById('menu-grid').innerHTML = data.map(i => `
+    <div class="menu-card">
+      <div class="menu-emoji">${i.e}</div>
+      <div style="flex:1;min-width:0">
+        <div class="menu-name">${i.name}</div>
+        <div class="menu-ing">${i.ing}</div>
+      </div>
+      <div class="menu-price">${i.price}</div>
+    </div>
+  `).join('');
+}
+
+const hoursData = [
+  {day:'Pondělí',  time:'09:00 – 21:30', closed:false},
+  {day:'Úterý',    time:'09:00 – 21:30', closed:false},
+  {day:'Středa',   time:'09:00 – 21:30', closed:false},
+  {day:'Čtvrtek',  time:'09:00 – 21:30', closed:false},
+  {day:'Pátek',    time:'09:00 – 21:30', closed:false},
+  {day:'Sobota',   time:'09:00 – 21:30', closed:false},
+  {day:'Neděle',   time:'09:00 – 21:30', closed:false},
+];
+
+function renderHours() {
+  const now = new Date();
+  const jsDay = now.getDay();
+  const hour = now.getHours() + now.getMinutes() / 60;
+  const todayIdx = jsDay === 0 ? 6 : jsDay - 1;
+  const isOpen = hour >= 9 && hour < 21.5;
+
+  document.getElementById('hours-list').innerHTML = hoursData.map((h, i) => `
+    <div class="h-row ${i === todayIdx ? 'today' : ''}">
+      <span class="h-day">${h.day}${i === todayIdx ? '<span class="today-chip">Dnes</span>' : ''}</span>
+      <span class="h-time ${h.closed ? 'closed' : ''}">${h.time}</span>
+    </div>
+  `).join('');
+
+  const b = document.getElementById('open-badge');
+  b.style.cssText = `background:${isOpen ? 'rgba(34,197,94,0.12)' : 'rgba(200,36,58,0.12)'};border:1px solid ${isOpen ? 'rgba(34,197,94,0.3)' : 'rgba(200,36,58,0.3)'};color:${isOpen ? '#22c55e' : '#c8243a'}`;
+  b.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${isOpen ? '#22c55e' : '#c8243a'};display:inline-block;animation:pulse 2s infinite;margin-right:4px"></span>${isOpen ? 'Právě otevřeno' : 'Nyní zavřeno'}`;
+}
+
+const obs = new IntersectionObserver(e => {
+  e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+renderMenu();
+renderHours();
+</script>
+</body>
+</html>
