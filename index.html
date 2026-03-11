@@ -354,6 +354,51 @@
       letter-spacing: 0.05em;
     }
 
+    /* ── ENTRY ANIMATIONS ───────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header  { animation: fadeUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+    .legend { animation: fadeUp 0.6s 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+
+    .card { animation: fadeUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+    .card:nth-child(1)  { animation-delay: 0.12s; }
+    .card:nth-child(2)  { animation-delay: 0.18s; }
+    .card:nth-child(3)  { animation-delay: 0.24s; }
+    .card:nth-child(4)  { animation-delay: 0.30s; }
+    .card:nth-child(5)  { animation-delay: 0.36s; }
+    .card:nth-child(6)  { animation-delay: 0.42s; }
+    .card:nth-child(7)  { animation-delay: 0.48s; }
+    .card:nth-child(8)  { animation-delay: 0.54s; }
+    .card:nth-child(9)  { animation-delay: 0.60s; }
+    .card:nth-child(10) { animation-delay: 0.66s; }
+    .card:nth-child(11) { animation-delay: 0.72s; }
+    .card:nth-child(12) { animation-delay: 0.78s; }
+    .card:nth-child(13) { animation-delay: 0.84s; }
+
+    /* ── STATUS COLORS ───────────────────────── */
+    .status-dot.delivered { background: #2A5A2A; }
+    .card:hover .status-dot.delivered { background: #4CAF50; }
+    .status-dot.pitch { background: #5A3A1A; }
+    .card:hover .status-dot.pitch { background: #F59E0B; }
+    .status-dot.live { background: #1A3A5A; }
+    .card:hover .status-dot.live { background: #3B82F6; }
+
+    /* ── CARD TOP ACCENT LINE ────────────────── */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      transition: background 0.5s;
+    }
+    .card:hover::before {
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.12), transparent);
+    }
+
     /* ── RESPONSIVE ──────────────────────────── */
     @media (max-width: 860px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
@@ -383,7 +428,7 @@
     </div>
     <div class="header-right">
       <span>2026</span>
-      <span class="header-count">09</span>
+      <span class="header-count">13</span>
     </div>
   </header>
 
@@ -412,7 +457,7 @@
         <p class="card-desc">Italská pizzerie, Kamenice nad Lipou. Tmavý design, italské barvy, kompletní menu a ceník.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -433,7 +478,7 @@
         <p class="card-desc">Editoriální dark layout pro kreativní agenturu. Bold typografie, výrazné animace.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -454,7 +499,7 @@
         <p class="card-desc">Zdeněk Vobinuška, Tábor. Tmavý design s modrým akcentem, přehled služeb a ceník.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -475,7 +520,7 @@
         <p class="card-desc">Rodinný hotel v centru Dačic. Reálné fotky, ceny a texty přímo z jejich webu.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -496,7 +541,7 @@
         <p class="card-desc">Hotel ve Strmilově, oblast Česká Kanada. Zlaté tóny, pokoje, restaurace, rezervace.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -517,7 +562,7 @@
         <p class="card-desc">Letní kemp v Náchodě. Chatky, stany, karavany, kompletní ceník a aktivity.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -538,7 +583,7 @@
         <p class="card-desc">Prodej, servis, HD import z USA. Jindřichův Hradec. Galerie motorů, 17 značek.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -559,7 +604,7 @@
         <p class="card-desc">Oleje, baterie, filtry, autokosmetika. Jindřichův Hradec. Dark design, žlutý akcent.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Delivered</span>
+        <span class="card-status"><span class="status-dot delivered"></span>Delivered</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -580,7 +625,7 @@
         <p class="card-desc">Italská restaurace v OC Europark Štěrboholy. Pizza, těstoviny, denní menu. Dark design, Playfair + Inter, italské trikolory.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Pitch</span>
+        <span class="card-status"><span class="status-dot pitch"></span>Pitch</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -601,7 +646,7 @@
         <p class="card-desc">Art café design. Výběrová káva, dezerty, brunch. Panská 111. Cream + teal + terracotta, Cormorant Garamond.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Pitch</span>
+        <span class="card-status"><span class="status-dot pitch"></span>Pitch</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>
@@ -622,7 +667,7 @@
         <p class="card-desc">Čerstvé maso, uzeniny a farmářské produkty. Jarošovská 1380. Tmavý design, zelený akcent.</p>
       </div>
       <div class="card-bottom">
-        <span class="card-status"><span class="status-dot"></span>Pitch</span>
+        <span class="card-status"><span class="status-dot pitch"></span>Pitch</span>
         <span class="card-arrow">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 13L13 3M13 3H6M13 3v7"/>

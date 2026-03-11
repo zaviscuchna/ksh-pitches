@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KSH Studio — Ukázky webů</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,800;0,900;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #060608;
+      --holo: linear-gradient(135deg, #ff6ec7, #a855f7, #6366f1, #06b6d4, #10b981, #eab308, #f97316, #ff6ec7);
+      --holo-shift: linear-gradient(135deg, #06b6d4, #10b981, #eab308, #f97316, #ff6ec7, #a855f7, #6366f1, #06b6d4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: #f0eeff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* ── AMBIENT GLOWS ── */
+    .glow-1, .glow-2, .glow-3 {
+      position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0;
+    }
+    .glow-1 { width: 600px; height: 600px; background: rgba(168,85,247,0.12); top: -200px; left: -100px; animation: drift1 18s ease-in-out infinite; }
+    .glow-2 { width: 500px; height: 500px; background: rgba(6,182,212,0.1); bottom: -100px; right: -150px; animation: drift2 22s ease-in-out infinite; }
+    .glow-3 { width: 400px; height: 400px; background: rgba(236,72,153,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: drift3 15s ease-in-out infinite; }
+
+    @keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-30px)} }
+    @keyframes drift3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)} }
+
+    /* ── HOLO TEXT EFFECT ── */
+    @keyframes holo-shift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .holo-text {
+      background: var(--holo);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: holo-shift 5s ease infinite;
+    }
+
+    /* ── HOLO BORDER ── */
+    @keyframes border-spin {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* ── WRAPPER ── */
+    .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: clamp(3rem,8vw,6rem) 1.5rem 4rem; }
+
+    /* ── HEADER ── */
+    header { margin-bottom: clamp(3rem,7vw,5rem); }
+
+    .ksh-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: transparent;
+      background: var(--holo);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: holo-shift 5s ease infinite;
+      margin-bottom: 1.5rem;
+    }
+    .ksh-badge::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--holo);
+      background-size: 300%;
+      flex-shrink: 0;
+      animation: holo-shift 3s ease infinite;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+    h1 .plain { color: #f0eeff; }
+
+    .sub {
+      color: rgba(240,238,255,0.4);
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      max-width: 420px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: clamp(2.5rem,5vw,4rem);
+    }
+
+    /* ── CARD ── */
+    .card {
+      position: relative;
+      background: rgba(10,8,16,0.85);
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--holo);
+      background-size: 400% 400%;
+      opacity: 0;
+      transition: opacity 0.4s;
+      animation: holo-shift 5s ease infinite;
+    }
+    .card:hover { background: rgba(15,10,25,0.9); }
+    .card:hover::before { opacity: 0.06; }
+
+    /* shimmer sweep on hover */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      transition: left 0.5s ease;
+      pointer-events: none;
+    }
+    .card:hover::after { left: 150%; }
+
+    .card-inner { position: relative; z-index: 1; }
+
+    .card-num {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+      color: rgba(240,238,255,0.2);
+      margin-bottom: 1.5rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .card-tag {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      background: var(--holo);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: holo-shift 6s ease infinite;
+      display: inline-block;
+    }
+
+    .card h2 {
+      font-size: 1.2rem; font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #f0eeff;
+      line-height: 1.2;
+    }
+
+    .card p {
+      font-size: 0.8rem;
+      color: rgba(240,238,255,0.35);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .card-arrow {
+      margin-top: 1.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(240,238,255,0.2);
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .card:hover .card-arrow {
+      color: rgba(240,238,255,0.6);
+      gap: 0.7rem;
+    }
+    .card-arrow::after { content: '→'; }
+
+    /* ── DIVIDER LINE ── */
+    .holo-line {
+      height: 1px;
+      background: var(--holo);
+      background-size: 300% 100%;
+      animation: holo-shift 4s linear infinite;
+      opacity: 0.35;
+      border: none;
+      margin: clamp(2.5rem,5vw,4rem) 0 2rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+      font-size: 0.72rem; color: rgba(240,238,255,0.18);
+    }
+    footer span.holo-text { font-weight: 700; font-size: 0.72rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 500px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+<div class="glow-3"></div>
+
+<div class="wrap">
+
+  <header>
+    <div class="ksh-badge">KSH Studio</div>
+    <h1>
+      <span class="plain">Ukázky</span><br />
+      <span class="holo-text">redesignů</span>
+    </h1>
+    <p class="sub">Interaktivní návrhy webů připravené pro jednotlivé klienty. Klikněte na ukázku pro zobrazení.</p>
+  </header>
+
+  <div class="grid">
+
+    <a href="pizza-nonno/" class="card">
+      <div class="card-inner">
+        <div class="card-num">01</div>
+        <div class="card-tag">Restaurace</div>
+        <h2>Pizza Nonno</h2>
+        <p>Italská pizzerie v Kamenici nad Lipou. Tmavý design, italské barvy, kompletní menu.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+    <a href="alterum/" class="card">
+      <div class="card-inner">
+        <div class="card-num">02</div>
+        <div class="card-tag">Kreativní agentura</div>
+        <h2>Alterum</h2>
+        <p>Editoriální design pro kreativní agenturu s výraznými animacemi.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+    <a href="sanitas-tabor/" class="card">
+      <div class="card-inner">
+        <div class="card-num">03</div>
+        <div class="card-tag">Vodoinstalatérství</div>
+        <h2>Sanitas Tábor</h2>
+        <p>Vodoinstalatér Zdeněk Vobinuška z Tábora. Tmavý design, modrý akcent.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+    <a href="hotel-dyje/" class="card">
+      <div class="card-inner">
+        <div class="card-num">04</div>
+        <div class="card-tag">Hotel</div>
+        <h2>Hotel Dyje</h2>
+        <p>Rodinný hotel v centru Dačic. Reálné fotky, ceny a texty přímo z jejich webu.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+    <a href="hotel-komornik/" class="card">
+      <div class="card-inner">
+        <div class="card-num">05</div>
+        <div class="card-tag">Hotel</div>
+        <h2>Hotel Komorník</h2>
+        <p>Hotel ve Strmilově v oblasti Česká Kanada. Zlaté tóny, pokoje, restaurace.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+    <a href="autokemp-nachod/" class="card">
+      <div class="card-inner">
+        <div class="card-num">06</div>
+        <div class="card-tag">Kemp</div>
+        <h2>Autokemp Náchod</h2>
+        <p>Letní kemp v Náchodě. Chatky, stany, karavany, kompletní ceník.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+    <a href="zemoto/" class="card">
+      <div class="card-inner">
+        <div class="card-num">07</div>
+        <div class="card-tag">Moto dealer</div>
+        <h2>Motocykly Zeman</h2>
+        <p>Prodej, servis a výbava. Specialisté na Harley-Davidson z USA. Jindřichův Hradec.</p>
+        <div class="card-arrow">Zobrazit ukázku</div>
+      </div>
+    </a>
+
+  </div>
+
+  <hr class="holo-line" />
+
+  <footer>
+    <span>© 2026 <span class="holo-text">KSH Studio</span></span>
+    <span>Weby které prodávají.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -4,1033 +4,817 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agnes CAFÉ — Jindřichův Hradec</title>
-  <meta name="description" content="Agnes CAFÉ – výběrová káva, domácí dezerty, snídaně a brunch v centru Jindřichova Hradce. Panská 111. Otevřeno Po–Ne 9–19." />
+  <meta name="description" content="Agnes CAFÉ – výběrová káva, domácí dezerty, snídaně a brunch v centru Jindřichova Hradce. Panská 111." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    /* ══ CONFIG ══════════════════════════════════════════════════ */
     :root {
-      --cream:    #faf7f2;
-      --cream-d:  #f0e8da;
-      --ink:      #1a1412;
-      --ink-50:   rgba(26,20,18,0.5);
-      --ink-20:   rgba(26,20,18,0.12);
-      --teal:     #2c6e6e;
-      --teal-l:   #3d9292;
-      --teal-d:   rgba(44,110,110,0.12);
-      --terra:    #c4714a;
-      --terra-d:  rgba(196,113,74,0.12);
-      --pink:     #d4527a;
+      --bg:     #f7f5f2;
+      --bg-d:   #edeae4;
+      --ink:    #1c1510;
+      --mid:    #5c4f43;
+      --accent: #7c4226;
+      --sand:   #c49060;
+      --line:   rgba(28,21,16,.1);
+      --ease:   cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* ══ RESET ═══════════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--cream);
+      background: var(--bg);
       color: var(--ink);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      cursor: none;
     }
-    /* paper grain overlay */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 9999;
-      pointer-events: none;
-      opacity: 0.025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 200px;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
 
-    /* ══ MARQUEE ═════════════════════════════════════════════════ */
-    .marquee-bar {
-      background: var(--ink); color: var(--cream);
-      padding: 0.6rem 0; overflow: hidden; white-space: nowrap;
+    /* ── CURSOR ─────────────────────────────────────── */
+    #cur {
+      position: fixed; z-index: 9999; pointer-events: none;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--ink); transform: translate(-50%,-50%);
+      transition: width .3s var(--ease), height .3s var(--ease);
+      mix-blend-mode: difference;
     }
-    .marquee-track {
-      display: inline-flex; gap: 0;
-      animation: marquee 28s linear infinite;
-    }
-    .marquee-bar:hover .marquee-track { animation-play-state: paused; }
-    .marquee-item {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 1rem; font-weight: 400;
-      letter-spacing: 0.04em; padding: 0 2rem; color: var(--cream);
-    }
-    .marquee-sep { color: var(--terra); font-style: normal; font-size: 1.1rem; }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    body.ch #cur { width: 40px; height: 40px; }
 
-    /* ══ NAV ═════════════════════════════════════════════════════ */
+    /* ── NAV ────────────────────────────────────────── */
     nav {
-      position: fixed; top: 32px; left: 0; right: 0; z-index: 100;
-      padding: 0 2rem; transition: top 0.3s;
-    }
-    .nav-inner {
-      max-width: 1200px; margin: 0 auto;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 64px; padding: 0 3.5rem;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(250,247,242,0.88);
-      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--ink-20);
-      border-radius: 14px; padding: 0.9rem 1.75rem;
+      transition: background .4s var(--ease), border-color .4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(247,245,242,.95);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--line);
     }
     .nav-logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-weight: 500; letter-spacing: 0.04em;
+      font-size: 1.1rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--bg);
+      text-decoration: none; transition: color .4s;
     }
-    .nav-logo em { font-style: italic; color: var(--terra); }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    nav.scrolled .nav-logo { color: var(--ink); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a {
-      font-size: 0.8rem; font-weight: 500; color: var(--ink-50);
-      letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s;
+      font-size: 10.5px; font-weight: 400; letter-spacing: .13em;
+      text-transform: uppercase; color: rgba(247,245,242,.55);
+      text-decoration: none; transition: color .3s;
     }
-    .nav-links a:hover { color: var(--ink); }
+    nav.scrolled .nav-links a { color: var(--mid); }
+    .nav-links a:hover { color: var(--bg); }
+    nav.scrolled .nav-links a:hover { color: var(--ink); }
     .nav-cta {
-      background: var(--ink); color: var(--cream);
-      padding: 0.5rem 1.1rem; border-radius: 8px;
-      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em;
-      transition: all 0.2s;
+      font-size: 10.5px; font-weight: 400; letter-spacing: .13em;
+      text-transform: uppercase; color: rgba(247,245,242,.65);
+      border: 1px solid rgba(247,245,242,.22); border-radius: 100px;
+      padding: .55rem 1.4rem; text-decoration: none; transition: all .3s var(--ease);
     }
-    .nav-cta:hover { background: var(--teal); color: #fff; }
-    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .nav-hamburger span { width: 22px; height: 1.5px; background: var(--ink); border-radius: 2px; display: block; transition: all 0.3s; }
+    nav.scrolled .nav-cta { color: var(--accent); border-color: rgba(124,66,38,.3); }
+    .nav-cta:hover { background: rgba(247,245,242,.1); border-color: rgba(247,245,242,.55); color: var(--bg); }
+    nav.scrolled .nav-cta:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .nav-toggle { display: none; background: none; border: none; cursor: none; flex-direction: column; gap: 4px; padding: 4px; }
+    .nav-toggle span { display: block; width: 20px; height: 1px; background: var(--bg); transition: all .3s; }
+    nav.scrolled .nav-toggle span { background: var(--ink); }
 
-    /* ══ HERO ════════════════════════════════════════════════════ */
-    .hero {
-      min-height: 100vh;
+    /* ── HERO ───────────────────────────────────────── */
+    #hero {
+      height: 100vh; min-height: 640px;
       position: relative; overflow: hidden;
       display: flex; align-items: flex-end;
     }
-    .hero-bg-img {
-      position: absolute; inset: 0; z-index: 0;
+    .hero-photo {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      filter: brightness(.6) contrast(1.08) saturate(.82);
+      transform: scale(1.04);
+      transition: transform 9s var(--ease);
     }
-    .hero-bg-img img {
-      width: 100%; height: 100%; object-fit: cover; object-position: center;
+    #hero:hover .hero-photo { transform: scale(1); }
+    .hero-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(28,20,16,.85) 0%, rgba(28,20,16,.1) 55%);
     }
-    .hero-overlay {
-      position: absolute; inset: 0; z-index: 1;
-      background:
-        linear-gradient(to top, rgba(10,8,6,1) 0%, rgba(10,8,6,0.92) 40%, rgba(10,8,6,0.55) 70%, rgba(10,8,6,0.5) 100%);
-    }
-    .hero-left {
+    .hero-content {
       position: relative; z-index: 2;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: clamp(8rem, 12vw, 12rem) clamp(2rem, 5vw, 6rem) clamp(3.5rem, 6vw, 5.5rem);
-      max-width: 700px;
+      width: 100%; padding: 0 3.5rem clamp(4rem,7vh,6rem);
     }
-    .hero-eyebrow {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--terra);
-      margin-bottom: 1.25rem;
-      display: flex; align-items: center; gap: 0.75rem;
+    .hero-loc {
+      font-size: 10px; font-weight: 400; letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(247,245,242,.4); margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: .8rem;
+      opacity: 0; animation: fadeUp .6s .3s var(--ease) forwards;
     }
-    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--terra); }
-    .hero h1 {
+    .hero-loc::before { content: ''; width: 22px; height: 1px; background: var(--sand); }
+    .hero-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 7vw, 7rem);
-      font-weight: 300; line-height: 0.95;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-      color: var(--cream);
+      font-size: clamp(5.5rem, 14vw, 15rem);
+      font-weight: 300; font-style: italic;
+      line-height: .85; letter-spacing: -.03em;
+      color: var(--bg); overflow: hidden;
     }
-    .hero h1 em { font-style: italic; font-weight: 400; color: var(--terra); }
-    .hero h1 strong { font-weight: 600; display: block; }
-    .hero-desc {
-      font-size: 0.95rem; line-height: 1.8;
-      color: rgba(250,247,242,0.82); max-width: 420px;
-      margin-bottom: 2.5rem;
+    .hero-title span { display: block; transform: translateY(110%); animation: slideUp 1.2s var(--ease) forwards; }
+    .hero-title .ht2 { color: rgba(247,245,242,.28); font-style: normal; animation-delay: .12s; }
+    .hero-bottom {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
+      margin-top: 2.5rem;
+      opacity: 0; animation: fadeUp .7s 1s var(--ease) forwards;
     }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-ink {
-      background: var(--cream); color: var(--ink);
-      padding: 0.85rem 1.75rem; border-radius: 8px;
-      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.03em;
-      transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+    .hero-tagline {
+      font-size: 10.5px; font-weight: 300; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(247,245,242,.35);
     }
-    .btn-ink:hover { background: var(--terra); color: #fff; transform: translateY(-2px); }
-    .btn-outline-ink {
-      border: 1px solid rgba(250,247,242,0.3); color: var(--cream);
-      padding: 0.85rem 1.75rem; border-radius: 8px;
-      font-size: 0.82rem; font-weight: 500;
-      transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+    .hero-btns { display: flex; gap: .75rem; flex-shrink: 0; }
+    .btn {
+      font-size: 10.5px; font-weight: 400; letter-spacing: .13em; text-transform: uppercase;
+      padding: .75rem 1.8rem; border-radius: 100px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: .4rem;
+      transition: all .3s var(--ease);
     }
-    .btn-outline-ink:hover { border-color: var(--terra); color: var(--terra); }
-    /* Decorative SVG doodles */
-    .doodle-steam {
-      position: absolute; bottom: 3rem; right: 2rem;
-      opacity: 0.12; width: 60px;
-    }
-    /* hero badge */
-    .hero-badge {
-      position: absolute; bottom: clamp(3.5rem,6vw,5.5rem); right: clamp(2rem,5vw,6rem); z-index: 2;
-      background: rgba(250,247,242,0.1); backdrop-filter: blur(12px);
-      border: 1px solid rgba(250,247,242,0.2); border-radius: 10px;
-      padding: 0.7rem 1rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.82rem; font-weight: 500; color: var(--cream);
-    }
-    .hero-badge span { color: var(--terra); font-weight: 600; }
+    .btn-solid { background: var(--bg); color: var(--ink); }
+    .btn-solid:hover { background: var(--sand); color: var(--bg); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: rgba(247,245,242,.65); border: 1px solid rgba(247,245,242,.22); }
+    .btn-ghost:hover { border-color: rgba(247,245,242,.6); color: var(--bg); transform: translateY(-2px); }
+    .btn-dark { background: var(--accent); color: var(--bg); }
+    .btn-dark:hover { background: #9a5432; transform: translateY(-2px); }
+    .btn-line { background: transparent; color: var(--accent); border: 1px solid rgba(124,66,38,.32); }
+    .btn-line:hover { background: var(--accent); color: var(--bg); transform: translateY(-2px); }
+    .btn-dim { background: transparent; color: rgba(247,245,242,.55); border: 1px solid rgba(247,245,242,.18); }
+    .btn-dim:hover { border-color: rgba(247,245,242,.5); color: var(--bg); transform: translateY(-2px); }
 
-    /* ══ SECTIONS ════════════════════════════════════════════════ */
-    section { padding: clamp(4rem, 8vw, 7rem) 2rem; }
-    .container { max-width: 1200px; margin: 0 auto; }
-    .sec-eyebrow {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--terra);
-      display: flex; align-items: center; gap: 0.65rem;
-      margin-bottom: 0.85rem;
+    /* ── STRIP ──────────────────────────────────────── */
+    .strip {
+      background: var(--ink);
+      padding: 5rem 3.5rem;
+      text-align: center;
     }
-    .sec-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--terra); }
-    h2.sec-title {
+    .strip-inner { max-width: 900px; margin: 0 auto; }
+    .strip-quote {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 300; line-height: 1.1; letter-spacing: -0.01em;
+      font-size: clamp(1.5rem, 3.2vw, 2.8rem);
+      font-weight: 300; font-style: italic; line-height: 1.45;
+      color: rgba(247,245,242,.65);
     }
-    h2.sec-title em { font-style: italic; }
+    .strip-quote strong { color: var(--sand); font-weight: 400; font-style: normal; }
+    .strip-meta {
+      display: flex; align-items: center; justify-content: center; gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+    .strip-tag {
+      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(247,245,242,.28);
+    }
+    .strip-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(247,245,242,.2); }
 
-    /* ══ ABOUT ═══════════════════════════════════════════════════ */
-    .about { background: var(--cream-d); }
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1.2fr;
-      gap: 5rem; align-items: center;
+    /* ── UTILITY ────────────────────────────────────── */
+    .wrap { max-width: 1360px; margin: 0 auto; padding: 0 3.5rem; }
+    .eyebrow {
+      font-size: 9.5px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--accent); display: flex; align-items: center; gap: .75rem;
+      margin-bottom: 1.2rem;
     }
-    .about-img { position: relative; }
-    .about-img-main {
-      border-radius: 4px; overflow: hidden; aspect-ratio: 3/4;
+    .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      font-weight: 300; line-height: 1.0; letter-spacing: -.025em; color: var(--ink);
     }
-    .about-img-main img { width: 100%; height: 100%; object-fit: cover; }
-    .about-img-float {
-      position: absolute; bottom: -2rem; right: -2rem;
-      width: 55%; border-radius: 4px; overflow: hidden;
-      border: 6px solid var(--cream-d); box-shadow: 0 20px 60px rgba(26,20,18,0.12);
-      aspect-ratio: 4/3;
+    .section-title em { font-style: italic; color: var(--accent); }
+    .body-txt { font-size: .9rem; font-weight: 300; line-height: 1.9; color: var(--mid); max-width: 50ch; }
+    .text-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase;
+      color: var(--accent); text-decoration: none; transition: gap .3s var(--ease);
     }
-    .about-img-float img { width: 100%; height: 100%; object-fit: cover; }
+    .text-link:hover { gap: .8rem; }
+
+    /* ── SCROLL REVEAL ──────────────────────────────── */
+    .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+    .rv-l { opacity: 0; transform: translateX(-28px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .rv-r { opacity: 0; transform: translateX(28px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .rv.on, .rv-l.on, .rv-r.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s!important; }
+    .d2 { transition-delay: .22s!important; }
+    .d3 { transition-delay: .34s!important; }
+    .d4 { transition-delay: .48s!important; }
+
+    /* ── ABOUT ──────────────────────────────────────── */
+    #about { padding: clamp(7rem,11vw,11rem) 0; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; }
+    .about-photo-wrap { position: relative; }
+    .about-photo {
+      overflow: hidden; border-radius: 3px;
+      aspect-ratio: 3/4;
+    }
+    .about-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: contrast(1.04) saturate(.88) brightness(.97);
+      transition: transform .9s var(--ease);
+    }
+    .about-photo-wrap:hover .about-photo img { transform: scale(1.04); }
+    .about-tag {
+      position: absolute; bottom: 2.5rem; right: -2rem;
+      background: var(--bg); padding: .9rem 1.3rem;
+      border: 1px solid var(--line);
+      font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent);
+    }
+    .about-caption {
+      margin-top: 1rem;
+      font-size: 9.5px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--mid);
+    }
     .about-quote {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-      font-weight: 300; font-style: italic;
-      line-height: 1.5; color: var(--ink);
-      margin: 2rem 0; position: relative; padding-left: 1.5rem;
+      font-size: clamp(1.25rem, 2.2vw, 1.85rem);
+      font-weight: 300; font-style: italic; line-height: 1.5;
+      color: var(--ink); margin: 2rem 0; padding-left: 1.3rem;
+      border-left: 1.5px solid var(--accent);
     }
-    .about-quote::before {
-      content: '';
-      position: absolute; left: 0; top: 0.2em; bottom: 0.2em;
-      width: 2px; background: var(--terra); border-radius: 2px;
-    }
-    .about-text { color: var(--ink-50); line-height: 1.8; font-size: 0.92rem; margin-bottom: 1.5rem; }
-    .about-awards {
-      display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem;
-    }
-    .award-badge {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--cream); border: 1px solid var(--ink-20);
-      border-radius: 8px; padding: 0.5rem 0.85rem;
-      font-size: 0.75rem; font-weight: 600;
-    }
-
-    /* ══ MENU CARDS ══════════════════════════════════════════════ */
-    .menu-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem; margin-top: 3rem;
-    }
-    .menu-card {
-      background: var(--cream-d);
-      border: 1px solid var(--ink-20); border-radius: 4px;
-      padding: 2rem 1.5rem; position: relative; overflow: hidden;
-      transition: all 0.3s;
-    }
-    .menu-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--terra); transform: scaleX(0); transform-origin: left;
-      transition: transform 0.3s;
-    }
-    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,20,18,0.08); }
-    .menu-card:hover::before { transform: scaleX(1); }
-    .menu-card-icon { font-size: 2rem; margin-bottom: 1.25rem; display: block; }
-    .menu-card h3 {
+    .about-rule { width: 100%; height: 1px; background: var(--line); margin: 2.5rem 0; }
+    .about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .stat-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; font-weight: 500; margin-bottom: 0.6rem;
+      font-size: 2.6rem; font-weight: 300; font-style: italic;
+      color: var(--accent); line-height: 1;
     }
-    .menu-card p { font-size: 0.82rem; color: var(--ink-50); line-height: 1.7; }
-    /* doodle SVG in cards */
-    .menu-card-doodle {
-      position: absolute; bottom: 1rem; right: 1rem;
-      opacity: 0.07; width: 50px;
-    }
+    .stat-label { font-size: 9.5px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--mid); margin-top: .3rem; }
 
-    /* ══ BRUNCH BLOCK ════════════════════════════════════════════ */
-    .brunch { background: var(--ink); color: var(--cream); }
-    .brunch-inner {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 4rem; align-items: center;
+    /* ── OFFERINGS ──────────────────────────────────── */
+    #offerings { padding: clamp(5rem,9vw,9rem) 0; background: var(--bg-d); }
+    .offerings-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+    .offerings-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--line); }
+    .off-card { background: var(--bg-d); overflow: hidden; transition: background .35s; }
+    .off-card:hover { background: var(--bg); }
+    .off-photo { aspect-ratio: 4/3; overflow: hidden; }
+    .off-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: saturate(.82) contrast(1.05);
+      transition: transform .75s var(--ease), filter .45s;
     }
-    .brunch-text .sec-eyebrow { color: var(--terra); }
-    .brunch-text .sec-eyebrow::before { background: var(--terra); }
-    .brunch-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      font-weight: 300; line-height: 1.0; letter-spacing: -0.01em;
-      color: var(--cream); margin: 0.5rem 0 1rem;
-    }
-    .brunch-title em { font-style: italic; color: var(--terra); }
-    .brunch-desc { color: rgba(250,247,242,0.55); line-height: 1.8; font-size: 0.92rem; margin-bottom: 2rem; }
-    .brunch-time {
-      display: inline-flex; align-items: center; gap: 1rem;
-      background: rgba(250,247,242,0.07); border: 1px solid rgba(250,247,242,0.12);
-      border-radius: 10px; padding: 1.1rem 1.5rem; margin-bottom: 2rem;
-    }
-    .brunch-time-val {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 300; color: var(--cream);
-    }
-    .brunch-time-lab { font-size: 0.72rem; color: rgba(250,247,242,0.5); letter-spacing: 0.06em; text-transform: uppercase; }
-    .btn-cream {
-      background: var(--cream); color: var(--ink);
-      padding: 0.85rem 1.75rem; border-radius: 8px;
-      font-size: 0.82rem; font-weight: 600;
-      transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-cream:hover { background: var(--terra); color: #fff; transform: translateY(-2px); }
-    .brunch-img {
-      border-radius: 4px; overflow: hidden; aspect-ratio: 4/5;
-    }
-    .brunch-img img { width: 100%; height: 100%; object-fit: cover; }
+    .off-card:hover .off-photo img { transform: scale(1.07); filter: saturate(1) contrast(1.05); }
+    .off-body { padding: 2rem 2rem 2.5rem; }
+    .off-num { font-family: 'Cormorant Garamond', serif; font-size: .85rem; font-weight: 300; font-style: italic; color: var(--sand); margin-bottom: .8rem; }
+    .off-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--ink); margin-bottom: .75rem; }
+    .off-list { list-style: none; display: flex; flex-direction: column; gap: .32rem; }
+    .off-list li { font-size: .82rem; font-weight: 300; color: var(--mid); padding-left: 1.1rem; position: relative; }
+    .off-list li::before { content: '—'; position: absolute; left: 0; color: var(--sand); }
 
-    /* ══ GALLERY ═════════════════════════════════════════════════ */
+    /* ── EDITORIAL STRIP ────────────────────────────── */
+    .editorial-strip {
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .ed-photo { aspect-ratio: 16/9; overflow: hidden; }
+    .ed-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.85) contrast(1.05); }
+    .ed-text {
+      background: var(--ink); display: flex; flex-direction: column;
+      justify-content: center; padding: 5rem 4rem;
+    }
+    .ed-eyebrow { font-size: 9.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--sand); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .75rem; }
+    .ed-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--sand); }
+    .ed-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 4.5vw, 4.5rem);
+      font-weight: 300; font-style: italic; line-height: 1.05; letter-spacing: -.025em;
+      color: var(--bg); margin-bottom: 1.8rem;
+    }
+    .ed-body { font-size: .9rem; font-weight: 300; line-height: 1.85; color: rgba(247,245,242,.5); max-width: 44ch; margin-bottom: 2rem; }
+    .ed-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 300; font-style: italic; color: var(--sand); margin-bottom: .4rem;
+    }
+    .ed-days { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: rgba(247,245,242,.3); margin-bottom: 2rem; }
+
+    /* ── GALLERY ────────────────────────────────────── */
+    #gallery { padding: clamp(6rem,10vw,10rem) 0; }
+    .gallery-hd { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 3rem; }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 1rem; margin-top: 3rem;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 300px 240px;
+      gap: 4px;
     }
-    .gallery-item {
-      overflow: hidden; border-radius: 4px; cursor: pointer;
-      position: relative;
+    .g-item { overflow: hidden; border-radius: 2px; cursor: none; position: relative; }
+    .g-item:nth-child(1) { grid-row: 1 / 3; }
+    .g-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: saturate(.85) contrast(1.04);
+      transition: transform .75s var(--ease), filter .4s;
     }
-    .gallery-item:first-child { grid-row: span 2; }
-    .gallery-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.5s ease;
-      aspect-ratio: 1;
-    }
-    .gallery-item:first-child img { aspect-ratio: auto; }
-    .gallery-item:hover img { transform: scale(1.06); }
-    .gallery-overlay {
+    .g-item:hover img { transform: scale(1.07); filter: saturate(1) contrast(1.04); }
+    .g-overlay {
       position: absolute; inset: 0;
-      background: rgba(26,20,18,0); display: flex;
-      align-items: center; justify-content: center;
-      transition: background 0.3s;
+      display: flex; align-items: flex-end; padding: 1.2rem;
+      background: linear-gradient(to top, rgba(28,20,16,.65) 0%, transparent 55%);
+      opacity: 0; transition: opacity .4s var(--ease);
     }
-    .gallery-overlay span {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 1.1rem; color: #fff;
-      opacity: 0; transition: opacity 0.3s; transform: translateY(6px);
-      transition: opacity 0.3s, transform 0.3s;
-    }
-    .gallery-item:hover .gallery-overlay { background: rgba(26,20,18,0.3); }
-    .gallery-item:hover .gallery-overlay span { opacity: 1; transform: translateY(0); }
+    .g-item:hover .g-overlay { opacity: 1; }
+    .g-cap { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: rgba(247,245,242,.9); }
 
-    /* Lightbox */
-    .lightbox {
-      position: fixed; inset: 0; z-index: 999;
-      background: rgba(26,20,18,0.95);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s;
-    }
-    .lightbox.open { opacity: 1; pointer-events: all; }
-    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 4px; }
-    .lightbox-close {
-      position: absolute; top: 1.5rem; right: 1.5rem;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(250,247,242,0.15); color: var(--cream);
-      border: none; cursor: pointer; font-size: 1.2rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
-    }
-    .lightbox-close:hover { background: rgba(250,247,242,0.25); }
+    /* ── CONTACT ────────────────────────────────────── */
+    #contact { padding: clamp(6rem,10vw,10rem) 0; background: var(--bg-d); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: start; }
+    .hours-table { margin-top: 2.5rem; }
+    .h-row { display: flex; justify-content: space-between; padding: .8rem 0; border-bottom: 1px solid var(--line); font-size: .875rem; font-weight: 300; }
+    .h-row:first-child { border-top: 1px solid var(--line); }
+    .h-day { color: var(--ink); }
+    .h-time { color: var(--mid); font-feature-settings: "tnum"; }
+    .h-row.hl .h-day, .h-row.hl .h-time { color: var(--accent); }
+    .c-links { margin-top: 2.5rem; display: flex; flex-direction: column; gap: .6rem; }
+    .c-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; font-size: .875rem; font-weight: 300; color: var(--mid); transition: color .3s; }
+    .c-link:hover { color: var(--accent); }
+    .c-icon { width: 32px; height: 32px; border-radius: 50%; background: rgba(28,21,16,.08); display: flex; align-items: center; justify-content: center; font-size: .8rem; flex-shrink: 0; transition: background .3s; }
+    .c-link:hover .c-icon { background: rgba(124,66,38,.12); }
+    .map-wrap { border-radius: 3px; overflow: hidden; height: 420px; }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
-    /* ══ VISIT ═══════════════════════════════════════════════════ */
-    .visit { background: var(--cream-d); }
-    .visit-grid {
-      display: grid; grid-template-columns: 1fr 1.5fr;
-      gap: 4rem; align-items: start; margin-top: 3rem;
-    }
-    .hours-list { display: flex; flex-direction: column; gap: 0; margin-top: 1.5rem; }
-    .hours-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.8rem 0; border-bottom: 1px solid var(--ink-20);
-      font-size: 0.88rem;
-    }
-    .hours-row:last-child { border-bottom: none; }
-    .hours-row .day { color: var(--ink-50); }
-    .hours-row .time { font-weight: 600; }
-    .contact-items { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.5rem; }
-    .contact-item {
-      display: flex; gap: 1rem; align-items: center;
-      padding: 1rem 1.25rem; background: var(--cream);
-      border: 1px solid var(--ink-20); border-radius: 8px; font-size: 0.88rem;
-      transition: border-color 0.2s;
-    }
-    .contact-item:hover { border-color: var(--teal); }
-    .contact-item a:hover { color: var(--teal); }
-    .contact-icon { font-size: 1.1rem; width: 24px; text-align: center; }
-    .map-wrap {
-      border-radius: 8px; overflow: hidden;
-      border: 1px solid var(--ink-20);
-      aspect-ratio: 4/3;
-    }
-    .map-wrap iframe { width: 100%; height: 100%; border: none; }
-    .map-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      margin-top: 1rem; font-size: 0.82rem; font-weight: 600;
-      color: var(--teal); transition: color 0.2s;
-    }
-    .map-btn:hover { color: var(--terra); }
+    /* ── INSTAGRAM ──────────────────────────────────── */
+    #insta { background: var(--ink); padding: 6rem 0 5rem; }
+    .ig-top { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; }
+    .ig-handle { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 300; font-style: italic; color: var(--bg); }
+    .ig-meta { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(247,245,242,.27); margin-top: .3rem; }
+    .ig-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
+    .ig-tile { aspect-ratio: 1/1; overflow: hidden; display: block; border-radius: 2px; }
+    .ig-tile img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.82) saturate(.7); transition: transform .6s var(--ease), filter .4s; display: block; }
+    .ig-tile:hover img { transform: scale(1.08); filter: brightness(1) saturate(1); }
 
-    /* ══ INSTAGRAM ═══════════════════════════════════════════════ */
-    .instagram { text-align: center; }
-    .ig-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1rem; margin: 3rem 0 2rem; max-width: 900px; margin-left: auto; margin-right: auto;
-    }
-    .ig-card {
-      aspect-ratio: 1; border-radius: 4px; overflow: hidden;
-      background: var(--cream-d); border: 1px solid var(--ink-20);
-      display: flex; align-items: center; justify-content: center;
-      position: relative; cursor: pointer; transition: all 0.3s;
-    }
-    .ig-card img { width: 100%; height: 100%; object-fit: cover; }
-    .ig-card-overlay {
-      position: absolute; inset: 0; background: rgba(44,110,110,0);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      transition: background 0.3s; gap: 0.25rem;
-    }
-    .ig-card:hover .ig-card-overlay { background: rgba(44,110,110,0.75); }
-    .ig-card-overlay span {
-      color: #fff; font-size: 0.8rem; font-weight: 600;
-      opacity: 0; transition: opacity 0.3s; letter-spacing: 0.04em;
-    }
-    .ig-card:hover .ig-card-overlay span { opacity: 1; }
-    .ig-placeholder {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 0.9rem; color: var(--ink-50);
-      text-align: center; padding: 1rem;
-    }
-    .ig-follow {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      border: 1px solid var(--ink-20); color: var(--ink);
-      padding: 0.85rem 2rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
-      transition: all 0.2s; margin-top: 1rem;
-    }
-    .ig-follow:hover { background: var(--ink); color: var(--cream); }
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer { background: var(--ink); padding: 0 0 2rem; border-top: 1px solid rgba(247,245,242,.06); }
+    .footer-inner { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 3rem; padding: 3.5rem 0 3rem; }
+    .f-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--bg); margin-bottom: .6rem; }
+    .f-desc { font-size: .8rem; font-weight: 300; color: rgba(247,245,242,.3); line-height: 1.85; }
+    .f-head { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: rgba(247,245,242,.2); margin-bottom: 1.2rem; }
+    .f-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .f-list li a, .f-list li span { font-size: .8rem; font-weight: 300; color: rgba(247,245,242,.35); text-decoration: none; transition: color .3s; }
+    .f-list li a:hover { color: rgba(247,245,242,.75); }
+    .footer-bottom { display: flex; justify-content: space-between; padding-top: 2rem; border-top: 1px solid rgba(247,245,242,.06); }
+    .f-copy, .f-by { font-size: .72rem; font-weight: 300; color: rgba(247,245,242,.18); letter-spacing: .04em; }
 
-    /* ══ FOOTER ══════════════════════════════════════════════════ */
-    footer {
-      background: var(--ink); color: var(--cream);
-      padding: clamp(3rem, 5vw, 5rem) 2rem 2rem;
-    }
-    .footer-grid {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem; padding-bottom: 3rem;
-      border-bottom: 1px solid rgba(250,247,242,0.1);
-    }
-    .footer-brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem;
-    }
-    .footer-brand-name em { font-style: italic; color: var(--terra); }
-    .footer-brand-desc { font-size: 0.8rem; color: rgba(250,247,242,0.45); line-height: 1.7; margin-top: 0.5rem; max-width: 280px; }
-    .footer-col h4 {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: rgba(250,247,242,0.4);
-      margin-bottom: 1rem;
-    }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-    .footer-col ul li a, .footer-col ul li span {
-      font-size: 0.82rem; color: rgba(250,247,242,0.65);
-      transition: color 0.2s;
-    }
-    .footer-col ul li a:hover { color: var(--terra); }
-    .footer-bottom {
-      max-width: 1200px; margin: 2rem auto 0;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-    }
-    .footer-copy { font-size: 0.75rem; color: rgba(250,247,242,0.3); }
-    .footer-taste { font-size: 0.75rem; color: rgba(250,247,242,0.3); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+    /* ── LIGHTBOX ───────────────────────────────────── */
+    .lb { position: fixed; inset: 0; z-index: 8000; background: rgba(10,8,6,.97); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .4s var(--ease); }
+    .lb.open { opacity: 1; pointer-events: all; }
+    .lb img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 2px; transform: scale(.95); transition: transform .5s var(--ease); }
+    .lb.open img { transform: scale(1); }
+    .lb-x { position: absolute; top: 2rem; right: 2rem; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(247,245,242,.15); background: none; color: var(--bg); font-size: 1rem; cursor: none; display: flex; align-items: center; justify-content: center; transition: border-color .3s; }
+    .lb-x:hover { border-color: rgba(247,245,242,.5); }
 
-    /* ══ REVEAL ANIMATIONS ═══════════════════════════════════════ */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-left { opacity: 0; transform: translateX(-24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal-left.visible { opacity: 1; transform: none; }
-    .reveal-right { opacity: 0; transform: translateX(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal-right.visible { opacity: 1; transform: none; }
+    /* ── KEYFRAMES ──────────────────────────────────── */
+    @keyframes slideUp { to { transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-    /* ══ RESPONSIVE ══════════════════════════════════════════════ */
+    /* ── RESPONSIVE ─────────────────────────────────── */
     @media (max-width: 1100px) {
-      .menu-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+      .about-tag { right: 0; }
+      .offerings-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .editorial-strip { grid-template-columns: 1fr; }
+      .ed-photo { aspect-ratio: 16/8; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 900px) {
-      .hero-left { padding: 7rem 1.5rem 4rem; max-width: 100%; }
-      .hero-badge { bottom: 1.5rem; right: 1.5rem; }
-      .about-grid, .brunch-inner, .visit-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .about-img-float { position: static; width: 60%; margin-top: 1rem; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-      .nav-links.open {
-        display: flex; flex-direction: column;
-        position: absolute; top: 100%; left: 0; right: 0;
-        background: rgba(250,247,242,0.97); backdrop-filter: blur(20px);
-        padding: 1.5rem; gap: 1.25rem; align-items: flex-start;
-        border-top: 1px solid var(--ink-20);
-        border-radius: 0 0 14px 14px;
-      }
-      .ig-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-      nav { top: 16px; padding: 0 1rem; }
-      section { padding: 3rem 1.25rem; }
-      .gallery-grid { grid-template-columns: 1fr 1fr; }
-      .gallery-item:first-child { grid-column: span 2; grid-row: span 1; }
-      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+      .wrap { padding: 0 1.5rem; }
+      .hero-content { padding: 0 1.5rem 3rem; }
+      .strip { padding: 3.5rem 1.5rem; }
+      .offerings-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .g-item:nth-child(1) { grid-row: auto; grid-column: span 2; aspect-ratio: 16/9; }
+      .ig-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .gallery-hd, .ig-top { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .ed-text { padding: 3rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── LIGHTBOX ── -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightboxImg" src="" alt="" />
+<div id="cur"></div>
+
+<div class="lb" id="lb" onclick="closeLb()">
+  <button class="lb-x" onclick="closeLb()">✕</button>
+  <img id="lbImg" src="" alt="" onclick="event.stopPropagation()" />
 </div>
 
-<!-- ── MARQUEE ── -->
-<div class="marquee-bar">
-  <div class="marquee-track">
-    <span class="marquee-item">espresso<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">brunch<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">vegan<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">bezlepek<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">domácí dezerty<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">tichý dvorek<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">galerie<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">snídaně<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">espresso<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">brunch<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">vegan<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">bezlepek<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">domácí dezerty<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">tichý dvorek<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">galerie<span class="marquee-sep"> · </span></span>
-    <span class="marquee-item">snídaně<span class="marquee-sep"> · </span></span>
-  </div>
-</div>
-
-<!-- ── NAV ── -->
-<nav id="mainNav">
-  <div class="nav-inner">
-    <div class="nav-logo">Agnes <em>CAFÉ</em></div>
-    <div class="nav-links" id="navLinks">
-      <a href="#o-nas">O nás</a>
-      <a href="#nabidka">Nabídka</a>
-      <a href="#brunch">Brunch</a>
-      <a href="#galerie">Galerie</a>
-      <a href="#navstivte">Kontakt</a>
-      <a href="tel:+420606032669" class="nav-cta">+420 606 032 669</a>
-    </div>
-    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </div>
-  </div>
+<!-- ═══ NAV ═══════════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Agnes CAFÉ</a>
+  <ul class="nav-links">
+    <li><a href="#about">O nás</a></li>
+    <li><a href="#offerings">Nabídka</a></li>
+    <li><a href="#brunch">Brunch</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+  <a class="nav-cta" href="tel:+420606032669">Zavolat</a>
+  <button class="nav-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- ── HERO ── -->
-<section class="hero" id="uvod">
-  <div class="hero-bg-img">
-    <img id="cfg-hero-photo" src="assets/brunch-dark.jpg" alt="Agnes CAFÉ brunch" />
-  </div>
-  <div class="hero-overlay"></div>
-  <div class="hero-left">
-    <div class="hero-eyebrow" id="cfg-hero-location">Panská 111 · Jindřichův Hradec</div>
-    <h1 id="cfg-hero-title">
-      Agnes<br>
-      <em>CAFÉ</em><br>
-      <strong>Kavárna<br>& galerie</strong>
+<!-- ═══ HERO ═══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-photo" id="heroBg"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-content">
+    <p class="hero-loc">Panská 111 — Jindřichův Hradec</p>
+    <h1 class="hero-title">
+      <span>agnes</span>
+      <span class="ht2">CAFÉ</span>
     </h1>
-    <p class="hero-desc" id="cfg-hero-desc">
-      Výběrová káva, domácí dezerty a umělecká atmosféra v srdci Jindřichova Hradce. Místo, kam se rádi vracíte.
-    </p>
-    <div class="hero-actions">
-      <a href="#navstivte" class="btn-ink">Jak se k nám dostanete →</a>
-      <a href="#nabidka" class="btn-outline-ink">Nabídka</a>
+    <div class="hero-bottom">
+      <span class="hero-tagline">Kavárna &amp; galerie &nbsp;·&nbsp; od roku 2018</span>
+      <div class="hero-btns">
+        <a href="#offerings" class="btn btn-solid">Naše nabídka</a>
+        <a href="#contact" class="btn btn-ghost">Jak nás najít</a>
+      </div>
     </div>
   </div>
-  <div class="hero-badge" id="cfg-hero-badge">⭐ 4,5 · <span>Orlové Cukrářství 2025</span></div>
 </section>
 
-<!-- ── O NÁS ── -->
-<section class="about" id="o-nas">
-  <div class="container">
+<!-- ═══ STRIP ══════════════════════════════════════════ -->
+<div class="strip">
+  <div class="strip-inner">
+    <p class="strip-quote rv">"Pečeme každé ráno. Káva od lokálních roastérů. <strong>Nic z mrazáku.</strong>"</p>
+    <div class="strip-meta rv d1">
+      <span class="strip-tag">Výběrová káva</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Domácí dezerty</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Víkendový brunch</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Jindřichův Hradec</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ O NÁS ══════════════════════════════════════════ -->
+<section id="about">
+  <div class="wrap">
     <div class="about-grid">
-      <div class="about-img reveal-left">
-        <div class="about-img-main">
-          <img id="cfg-about-photo1" src="assets/agnes-04.jpg" alt="Agnes CAFÉ sala" loading="lazy" />
+      <div class="rv-l">
+        <div class="about-photo-wrap">
+          <div class="about-photo">
+            <img id="aPhoto" src="" alt="Agnes Café — interiér a atmosféra" />
+          </div>
+          <div class="about-tag">Kavárna &amp; galerie · J. Hradec</div>
         </div>
-        <div class="about-img-float">
-          <img id="cfg-about-photo2" src="assets/agnes-05.jpg" alt="Agnes CAFÉ vstup" loading="lazy" />
-        </div>
+        <p class="about-caption">📍 Panská 111, 377 01 Jindřichův Hradec</p>
       </div>
-      <div class="reveal-right">
-        <div class="sec-eyebrow">O kavárně</div>
-        <h2 class="sec-title">Místo pro ty,<br>kdo mají <em>rádi krásy</em></h2>
-        <blockquote class="about-quote" id="cfg-about-quote">
-          "Nedělej zágorku, dej si kávu na dvorku."
-        </blockquote>
-        <p class="about-text" id="cfg-about-text1">
-          Agnes CAFÉ je víc než kavárna — je to prostor, kde se potkává dobrá káva, domácí pečivo a umění. V srdci Jindřichova Hradce na Panské ulici najdete útulný interiér, tichý dvorek se sochou a galerii, která se proměňuje s každou novou výstavou.
-        </p>
-        <p class="about-text" id="cfg-about-text2">
-          Vše děláme s láskou a z kvalitních surovin. Nabízíme bezlepkové i veganské alternativy, aby si tu přišel na své každý.
-        </p>
-        <div class="about-awards">
-          <div class="award-badge">🥇 Orlové Cukrářství 2025</div>
-          <div class="award-badge">🥈 Orlové Cukrářství 2024</div>
-          <div class="award-badge">🥇 Orlové Cukrářství 2023</div>
-          <div class="award-badge">⭐ 4,5 Google</div>
+      <div>
+        <p class="eyebrow rv">O nás</p>
+        <h2 class="section-title rv d1" id="aTitle"></h2>
+        <blockquote class="about-quote rv d2" id="aQuote"></blockquote>
+        <p class="body-txt rv d3" id="aText1"></p>
+        <p class="body-txt rv d3" style="margin-top:.85rem" id="aText2"></p>
+        <div class="about-rule rv d4"></div>
+        <div class="about-stats rv d4">
+          <div>
+            <div class="stat-num">6+</div>
+            <div class="stat-label">let v provozu</div>
+          </div>
+          <div>
+            <div class="stat-num">292</div>
+            <div class="stat-label">Google recenzí</div>
+          </div>
+          <div>
+            <div class="stat-num">2×</div>
+            <div class="stat-label">Orlové cukrářství</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── NABÍDKA ── -->
-<section id="nabidka">
-  <div class="container">
-    <div class="reveal">
-      <div class="sec-eyebrow">Co u nás najdete</div>
-      <h2 class="sec-title">Nabídka</h2>
+<!-- ═══ NABÍDKA ════════════════════════════════════════ -->
+<section id="offerings">
+  <div class="wrap">
+    <div class="offerings-header">
+      <div>
+        <p class="eyebrow rv">Co nabízíme</p>
+        <h2 class="section-title rv d1">Výběrová<br><em>nabídka</em></h2>
+      </div>
+      <p class="body-txt rv" style="text-align:right">Tři základní světy, v nichž se Agnes pohybuje s plnou vášní a bez kompromisů.</p>
     </div>
-    <div class="menu-grid">
-      <div class="menu-card reveal">
-        <span class="menu-card-icon">☕</span>
-        <h3>Výběrová káva</h3>
-        <p>Espresso, flat white, cold brew, latte — připraveno na profesionálním stroji z pečlivě vybraných zrnkových směsí.</p>
-        <svg class="menu-card-doodle" viewBox="0 0 80 80" fill="none">
-          <circle cx="40" cy="50" r="28" stroke="#1a1412" stroke-width="1.5"/>
-          <ellipse cx="40" cy="50" rx="28" ry="8" stroke="#1a1412" stroke-width="1.5"/>
-          <path d="M52 50 Q60 45 58 38" stroke="#1a1412" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M30 10 Q27 4 32 1" stroke="#1a1412" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M40 8 Q37 2 42 0" stroke="#1a1412" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
+    <div class="offerings-grid" id="offGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ BRUNCH (editorial strip) ══════════════════════ -->
+<div class="editorial-strip" id="brunch">
+  <div class="ed-photo rv-l">
+    <img id="brunchImg" src="" alt="Brunch Agnes Café" />
+  </div>
+  <div class="ed-text">
+    <p class="ed-eyebrow rv">Víkendový rituál</p>
+    <h2 class="ed-title rv d1" id="brunchTitle"></h2>
+    <p class="ed-body rv d2" id="brunchDesc"></p>
+    <p class="ed-time rv d3" id="brunchTime"></p>
+    <p class="ed-days rv d3" id="brunchDays"></p>
+    <a href="tel:+420606032669" class="btn btn-dark rv d4">Rezervovat stůl →</a>
+  </div>
+</div>
+
+<!-- ═══ GALERIE ════════════════════════════════════════ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="gallery-hd">
+      <div>
+        <p class="eyebrow rv">Galerie</p>
+        <h2 class="section-title rv d1">Nahlédněte<br><em>dovnitř</em></h2>
       </div>
-      <div class="menu-card reveal">
-        <span class="menu-card-icon">🎂</span>
-        <h3>Domácí dezerty</h3>
-        <p>Dorty, cheesecaky, větrníky a zákusky připravené každý den čerstvě. Ocenění Orlové Cukrářství mluví za vše.</p>
-        <svg class="menu-card-doodle" viewBox="0 0 80 80" fill="none">
-          <rect x="10" y="40" width="60" height="30" rx="4" stroke="#1a1412" stroke-width="1.5"/>
-          <path d="M10 40 Q40 20 70 40" stroke="#1a1412" stroke-width="1.5"/>
-          <line x1="40" y1="20" x2="40" y2="10" stroke="#1a1412" stroke-width="1.5" stroke-linecap="round"/>
-          <circle cx="40" cy="8" r="3" fill="#1a1412"/>
-        </svg>
+      <a href="https://instagram.com/agnescafe.jh" class="text-link rv" target="_blank" rel="noopener">Sledovat na Instagramu →</a>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ KONTAKT ════════════════════════════════════════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <p class="eyebrow rv">Kde nás najdete</p>
+        <h2 class="section-title rv d1">Přijďte<br><em>na kávu</em></h2>
+        <div class="hours-table rv d2" id="hoursList"></div>
+        <div class="c-links rv d3" id="cLinks"></div>
       </div>
-      <div class="menu-card reveal">
-        <span class="menu-card-icon">🥐</span>
-        <h3>Snídaně & brunch</h3>
-        <p>Snídaně Po–Pá, víkendový brunch So & Ne 8–12. Saláty, quiche, open sandwiche s domácími pomazánkami.</p>
-        <svg class="menu-card-doodle" viewBox="0 0 80 80" fill="none">
-          <path d="M15 55 Q40 15 65 55" stroke="#1a1412" stroke-width="1.5" fill="none"/>
-          <line x1="10" y1="55" x2="70" y2="55" stroke="#1a1412" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="menu-card reveal">
-        <span class="menu-card-icon">🌿</span>
-        <h3>Vegan & bezlepek</h3>
-        <p>Vše s ohledem na různé stravovací potřeby. Bezlepkové i veganské alternativy napříč celou nabídkou.</p>
-        <svg class="menu-card-doodle" viewBox="0 0 80 80" fill="none">
-          <path d="M40 70 Q20 50 25 30 Q30 10 40 15 Q50 10 55 30 Q60 50 40 70Z" stroke="#1a1412" stroke-width="1.5" fill="none"/>
-          <path d="M40 70 Q40 40 40 15" stroke="#1a1412" stroke-width="1" stroke-dasharray="3 3" stroke-linecap="round"/>
-        </svg>
+      <div class="rv-r" style="padding-top:1rem">
+        <div class="map-wrap" id="mapWrap"></div>
+        <a class="text-link" style="margin-top:1.2rem" id="mapsBtn" href="#">Otevřít v Google Mapách →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── BRUNCH ── -->
-<section class="brunch" id="brunch">
-  <div class="container">
-    <div class="brunch-inner">
-      <div class="reveal-left">
-        <div class="brunch-text">
-          <div class="sec-eyebrow">Víkendová specialita</div>
-          <h2 class="brunch-title">
-            Víkendový<br>
-            <em>brunch</em>
-          </h2>
-          <div class="brunch-time">
-            <div>
-              <div class="brunch-time-val" id="cfg-brunch-time">8:00 – 12:00</div>
-              <div class="brunch-time-lab" id="cfg-brunch-days">Sobota & Neděle</div>
-            </div>
-          </div>
-          <p class="brunch-desc" id="cfg-brunch-desc">
-            Každý víkend otevíráme hodinu dříve a chystáme pro vás plnohodnotný brunch. Čerstvé ingredience, domácí recepty, klidná atmosféra. Ideální start do víkendového dne.
-          </p>
-          <a href="tel:+420606032669" class="btn-cream">
-            📞 Rezervace: +420 606 032 669
-          </a>
-        </div>
+<!-- ═══ INSTAGRAM ══════════════════════════════════════ -->
+<section id="insta">
+  <div class="wrap">
+    <div class="ig-top rv">
+      <div>
+        <p class="ig-handle" id="igHandle"></p>
+        <p class="ig-meta" id="igMeta"></p>
       </div>
-      <div class="brunch-img reveal-right">
-        <img id="cfg-brunch-photo" src="assets/brunch-stul.jpg" alt="Víkendový brunch Agnes CAFÉ" loading="lazy" />
-      </div>
+      <a href="https://instagram.com/agnescafe.jh" target="_blank" rel="noopener" class="btn btn-dim">Sledovat →</a>
     </div>
+    <div class="ig-grid" id="igGrid"></div>
   </div>
 </section>
 
-<!-- ── GALERIE ── -->
-<section id="galerie">
-  <div class="container">
-    <div class="reveal">
-      <div class="sec-eyebrow">Atmosféra</div>
-      <h2 class="sec-title">Galerie</h2>
-    </div>
-    <div class="gallery-grid" id="cfg-gallery">
-      <div class="gallery-item reveal" onclick="openLightbox('assets/hero-macarons.jpg', 'Macarony Agnes CAFÉ')">
-        <img src="assets/hero-macarons.jpg" alt="Macarony Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Macarony</span></div>
-      </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/dezerty-valentyn.jpg', 'Dezerty Agnes CAFÉ')">
-        <img src="assets/dezerty-valentyn.jpg" alt="Valentýnské dezerty" loading="lazy" />
-        <div class="gallery-overlay"><span>Dezerty</span></div>
-      </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/dezerty-eclairs.jpg', 'Éclairs Agnes CAFÉ')">
-        <img src="assets/dezerty-eclairs.jpg" alt="Éclairs Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Éclairs</span></div>
-      </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/brunch-stul.jpg', 'Brunch Agnes CAFÉ')">
-        <img src="assets/brunch-stul.jpg" alt="Brunch Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Brunch</span></div>
-      </div>
-      <div class="gallery-item reveal" onclick="openLightbox('assets/agnes-03.jpg', 'Tichý dvorek')">
-        <img src="assets/agnes-03.jpg" alt="Tichý dvorek Agnes CAFÉ" loading="lazy" />
-        <div class="gallery-overlay"><span>Tichý dvorek</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── NAVŠTIVTE NÁS ── -->
-<section class="visit" id="navstivte">
-  <div class="container">
-    <div class="reveal">
-      <div class="sec-eyebrow">Kde nás najdete</div>
-      <h2 class="sec-title">Navštivte nás</h2>
-    </div>
-    <div class="visit-grid">
-      <div class="reveal-left">
-        <div class="hours-list">
-          <div class="hours-row">
-            <span class="day">Pondělí – Neděle</span>
-            <span class="time" id="cfg-hours-weekdays">9:00 – 19:00</span>
-          </div>
-          <div class="hours-row" style="background:rgba(196,113,74,0.06); padding: 0.8rem 0.75rem; border-radius: 6px; border: none; margin: 0.25rem 0;">
-            <span class="day">🥐 Víkendový brunch (So & Ne)</span>
-            <span class="time" id="cfg-hours-brunch" style="color:var(--terra);">8:00 – 12:00</span>
-          </div>
-        </div>
-        <div class="contact-items" style="margin-top: 2rem;">
-          <div class="contact-item">
-            <span class="contact-icon">📍</span>
-            <span id="cfg-address">Panská 111, 377 01 Jindřichův Hradec</span>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📞</span>
-            <a id="cfg-phone-link" href="tel:+420606032669"><span id="cfg-phone-text">+420 606 032 669</span></a>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📘</span>
-            <a id="cfg-fb-link" href="https://www.facebook.com/agnescafejh" target="_blank"><span id="cfg-fb-text">facebook.com/agnescafejh</span></a>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📸</span>
-            <a id="cfg-ig-link" href="https://www.instagram.com/agnescafe.jh/" target="_blank"><span id="cfg-ig-text">instagram.com/agnescafe.jh/</span></a>
-          </div>
-        </div>
-        <a href="https://maps.google.com/?q=Panská+111,+Jindřichův+Hradec" target="_blank" class="map-btn">
-          🗺 Otevřít v Mapách →
-        </a>
-      </div>
-      <div class="map-wrap reveal-right">
-        <iframe id="cfg-map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2610.1!2d15.0060!3d49.1442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470d37b3f3f7e9e9%3A0x1!2sPanská+111%2C+377+01+Jindřichův+Hradec!5e0!3m2!1scs!2scz!4v1"
-          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── INSTAGRAM ── -->
-<section class="instagram" id="instagram">
-  <div class="container">
-    <div class="reveal">
-      <div class="sec-eyebrow" style="justify-content:center;">Sledujte nás</div>
-      <h2 class="sec-title">@agnescafe.jh</h2>
-      <p style="color:var(--ink-50);margin-top:0.75rem;font-size:0.9rem;">1 354 sledujících · 178 příspěvků</p>
-    </div>
-    <div class="ig-grid" id="cfg-ig-grid">
-      <a href="https://www.instagram.com/agnescafe.jh/" target="_blank" class="ig-card reveal">
-        <img src="assets/agnes-01.jpg" alt="Agnes CAFÉ Instagram" loading="lazy" />
-        <div class="ig-card-overlay"><span>📸 Instagram</span></div>
-      </a>
-      <a href="https://www.instagram.com/agnescafe.jh/" target="_blank" class="ig-card reveal">
-        <img src="assets/agnes-03.jpg" alt="Agnes CAFÉ dvorek" loading="lazy" />
-        <div class="ig-card-overlay"><span>📸 Instagram</span></div>
-      </a>
-      <a href="https://www.instagram.com/agnescafe.jh/" target="_blank" class="ig-card reveal">
-        <img src="assets/agnes-04.jpg" alt="Agnes CAFÉ sala" loading="lazy" />
-        <div class="ig-card-overlay"><span>📸 Instagram</span></div>
-      </a>
-      <a href="https://www.instagram.com/agnescafe.jh/" target="_blank" class="ig-card reveal">
-        <img src="assets/agnes-05.jpg" alt="Agnes CAFÉ vstup" loading="lazy" />
-        <div class="ig-card-overlay"><span>📸 Instagram</span></div>
-      </a>
-    </div>
-    <a href="https://www.instagram.com/agnescafe.jh/" target="_blank" class="ig-follow reveal">
-      📷 Sledovat na Instagramu →
-    </a>
-  </div>
-</section>
-
-<!-- ── FOOTER ── -->
+<!-- ═══ FOOTER ═════════════════════════════════════════ -->
 <footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand-name">Agnes <em>CAFÉ</em></div>
-      <p class="footer-brand-desc">Výběrová káva, domácí dezerty a umělecká atmosféra v centru Jindřichova Hradce. Otevřeno každý den 9–19.</p>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <p class="f-brand">Agnes CAFÉ</p>
+        <p class="f-desc">Výběrová káva, domácí dezerty<br>a brunch v srdci Jindřichova Hradce.</p>
+      </div>
+      <div>
+        <p class="f-head">Navigace</p>
+        <ul class="f-list">
+          <li><a href="#about">O nás</a></li>
+          <li><a href="#offerings">Nabídka</a></li>
+          <li><a href="#brunch">Brunch</a></li>
+          <li><a href="#gallery">Galerie</a></li>
+          <li><a href="#contact">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="f-head">Otevírací doba</p>
+        <ul class="f-list" id="fHours"></ul>
+      </div>
+      <div>
+        <p class="f-head">Kontakt</p>
+        <ul class="f-list" id="fContact"></ul>
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Otevírací doba</h4>
-      <ul>
-        <li><span id="cfg-footer-hours-weekdays">Po – Ne: 9:00 – 19:00</span></li>
-        <li><span id="cfg-footer-hours-brunch" style="color:var(--terra);">Brunch So & Ne: 8–12</span></li>
-      </ul>
+    <div class="footer-bottom">
+      <p class="f-copy">© 2025 Agnes CAFÉ Jindřichův Hradec</p>
+      <p class="f-by">KSH Studio</p>
     </div>
-    <div class="footer-col">
-      <h4>Kontakt</h4>
-      <ul>
-        <li><a id="cfg-footer-phone-link" href="tel:+420606032669"><span id="cfg-footer-phone">+420 606 032 669</span></a></li>
-        <li><span>Panská 111, JH</span></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Sociální sítě</h4>
-      <ul>
-        <li><a id="cfg-footer-ig" href="https://www.instagram.com/agnescafe.jh/" target="_blank">Instagram</a></li>
-        <li><a id="cfg-footer-fb" href="https://www.facebook.com/agnescafejh" target="_blank">Facebook</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">© 2025 Agnes CAFÉ, Jindřichův Hradec</p>
-    <p class="footer-taste">Made with taste ☕</p>
   </div>
 </footer>
 
 <script>
-/* ════════════════════════════════════════════════════════════════
-   ✏️  EDITOVATELNÝ CONFIG — sem sahej pokud chceš něco změnit!
-   ════════════════════════════════════════════════════════════════ */
-const AGNES = {
-
-  /* ── HERO SEKCE ─────────────────────────────────────────────── */
+/* ══ DATA CONFIG ══════════════════════════════════════ */
+const C = {
   hero: {
-    photo:    "assets/brunch-dark.jpg",   // ← cesta k fotce pozadí
-    location: "Panská 111 · Jindřichův Hradec",
-    title:    "Agnes<br><em>CAFÉ</em><br><strong>Kavárna<br>& galerie</strong>",
-    desc:     "Výběrová káva, domácí dezerty a umělecká atmosféra v srdci Jindřichova Hradce. Místo, kam se rádi vracíte.",
-    badge:    "⭐ 4,5 · Orlové Cukrářství 2025",
+    bg: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1800&q=90&auto=format&fit=crop&crop=center',
   },
-
-  /* ── O NÁS SEKCE ────────────────────────────────────────────── */
   about: {
-    photo1:   "assets/agnes-04.jpg",      // ← hlavní fotka vlevo
-    photo2:   "assets/agnes-05.jpg",      // ← plovoucí fotka vlevo dole
-    quote:    '"Nedělej zágorku, dej si kávu na dvorku."',
-    text1:    "Agnes CAFÉ je víc než kavárna — je to prostor, kde se potkává dobrá káva, domácí pečivo a umění. V srdci Jindřichova Hradce na Panské ulici najdete útulný interiér, tichý dvorek se sochou a galerii, která se proměňuje s každou novou výstavou.",
-    text2:    "Vše děláme s láskou a z kvalitních surovin. Nabízíme bezlepkové i veganské alternativy, aby si tu přišel na své každý.",
+    photo: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=900&q=85&auto=format&fit=crop',
+    title: 'Místo kde se<br><em>čas zastaví</em>',
+    quote: '"Nedělej ze života hořkost — dej si kávu na dvořku."',
+    text1: 'Agnes Café je víc než kavárna — je to místo s duší. Galerie umění, tichý dvořek, dezerty pečené každé ráno a káva od lokálních roastérů.',
+    text2: 'Jsme hrdými držiteli ocenění Orlové cukrářství a věříme, že čas strávený u dobré kávy není promarněný čas.',
   },
-
-  /* ── BRUNCH SEKCE ───────────────────────────────────────────── */
+  offerings: [
+    {
+      num: '01',
+      name: 'Výběrová káva',
+      photo: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=82&auto=format&fit=crop',
+      items: ['Espresso & lungo', 'Flat white & cappuccino', 'Cold brew', 'Matcha latte', 'Filtrovaná V60'],
+    },
+    {
+      num: '02',
+      name: 'Domácí dezerty',
+      photo: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=700&q=82&auto=format&fit=crop',
+      items: ['Dorty & řezy', 'Cheesecaky', 'Větrníky & éclairs', 'Macarons', 'Sezonní speciality'],
+    },
+    {
+      num: '03',
+      name: 'Snídaně & Brunch',
+      photo: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=700&q=82&auto=format&fit=crop',
+      items: ['Vejce Benedikt', 'Avokádový toast', 'Palačinky', 'Granola bowl', 'Po–Pá 8:00–11:00'],
+    },
+  ],
   brunch: {
-    photo:    "assets/brunch-stul.jpg",   // ← fotka v brunch sekci
-    time:     "8:00 – 12:00",
-    days:     "Sobota & Neděle",
-    desc:     "Každý víkend otevíráme hodinu dříve a chystáme pro vás plnohodnotný brunch. Čerstvé ingredience, domácí recepty, klidná atmosféra. Ideální start do víkendového dne.",
+    photo: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=88&auto=format&fit=crop',
+    title: 'Brunch jak má\nbýt',
+    desc:  'Čerstvé suroviny, domácí pečivo, vejce na sto způsobů. Víkendový brunch u nás je rituál — přijďte si ho užít na tichém dvořku.',
+    time:  '8:00 — 12:00',
+    days:  'Každou sobotu & neděli',
   },
-
-  /* ── GALERIE ────────────────────────────────────────────────── */
-  // Přidej/odeber fotky. Formát: { src: "assets/nazev.jpg", caption: "Popis" }
   gallery: [
-    { src: "assets/hero-macarons.jpg",   caption: "Macarony" },
-    { src: "assets/dezerty-valentyn.jpg", caption: "Dezerty" },
-    { src: "assets/dezerty-eclairs.jpg", caption: "Éclairs" },
-    { src: "assets/brunch-stul.jpg",     caption: "Brunch" },
-    { src: "assets/agnes-03.jpg",        caption: "Tichý dvorek" },
+    { src: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=900&q=82&auto=format&fit=crop', cap: 'Interiér' },
+    { src: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80&auto=format&fit=crop', cap: 'Káva' },
+    { src: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=600&q=80&auto=format&fit=crop', cap: 'Pečivo' },
+    { src: 'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80&auto=format&fit=crop', cap: 'Atmosféra' },
+    { src: 'https://images.unsplash.com/photo-1465311440653-ba9b1d9b0f5b?w=600&q=80&auto=format&fit=crop', cap: 'Dvořek' },
   ],
-
-  /* ── INSTAGRAM GRID ─────────────────────────────────────────── */
-  // Fotky zobrazené v Instagram sekci (nejlépe čtvercové)
-  igPhotos: [
-    "assets/hero-macarons.jpg",
-    "assets/dezerty-valentyn.jpg",
-    "assets/dezerty-eclairs.jpg",
-    "assets/brunch-dark.jpg",
+  instagram: {
+    handle: '@agnescafe.jh',
+    meta:   '1 354 sledujících · 178 příspěvků',
+    photos: [
+      'https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=600&q=80&auto=format&fit=crop',
+    ],
+  },
+  hours: [
+    { day: 'Pondělí – Pátek', time: '8:00 – 19:00' },
+    { day: 'Sobota',           time: '9:00 – 19:00' },
+    { day: 'Neděle',           time: '9:00 – 19:00' },
+    { day: 'Brunch So & Ne',   time: '8:00 – 12:00', hl: true },
   ],
-
-  /* ── KONTAKT ────────────────────────────────────────────────── */
   contact: {
-    address:   "Panská 111, 377 01 Jindřichův Hradec",
-    phone:     "+420 606 032 669",
-    phoneHref: "tel:+420606032669",
-    instagram: "https://www.instagram.com/agnescafe.jh/",
-    facebook:  "https://www.facebook.com/agnescafejh",
-    mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2610.1!2d15.0060!3d49.1442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470d37b3f3f7e9e9%3A0x1!2sPanská+111%2C+377+01+Jindřichův+Hradec!5e0!3m2!1scs!2scz!4v1",
+    address:   'Panská 111, 377 01 Jindřichův Hradec',
+    phone:     '+420 606 032 669',
+    phoneHref: 'tel:+420606032669',
+    instagram: 'instagram.com/agnescafe.jh',
+    facebook:  'facebook.com/agnescafe',
+    mapsHref:  'https://maps.google.com/?q=Agnes+Café+Jindřichův+Hradec',
+    mapsEmbed: 'https://maps.google.com/maps?q=agnes+cafe+jindrichuv+hradec&output=embed',
   },
+}
 
-  /* ── HODINY ─────────────────────────────────────────────────── */
-  hours: {
-    weekdays: "9:00 – 19:00",
-    weekend:  "9:00 – 19:00",
-    brunch:   "8:00 – 12:00",
-  },
+const $ = id => document.getElementById(id)
 
-};
-/* ════════════════════════════════════════════════════════════════
-   Konec configu — pod tímto řádkem nesahej 👇
-   ════════════════════════════════════════════════════════════════ */
+/* ══ BUILD DOM ════════════════════════════════════════ */
+function apply() {
+  // Hero
+  $('heroBg').style.backgroundImage = `url('${C.hero.bg}')`
 
-  // ── Aplikace configu na DOM ────────────────────────────────────
-  function applyConfig() {
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
-    const setSrc = (id, src) => { const el = document.getElementById(id); if (el) el.src = src; };
-    const setHref = (id, href) => { const el = document.getElementById(id); if (el) el.href = href; };
-    const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  // About
+  $('aPhoto').src          = C.about.photo
+  $('aTitle').innerHTML    = C.about.title
+  $('aQuote').textContent  = C.about.quote
+  $('aText1').textContent  = C.about.text1
+  $('aText2').textContent  = C.about.text2
 
-    // Hero
-    setSrc('cfg-hero-photo',     AGNES.hero.photo);
-    set('cfg-hero-title',        AGNES.hero.title);
-    setText('cfg-hero-desc',     AGNES.hero.desc);
-    setText('cfg-hero-location', AGNES.hero.location);
-    document.getElementById('cfg-hero-badge') && (document.getElementById('cfg-hero-badge').innerHTML = AGNES.hero.badge);
+  // Offerings
+  $('offGrid').innerHTML = C.offerings.map(o =>
+    `<div class="off-card rv">
+      <div class="off-photo"><img src="${o.photo}" alt="${o.name}" loading="lazy"/></div>
+      <div class="off-body">
+        <div class="off-num">${o.num}</div>
+        <h3 class="off-name">${o.name}</h3>
+        <ul class="off-list">${o.items.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+    </div>`
+  ).join('')
 
-    // About
-    setSrc('cfg-about-photo1',   AGNES.about.photo1);
-    setSrc('cfg-about-photo2',   AGNES.about.photo2);
-    setText('cfg-about-quote',   AGNES.about.quote);
-    setText('cfg-about-text1',   AGNES.about.text1);
-    setText('cfg-about-text2',   AGNES.about.text2);
+  // Brunch
+  $('brunchImg').src         = C.brunch.photo
+  $('brunchTitle').innerHTML = C.brunch.title.replace('\n','<br>')
+  $('brunchDesc').textContent = C.brunch.desc
+  $('brunchTime').textContent = C.brunch.time
+  $('brunchDays').textContent = C.brunch.days
 
-    // Brunch
-    setSrc('cfg-brunch-photo',   AGNES.brunch.photo);
-    setText('cfg-brunch-time',   AGNES.brunch.time);
-    setText('cfg-brunch-days',   AGNES.brunch.days);
-    setText('cfg-brunch-desc',   AGNES.brunch.desc);
+  // Gallery
+  $('galleryGrid').innerHTML = C.gallery.map(g =>
+    `<div class="g-item" onclick="openLb('${g.src}','${g.cap}')">
+      <img src="${g.src}" alt="${g.cap}" loading="lazy"/>
+      <div class="g-overlay"><span class="g-cap">${g.cap}</span></div>
+    </div>`
+  ).join('')
 
-    // Galerie — renderuj dynamicky
-    const galleryGrid = document.getElementById('cfg-gallery');
-    if (galleryGrid) {
-      galleryGrid.innerHTML = AGNES.gallery.map((item, i) =>
-        `<div class="gallery-item reveal${i===0?' ':''}" onclick="openLightbox('${item.src}','${item.caption}')">
-          <img src="${item.src}" alt="${item.caption}" loading="lazy"/>
-          <div class="gallery-overlay"><span>${item.caption}</span></div>
-        </div>`
-      ).join('');
-    }
+  // Instagram
+  $('igHandle').textContent = C.instagram.handle
+  $('igMeta').textContent   = C.instagram.meta
+  $('igGrid').innerHTML = C.instagram.photos.map(p =>
+    `<a class="ig-tile" href="https://instagram.com/agnescafe.jh" target="_blank" rel="noopener">
+      <img src="${p}" alt="Agnes Café" loading="lazy"/>
+    </a>`
+  ).join('')
 
-    // Instagram grid
-    const igGrid = document.getElementById('cfg-ig-grid');
-    if (igGrid) {
-      igGrid.innerHTML = AGNES.igPhotos.map(src =>
-        `<a href="${AGNES.contact.instagram}" target="_blank" class="ig-card reveal">
-          <img src="${src}" loading="lazy"/>
-          <div class="ig-card-overlay"><span>📸 Instagram</span></div>
-        </a>`
-      ).join('');
-    }
+  // Hours
+  $('hoursList').innerHTML = C.hours.map(h =>
+    `<div class="h-row${h.hl ? ' hl' : ''}">
+      <span class="h-day">${h.day}</span>
+      <span class="h-time">${h.time}</span>
+    </div>`
+  ).join('')
 
-    // Kontakt
-    setText('cfg-address',    AGNES.contact.address);
-    setText('cfg-phone-text', AGNES.contact.phone);
-    setHref('cfg-phone-link', AGNES.contact.phoneHref);
-    setHref('cfg-ig-link',    AGNES.contact.instagram);
-    setText('cfg-ig-text',    AGNES.contact.instagram.replace('https://www.',''));
-    setHref('cfg-fb-link',    AGNES.contact.facebook);
-    setText('cfg-fb-text',    AGNES.contact.facebook.replace('https://www.',''));
-    const mapEl = document.getElementById('cfg-map');
-    if (mapEl) mapEl.src = AGNES.contact.mapsEmbed;
+  // Contact links
+  $('cLinks').innerHTML = `
+    <a href="${C.contact.phoneHref}" class="c-link"><span class="c-icon">📞</span>${C.contact.phone}</a>
+    <a href="${C.contact.mapsHref}" class="c-link" target="_blank" rel="noopener"><span class="c-icon">📍</span>${C.contact.address}</a>
+    <a href="https://${C.contact.instagram}" class="c-link" target="_blank" rel="noopener"><span class="c-icon">📷</span>${C.contact.instagram}</a>
+    <a href="https://${C.contact.facebook}" class="c-link" target="_blank" rel="noopener"><span class="c-icon">📘</span>${C.contact.facebook}</a>
+  `
 
-    // Hodiny
-    setText('cfg-hours-weekdays', AGNES.hours.weekdays);
-    setText('cfg-hours-weekend',  AGNES.hours.weekend);
-    setText('cfg-hours-brunch',   AGNES.hours.brunch);
+  // Map
+  $('mapWrap').innerHTML = `<iframe src="${C.contact.mapsEmbed}" loading="lazy" allowfullscreen title="Agnes Café mapa"></iframe>`
+  $('mapsBtn').href = C.contact.mapsHref
 
-    // Footer
-    setText('cfg-footer-phone',   AGNES.contact.phone);
-    setHref('cfg-footer-phone-link', AGNES.contact.phoneHref);
-    setHref('cfg-footer-ig',      AGNES.contact.instagram);
-    setHref('cfg-footer-fb',      AGNES.contact.facebook);
-    setText('cfg-footer-hours-weekdays', `Po – Ne: ${AGNES.hours.weekdays}`);
-    setText('cfg-footer-hours-brunch',   `Brunch So & Ne: ${AGNES.hours.brunch}`);
+  // Footer hours
+  $('fHours').innerHTML = C.hours.slice(0, 3).map(h =>
+    `<li><span>${h.day}: ${h.time}</span></li>`
+  ).join('')
+
+  // Footer contact
+  $('fContact').innerHTML = `
+    <li><a href="${C.contact.phoneHref}">${C.contact.phone}</a></li>
+    <li><span>${C.contact.address}</span></li>
+    <li><a href="https://instagram.com/agnescafe.jh" target="_blank" rel="noopener">Instagram</a></li>
+    <li><a href="https://facebook.com/agnescafe" target="_blank" rel="noopener">Facebook</a></li>
+  `
+}
+
+/* ══ CURSOR ═══════════════════════════════════════════ */
+const cur = $('cur')
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px'
+  cur.style.top  = e.clientY + 'px'
+})
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('ch'))
+  el.addEventListener('mouseleave', () => document.body.classList.remove('ch'))
+})
+
+/* ══ NAV SCROLL ═══════════════════════════════════════ */
+const navEl = $('nav')
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', scrollY > 50)
+}, { passive: true })
+
+/* ══ MOBILE MENU ══════════════════════════════════════ */
+let menuOpen = false
+function toggleMenu() {
+  menuOpen = !menuOpen
+  const links = document.querySelector('.nav-links')
+  const cta   = document.querySelector('.nav-cta')
+  if (menuOpen) {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(247,245,242,.97);backdrop-filter:blur(14px);padding:2rem 1.5rem;gap:1.5rem;border-bottom:1px solid rgba(28,21,16,.1);z-index:499;'
+    if (cta) cta.style.display = 'none'
+  } else {
+    links.style.cssText = ''
+    if (cta) cta.style.cssText = ''
   }
+}
 
-  applyConfig();
+/* ══ LIGHTBOX ═════════════════════════════════════════ */
+function openLb(src, cap) {
+  $('lb').classList.add('open')
+  $('lbImg').src = src
+  $('lbImg').alt = cap
+}
+function closeLb() {
+  $('lb').classList.remove('open')
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb() })
 
-  // ── Mobile menu ────────────────────────────────────────────────
-  function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('open');
-  }
+/* ══ INIT ═════════════════════════════════════════════ */
+apply()
 
-  // ── Lightbox ───────────────────────────────────────────────────
-  function openLightbox(src, alt) {
-    const lb = document.getElementById('lightbox');
-    document.getElementById('lightboxImg').src = src;
-    document.getElementById('lightboxImg').alt = alt;
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+/* ══ SCROLL REVEAL (after apply so dynamic els exist) ═ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target) }
+  })
+}, { threshold: .14, rootMargin: '0px 0px -40px 0px' })
 
-  // ── Scroll reveal ──────────────────────────────────────────────
-  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-  const revealObs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        revealObs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  revealEls.forEach(el => revealObs.observe(el));
-
-  // ── Nav shrink on scroll ───────────────────────────────────────
-  window.addEventListener('scroll', () => {
-    document.getElementById('mainNav').style.top = window.scrollY > 60 ? '8px' : '32px';
-  });
+document.querySelectorAll('.rv, .rv-l, .rv-r').forEach(el => io.observe(el))
 </script>
 </body>
 </html>
