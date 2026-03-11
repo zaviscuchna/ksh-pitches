@@ -200,11 +200,26 @@
       transition: all 0.5s;
       white-space: nowrap;
     }
+    .card-type.webapp {
+      color: #A78BFA;
+      border-color: rgba(167,139,250,0.25);
+      background: rgba(167,139,250,0.06);
+    }
     .card:hover .card-type {
       color: #888;
       border-color: #CCC;
       background: rgba(8,8,8,0.06);
     }
+    .card:hover .card-type.webapp {
+      color: #7C3AED;
+      border-color: rgba(124,58,237,0.3);
+      background: rgba(124,58,237,0.08);
+    }
+
+    /* Left status stripe */
+    .card:has(.status-dot.live)      { box-shadow: inset 2px 0 0 rgba(59,130,246,0.5); }
+    .card:has(.status-dot.pitch)     { box-shadow: inset 2px 0 0 rgba(245,158,11,0.4); }
+    .card:has(.status-dot.delivered) { box-shadow: inset 2px 0 0 rgba(107,114,128,0.25); }
 
     /* ── CARD BODY ── */
     .card-body { flex: 1; }
@@ -250,29 +265,62 @@
     }
 
     .card-status {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      color: var(--dim);
+      font-size: 0.56rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      transition: color 0.5s;
+      padding: 0.28rem 0.6rem;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      transition: all 0.4s;
     }
-    .card:hover .card-status { color: #888; }
+
+    /* Status pill — always colored */
+    .card-status:has(.status-dot.live) {
+      color: #60A5FA;
+      background: rgba(59,130,246,0.08);
+      border-color: rgba(59,130,246,0.18);
+    }
+    .card-status:has(.status-dot.pitch) {
+      color: #FBBF24;
+      background: rgba(245,158,11,0.08);
+      border-color: rgba(245,158,11,0.18);
+    }
+    .card-status:has(.status-dot.delivered) {
+      color: #6B7280;
+      background: rgba(107,114,128,0.07);
+      border-color: rgba(107,114,128,0.15);
+    }
+
+    /* Hover — invert background keeps pill readable */
+    .card:hover .card-status:has(.status-dot.live) {
+      color: #2563EB;
+      background: rgba(37,99,235,0.1);
+      border-color: rgba(37,99,235,0.25);
+    }
+    .card:hover .card-status:has(.status-dot.pitch) {
+      color: #D97706;
+      background: rgba(217,119,6,0.1);
+      border-color: rgba(217,119,6,0.25);
+    }
+    .card:hover .card-status:has(.status-dot.delivered) {
+      color: #4B5563;
+      background: rgba(75,85,99,0.1);
+      border-color: rgba(75,85,99,0.2);
+    }
 
     .status-dot {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--dim);
-      transition: background 0.5s;
       flex-shrink: 0;
     }
-    .card:hover .status-dot { background: #888; }
-    .status-dot.live { background: #3A3A3A; }
-    .card:hover .status-dot.live { background: #2A9D2A; }
+    .status-dot.live      { background: #60A5FA; }
+    .status-dot.pitch     { background: #FBBF24; }
+    .status-dot.delivered { background: #6B7280; }
 
     /* Arrow icon */
     .card-arrow {
@@ -432,13 +480,18 @@
     </div>
   </header>
 
-  <!-- TYPE LEGEND -->
+  <!-- LEGEND -->
   <div class="legend">
-    <span class="legend-label">Typy</span>
+    <span class="legend-label">Status</span>
     <div class="legend-tags">
-      <span class="legend-tag"><span class="legend-dot"></span>Static Site</span>
-      <span class="legend-tag"><span class="legend-dot"></span>Web App</span>
-      <span class="legend-tag"><span class="legend-dot"></span>Portfolio</span>
+      <span class="legend-tag"><span class="legend-dot" style="background:#60A5FA"></span>Live</span>
+      <span class="legend-tag"><span class="legend-dot" style="background:#FBBF24"></span>Pitch</span>
+      <span class="legend-tag"><span class="legend-dot" style="background:#6B7280"></span>Delivered</span>
+    </div>
+    <span class="legend-label" style="margin-left:1.5rem">Typ</span>
+    <div class="legend-tags">
+      <span class="legend-tag"><span class="legend-dot" style="background:#A78BFA"></span>Web App</span>
+      <span class="legend-tag"><span class="legend-dot" style="background:#3A3A3A"></span>Static Site</span>
     </div>
   </div>
 
@@ -680,7 +733,7 @@
     <a href="crm/" class="card">
       <div class="card-top">
         <span class="card-num">10</span>
-        <span class="card-type">Web App</span>
+        <span class="card-type webapp">Web App</span>
       </div>
       <div class="card-body">
         <div class="card-cat">Interní nástroj · KSH Team</div>
@@ -701,7 +754,7 @@
     <a href="zavis/" class="card card-featured">
       <div class="card-top" style="align-self: flex-start; width: 100%; display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
         <span class="card-num">09</span>
-        <span class="card-type">Web App</span>
+        <span class="card-type webapp">Web App</span>
       </div>
       <div class="card-body-wrap" style="flex:1; display:flex; flex-direction: column; justify-content: space-between;">
         <div>
