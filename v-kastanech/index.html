@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V Kaštanech — Kavárna & čajovna Dačice</title>
+  <meta name="description" content="Kavárna a čajovna V Kaštanech — výběrová káva, vzácné čaje, domácí dezerty a zahradní terasa u dačického zámku. Pátek–Neděle." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:     #f5f0e8;
+      --bg-d:   #ece6d9;
+      --ink:    #1a1e14;
+      --mid:    #5a5142;
+      --accent: #3d5c35;
+      --gold:   #9a7642;
+      --sage:   #6b8560;
+      --line:   rgba(26,30,20,.1);
+      --ease:   cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 64px; padding: 0 3.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .4s var(--ease), border-color .4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(245,240,232,.96);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--line);
+    }
+    .nav-logo {
+      display: flex; align-items: center;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 36px; width: auto;
+      filter: brightness(0) invert(1);
+      transition: filter .4s;
+    }
+    nav.scrolled .nav-logo img { filter: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 10.5px; font-weight: 400; letter-spacing: .13em;
+      text-transform: uppercase; color: rgba(245,240,232,.55);
+      text-decoration: none; transition: color .3s;
+    }
+    nav.scrolled .nav-links a { color: var(--mid); }
+    nav.scrolled .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      font-size: 10.5px; font-weight: 400; letter-spacing: .13em;
+      text-transform: uppercase; color: rgba(245,240,232,.7);
+      border: 1px solid rgba(245,240,232,.25); border-radius: 100px;
+      padding: .55rem 1.4rem; text-decoration: none; transition: all .3s var(--ease);
+    }
+    nav.scrolled .nav-cta { color: var(--accent); border-color: rgba(61,92,53,.3); }
+    nav.scrolled .nav-cta:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 4px; padding: 4px; }
+    .nav-toggle span { display: block; width: 20px; height: 1px; background: var(--bg); transition: all .3s; }
+    nav.scrolled .nav-toggle span { background: var(--ink); }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    #hero {
+      height: 100vh; min-height: 640px;
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .hero-photo {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      filter: brightness(.55) contrast(1.06) saturate(.78);
+      transform: scale(1.04);
+      transition: transform 9s var(--ease);
+    }
+    #hero:hover .hero-photo { transform: scale(1); }
+    .hero-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(20,24,16,.9) 0%, rgba(20,24,16,.08) 55%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      width: 100%; padding: 0 3.5rem clamp(4rem,7vh,6rem);
+    }
+    .hero-loc {
+      font-size: 10px; font-weight: 400; letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(245,240,232,.4); margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: .8rem;
+      opacity: 0; animation: fadeUp .6s .3s var(--ease) forwards;
+    }
+    .hero-loc::before { content: ''; width: 22px; height: 1px; background: var(--sage); }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 13vw, 14rem);
+      font-weight: 300; font-style: italic;
+      line-height: .85; letter-spacing: -.03em;
+      color: var(--bg); overflow: hidden;
+    }
+    .hero-title span { display: block; transform: translateY(110%); animation: slideUp 1.2s var(--ease) forwards; }
+    .hero-title .ht2 { color: rgba(245,240,232,.25); font-style: normal; animation-delay: .12s; font-size: clamp(2rem, 5vw, 5.5rem); letter-spacing: .05em; }
+    .hero-bottom {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
+      margin-top: 2.5rem;
+      opacity: 0; animation: fadeUp .7s 1s var(--ease) forwards;
+    }
+    .hero-tagline {
+      font-size: 10.5px; font-weight: 300; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(245,240,232,.32);
+    }
+    .hero-btns { display: flex; gap: .75rem; flex-shrink: 0; }
+    .btn {
+      font-size: 10.5px; font-weight: 400; letter-spacing: .13em; text-transform: uppercase;
+      padding: .75rem 1.8rem; border-radius: 100px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: .4rem;
+      transition: all .3s var(--ease);
+    }
+    .btn-solid { background: var(--bg); color: var(--ink); }
+    .btn-solid:hover { background: var(--sage); color: var(--bg); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: rgba(245,240,232,.65); border: 1px solid rgba(245,240,232,.22); }
+    .btn-ghost:hover { border-color: rgba(245,240,232,.6); color: var(--bg); transform: translateY(-2px); }
+    .btn-green { background: var(--accent); color: var(--bg); }
+    .btn-green:hover { background: #4d7343; transform: translateY(-2px); }
+    .btn-line { background: transparent; color: var(--accent); border: 1px solid rgba(61,92,53,.32); }
+    .btn-line:hover { background: var(--accent); color: var(--bg); transform: translateY(-2px); }
+
+    /* ── STRIP ────────────────────────────────────────── */
+    .strip {
+      background: var(--ink);
+      padding: 4.5rem 3.5rem;
+      text-align: center;
+    }
+    .strip-inner { max-width: 860px; margin: 0 auto; }
+    .strip-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.8vw, 2.5rem);
+      font-weight: 300; font-style: italic; line-height: 1.5;
+      color: rgba(245,240,232,.6);
+    }
+    .strip-quote strong { color: #a8c49e; font-weight: 400; font-style: normal; }
+    .strip-meta {
+      display: flex; align-items: center; justify-content: center; gap: 2rem;
+      margin-top: 2rem; flex-wrap: wrap;
+    }
+    .strip-tag { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(245,240,232,.28); }
+    .strip-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(245,240,232,.15); }
+
+    /* ── UTILITY ──────────────────────────────────────── */
+    .wrap { max-width: 1360px; margin: 0 auto; padding: 0 3.5rem; }
+    .eyebrow {
+      font-size: 9.5px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase;
+      color: var(--accent); display: flex; align-items: center; gap: .75rem; margin-bottom: 1.2rem;
+    }
+    .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      font-weight: 300; line-height: 1.0; letter-spacing: -.025em; color: var(--ink);
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+    .body-txt { font-size: .9rem; font-weight: 300; line-height: 1.9; color: var(--mid); max-width: 50ch; }
+
+    /* ── SCROLL REVEAL ────────────────────────────────── */
+    .rv { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+    .rv-l { opacity: 0; transform: translateX(-28px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .rv-r { opacity: 0; transform: translateX(28px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .rv.on, .rv-l.on, .rv-r.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s!important; }
+    .d2 { transition-delay: .22s!important; }
+    .d3 { transition-delay: .34s!important; }
+    .d4 { transition-delay: .48s!important; }
+
+    /* ── O NÁS ────────────────────────────────────────── */
+    #about { padding: clamp(7rem,11vw,11rem) 0; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; }
+    .about-photo-wrap { position: relative; }
+    .about-photo { overflow: hidden; border-radius: 3px; aspect-ratio: 3/4; }
+    .about-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: contrast(1.04) saturate(.9) brightness(.97);
+      transition: transform .9s var(--ease);
+    }
+    .about-photo-wrap:hover .about-photo img { transform: scale(1.04); }
+    .about-tag {
+      position: absolute; bottom: 2.5rem; right: -2rem;
+      background: var(--bg); padding: .9rem 1.3rem;
+      border: 1px solid var(--line);
+      font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent);
+    }
+    .about-caption { margin-top: 1rem; font-size: 9.5px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--mid); }
+    .about-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2vw, 1.75rem);
+      font-weight: 300; font-style: italic; line-height: 1.55;
+      color: var(--ink); margin: 2rem 0; padding-left: 1.3rem;
+      border-left: 1.5px solid var(--accent);
+    }
+    .about-rule { width: 100%; height: 1px; background: var(--line); margin: 2.5rem 0; }
+    .about-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 300; font-style: italic; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 9.5px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--mid); margin-top: .3rem; }
+
+    /* ── NABÍDKA ──────────────────────────────────────── */
+    #nabidka { padding: clamp(5rem,9vw,9rem) 0; background: var(--bg-d); }
+    .nabidka-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+    .nabidka-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--line); }
+    .off-card { background: var(--bg-d); overflow: hidden; transition: background .35s; }
+    .off-card:hover { background: var(--bg); }
+    .off-photo { aspect-ratio: 4/3; overflow: hidden; }
+    .off-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: saturate(.85) contrast(1.04);
+      transition: transform .75s var(--ease), filter .45s;
+    }
+    .off-card:hover .off-photo img { transform: scale(1.07); filter: saturate(1) contrast(1.04); }
+    .off-body { padding: 2rem 2rem 2.5rem; }
+    .off-num { font-family: 'Cormorant Garamond', serif; font-size: .85rem; font-weight: 300; font-style: italic; color: var(--gold); margin-bottom: .8rem; }
+    .off-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 600; color: var(--ink); margin-bottom: .75rem; }
+    .off-list { list-style: none; display: flex; flex-direction: column; gap: .32rem; }
+    .off-list li { font-size: .82rem; font-weight: 300; color: var(--mid); padding-left: 1.1rem; position: relative; }
+    .off-list li::before { content: '—'; position: absolute; left: 0; color: var(--sage); }
+
+    /* ── ZAHRADA (editorial strip) ────────────────────── */
+    .editorial-strip { display: grid; grid-template-columns: 1fr 1fr; }
+    .ed-photo { aspect-ratio: 16/9; overflow: hidden; }
+    .ed-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.88) contrast(1.04); transition: transform .9s var(--ease); }
+    .ed-photo:hover img { transform: scale(1.04); }
+    .ed-text {
+      background: var(--accent); display: flex; flex-direction: column;
+      justify-content: center; padding: 5rem 4rem;
+    }
+    .ed-eyebrow { font-size: 9.5px; letter-spacing: .24em; text-transform: uppercase; color: rgba(245,240,232,.6); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .75rem; }
+    .ed-eyebrow::before { content: ''; width: 22px; height: 1px; background: rgba(245,240,232,.4); }
+    .ed-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 4.2rem);
+      font-weight: 300; font-style: italic; line-height: 1.1; letter-spacing: -.02em;
+      color: var(--bg); margin-bottom: 1.8rem;
+    }
+    .ed-body { font-size: .9rem; font-weight: 300; line-height: 1.85; color: rgba(245,240,232,.65); max-width: 42ch; margin-bottom: 2rem; }
+    .ed-tags { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .ed-tag {
+      font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(245,240,232,.6); border: 1px solid rgba(245,240,232,.2);
+      padding: .3rem .75rem; border-radius: 100px;
+    }
+
+    /* ── OTEVÍRACÍ DOBA ───────────────────────────────── */
+    #hours { padding: clamp(6rem,10vw,10rem) 0; }
+    .hours-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 7rem; align-items: start; }
+    .hours-table { margin-top: 2.5rem; }
+    .h-row { display: flex; justify-content: space-between; padding: .9rem 0; border-bottom: 1px solid var(--line); font-size: .875rem; font-weight: 300; }
+    .h-row:first-child { border-top: 1px solid var(--line); }
+    .h-day { color: var(--ink); }
+    .h-time { color: var(--mid); font-feature-settings: "tnum"; }
+    .h-row.closed .h-time { color: rgba(90,81,66,.4); font-style: italic; }
+    .h-row.open .h-day { color: var(--accent); font-weight: 500; }
+    .h-row.open .h-time { color: var(--accent); }
+    .contact-box {
+      background: var(--bg-d); border-radius: 4px; padding: 2.5rem;
+      border: 1px solid var(--line);
+    }
+    .contact-box-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 300; font-style: italic;
+      color: var(--ink); margin-bottom: 1.5rem;
+    }
+    .c-links { display: flex; flex-direction: column; gap: .6rem; margin-bottom: 2rem; }
+    .c-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; font-size: .875rem; font-weight: 300; color: var(--mid); transition: color .3s; }
+    .c-link:hover { color: var(--accent); }
+    .c-icon { width: 32px; height: 32px; border-radius: 50%; background: rgba(61,92,53,.08); display: flex; align-items: center; justify-content: center; font-size: .8rem; flex-shrink: 0; transition: background .3s; }
+    .c-link:hover .c-icon { background: rgba(61,92,53,.15); }
+    .map-wrap { border-radius: 3px; overflow: hidden; height: 280px; margin-top: 1.5rem; }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* ── GALERIE ──────────────────────────────────────── */
+    #gallery { padding: clamp(6rem,10vw,10rem) 0; background: var(--bg-d); }
+    .gallery-hd { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 3rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 300px 240px;
+      gap: 4px;
+    }
+    .g-item { overflow: hidden; border-radius: 2px; cursor: pointer; position: relative; }
+    .g-item:nth-child(1) { grid-row: 1 / 3; }
+    .g-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: saturate(.88) contrast(1.04);
+      transition: transform .75s var(--ease), filter .4s;
+    }
+    .g-item:hover img { transform: scale(1.07); filter: saturate(1) contrast(1.04); }
+    .g-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-end; padding: 1.2rem;
+      background: linear-gradient(to top, rgba(20,24,16,.6) 0%, transparent 55%);
+      opacity: 0; transition: opacity .4s var(--ease);
+    }
+    .g-item:hover .g-overlay { opacity: 1; }
+    .g-cap { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: rgba(245,240,232,.9); }
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer { background: var(--ink); padding: 0 0 2rem; border-top: 1px solid rgba(245,240,232,.06); }
+    .footer-inner { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 3rem; padding: 3.5rem 0 3rem; }
+    .f-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; letter-spacing: .08em; color: var(--bg); margin-bottom: .6rem; }
+    .f-desc { font-size: .8rem; font-weight: 300; color: rgba(245,240,232,.3); line-height: 1.85; }
+    .f-head { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: rgba(245,240,232,.2); margin-bottom: 1.2rem; }
+    .f-list { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .f-list li a, .f-list li span { font-size: .8rem; font-weight: 300; color: rgba(245,240,232,.35); text-decoration: none; transition: color .3s; }
+    .f-list li a:hover { color: rgba(245,240,232,.75); }
+    .footer-bottom { display: flex; justify-content: space-between; padding-top: 2rem; border-top: 1px solid rgba(245,240,232,.06); }
+    .f-copy, .f-by { font-size: .72rem; font-weight: 300; color: rgba(245,240,232,.18); letter-spacing: .04em; }
+
+    /* ── LIGHTBOX ─────────────────────────────────────── */
+    .lb { position: fixed; inset: 0; z-index: 8000; background: rgba(8,10,6,.97); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .4s var(--ease); }
+    .lb.open { opacity: 1; pointer-events: all; }
+    .lb img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 2px; transform: scale(.95); transition: transform .5s var(--ease); }
+    .lb.open img { transform: scale(1); }
+    .lb-x { position: absolute; top: 2rem; right: 2rem; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(245,240,232,.15); background: none; color: var(--bg); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color .3s; }
+    .lb-x:hover { border-color: rgba(245,240,232,.5); }
+
+    /* ── KEYFRAMES ────────────────────────────────────── */
+    @keyframes slideUp { to { transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    /* ── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+      .about-tag { right: 0; }
+      .nabidka-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .editorial-strip { grid-template-columns: 1fr; }
+      .ed-photo { aspect-ratio: 16/8; }
+      .hours-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+      .wrap { padding: 0 1.5rem; }
+      .hero-content { padding: 0 1.5rem 3rem; }
+      .strip { padding: 3.5rem 1.5rem; }
+      .nabidka-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .g-item:nth-child(1) { grid-row: auto; grid-column: span 2; aspect-ratio: 16/9; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .gallery-hd { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .ed-text { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="lb" id="lb" onclick="closeLb()">
+  <button class="lb-x" onclick="closeLb()">✕</button>
+  <img id="lbImg" src="" alt="" onclick="event.stopPropagation()" />
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo"><img src="assets/logo.png" alt="V Kaštanech" /></a>
+  <ul class="nav-links">
+    <li><a href="#about">O nás</a></li>
+    <li><a href="#nabidka">Nabídka</a></li>
+    <li><a href="#zahrada">Zahrada</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#hours">Kontakt</a></li>
+  </ul>
+  <a class="nav-cta" href="tel:+420721046601">Zavolat</a>
+  <button class="nav-toggle" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-photo" id="heroBg"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-content">
+    <p class="hero-loc">V Kaštanech 91 — Dačice</p>
+    <h1 class="hero-title">
+      <span>V Kaštanech</span>
+      <span class="ht2">Kavárna & čajovna</span>
+    </h1>
+    <div class="hero-bottom">
+      <span class="hero-tagline">Výběrová káva · Vzácné čaje · Domácí dezerty</span>
+      <div class="hero-btns">
+        <a href="#nabidka" class="btn btn-solid">Naše nabídka</a>
+        <a href="#hours" class="btn btn-ghost">Kdy přijít</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <p class="strip-quote rv">Útočiště u dačického zámku. Výběrová káva, vzácné čaje a <strong>dezerty které se mění každý týden.</strong></p>
+    <div class="strip-meta rv d1">
+      <span class="strip-tag">Kavárna</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Čajovna</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Domácí dezerty</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Zahradní terasa</span>
+      <span class="strip-dot"></span>
+      <span class="strip-tag">Dačice</span>
+    </div>
+  </div>
+</div>
+
+<!-- O NÁS -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="rv-l">
+        <div class="about-photo-wrap">
+          <div class="about-photo">
+            <img src="assets/real-01.jpg" alt="V Kaštanech — interiér" />
+          </div>
+          <div class="about-tag">Kavárna & čajovna · Dačice</div>
+        </div>
+        <p class="about-caption">📍 V Kaštanech 91, 380 01 Dačice</p>
+      </div>
+      <div>
+        <p class="eyebrow rv">O nás</p>
+        <h2 class="section-title rv d1">Místo kde se<br><em>čas zastaví</em></h2>
+        <blockquote class="about-quote rv d2">"Malá, intimní kavárna kde je vždy plno — protože zde se to prostě líbí."</blockquote>
+        <p class="body-txt rv d3">V Kaštanech je kavárna a čajovna v klidném koutě Dačice, kousek od zámku a jeho zahrad. Nabízíme výběrovou kávu Trieste, impozantní výběr vzácných čajů a domácí dezerty které majitelka připravuje osobně — a každý týden jiné.</p>
+        <p class="body-txt rv d3" style="margin-top:.85rem">V interiéru najdete i originální keramiku k prodeji. Venku na terase posezení pro cyklisty, psí přátele i rodiny.</p>
+        <div class="about-rule rv d4"></div>
+        <div class="about-stats rv d4">
+          <div>
+            <div class="stat-num">4.9★</div>
+            <div class="stat-label">hodnocení Google</div>
+          </div>
+          <div>
+            <div class="stat-num">Pá–Ne</div>
+            <div class="stat-label">otevřeno</div>
+          </div>
+          <div>
+            <div class="stat-num">∞</div>
+            <div class="stat-label">druhů čajů</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NABÍDKA -->
+<section id="nabidka">
+  <div class="wrap">
+    <div class="nabidka-header">
+      <div>
+        <p class="eyebrow rv">Co nabízíme</p>
+        <h2 class="section-title rv d1">Tři světy<br><em>v jednom místě</em></h2>
+      </div>
+      <p class="body-txt rv" style="text-align:right">Káva, čaj i dezerty — každé s plnou péčí a bez kompromisů.</p>
+    </div>
+    <div class="nabidka-grid">
+      <div class="off-card rv">
+        <div class="off-photo"><img src="assets/coffee.jpg" alt="Výběrová káva" loading="lazy"/></div>
+        <div class="off-body">
+          <div class="off-num">01</div>
+          <h3 class="off-name">Výběrová káva</h3>
+          <ul class="off-list">
+            <li>Káva Trieste</li>
+            <li>Espresso & cappuccino</li>
+            <li>Výjimečné latté</li>
+            <li>Ledová káva</li>
+            <li>Veganské alternativy</li>
+          </ul>
+        </div>
+      </div>
+      <div class="off-card rv d1">
+        <div class="off-photo"><img src="assets/tea.jpg" alt="Vzácné čaje" loading="lazy"/></div>
+        <div class="off-body">
+          <div class="off-num">02</div>
+          <h3 class="off-name">Vzácné čaje</h3>
+          <ul class="off-list">
+            <li>Rozsáhlý výběr čajů</li>
+            <li>Zelené & bílé čaje</li>
+            <li>Oolong & pu-erh</li>
+            <li>Bylinné směsi</li>
+            <li>Čajové ceremonie</li>
+          </ul>
+        </div>
+      </div>
+      <div class="off-card rv d2">
+        <div class="off-photo"><img src="assets/dessert.jpg" alt="Domácí dezerty" loading="lazy"/></div>
+        <div class="off-body">
+          <div class="off-num">03</div>
+          <h3 class="off-name">Domácí dezerty</h3>
+          <ul class="off-list">
+            <li>Každý týden jiné</li>
+            <li>Bílá pavlova</li>
+            <li>Banánový chléb</li>
+            <li>Bezlepkové možnosti</li>
+            <li>Veganské dezerty</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZAHRADA (editorial strip) -->
+<div class="editorial-strip" id="zahrada">
+  <div class="ed-photo rv-l">
+    <img src="assets/garden.jpg" alt="Zahradní terasa V Kaštanech" />
+  </div>
+  <div class="ed-text">
+    <p class="ed-eyebrow rv">Venkovní posezení</p>
+    <h2 class="ed-title rv d1">Zahradní<br>terasa</h2>
+    <p class="ed-body rv d2">Posezení nejen uvnitř — na naší zahradní terase vítáme cyklisty, rodiny se psy i všechny kdo si chtějí vychutnat kávu na čerstvém vzduchu u zámeckého parku.</p>
+    <div class="ed-tags rv d3">
+      <span class="ed-tag">🐕 Dog-friendly</span>
+      <span class="ed-tag">🚴 Cyklisté vítáni</span>
+      <span class="ed-tag">♿ Bezbariérový přístup</span>
+      <span class="ed-tag">💳 Platba kartou</span>
+    </div>
+  </div>
+</div>
+
+<!-- GALERIE -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="gallery-hd">
+      <div>
+        <p class="eyebrow rv">Galerie</p>
+        <h2 class="section-title rv d1">Nahlédněte<br><em>dovnitř</em></h2>
+      </div>
+      <a href="https://instagram.com/kavarna_v_kastanech_dacice" class="btn btn-line rv" target="_blank" rel="noopener">Instagram →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-item" onclick="openLb('assets/real-01.jpg','V Kaštanech')">
+        <img src="assets/real-01.jpg" alt="V Kaštanech" loading="lazy"/>
+        <div class="g-overlay"><span class="g-cap">Atmosféra</span></div>
+      </div>
+      <div class="g-item" onclick="openLb('assets/coffee.jpg','Výběrová káva')">
+        <img src="assets/coffee.jpg" alt="Káva" loading="lazy"/>
+        <div class="g-overlay"><span class="g-cap">Káva</span></div>
+      </div>
+      <div class="g-item" onclick="openLb('assets/tea.jpg','Vzácné čaje')">
+        <img src="assets/tea.jpg" alt="Čaj" loading="lazy"/>
+        <div class="g-overlay"><span class="g-cap">Čaj</span></div>
+      </div>
+      <div class="g-item" onclick="openLb('assets/dessert.jpg','Domácí dezerty')">
+        <img src="assets/dessert.jpg" alt="Dezerty" loading="lazy"/>
+        <div class="g-overlay"><span class="g-cap">Dezerty</span></div>
+      </div>
+      <div class="g-item" onclick="openLb('assets/garden.jpg','Zahradní terasa')">
+        <img src="assets/garden.jpg" alt="Zahrada" loading="lazy"/>
+        <div class="g-overlay"><span class="g-cap">Zahrada</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTEVÍRACÍ DOBA & KONTAKT -->
+<section id="hours">
+  <div class="wrap">
+    <div class="hours-grid">
+      <div>
+        <p class="eyebrow rv">Kdy nás najdete</p>
+        <h2 class="section-title rv d1">Otevírací<br><em>doba</em></h2>
+        <div class="hours-table rv d2">
+          <div class="h-row closed"><span class="h-day">Pondělí – Čtvrtek</span><span class="h-time">Zavřeno</span></div>
+          <div class="h-row open"><span class="h-day">Pátek</span><span class="h-time">10:00 – 22:00</span></div>
+          <div class="h-row open"><span class="h-day">Sobota</span><span class="h-time">10:00 – 22:00</span></div>
+          <div class="h-row open"><span class="h-day">Neděle</span><span class="h-time">10:00 – 20:00</span></div>
+        </div>
+      </div>
+      <div class="rv-r">
+        <div class="contact-box">
+          <p class="contact-box-title">Přijďte na návštěvu</p>
+          <div class="c-links">
+            <a href="tel:+420721046601" class="c-link"><span class="c-icon">📞</span>+420 721 046 601</a>
+            <a href="https://maps.google.com/?q=V+Kaštanech+kavárna+Dačice" class="c-link" target="_blank" rel="noopener"><span class="c-icon">📍</span>V Kaštanech 91, 380 01 Dačice</a>
+            <a href="https://instagram.com/kavarna_v_kastanech_dacice" class="c-link" target="_blank" rel="noopener"><span class="c-icon">📷</span>@kavarna_v_kastanech_dacice</a>
+            <a href="https://facebook.com/p/Kavárna-a-čajovna-V-Kaštanech-100071655308025" class="c-link" target="_blank" rel="noopener"><span class="c-icon">📘</span>Facebook</a>
+          </div>
+          <div class="map-wrap">
+            <iframe src="https://maps.google.com/maps?q=V+Kastanech+91+Dacice&output=embed" loading="lazy" allowfullscreen title="V Kaštanech mapa"></iframe>
+          </div>
+          <a href="https://maps.google.com/?q=V+Kaštanech+kavárna+Dačice" class="btn btn-line" style="margin-top:1rem;display:inline-flex" target="_blank" rel="noopener">Otevřít v Google Mapách →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <img src="assets/logo.png" alt="V Kaštanech" style="height:40px;width:auto;margin-bottom:.8rem;opacity:.6" />
+        <p class="f-desc">Kavárna a čajovna v klidném koutě Dačice<br>u zámku a jeho zahrad. Pá–Ne otevřeno.</p>
+      </div>
+      <div>
+        <p class="f-head">Navigace</p>
+        <ul class="f-list">
+          <li><a href="#about">O nás</a></li>
+          <li><a href="#nabidka">Nabídka</a></li>
+          <li><a href="#zahrada">Zahrada</a></li>
+          <li><a href="#gallery">Galerie</a></li>
+          <li><a href="#hours">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="f-head">Otevírací doba</p>
+        <ul class="f-list">
+          <li><span>Pátek: 10:00 – 22:00</span></li>
+          <li><span>Sobota: 10:00 – 22:00</span></li>
+          <li><span>Neděle: 10:00 – 20:00</span></li>
+          <li><span>Po–Čt: zavřeno</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="f-head">Kontakt</p>
+        <ul class="f-list">
+          <li><a href="tel:+420721046601">+420 721 046 601</a></li>
+          <li><span>V Kaštanech 91, Dačice</span></li>
+          <li><a href="https://instagram.com/kavarna_v_kastanech_dacice" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://facebook.com/p/Kavárna-a-čajovna-V-Kaštanech-100071655308025" target="_blank" rel="noopener">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="f-copy">© 2026 Kavárna a čajovna V Kaštanech</p>
+      <p class="f-by">KSH Studio</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── NAV SCROLL ─────────────────────────────────────── */
+const navEl = document.getElementById('nav')
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', scrollY > 50)
+}, { passive: true })
+
+/* ── HERO BG ─────────────────────────────────────────── */
+document.getElementById('heroBg').style.backgroundImage = "url('assets/hero.jpg')"
+
+/* ── MOBILE MENU ─────────────────────────────────────── */
+let menuOpen = false
+function toggleMenu() {
+  menuOpen = !menuOpen
+  const links = document.querySelector('.nav-links')
+  const cta   = document.querySelector('.nav-cta')
+  if (menuOpen) {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(245,240,232,.97);backdrop-filter:blur(14px);padding:2rem 1.5rem;gap:1.5rem;border-bottom:1px solid rgba(26,30,20,.1);z-index:499;'
+    if (cta) cta.style.display = 'none'
+  } else {
+    links.style.cssText = ''
+    if (cta) cta.style.cssText = ''
+  }
+}
+
+/* ── LIGHTBOX ─────────────────────────────────────────── */
+function openLb(src, cap) {
+  document.getElementById('lb').classList.add('open')
+  document.getElementById('lbImg').src = src
+  document.getElementById('lbImg').alt = cap
+}
+function closeLb() {
+  document.getElementById('lb').classList.remove('open')
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb() })
+
+/* ── SCROLL REVEAL ───────────────────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target) }
+  })
+}, { threshold: .14, rootMargin: '0px 0px -40px 0px' })
+document.querySelectorAll('.rv, .rv-l, .rv-r').forEach(el => io.observe(el))
+</script>
+</body>
+</html>
