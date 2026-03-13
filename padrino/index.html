@@ -424,15 +424,22 @@
       background: rgba(242,228,204,0.05); border: 1px solid var(--border); color: var(--muted);
     }
 
-    /* ── MAP PLACEHOLDER ──────────────────────────────────────── */
-    .map-bar {
-      background: var(--bg); padding: 2rem clamp(1.5rem, 5vw, 4rem);
+    /* ── MAP ───────────────────────────────────────────────────── */
+    .map-section {
+      background: var(--bg);
       border-top: 1px solid var(--border);
+      position: relative;
     }
-    .map-inner {
-      max-width: 1200px; margin: 0 auto;
+    .map-section iframe {
+      width: 100%; height: 420px; border: none; display: block;
+      filter: grayscale(1) invert(0.88) contrast(0.9) brightness(0.85) sepia(0.25);
+    }
+    .map-overlay-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
+      padding: 1rem clamp(1.5rem, 5vw, 4rem);
+      background: linear-gradient(to top, rgba(8,5,1,0.95) 0%, rgba(8,5,1,0.7) 100%);
     }
     .map-addr {
       font-size: 0.85rem; color: var(--muted);
@@ -441,7 +448,7 @@
     .map-link {
       display: inline-flex; align-items: center; gap: 0.4rem;
       font-size: 0.8rem; font-weight: 600; color: var(--gold);
-      text-decoration: none; transition: color 0.2s;
+      text-decoration: none; transition: color 0.2s; white-space: nowrap;
     }
     .map-link:hover { color: var(--cream); }
 
@@ -935,7 +942,7 @@
                 <div class="contact-value">nám. Míru 158, 377 01 Jindřichův Hradec</div>
               </div>
             </a>
-            <a href="https://www.facebook.com/PizzeriaPadrino/" target="_blank" rel="noopener" class="contact-card">
+            <a href="https://www.facebook.com/profile.php?id=61585201863185" target="_blank" rel="noopener" class="contact-card">
               <div class="contact-icon">👍</div>
               <div>
                 <div class="contact-label">Facebook</div>
@@ -956,9 +963,14 @@
     </div>
   </section>
 
-  <!-- MAP BAR -->
-  <div class="map-bar">
-    <div class="map-inner">
+  <!-- MAP -->
+  <div class="map-section">
+    <iframe
+      src="https://maps.google.com/maps?q=Pizzeria+Padrino,+n%C3%A1m.+M%C3%ADru+158,+377+01+Jind%C5%99ich%C5%AFv+Hradec&output=embed&z=16&hl=cs"
+      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      title="Pizzeria Padrino na mapě">
+    </iframe>
+    <div class="map-overlay-bar">
       <div class="map-addr">
         <strong>Pizzeria Padrino</strong> — nám. Míru 158, 377 01 Jindřichův Hradec<br />
         <span style="font-size:0.75rem;">Na hlavním náměstí, v centru Jindřichova Hradce</span>
@@ -977,7 +989,7 @@
       <div class="footer-links">
         <a href="tel:+420777660870">+420 777 660 870</a>
         <a href="mailto:info@pizza-padrino.cz">info@pizza-padrino.cz</a>
-        <a href="https://www.facebook.com/PizzeriaPadrino/" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.facebook.com/profile.php?id=61585201863185" target="_blank" rel="noopener">Facebook</a>
       </div>
     </div>
   </footer>
