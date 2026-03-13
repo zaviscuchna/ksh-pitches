@@ -21,8 +21,8 @@
       --border:   rgba(242,228,204,0.08);
     }
 
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--cream); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--cream); font-family: 'Inter', sans-serif; }
     h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
 
     /* ── NAV ───────────────────────────────────────────────────── */
@@ -172,8 +172,8 @@
 
     /* ── STRIP ─────────────────────────────────────────────────── */
     .strip {
+      position: relative; z-index: 2;
       background: var(--red); padding: 1.1rem clamp(1.5rem, 5vw, 4rem);
-      overflow: hidden;
     }
     .strip-inner {
       display: flex; gap: 3rem; align-items: center;
