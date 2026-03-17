@@ -385,6 +385,154 @@
       margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
     }
 
+    /* ─── STATEMENT ─── */
+    .statement {
+      background: var(--bg);
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vw, 8rem);
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .statement-line {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(4.5rem, 13vw, 16rem);
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .sl-solid { color: var(--text); }
+    .sl-outline {
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(238,236,234,0.18);
+    }
+    .sl-pink { color: var(--pink); }
+
+    /* ─── CLIENTS ─── */
+    .clients {
+      background: var(--surface);
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .clients-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .clients-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0 2.25rem;
+    }
+
+    .clients-row span {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(238,236,234,0.2);
+      transition: color 0.25s;
+    }
+
+    .clients-row span:hover { color: var(--text); }
+
+    .clients-row .sep {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ─── PROCESS ─── */
+    .process {
+      background: var(--surface-2);
+      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 5vw, 4rem);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .process-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+      flex-wrap: wrap;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .process-item {
+      padding: 2.5rem 2.5rem 2.5rem 0;
+      border-right: 1px solid var(--border);
+      padding-right: 2.5rem;
+    }
+
+    .process-item:first-child { padding-left: 0; }
+    .process-item:last-child { border-right: none; padding-right: 0; }
+    .process-item:not(:first-child) { padding-left: 2.5rem; }
+
+    .process-num {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 6vw, 6rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .process-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.25rem, 2.2vw, 2rem);
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.875rem;
+      line-height: 1.1;
+    }
+
+    .process-text {
+      font-size: clamp(0.85rem, 1vw, 0.95rem);
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .process-grid { grid-template-columns: 1fr; }
+      .process-item {
+        border-right: none;
+        border-top: 1px solid var(--border);
+        padding: 2rem 0;
+      }
+      .process-item:first-child { border-top: none; padding-top: 0; }
+      .process-item:last-child { padding-bottom: 0; }
+    }
+
     /* ─── IDENTITY SENTENCE ─── */
     .identity {
       background: var(--bg);
@@ -782,6 +930,12 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .statement-line {
+        font-size: clamp(3.5rem, 14vw, 6rem);
+      }
+
+      .clients-row { gap: 1rem 1.5rem; }
     }
 
     @media (max-width: 600px) {
@@ -902,6 +1056,13 @@
     </div>
   </div>
 
+  <!-- STATEMENT -->
+  <section class="statement">
+    <span class="statement-line sl-solid reveal">Tvoříme.</span>
+    <span class="statement-line sl-outline reveal d1">Realizujeme.</span>
+    <span class="statement-line sl-pink reveal d2">Nezapomínáme.</span>
+  </section>
+
   <!-- IDENTITY -->
   <section class="identity">
     <p class="identity-text reveal">
@@ -979,6 +1140,24 @@
     </div>
   </section>
 
+  <!-- CLIENTS -->
+  <div class="clients">
+    <span class="clients-label reveal">Pracovali jsme pro</span>
+    <div class="clients-row reveal d1">
+      <span>Škoda Auto</span>
+      <span class="sep"></span>
+      <span>Česká Spořitelna</span>
+      <span class="sep"></span>
+      <span>O2 Czech Republic</span>
+      <span class="sep"></span>
+      <span>Komerční Banka</span>
+      <span class="sep"></span>
+      <span>Vodafone CZ</span>
+      <span class="sep"></span>
+      <span>Avast</span>
+    </div>
+  </div>
+
   <!-- NUMBERS -->
   <div class="numbers">
     <div class="number-item reveal">
@@ -1018,6 +1197,31 @@
       aria-hidden="true"
     />
   </div>
+
+  <!-- PROCESS -->
+  <section class="process">
+    <div class="process-header">
+      <span class="section-label reveal">Jak pracujeme</span>
+      <h2 class="section-title reveal d1" style="margin-bottom:0">Náš přístup</h2>
+    </div>
+    <div class="process-grid">
+      <div class="process-item reveal">
+        <span class="process-num">01</span>
+        <h3 class="process-title">Nasloucháme</h3>
+        <p class="process-text">Každý projekt začíná hlubokou konzultací. Chápeme vaši vizi, publikum a to, co chcete, aby si lidé odnesli.</p>
+      </div>
+      <div class="process-item reveal d1">
+        <span class="process-num">02</span>
+        <h3 class="process-title">Navrhujeme</h3>
+        <p class="process-text">Sestavíme koncept na míru — od dramaturgie přes scénář až po technické zajištění. Žádné šablony.</p>
+      </div>
+      <div class="process-item reveal d2">
+        <span class="process-num">03</span>
+        <h3 class="process-title">Realizujeme</h3>
+        <p class="process-text">V den akce jsme tam my. Koordinujeme každý detail tak, abyste vy mohli být přítomni — ne řídit provoz.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- ABOUT + SERVICES -->
   <section class="about" id="about">
