@@ -3,954 +3,300 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alterum — Event Production</title>
+  <title>Alterum — Event Production Praha</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --pink:       #D4527A;
-      --pink-dim:   rgba(212,82,122,0.12);
-      --gold:       #C9A84C;
-      --gold-dim:   rgba(201,168,76,0.12);
-      --bg:         #0A0A0C;
-      --surface:    #111115;
-      --surface-2:  #17171C;
-      --text:       #EEECEA;
-      --text-muted: #5A5A60;
-      --border:     rgba(255,255,255,0.07);
+      --bg:       #080808;
+      --s1:       #0f0f0f;
+      --s2:       #161616;
+      --text:     #F0EDE8;
+      --muted:    #4A4A50;
+      --border:   rgba(255,255,255,0.07);
+      --pink:     #D4527A;
+      --gold:     #C9A84C;
     }
 
     html { scroll-behavior: smooth; }
+    body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-    body {
-      font-family: 'Manrope', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+    /* ── UTILITIES ── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
+
+    .eyebrow {
+      display: block;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--muted); font-family: 'Manrope', sans-serif;
     }
+    .eyebrow-pink { color: var(--pink); }
 
-    /* ─── REVEAL ─── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .d1 { transition-delay: 0.1s; }
-    .d2 { transition-delay: 0.22s; }
-    .d3 { transition-delay: 0.34s; }
-    .d4 { transition-delay: 0.46s; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.26s; }
 
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      background: rgba(10,10,12,0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 4vw, 4rem);
+      background: rgba(8,8,8,0.88); backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
-      transition: background 0.3s ease;
     }
-
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 0.78rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.25rem; list-style: none; }
+    .nav-links a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--text); }
 
-    /* ─── HERO ─── */
+    /* ── HERO ── */
     .hero {
-      position: relative;
-      min-height: 100svh;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 58fr 42fr;
-      overflow: hidden;
+      height: 100svh; min-height: 560px;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 0 clamp(1.5rem, 4vw, 4rem);
     }
-
-    /* Diagonal band — clip-path parallelogram */
-    .hero-band {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(8,8,8,.7) 0%,
+        rgba(8,8,8,.5) 50%,
+        rgba(8,8,8,.85) 100%);
     }
-
-    .hero-band::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--pink);
-      clip-path: polygon(0% 36%, 100% 16%, 100% 30%, 0% 50%);
-      opacity: 0.9;
-    }
-
-    /* Small label sitting inside the diagonal band */
-    .hero-band-label {
-      position: absolute;
-      top: 41%;
-      left: 28%;
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
-      white-space: nowrap;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    /* Scroll indicator */
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: clamp(2rem, 5vw, 5rem);
-      z-index: 4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      animation: scrollBounce 2s ease-in-out infinite;
-    }
-
-    .hero-scroll span {
-      font-family: 'Manrope', sans-serif;
-      font-size: 0.58rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      writing-mode: vertical-rl;
-    }
-
-    .hero-scroll::after {
-      content: '';
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--text-muted), transparent);
-    }
-
-    @keyframes scrollBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(6px); }
-    }
-
-    /* Left text column */
-    .hero-left {
-      position: relative;
-      z-index: 3;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: max(120px, 14vh);
-      padding-left: clamp(2rem, 5vw, 5rem);
-      padding-right: clamp(2rem, 4vw, 4rem);
-      padding-bottom: 5rem;
-    }
-
-    .hero-label {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--pink);
-      margin-bottom: 1.75rem;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    .hero-heading {
-      position: relative;
-      line-height: 0.91;
-      margin-bottom: 0;
-    }
-
-    /* Duplicate heading clipped to the band — shows text on diagonal */
-    .hero-heading-copy {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      line-height: 0.91;
-      clip-path: polygon(0% 36%, 200% 16%, 200% 30%, 0% 50%);
-    }
-
-    .h1 {
+    .hero-inner { position: relative; z-index: 2; }
+    .hero-tag { margin-bottom: 2.25rem; }
+    .hero-h1 {
       display: block;
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-weight: 800;
-      font-size: clamp(4.5rem, 8.5vw, 10rem);
-      letter-spacing: -0.03em;
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(5rem, 14vw, 17rem);
+      line-height: 0.86; letter-spacing: -0.045em;
+      text-transform: uppercase;
     }
-
-    .h1-solid { color: var(--text); }
-    .h1-outline {
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(238,236,234,0.25);
-    }
-    .h1-copy-solid { color: #fff; }
-    .h1-copy-outline {
-      color: #fff;
-      -webkit-text-stroke: 0;
-    }
-
-    .h1-accent {
-      display: block;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-weight: 700;
-      font-size: clamp(2rem, 3.8vw, 4.5rem);
-      color: var(--gold);
-      margin-top: 0.35em;
-      letter-spacing: -0.01em;
-    }
-
-    .hero-desc {
-      font-size: clamp(0.875rem, 1.1vw, 1rem);
-      font-weight: 300;
-      color: var(--gray);
-      line-height: 1.75;
-      max-width: 400px;
+    .hs  { color: var(--text); }
+    .ho  { color: transparent; -webkit-text-stroke: 1.5px rgba(240,237,232,0.18); }
+    .hp  { color: var(--pink); }
+    .hero-sub {
       margin-top: 2.25rem;
+      font-size: clamp(0.7rem, 1.1vw, 0.85rem); font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(240,237,232,0.35);
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2.25rem; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .hero-scroll span { font-size: 0.56rem; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(240,237,232,0.25); }
+    .hero-scroll::after { content: ''; width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(240,237,232,0.2), transparent); }
+
+    /* ── IDENTITY ── */
+    .identity {
+      background: var(--s1);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: clamp(3rem, 5.5vw, 5.5rem) clamp(1.5rem, 4vw, 4rem);
+    }
+    .identity p {
+      max-width: 980px; margin: 0 auto; text-align: center;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: clamp(1.3rem, 2.6vw, 2.6rem);
+      line-height: 1.38; letter-spacing: -0.02em;
+      color: rgba(240,237,232,0.22);
+    }
+    .identity em { font-style: normal; color: var(--text); }
+    .identity .acc { color: var(--pink); }
+
+    /* ── SERVICES ── */
+    .services { padding: clamp(3.5rem, 6vw, 6rem) 0; }
+    .services-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+    }
+    .svc {
+      padding: clamp(2.5rem, 4vw, 4rem);
+      border-right: 1px solid var(--border);
+    }
+    .svc:last-child { border-right: none; }
+    .svc-cat { margin-bottom: 1.5rem; }
+    .svc-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(1.75rem, 3.2vw, 3.25rem);
+      line-height: 1.0; letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 1.25rem;
+    }
+    .svc-desc {
+      font-size: 0.9rem; font-weight: 300;
+      line-height: 1.8; color: var(--muted);
+      margin-bottom: 2rem; max-width: 360px;
+    }
+    .svc-link {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.2em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .svc-link:hover { color: var(--pink); border-color: var(--pink); }
+
+    /* ── CLIENTS ── */
+    .clients {
+      background: var(--s2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: clamp(2rem, 3.5vw, 3.5rem) clamp(1.5rem, 4vw, 4rem);
+      display: flex; flex-direction: column; align-items: center; gap: 2rem;
+    }
+    .clients-names {
+      display: flex; align-items: center;
+      flex-wrap: wrap; justify-content: center;
+      gap: 0 clamp(2rem, 4vw, 5rem);
+    }
+    .cl {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(240,237,232,0.14); transition: color 0.25s;
+    }
+    .cl:hover { color: rgba(240,237,232,0.55); }
+
+    /* ── PORTFOLIO ── */
+    .portfolio { padding: clamp(3.5rem, 6vw, 6rem) 0; }
+    .pf-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 4px;
+    }
+    .pf { overflow: hidden; position: relative; background: var(--s2); cursor: pointer; }
+    .pf img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94); filter: brightness(0.78) saturate(0.8); }
+    .pf:hover img { transform: scale(1.05); }
+    .pf-a { grid-row: span 2; aspect-ratio: 2/3; }
+    .pf-b, .pf-c, .pf-d { aspect-ratio: 5/4; }
+    .pf-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.88) 0%, transparent 55%);
+      opacity: 0; transition: opacity 0.35s;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.25rem 1.5rem;
+    }
+    .pf:hover .pf-overlay { opacity: 1; }
+    .pf-cat { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); margin-bottom: 0.25rem; }
+    .pf-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--text); letter-spacing: -0.01em; }
+
+    /* ── NUMBERS ── */
+    .numbers {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .n {
+      padding: clamp(2.5rem, 4vw, 4.5rem) clamp(1.5rem, 3vw, 3rem);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 0.3rem;
+    }
+    .n:last-child { border-right: none; }
+    .n-val {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.2rem, 4.5vw, 4.5rem); line-height: 1;
+      letter-spacing: -0.04em; color: var(--pink);
+    }
+    .n:nth-child(even) .n-val { color: var(--gold); }
+    .n-label { font-size: 0.78rem; font-weight: 400; color: var(--muted); line-height: 1.4; }
+
+    /* ── QUOTE ── */
+    .quote {
+      text-align: center;
+      padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+      border-bottom: 1px solid var(--border);
+    }
+    .q-mark { font-size: 3.5rem; line-height: 1; color: var(--pink); opacity: 0.35; font-family: 'Syne'; margin-bottom: 1rem; }
+    .q-text {
+      font-family: 'Manrope', sans-serif; font-weight: 300;
+      font-size: clamp(1.15rem, 2.2vw, 2rem); line-height: 1.65;
+      color: var(--text); max-width: 760px; margin: 0 auto 1.5rem;
+    }
+    .q-text em { font-style: italic; color: var(--gold); }
+    .q-attr { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── WHY ── */
+    .why { padding: clamp(3.5rem, 6vw, 6rem) 0; }
+    .why-head { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .why-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 2.8vw, 2.8rem); letter-spacing: -0.03em; color: var(--text); }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--border); }
+    .wi {
+      padding: clamp(2rem, 3.5vw, 3.5rem);
+      border-right: 1px solid var(--border);
+    }
+    .wi:last-child { border-right: none; }
+    .wi-num {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1;
+      letter-spacing: -0.05em;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+      margin-bottom: 1.25rem; display: block;
+    }
+    .wi-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: clamp(0.95rem, 1.6vw, 1.45rem); color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .wi-text { font-size: 0.86rem; font-weight: 300; line-height: 1.72; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    .contact {
+      text-align: center;
+      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 4vw, 4rem);
+      border-top: 1px solid var(--border);
+    }
+    .c-h {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(3rem, 8vw, 9rem); line-height: 0.9;
+      letter-spacing: -0.045em; color: var(--text);
       margin-bottom: 2.5rem;
     }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      font-family: 'Manrope', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: var(--pink);
-      color: #fff;
-      border: 1.5px solid var(--pink);
-      padding: 0.875rem 2rem;
-      text-decoration: none;
-      transition: background 0.25s, color 0.25s, border-color 0.25s;
-    }
-    .btn-primary:hover { background: transparent; color: var(--pink); }
-
-    .btn-ghost {
-      font-family: 'Manrope', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: transparent;
-      color: var(--text-muted);
-      border: 1.5px solid var(--border);
-      padding: 0.875rem 2rem;
-      text-decoration: none;
-      transition: background 0.25s, color 0.25s, border-color 0.25s;
-    }
-    .btn-ghost:hover { border-color: var(--text); color: var(--text); }
-
-    /* Right photo column */
-    .hero-right {
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .hero-right img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: saturate(0.9) brightness(0.75) contrast(1.05);
-    }
-
-    /* Subtle pink accent strip bottom-left of hero */
-    .hero-accent-line {
-      position: absolute;
-      bottom: 3.5rem;
-      left: clamp(2rem, 5vw, 5rem);
-      z-index: 4;
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-    }
-
-    .hero-accent-line::before {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1.5px;
-      background: var(--pink);
-    }
-
-    .hero-stat {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-family: 'Manrope', sans-serif;
-    }
-
-    /* ─── TICKER ─── */
-    .ticker {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-      padding: 0.9rem 0;
-      display: flex;
-    }
-
-    .ticker-track {
-      display: flex;
-      width: max-content;
-      animation: ticker 32s linear infinite;
-      white-space: nowrap;
-    }
-
-    .ticker-item {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      padding: 0 2.25rem;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    .ticker-item:nth-child(4n+1) { color: var(--pink); }
-
-    @keyframes ticker {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ─── SECTION LABEL / TITLE ─── */
-    .section-label {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--pink);
-      margin-bottom: 0.75rem;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-weight: 800;
-      font-size: clamp(2.75rem, 5.5vw, 6rem);
-      color: var(--text);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
-    }
-
-    /* ─── STATEMENT ─── */
-    .statement {
-      background: var(--bg);
-      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vw, 8rem);
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .statement-line {
-      display: block;
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(4.5rem, 13vw, 16rem);
-      line-height: 0.88;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-    }
-
-    .sl-solid { color: var(--text); }
-    .sl-outline {
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(238,236,234,0.18);
-    }
-    .sl-pink { color: var(--pink); }
-
-    /* ─── CLIENTS ─── */
-    .clients {
-      background: var(--surface);
-      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .clients-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-family: 'Manrope', sans-serif;
-    }
-
-    .clients-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0 2.25rem;
-    }
-
-    .clients-row span {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.85rem, 1.3vw, 1.1rem);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(238,236,234,0.2);
-      transition: color 0.25s;
-    }
-
-    .clients-row span:hover { color: var(--text); }
-
-    .clients-row .sep {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-
-    /* ─── PROCESS ─── */
-    .process {
-      background: var(--surface-2);
-      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .process-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-bottom: clamp(3rem, 6vw, 5rem);
-      flex-wrap: wrap;
-    }
-
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-    }
-
-    .process-item {
-      padding: 2.5rem 2.5rem 2.5rem 0;
-      border-right: 1px solid var(--border);
-      padding-right: 2.5rem;
-    }
-
-    .process-item:first-child { padding-left: 0; }
-    .process-item:last-child { border-right: none; padding-right: 0; }
-    .process-item:not(:first-child) { padding-left: 2.5rem; }
-
-    .process-num {
-      display: block;
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(3rem, 6vw, 6rem);
-      line-height: 1;
-      letter-spacing: -0.04em;
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--border);
-      margin-bottom: 1.5rem;
-    }
-
-    .process-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(1.25rem, 2.2vw, 2rem);
-      color: var(--text);
-      letter-spacing: -0.02em;
-      margin-bottom: 0.875rem;
-      line-height: 1.1;
-    }
-
-    .process-text {
-      font-size: clamp(0.85rem, 1vw, 0.95rem);
-      font-weight: 300;
-      line-height: 1.75;
-      color: var(--text-muted);
-    }
-
-    @media (max-width: 900px) {
-      .process-grid { grid-template-columns: 1fr; }
-      .process-item {
-        border-right: none;
-        border-top: 1px solid var(--border);
-        padding: 2rem 0;
-      }
-      .process-item:first-child { border-top: none; padding-top: 0; }
-      .process-item:last-child { padding-bottom: 0; }
-    }
-
-    /* ─── IDENTITY SENTENCE ─── */
-    .identity {
-      background: var(--bg);
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .identity-text {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.6rem, 3.2vw, 3.2rem);
-      line-height: 1.35;
-      letter-spacing: -0.02em;
-      color: rgba(238,236,234,0.3);
-      max-width: 1100px;
-    }
-
-    .identity-text em {
-      font-style: normal;
-      color: var(--text);
-    }
-
-    .identity-text .accent {
-      color: var(--pink);
-    }
-
-    /* ─── EVENTS GRID ─── */
-    .events {
-      background: var(--bg);
-      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-    }
-
-    .events-grid { display: grid; gap: 1.5rem; }
-
-    .events-row {
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    .events-row-a { grid-template-columns: 3fr 2fr; }
-    .events-row-b { grid-template-columns: 2fr 3fr; }
-
-    .event-tile { display: flex; flex-direction: column; }
-
-    .event-img {
-      overflow: hidden;
-      display: block;
-      background: var(--surface-2);
-    }
-
-    .event-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
-    }
-
-    .event-tile:hover .event-img img { transform: scale(1.04); }
-
-    .et-a .event-img { aspect-ratio: 4/5; }
-    .et-b .event-img { aspect-ratio: 1/1; }
-    .et-c .event-img { aspect-ratio: 5/4; }
-    .et-d .event-img { aspect-ratio: 3/4; }
-
-    .event-meta {
-      padding: 0.9rem 0 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .event-cat {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-family: 'Manrope', sans-serif;
-    }
-
-    .event-name {
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-weight: 700;
-      font-size: clamp(1rem, 1.7vw, 1.35rem);
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-
-    /* ─── NUMBERS STRIP ─── */
-    .numbers {
-      background: var(--surface);
-      padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .number-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .number-val {
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-weight: 800;
-      font-size: clamp(2.5rem, 4vw, 4.5rem);
-      color: var(--pink);
-      line-height: 1;
-      letter-spacing: -0.03em;
-    }
-
-    .number-item:nth-child(even) .number-val { color: var(--gold); }
-
-    .number-label {
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      line-height: 1.5;
-    }
-
-    /* ─── MANIFESTO ─── */
-    .manifesto {
-      background: var(--bg);
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-      text-align: center;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .manifesto-quote {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(1.5rem, 3vw, 3rem);
-      line-height: 1.55;
-      color: var(--text);
-      max-width: 860px;
-      margin: 0 auto 2rem;
-      letter-spacing: -0.01em;
-    }
-
-    .manifesto-quote em {
-      color: var(--gold);
-      font-style: italic;
-    }
-
-    .manifesto-line {
-      width: 64px;
-      height: 1.5px;
-      background: var(--pink);
-      margin: 0 auto 1.25rem;
-    }
-
-    .manifesto-attr {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    /* ─── IMAGE BREAK ─── */
-    .image-break {
-      width: 100%;
-      height: 55vh;
-      overflow: hidden;
-    }
-
-    .image-break img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: brightness(0.55) saturate(0.85) contrast(1.1);
-    }
-
-    /* ─── ABOUT + SERVICES ─── */
-    .about {
-      background: var(--surface);
-      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(3rem, 7vw, 8rem);
-      align-items: start;
-    }
-
-    .about-label {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--pink);
-      margin-bottom: 1.25rem;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    .about-heading {
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-weight: 800;
-      font-size: clamp(2.5rem, 4.5vw, 4.75rem);
-      color: var(--text);
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.75rem;
-    }
-
-    .about-text {
-      font-size: clamp(0.875rem, 1.1vw, 1rem);
-      font-weight: 300;
-      line-height: 1.85;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-
-    .services-list { list-style: none; }
-
-    .services-list li {
-      display: flex;
-      align-items: baseline;
-      gap: 1.25rem;
-      padding: 1.2rem 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .services-list li:last-child {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .svc-num {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      flex-shrink: 0;
-    }
-
-    .svc-name {
-      font-size: clamp(0.9rem, 1.35vw, 1.05rem);
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-    }
-
-    /* ─── CONTACT ─── */
-    .contact {
-      background: var(--surface-2);
-      padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem);
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
-
-    .contact-heading {
-      font-family: 'Syne', sans-serif;
-      font-style: normal;
-      font-weight: 800;
-      font-size: clamp(2.5rem, 6vw, 6rem);
-      color: var(--text);
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 2rem;
-    }
-
-    .contact-heading span { color: var(--pink); }
-
-    .contact-email {
-      font-size: clamp(1.1rem, 2.2vw, 1.9rem);
-      font-weight: 300;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.01em;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.2em;
-      display: inline-block;
-      transition: border-color 0.25s, color 0.25s;
-    }
-
-    .contact-email:hover { border-color: var(--pink); color: var(--pink); }
-
-    .contact-divider {
-      width: 60px;
-      height: 1px;
-      background: var(--border);
-      margin: 2.5rem auto;
-    }
-
-    .contact-note {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-family: 'Manrope', sans-serif;
-    }
-
-    /* ─── FOOTER ─── */
+    .c-h span { color: var(--pink); }
+    .c-email {
+      font-size: clamp(0.95rem, 1.8vw, 1.5rem); font-weight: 300;
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.25em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .c-email:hover { color: var(--pink); border-color: var(--pink); }
+    .c-note { font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); margin-top: 2.5rem; }
+
+    /* ── FOOTER ── */
     footer {
-      background: var(--bg);
-      padding: 2rem clamp(1.5rem, 5vw, 4rem);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+      padding: 1.5rem clamp(1.5rem, 4vw, 4rem);
       border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
     }
+    footer span, footer a { font-size: 0.66rem; color: var(--muted); text-decoration: none; letter-spacing: 0.04em; }
+    footer a:hover { color: var(--text); }
 
-    .footer-copy {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-    }
-
-    .footer-credit {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-    }
-
-    .footer-credit a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-credit a:hover { color: var(--text); }
-
-    /* ─── RESPONSIVE ─── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-
-      .hero-band::before {
-        clip-path: polygon(0% 22%, 100% 10%, 100% 20%, 0% 32%);
-      }
-
-      .hero-heading-copy {
-        clip-path: polygon(0% 22%, 200% 10%, 200% 20%, 0% 32%);
-      }
-
-      .hero-band-label { display: none; }
-
-      .hero-left {
-        padding-top: 100px;
-        padding-bottom: 4rem;
-        padding-left: 1.75rem;
-        padding-right: 1.75rem;
-      }
-
-      .hero-right {
-        height: 52vw;
-        min-height: 280px;
-      }
-
-      .hero-accent-line { display: none; }
-
-      .events-row-a,
-      .events-row-b {
-        grid-template-columns: 1fr;
-      }
-
-      .et-a .event-img,
-      .et-b .event-img,
-      .et-c .event-img,
-      .et-d .event-img {
-        aspect-ratio: 4/3;
-      }
-
-      .numbers {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem 1.5rem;
-      }
-
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 3.5rem;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .statement-line {
-        font-size: clamp(3.5rem, 14vw, 6rem);
-      }
-
-      .clients-row { gap: 1rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .svc { border-right: none; border-bottom: 1px solid var(--border); }
+      .svc:last-child { border-bottom: none; }
+      .pf-grid { grid-template-columns: 1fr 1fr; }
+      .pf-a { grid-row: auto; aspect-ratio: 5/4; }
+      .numbers { grid-template-columns: repeat(2,1fr); }
+      .n:nth-child(2) { border-right: none; }
+      .n:nth-child(3) { border-top: 1px solid var(--border); }
+      .why-grid { grid-template-columns: 1fr; }
+      .wi { border-right: none; border-bottom: 1px solid var(--border); }
+      .wi:last-child { border-bottom: none; }
     }
-
     @media (max-width: 600px) {
-      .nav-links { gap: 1.25rem; }
-
-      .hero-buttons {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .btn-primary, .btn-ghost {
-        width: 100%;
-        text-align: center;
-      }
-
+      .nav-links { display: none; }
+      .pf-grid { grid-template-columns: 1fr; }
+      .pf-a, .pf-b, .pf-c, .pf-d { aspect-ratio: 4/3; }
       .numbers { grid-template-columns: 1fr 1fr; }
     }
   </style>
@@ -959,9 +305,9 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-logo">Alterum</a>
+    <a href="#" class="logo">Alterum</a>
     <ul class="nav-links">
-      <li><a href="#events">Události</a></li>
+      <li><a href="#work">Práce</a></li>
       <li><a href="#about">O nás</a></li>
       <li><a href="#contact">Kontakt</a></li>
     </ul>
@@ -969,172 +315,49 @@
 
   <!-- HERO -->
   <section class="hero">
-
-    <!-- Diagonal royal blue band -->
-    <div class="hero-band" aria-hidden="true">
-      <span class="hero-band-label">Praha · Since 2018</span>
-    </div>
-
-    <!-- Left: text -->
-    <div class="hero-left">
-      <p class="hero-label reveal">— Event Production & Management</p>
-
-      <!-- Primary heading -->
-      <div class="hero-heading">
-        <span class="h1 h1-solid reveal d1">Výjimečné</span>
-        <span class="h1 h1-outline reveal d2">události.</span>
-        <span class="h1-accent reveal d3">od A do Z.</span>
-
-        <!-- White copy — clipped to the diagonal band area -->
-        <div class="hero-heading-copy" aria-hidden="true">
-          <span class="h1 h1-copy-solid">Výjimečné</span>
-          <span class="h1 h1-copy-outline">události.</span>
-        </div>
-      </div>
-
-      <p class="hero-desc reveal d3">
-        Plánujeme a realizujeme firemní akce, konference, galavečery
-        a kulturní projekty. Každý detail, každý okamžik — promyšlen do hloubky.
-      </p>
-
-      <div class="hero-buttons reveal d4">
-        <a href="#events" class="btn-primary">Naše události</a>
-        <a href="#contact" class="btn-ghost">Kontaktovat →</a>
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="hero-scroll" aria-hidden="true">
-      <span>Scroll</span>
-    </div>
-
-    <!-- Right: photo -->
-    <div class="hero-right">
+    <div class="hero-bg">
       <img
-        src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1400&q=85"
-        alt="Alterum — event production"
+        src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1800&q=85"
+        alt="Alterum event production"
         loading="eager"
       />
     </div>
-  </section>
-
-  <!-- TICKER -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span class="ticker-item">Firemní akce</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Konference</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Galavečery</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Teambuilding</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Produktové launche</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Kulturní projekty</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Bankety</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Venkovní festivaly</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Firemní akce</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Konference</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Galavečery</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Teambuilding</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Produktové launche</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Kulturní projekty</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Bankety</span>
-      <span class="ticker-item">·</span>
-      <span class="ticker-item">Venkovní festivaly</span>
-      <span class="ticker-item">·</span>
+    <div class="hero-inner">
+      <span class="eyebrow eyebrow-pink hero-tag reveal">Praha · Event Production · Since 2018</span>
+      <h1>
+        <span class="hero-h1 hs reveal d1">TVOŘÍME.</span>
+        <span class="hero-h1 ho reveal d2">INSPIRUJEME.</span>
+        <span class="hero-h1 hp reveal d3">REALIZUJEME.</span>
+      </h1>
+      <p class="hero-sub reveal d3">Event Design + Produkce</p>
     </div>
-  </div>
-
-  <!-- STATEMENT -->
-  <section class="statement">
-    <span class="statement-line sl-solid reveal">Tvoříme.</span>
-    <span class="statement-line sl-outline reveal d1">Realizujeme.</span>
-    <span class="statement-line sl-pink reveal d2">Nezapomínáme.</span>
+    <div class="hero-scroll" aria-hidden="true"><span>Scroll</span></div>
   </section>
 
   <!-- IDENTITY -->
-  <section class="identity">
-    <p class="identity-text reveal">
-      <span class="accent">Jsme</span> <em>storytelleři</em>, producenti, logistici,
+  <div class="identity">
+    <p class="reveal">
+      <span class="acc">Jsme</span> <em>storytelleři</em>, producenti, logistici,
       <em>kreativci</em>, vizionáři, perfekcionisté, <em>architekti zážitků</em>.
-      <span class="accent">Jsme</span> <em>Alterum.</em>
+      <span class="acc">Jsme</span> <em>Alterum.</em>
     </p>
-  </section>
+  </div>
 
-  <!-- EVENTS GRID -->
-  <section class="events" id="events">
-    <span class="section-label reveal">Realizované projekty</span>
-    <h2 class="section-title reveal d1">Události</h2>
-
-    <div class="events-grid">
-      <div class="events-row events-row-a">
-        <div class="event-tile et-a reveal">
-          <div class="event-img">
-            <img
-              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=85"
-              alt="Výroční konference"
-              loading="lazy"
-            />
-          </div>
-          <div class="event-meta">
-            <span class="event-cat">Konference</span>
-            <span class="event-name">Výroční konference — 500 hostů</span>
-          </div>
+  <!-- SERVICES -->
+  <section class="services" id="about">
+    <div class="wrap">
+      <div class="services-grid">
+        <div class="svc reveal">
+          <span class="eyebrow eyebrow-pink svc-cat">Firemní akce</span>
+          <h2 class="svc-title">Corporate<br>Events</h2>
+          <p class="svc-desc">Konference, summity, teambuilding, produktové launche a incentivní programy. Každá akce odráží hodnoty vaší značky.</p>
+          <a href="#work" class="svc-link">Naše firemní projekty →</a>
         </div>
-
-        <div class="event-tile et-b reveal d2">
-          <div class="event-img">
-            <img
-              src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=85"
-              alt="Galavečer"
-              loading="lazy"
-            />
-          </div>
-          <div class="event-meta">
-            <span class="event-cat">Gala</span>
-            <span class="event-name">Galavečer & předávání cen</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="events-row events-row-b">
-        <div class="event-tile et-c reveal d1">
-          <div class="event-img">
-            <img
-              src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=900&q=85"
-              alt="Hudební festival"
-              loading="lazy"
-            />
-          </div>
-          <div class="event-meta">
-            <span class="event-cat">Festival</span>
-            <span class="event-name">Letní hudební festival</span>
-          </div>
-        </div>
-
-        <div class="event-tile et-d reveal d3">
-          <div class="event-img">
-            <img
-              src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=85"
-              alt="Produktový launch"
-              loading="lazy"
-            />
-          </div>
-          <div class="event-meta">
-            <span class="event-cat">Launch event</span>
-            <span class="event-name">Produktový launch — Praha</span>
-          </div>
+        <div class="svc reveal d1">
+          <span class="eyebrow eyebrow-pink svc-cat">Soukromé akce</span>
+          <h2 class="svc-title">Social<br>Events</h2>
+          <p class="svc-desc">Galavečery, bankety, kulturní projekty a soukromé oslavy. Od intimních večeří po velká společenská setkání.</p>
+          <a href="#work" class="svc-link">Naše soukromé projekty →</a>
         </div>
       </div>
     </div>
@@ -1142,171 +365,140 @@
 
   <!-- CLIENTS -->
   <div class="clients">
-    <span class="clients-label reveal">Pracovali jsme pro</span>
-    <div class="clients-row reveal d1">
-      <span>Škoda Auto</span>
-      <span class="sep"></span>
-      <span>Česká Spořitelna</span>
-      <span class="sep"></span>
-      <span>O2 Czech Republic</span>
-      <span class="sep"></span>
-      <span>Komerční Banka</span>
-      <span class="sep"></span>
-      <span>Vodafone CZ</span>
-      <span class="sep"></span>
-      <span>Avast</span>
+    <span class="eyebrow reveal">Pracovali jsme pro</span>
+    <div class="clients-names">
+      <span class="cl reveal">Škoda Auto</span>
+      <span class="cl reveal d1">Česká Spořitelna</span>
+      <span class="cl reveal d1">O2 Czech Republic</span>
+      <span class="cl reveal d2">Komerční Banka</span>
+      <span class="cl reveal d2">Vodafone CZ</span>
+      <span class="cl reveal d3">Avast</span>
     </div>
   </div>
+
+  <!-- PORTFOLIO -->
+  <section class="portfolio" id="work">
+    <div class="wrap">
+      <div class="pf-grid">
+        <div class="pf pf-a reveal">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=85" alt="Konference" loading="lazy" />
+          <div class="pf-overlay">
+            <span class="pf-cat">Konference</span>
+            <p class="pf-name">Výroční konference — 500 hostů</p>
+          </div>
+        </div>
+        <div class="pf pf-b reveal d1">
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=85" alt="Galavečer" loading="lazy" />
+          <div class="pf-overlay">
+            <span class="pf-cat">Gala</span>
+            <p class="pf-name">Galavečer & předávání cen</p>
+          </div>
+        </div>
+        <div class="pf pf-c reveal d2">
+          <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=900&q=85" alt="Festival" loading="lazy" />
+          <div class="pf-overlay">
+            <span class="pf-cat">Festival</span>
+            <p class="pf-name">Letní hudební festival</p>
+          </div>
+        </div>
+        <div class="pf pf-d reveal d1">
+          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&q=85" alt="Launch" loading="lazy" />
+          <div class="pf-overlay">
+            <span class="pf-cat">Launch Event</span>
+            <p class="pf-name">Produktový launch — Praha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- NUMBERS -->
   <div class="numbers">
-    <div class="number-item reveal">
-      <span class="number-val">200+</span>
-      <span class="number-label">realizovaných akcí</span>
+    <div class="n reveal">
+      <span class="n-val">200+</span>
+      <span class="n-label">realizovaných akcí</span>
     </div>
-    <div class="number-item reveal d1">
-      <span class="number-val">8</span>
-      <span class="number-label">let na trhu</span>
+    <div class="n reveal d1">
+      <span class="n-val">8</span>
+      <span class="n-label">let na trhu</span>
     </div>
-    <div class="number-item reveal d2">
-      <span class="number-val">50k+</span>
-      <span class="number-label">spokojených hostů</span>
+    <div class="n reveal d2">
+      <span class="n-val">50k+</span>
+      <span class="n-label">spokojených hostů</span>
     </div>
-    <div class="number-item reveal d3">
-      <span class="number-val">98%</span>
-      <span class="number-label">klientů se vrátí</span>
+    <div class="n reveal d3">
+      <span class="n-val">98%</span>
+      <span class="n-label">klientů se vrátí</span>
     </div>
   </div>
 
-  <!-- MANIFESTO -->
-  <section class="manifesto">
-    <blockquote class="manifesto-quote reveal">
-      „Každá akce je příležitost vytvořit okamžik,<br>
-      který lidé nesou v sobě <em>dlouho poté</em>."
-    </blockquote>
-    <div class="manifesto-line reveal d1"></div>
-    <p class="manifesto-attr reveal d2">— Alterum</p>
-  </section>
-
-  <!-- FULL BLEED IMAGE BREAK -->
-  <div class="image-break">
-    <img
-      src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=85"
-      alt=""
-      loading="lazy"
-      aria-hidden="true"
-    />
+  <!-- QUOTE -->
+  <div class="quote">
+    <div class="wrap">
+      <div class="q-mark reveal">"</div>
+      <p class="q-text reveal d1">
+        Každá akce je příležitost vytvořit okamžik,<br>
+        který lidé nesou v sobě <em>dlouho poté</em>.
+      </p>
+      <span class="q-attr reveal d2">— Alterum</span>
+    </div>
   </div>
 
-  <!-- PROCESS -->
-  <section class="process">
-    <div class="process-header">
-      <span class="section-label reveal">Jak pracujeme</span>
-      <h2 class="section-title reveal d1" style="margin-bottom:0">Náš přístup</h2>
-    </div>
-    <div class="process-grid">
-      <div class="process-item reveal">
-        <span class="process-num">01</span>
-        <h3 class="process-title">Nasloucháme</h3>
-        <p class="process-text">Každý projekt začíná hlubokou konzultací. Chápeme vaši vizi, publikum a to, co chcete, aby si lidé odnesli.</p>
+  <!-- WHY -->
+  <section class="why">
+    <div class="wrap">
+      <div class="why-head">
+        <span class="eyebrow eyebrow-pink reveal">Proč to s námi funguje</span>
+        <h2 class="why-title reveal d1">Náš přístup</h2>
       </div>
-      <div class="process-item reveal d1">
-        <span class="process-num">02</span>
-        <h3 class="process-title">Navrhujeme</h3>
-        <p class="process-text">Sestavíme koncept na míru — od dramaturgie přes scénář až po technické zajištění. Žádné šablony.</p>
-      </div>
-      <div class="process-item reveal d2">
-        <span class="process-num">03</span>
-        <h3 class="process-title">Realizujeme</h3>
-        <p class="process-text">V den akce jsme tam my. Koordinujeme každý detail tak, abyste vy mohli být přítomni — ne řídit provoz.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT + SERVICES -->
-  <section class="about" id="about">
-    <div class="about-grid">
-      <div>
-        <span class="about-label reveal">O Alterum</span>
-        <h2 class="about-heading reveal d1">Věříme<br>v detail.</h2>
-        <p class="about-text reveal d2">
-          Alterum je pražská eventová agentura specializující se na komplexní přípravu
-          a realizaci firemních i kulturních událostí. Pracujeme s vámi od první vize
-          až po poslední poděkování.
-        </p>
-        <p class="about-text reveal d3">
-          Náš tým kreativců, producentů a logistiků zajistí, že vaše akce bude přesně
-          taková, jakou si ji představujete — nebo ještě lepší.
-        </p>
-      </div>
-
-      <div>
-        <span class="about-label reveal">Služby</span>
-        <ul class="services-list">
-          <li class="reveal d1">
-            <span class="svc-num">01</span>
-            <span class="svc-name">Firemní akce &amp; teambuilding</span>
-          </li>
-          <li class="reveal d2">
-            <span class="svc-num">02</span>
-            <span class="svc-name">Konference &amp; summity</span>
-          </li>
-          <li class="reveal d3">
-            <span class="svc-num">03</span>
-            <span class="svc-name">Galavečery &amp; bankety</span>
-          </li>
-          <li class="reveal d4">
-            <span class="svc-num">04</span>
-            <span class="svc-name">Produktové launche &amp; prezentace</span>
-          </li>
-          <li class="reveal">
-            <span class="svc-num">05</span>
-            <span class="svc-name">Kulturní &amp; umělecké projekty</span>
-          </li>
-        </ul>
+      <div class="why-grid">
+        <div class="wi reveal">
+          <span class="wi-num">01</span>
+          <h3 class="wi-title">Komplexní přístup</h3>
+          <p class="wi-text">Od prvního briefu po finální vyúčtování — vše pod jednou střechou. Žádné koordinační mezery, žádná překvapení v den akce.</p>
+        </div>
+        <div class="wi reveal d1">
+          <span class="wi-num">02</span>
+          <h3 class="wi-title">Vlastní tým</h3>
+          <p class="wi-text">Pracujete přímo s kreativci, producenty a techniky, kteří vaši akci skutečně realizují. Ne s zprostředkovatelem.</p>
+        </div>
+        <div class="wi reveal d2">
+          <span class="wi-num">03</span>
+          <h3 class="wi-title">Praha & celá ČR</h3>
+          <p class="wi-text">Doma v Praze, ale schopni realizovat akce po celé České republice i v zahraničí. Každé místo, každý formát.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section class="contact" id="contact">
-    <h2 class="contact-heading reveal">Plánujeme<br>vaši akci.</h2>
-    <a href="mailto:hello@alterum.events" class="contact-email reveal d1">
-      hello@alterum.events
-    </a>
-    <div class="contact-divider reveal d2"></div>
-    <p class="contact-note reveal d3">Praha · CZ · Přijímáme projekty 2025</p>
+    <div class="wrap">
+      <h2 class="c-h reveal">Plánujeme<br>vaši <span>akci.</span></h2>
+      <a href="mailto:hello@alterum.events" class="c-email reveal d1">hello@alterum.events</a>
+      <p class="c-note reveal d2">Praha · CZ · Přijímáme projekty 2025</p>
+    </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-copy">© 2025 Alterum</span>
-    <span class="footer-credit">
-      Návrh webu: <a href="https://zaviscuchna.github.io/ksh-pitches/" target="_blank" rel="noopener">KSH Studio</a>
-    </span>
+    <span>© 2025 Alterum</span>
+    <a href="https://zaviscuchna.github.io/ksh-pitches/" target="_blank" rel="noopener">Návrh: KSH Studio</a>
   </footer>
 
   <script>
     (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!els.length) return;
-
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            io.unobserve(e.target);
-          }
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 
-      els.forEach(function (el) { io.observe(el); });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 
-      // Trigger hero elements after paint
-      var heroEls = document.querySelectorAll('.hero .reveal');
       setTimeout(function () {
-        heroEls.forEach(function (el) { el.classList.add('visible'); });
-      }, 100);
+        document.querySelectorAll('.hero .reveal').forEach(function (el) { el.classList.add('in'); });
+      }, 60);
     })();
   </script>
 </body>
