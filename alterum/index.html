@@ -11,289 +11,290 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #080808;
-      --s1:       #0f0f0f;
-      --s2:       #161616;
-      --text:     #F0EDE8;
-      --muted:    #4A4A50;
-      --border:   rgba(255,255,255,0.07);
-      --pink:     #D4527A;
-      --gold:     #C9A84C;
+      --bg:     #090909;
+      --s1:     #111111;
+      --s2:     #181818;
+      --text:   #EEEBE6;
+      --muted:  #525258;
+      --border: rgba(255,255,255,0.07);
+      --pink:   #C94E73;
+      --gold:   #C09A42;
     }
 
     html { scroll-behavior: smooth; }
-    body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-    /* ── UTILITIES ── */
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
-
-    .eyebrow {
-      display: block;
-      font-size: 0.62rem; font-weight: 600;
-      letter-spacing: 0.26em; text-transform: uppercase;
-      color: var(--muted); font-family: 'Manrope', sans-serif;
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg); color: var(--text);
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
     }
-    .eyebrow-pink { color: var(--pink); }
 
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .reveal.in { opacity: 1; transform: none; }
-    .d1 { transition-delay: 0.08s; }
-    .d2 { transition-delay: 0.16s; }
-    .d3 { transition-delay: 0.26s; }
+    /* layout */
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3.5rem); }
+    .sec  { padding: clamp(3rem, 5vw, 5rem) 0; }
 
-    /* ── NAV ── */
+    /* eyebrow label */
+    .label {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); font-family: 'Manrope';
+      display: block;
+    }
+    .label-pink { color: var(--pink); }
+
+    /* reveal */
+    .r { opacity: 0; transform: translateY(14px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .r.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.07s; } .d2 { transition-delay: 0.14s; } .d3 { transition-delay: 0.22s; }
+
+    /* ─── NAV ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 58px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(1.5rem, 4vw, 4rem);
-      background: rgba(8,8,8,0.88); backdrop-filter: blur(14px);
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+      background: rgba(9,9,9,0.9); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
-    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text); text-decoration: none; }
-    .nav-links { display: flex; gap: 2.25rem; list-style: none; }
-    .nav-links a { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .logo {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
     .nav-links a:hover { color: var(--text); }
 
-    /* ── HERO ── */
+    /* ─── HERO ─── */
     .hero {
-      height: 100svh; min-height: 560px;
-      position: relative; overflow: hidden;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 0 clamp(1.5rem, 4vw, 4rem);
+      position: relative; height: 100svh; min-height: 520px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
     }
-    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-bg { position: absolute; inset: 0; }
     .hero-bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .hero-bg::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom,
-        rgba(8,8,8,.7) 0%,
-        rgba(8,8,8,.5) 50%,
-        rgba(8,8,8,.85) 100%);
+      background: linear-gradient(160deg, rgba(9,9,9,.45) 0%, rgba(9,9,9,.72) 100%);
     }
-    .hero-inner { position: relative; z-index: 2; }
-    .hero-tag { margin-bottom: 2.25rem; }
+    .hero-body {
+      position: relative; z-index: 2;
+      padding: 0 clamp(1.25rem, 4vw, 3.5rem) clamp(3rem, 5vw, 4.5rem);
+      max-width: 720px;
+    }
+    .hero-tag { margin-bottom: 1.5rem; }
     .hero-h1 {
-      display: block;
       font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(5rem, 14vw, 17rem);
-      line-height: 0.86; letter-spacing: -0.045em;
-      text-transform: uppercase;
+      font-size: clamp(2.25rem, 5vw, 5rem);
+      line-height: 1.05; letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 1.25rem;
     }
-    .hs  { color: var(--text); }
-    .ho  { color: transparent; -webkit-text-stroke: 1.5px rgba(240,237,232,0.18); }
-    .hp  { color: var(--pink); }
-    .hero-sub {
-      margin-top: 2.25rem;
-      font-size: clamp(0.7rem, 1.1vw, 0.85rem); font-weight: 500;
-      letter-spacing: 0.28em; text-transform: uppercase;
-      color: rgba(240,237,232,0.35);
+    .hero-h1 span { color: var(--pink); }
+    .hero-desc {
+      font-size: 0.92rem; font-weight: 300;
+      line-height: 1.8; color: rgba(238,235,230,0.55);
+      max-width: 440px; margin-bottom: 2rem;
     }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid rgba(238,235,230,0.25); padding-bottom: 0.2em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .hero-cta:hover { color: var(--pink); border-color: var(--pink); }
     .hero-scroll {
-      position: absolute; bottom: 2.25rem; left: 50%; transform: translateX(-50%);
-      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      position: absolute; right: clamp(1.25rem, 4vw, 3.5rem); bottom: clamp(3rem, 5vw, 4.5rem);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
     }
-    .hero-scroll span { font-size: 0.56rem; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(240,237,232,0.25); }
-    .hero-scroll::after { content: ''; width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(240,237,232,0.2), transparent); }
+    .hero-scroll span {
+      font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(238,235,230,0.25); writing-mode: vertical-rl;
+    }
+    .hero-scroll::before {
+      content: ''; width: 1px; height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(238,235,230,0.2));
+    }
 
-    /* ── IDENTITY ── */
+    /* ─── IDENTITY ─── */
     .identity {
       background: var(--s1);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: clamp(3rem, 5.5vw, 5.5rem) clamp(1.5rem, 4vw, 4rem);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.25rem, 4vw, 3.5rem);
     }
     .identity p {
-      max-width: 980px; margin: 0 auto; text-align: center;
+      max-width: 860px; margin: 0 auto; text-align: center;
       font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: clamp(1.3rem, 2.6vw, 2.6rem);
-      line-height: 1.38; letter-spacing: -0.02em;
-      color: rgba(240,237,232,0.22);
+      font-size: clamp(1.1rem, 2vw, 2rem);
+      line-height: 1.45; letter-spacing: -0.015em;
+      color: rgba(238,235,230,0.2);
     }
     .identity em { font-style: normal; color: var(--text); }
     .identity .acc { color: var(--pink); }
 
-    /* ── SERVICES ── */
-    .services { padding: clamp(3.5rem, 6vw, 6rem) 0; }
-    .services-grid {
+    /* ─── SERVICES ─── */
+    .svc-grid {
       display: grid; grid-template-columns: 1fr 1fr;
       border: 1px solid var(--border);
     }
-    .svc {
-      padding: clamp(2.5rem, 4vw, 4rem);
-      border-right: 1px solid var(--border);
-    }
-    .svc:last-child { border-right: none; }
-    .svc-cat { margin-bottom: 1.5rem; }
+    .svc-col { padding: clamp(2rem, 3.5vw, 3.5rem); border-right: 1px solid var(--border); }
+    .svc-col:last-child { border-right: none; }
+    .svc-cat { margin-bottom: 1.25rem; }
     .svc-title {
       font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(1.75rem, 3.2vw, 3.25rem);
-      line-height: 1.0; letter-spacing: -0.03em;
-      color: var(--text); margin-bottom: 1.25rem;
+      font-size: clamp(1.5rem, 2.5vw, 2.75rem);
+      line-height: 1.05; letter-spacing: -0.025em;
+      color: var(--text); margin-bottom: 1rem;
     }
     .svc-desc {
-      font-size: 0.9rem; font-weight: 300;
-      line-height: 1.8; color: var(--muted);
-      margin-bottom: 2rem; max-width: 360px;
+      font-size: 0.875rem; font-weight: 300; line-height: 1.8;
+      color: var(--muted); margin-bottom: 1.75rem; max-width: 340px;
     }
-    .svc-link {
-      font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--text); text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
+    .link {
+      font-size: 0.67rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text); text-decoration: none;
       border-bottom: 1px solid var(--border); padding-bottom: 0.2em;
       transition: color 0.2s, border-color 0.2s;
     }
-    .svc-link:hover { color: var(--pink); border-color: var(--pink); }
+    .link:hover { color: var(--pink); border-color: var(--pink); }
 
-    /* ── CLIENTS ── */
+    /* ─── CLIENTS ─── */
     .clients {
       background: var(--s2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: clamp(2rem, 3.5vw, 3.5rem) clamp(1.5rem, 4vw, 4rem);
-      display: flex; flex-direction: column; align-items: center; gap: 2rem;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: clamp(1.75rem, 3vw, 3rem) clamp(1.25rem, 4vw, 3.5rem);
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
     }
-    .clients-names {
-      display: flex; align-items: center;
-      flex-wrap: wrap; justify-content: center;
-      gap: 0 clamp(2rem, 4vw, 5rem);
-    }
+    .cl-row { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 0 clamp(1.5rem, 3.5vw, 4rem); }
     .cl {
       font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: clamp(0.78rem, 1.1vw, 0.95rem);
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: rgba(240,237,232,0.14); transition: color 0.25s;
+      font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(238,235,230,0.13); transition: color 0.25s;
     }
-    .cl:hover { color: rgba(240,237,232,0.55); }
+    .cl:hover { color: rgba(238,235,230,0.5); }
 
-    /* ── PORTFOLIO ── */
-    .portfolio { padding: clamp(3.5rem, 6vw, 6rem) 0; }
+    /* ─── PORTFOLIO ─── */
     .pf-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-columns: 1.4fr 1fr 1fr;
       grid-template-rows: auto auto;
-      gap: 4px;
+      gap: 3px;
     }
-    .pf { overflow: hidden; position: relative; background: var(--s2); cursor: pointer; }
-    .pf img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94); filter: brightness(0.78) saturate(0.8); }
-    .pf:hover img { transform: scale(1.05); }
+    .pf { overflow: hidden; position: relative; background: var(--s2); }
+    .pf img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); filter: brightness(0.75) saturate(0.75); }
+    .pf:hover img { transform: scale(1.04); }
     .pf-a { grid-row: span 2; aspect-ratio: 2/3; }
     .pf-b, .pf-c, .pf-d { aspect-ratio: 5/4; }
-    .pf-overlay {
+    .pf-info {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(8,8,8,0.88) 0%, transparent 55%);
-      opacity: 0; transition: opacity 0.35s;
+      background: linear-gradient(to top, rgba(9,9,9,.88) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.3s;
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.25rem;
     }
-    .pf:hover .pf-overlay { opacity: 1; }
-    .pf-cat { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); margin-bottom: 0.25rem; }
-    .pf-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--text); letter-spacing: -0.01em; }
+    .pf:hover .pf-info { opacity: 1; }
+    .pf-cat { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pink); margin-bottom: 0.2rem; }
+    .pf-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--text); letter-spacing: -0.01em; }
 
-    /* ── NUMBERS ── */
+    /* ─── NUMBERS ─── */
     .numbers {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4,1fr);
     }
-    .n {
-      padding: clamp(2.5rem, 4vw, 4.5rem) clamp(1.5rem, 3vw, 3rem);
+    .num {
+      padding: clamp(2rem, 3.5vw, 3.5rem) clamp(1.25rem, 2.5vw, 2.5rem);
       border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 0.3rem;
+      display: flex; flex-direction: column; gap: 0.25rem;
     }
-    .n:last-child { border-right: none; }
-    .n-val {
+    .num:last-child { border-right: none; }
+    .num-val {
       font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(2.2rem, 4.5vw, 4.5rem); line-height: 1;
-      letter-spacing: -0.04em; color: var(--pink);
+      font-size: clamp(1.75rem, 3vw, 3rem); line-height: 1;
+      letter-spacing: -0.03em; color: var(--pink);
     }
-    .n:nth-child(even) .n-val { color: var(--gold); }
-    .n-label { font-size: 0.78rem; font-weight: 400; color: var(--muted); line-height: 1.4; }
+    .num:nth-child(even) .num-val { color: var(--gold); }
+    .num-label { font-size: 0.75rem; font-weight: 400; color: var(--muted); line-height: 1.4; }
 
-    /* ── QUOTE ── */
-    .quote {
+    /* ─── QUOTE ─── */
+    .quote-sec {
       text-align: center;
-      padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+      padding: clamp(3.5rem, 6vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
       border-bottom: 1px solid var(--border);
     }
-    .q-mark { font-size: 3.5rem; line-height: 1; color: var(--pink); opacity: 0.35; font-family: 'Syne'; margin-bottom: 1rem; }
-    .q-text {
+    .quote-text {
       font-family: 'Manrope', sans-serif; font-weight: 300;
-      font-size: clamp(1.15rem, 2.2vw, 2rem); line-height: 1.65;
-      color: var(--text); max-width: 760px; margin: 0 auto 1.5rem;
+      font-size: clamp(1rem, 1.8vw, 1.6rem); line-height: 1.7;
+      color: rgba(238,235,230,0.7); max-width: 680px; margin: 0 auto 1.25rem;
     }
-    .q-text em { font-style: italic; color: var(--gold); }
-    .q-attr { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+    .quote-text em { font-style: italic; color: var(--gold); }
+    .quote-attr { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 
-    /* ── WHY ── */
-    .why { padding: clamp(3.5rem, 6vw, 6rem) 0; }
-    .why-head { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
-    .why-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 2.8vw, 2.8rem); letter-spacing: -0.03em; color: var(--text); }
-    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--border); }
+    /* ─── WHY ─── */
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border: 1px solid var(--border);
+    }
     .wi {
-      padding: clamp(2rem, 3.5vw, 3.5rem);
+      padding: clamp(1.75rem, 3vw, 3rem);
       border-right: 1px solid var(--border);
     }
     .wi:last-child { border-right: none; }
     .wi-num {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1;
-      letter-spacing: -0.05em;
+      display: block; font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2.25rem; line-height: 1; letter-spacing: -0.04em;
       color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.1);
-      margin-bottom: 1.25rem; display: block;
+      margin-bottom: 1rem;
     }
-    .wi-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: clamp(0.95rem, 1.6vw, 1.45rem); color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.75rem; }
-    .wi-text { font-size: 0.86rem; font-weight: 300; line-height: 1.72; color: var(--muted); }
+    .wi-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); letter-spacing: -0.015em; margin-bottom: 0.6rem; }
+    .wi-text { font-size: 0.84rem; font-weight: 300; line-height: 1.75; color: var(--muted); }
 
-    /* ── CONTACT ── */
-    .contact {
+    /* ─── CONTACT ─── */
+    .contact-sec {
       text-align: center;
-      padding: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 4vw, 4rem);
+      padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 4vw, 3.5rem);
       border-top: 1px solid var(--border);
     }
-    .c-h {
+    .contact-h {
       font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(3rem, 8vw, 9rem); line-height: 0.9;
-      letter-spacing: -0.045em; color: var(--text);
-      margin-bottom: 2.5rem;
+      font-size: clamp(2.25rem, 5.5vw, 6rem); line-height: 0.95;
+      letter-spacing: -0.035em; color: var(--text);
+      margin-bottom: 2rem;
     }
-    .c-h span { color: var(--pink); }
-    .c-email {
-      font-size: clamp(0.95rem, 1.8vw, 1.5rem); font-weight: 300;
-      color: var(--text); text-decoration: none;
-      border-bottom: 1px solid var(--border); padding-bottom: 0.25em;
+    .contact-h span { color: var(--pink); }
+    .contact-email {
+      font-size: clamp(0.9rem, 1.5vw, 1.35rem); font-weight: 300;
+      color: rgba(238,235,230,0.7); text-decoration: none;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.2em;
       transition: color 0.2s, border-color 0.2s;
     }
-    .c-email:hover { color: var(--pink); border-color: var(--pink); }
-    .c-note { font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); margin-top: 2.5rem; }
+    .contact-email:hover { color: var(--pink); border-color: var(--pink); }
+    .contact-note { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 2rem; }
 
-    /* ── FOOTER ── */
+    /* ─── FOOTER ─── */
     footer {
-      padding: 1.5rem clamp(1.5rem, 4vw, 4rem);
+      padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
       border-top: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
     }
-    footer span, footer a { font-size: 0.66rem; color: var(--muted); text-decoration: none; letter-spacing: 0.04em; }
+    footer span, footer a { font-size: 0.64rem; color: var(--muted); text-decoration: none; letter-spacing: 0.04em; }
     footer a:hover { color: var(--text); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .services-grid { grid-template-columns: 1fr; }
-      .svc { border-right: none; border-bottom: 1px solid var(--border); }
-      .svc:last-child { border-bottom: none; }
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc-col { border-right: none; border-bottom: 1px solid var(--border); }
+      .svc-col:last-child { border-bottom: none; }
       .pf-grid { grid-template-columns: 1fr 1fr; }
       .pf-a { grid-row: auto; aspect-ratio: 5/4; }
       .numbers { grid-template-columns: repeat(2,1fr); }
-      .n:nth-child(2) { border-right: none; }
-      .n:nth-child(3) { border-top: 1px solid var(--border); }
+      .num:nth-child(2) { border-right: none; }
+      .num:nth-child(3) { border-top: 1px solid var(--border); }
       .why-grid { grid-template-columns: 1fr; }
       .wi { border-right: none; border-bottom: 1px solid var(--border); }
       .wi:last-child { border-bottom: none; }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 560px) {
       .nav-links { display: none; }
       .pf-grid { grid-template-columns: 1fr; }
       .pf-a, .pf-b, .pf-c, .pf-d { aspect-ratio: 4/3; }
@@ -316,27 +317,26 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg">
-      <img
-        src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1800&q=85"
-        alt="Alterum event production"
-        loading="eager"
-      />
+      <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1800&q=85" alt="" loading="eager" />
     </div>
-    <div class="hero-inner">
-      <span class="eyebrow eyebrow-pink hero-tag reveal">Praha · Event Production · Since 2018</span>
-      <h1>
-        <span class="hero-h1 hs reveal d1">TVOŘÍME.</span>
-        <span class="hero-h1 ho reveal d2">INSPIRUJEME.</span>
-        <span class="hero-h1 hp reveal d3">REALIZUJEME.</span>
+    <div class="hero-body">
+      <span class="label label-pink hero-tag r">Event Production · Praha · Since 2018</span>
+      <h1 class="hero-h1 r d1">
+        Výjimečné události<br>
+        od <span>A do Z.</span>
       </h1>
-      <p class="hero-sub reveal d3">Event Design + Produkce</p>
+      <p class="hero-desc r d2">
+        Plánujeme a realizujeme firemní akce, konference, galavečery
+        a kulturní projekty. Každý detail, každý okamžik.
+      </p>
+      <a href="#work" class="hero-cta r d3">Naše práce →</a>
     </div>
-    <div class="hero-scroll" aria-hidden="true"><span>Scroll</span></div>
+    <div class="hero-scroll r" aria-hidden="true"><span>Scroll</span></div>
   </section>
 
   <!-- IDENTITY -->
   <div class="identity">
-    <p class="reveal">
+    <p class="r">
       <span class="acc">Jsme</span> <em>storytelleři</em>, producenti, logistici,
       <em>kreativci</em>, vizionáři, perfekcionisté, <em>architekti zážitků</em>.
       <span class="acc">Jsme</span> <em>Alterum.</em>
@@ -344,20 +344,20 @@
   </div>
 
   <!-- SERVICES -->
-  <section class="services" id="about">
+  <section class="sec" id="about">
     <div class="wrap">
-      <div class="services-grid">
-        <div class="svc reveal">
-          <span class="eyebrow eyebrow-pink svc-cat">Firemní akce</span>
+      <div class="svc-grid">
+        <div class="svc-col r">
+          <span class="label label-pink svc-cat">Firemní akce</span>
           <h2 class="svc-title">Corporate<br>Events</h2>
           <p class="svc-desc">Konference, summity, teambuilding, produktové launche a incentivní programy. Každá akce odráží hodnoty vaší značky.</p>
-          <a href="#work" class="svc-link">Naše firemní projekty →</a>
+          <a href="#work" class="link">Naše firemní projekty →</a>
         </div>
-        <div class="svc reveal d1">
-          <span class="eyebrow eyebrow-pink svc-cat">Soukromé akce</span>
+        <div class="svc-col r d1">
+          <span class="label label-pink svc-cat">Soukromé akce</span>
           <h2 class="svc-title">Social<br>Events</h2>
           <p class="svc-desc">Galavečery, bankety, kulturní projekty a soukromé oslavy. Od intimních večeří po velká společenská setkání.</p>
-          <a href="#work" class="svc-link">Naše soukromé projekty →</a>
+          <a href="#work" class="link">Naše soukromé projekty →</a>
         </div>
       </div>
     </div>
@@ -365,48 +365,36 @@
 
   <!-- CLIENTS -->
   <div class="clients">
-    <span class="eyebrow reveal">Pracovali jsme pro</span>
-    <div class="clients-names">
-      <span class="cl reveal">Škoda Auto</span>
-      <span class="cl reveal d1">Česká Spořitelna</span>
-      <span class="cl reveal d1">O2 Czech Republic</span>
-      <span class="cl reveal d2">Komerční Banka</span>
-      <span class="cl reveal d2">Vodafone CZ</span>
-      <span class="cl reveal d3">Avast</span>
+    <span class="label r">Pracovali jsme pro</span>
+    <div class="cl-row">
+      <span class="cl r">Škoda Auto</span>
+      <span class="cl r d1">Česká Spořitelna</span>
+      <span class="cl r d1">O2 Czech Republic</span>
+      <span class="cl r d2">Komerční Banka</span>
+      <span class="cl r d2">Vodafone CZ</span>
+      <span class="cl r d3">Avast</span>
     </div>
   </div>
 
   <!-- PORTFOLIO -->
-  <section class="portfolio" id="work">
+  <section class="sec" id="work">
     <div class="wrap">
       <div class="pf-grid">
-        <div class="pf pf-a reveal">
+        <div class="pf pf-a r">
           <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=85" alt="Konference" loading="lazy" />
-          <div class="pf-overlay">
-            <span class="pf-cat">Konference</span>
-            <p class="pf-name">Výroční konference — 500 hostů</p>
-          </div>
+          <div class="pf-info"><span class="pf-cat">Konference</span><p class="pf-name">Výroční konference — 500 hostů</p></div>
         </div>
-        <div class="pf pf-b reveal d1">
+        <div class="pf pf-b r d1">
           <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=85" alt="Galavečer" loading="lazy" />
-          <div class="pf-overlay">
-            <span class="pf-cat">Gala</span>
-            <p class="pf-name">Galavečer & předávání cen</p>
-          </div>
+          <div class="pf-info"><span class="pf-cat">Gala</span><p class="pf-name">Galavečer & předávání cen</p></div>
         </div>
-        <div class="pf pf-c reveal d2">
+        <div class="pf pf-c r d2">
           <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=900&q=85" alt="Festival" loading="lazy" />
-          <div class="pf-overlay">
-            <span class="pf-cat">Festival</span>
-            <p class="pf-name">Letní hudební festival</p>
-          </div>
+          <div class="pf-info"><span class="pf-cat">Festival</span><p class="pf-name">Letní hudební festival</p></div>
         </div>
-        <div class="pf pf-d reveal d1">
+        <div class="pf pf-d r d1">
           <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&q=85" alt="Launch" loading="lazy" />
-          <div class="pf-overlay">
-            <span class="pf-cat">Launch Event</span>
-            <p class="pf-name">Produktový launch — Praha</p>
-          </div>
+          <div class="pf-info"><span class="pf-cat">Launch Event</span><p class="pf-name">Produktový launch — Praha</p></div>
         </div>
       </div>
     </div>
@@ -414,69 +402,52 @@
 
   <!-- NUMBERS -->
   <div class="numbers">
-    <div class="n reveal">
-      <span class="n-val">200+</span>
-      <span class="n-label">realizovaných akcí</span>
-    </div>
-    <div class="n reveal d1">
-      <span class="n-val">8</span>
-      <span class="n-label">let na trhu</span>
-    </div>
-    <div class="n reveal d2">
-      <span class="n-val">50k+</span>
-      <span class="n-label">spokojených hostů</span>
-    </div>
-    <div class="n reveal d3">
-      <span class="n-val">98%</span>
-      <span class="n-label">klientů se vrátí</span>
-    </div>
+    <div class="num r"><span class="num-val">200+</span><span class="num-label">realizovaných akcí</span></div>
+    <div class="num r d1"><span class="num-val">8</span><span class="num-label">let na trhu</span></div>
+    <div class="num r d2"><span class="num-val">50k+</span><span class="num-label">spokojených hostů</span></div>
+    <div class="num r d3"><span class="num-val">98%</span><span class="num-label">klientů se vrátí</span></div>
   </div>
 
   <!-- QUOTE -->
-  <div class="quote">
+  <div class="quote-sec">
     <div class="wrap">
-      <div class="q-mark reveal">"</div>
-      <p class="q-text reveal d1">
-        Každá akce je příležitost vytvořit okamžik,<br>
+      <p class="quote-text r">
+        Každá akce je příležitost vytvořit okamžik,
         který lidé nesou v sobě <em>dlouho poté</em>.
       </p>
-      <span class="q-attr reveal d2">— Alterum</span>
+      <span class="quote-attr r d1">— Alterum</span>
     </div>
   </div>
 
   <!-- WHY -->
-  <section class="why">
+  <section class="sec">
     <div class="wrap">
-      <div class="why-head">
-        <span class="eyebrow eyebrow-pink reveal">Proč to s námi funguje</span>
-        <h2 class="why-title reveal d1">Náš přístup</h2>
-      </div>
       <div class="why-grid">
-        <div class="wi reveal">
+        <div class="wi r">
           <span class="wi-num">01</span>
           <h3 class="wi-title">Komplexní přístup</h3>
-          <p class="wi-text">Od prvního briefu po finální vyúčtování — vše pod jednou střechou. Žádné koordinační mezery, žádná překvapení v den akce.</p>
+          <p class="wi-text">Od prvního briefu po finální vyúčtování — vše pod jednou střechou. Žádné koordinační mezery, žádná překvapení.</p>
         </div>
-        <div class="wi reveal d1">
+        <div class="wi r d1">
           <span class="wi-num">02</span>
           <h3 class="wi-title">Vlastní tým</h3>
-          <p class="wi-text">Pracujete přímo s kreativci, producenty a techniky, kteří vaši akci skutečně realizují. Ne s zprostředkovatelem.</p>
+          <p class="wi-text">Pracujete přímo s kreativci, producenty a techniky, kteří vaši akci skutečně realizují. Ne se zprostředkovatelem.</p>
         </div>
-        <div class="wi reveal d2">
+        <div class="wi r d2">
           <span class="wi-num">03</span>
           <h3 class="wi-title">Praha & celá ČR</h3>
-          <p class="wi-text">Doma v Praze, ale schopni realizovat akce po celé České republice i v zahraničí. Každé místo, každý formát.</p>
+          <p class="wi-text">Doma v Praze, schopni realizovat kdekoliv v České republice i v zahraničí. Každé místo, každý formát.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section class="contact" id="contact">
+  <section class="contact-sec" id="contact">
     <div class="wrap">
-      <h2 class="c-h reveal">Plánujeme<br>vaši <span>akci.</span></h2>
-      <a href="mailto:hello@alterum.events" class="c-email reveal d1">hello@alterum.events</a>
-      <p class="c-note reveal d2">Praha · CZ · Přijímáme projekty 2025</p>
+      <h2 class="contact-h r">Plánujeme<br>vaši <span>akci.</span></h2>
+      <a href="mailto:hello@alterum.events" class="contact-email r d1">hello@alterum.events</a>
+      <p class="contact-note r d2">Praha · CZ · Přijímáme projekty 2025</p>
     </div>
   </section>
 
@@ -492,12 +463,10 @@
         entries.forEach(function (e) {
           if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
         });
-      }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-
-      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-
+      }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+      document.querySelectorAll('.r').forEach(function (el) { io.observe(el); });
       setTimeout(function () {
-        document.querySelectorAll('.hero .reveal').forEach(function (el) { el.classList.add('in'); });
+        document.querySelectorAll('.hero .r').forEach(function (el) { el.classList.add('in'); });
       }, 60);
     })();
   </script>
