@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Návrhy KSH — Záviš × Maty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0f1117;
+      --card:    #161922;
+      --border:  rgba(255,255,255,0.07);
+      --text:    #e8e8f0;
+      --muted:   #8888a0;
+      --purple:  #6c63ff;
+      --cyan:    #4facfe;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--purple); color: #fff; }
+
+    /* ─── PARTICLES ─── */
+    #particles {
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none;
+    }
+
+    /* ─── WRAPPER ─── */
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: clamp(2.5rem, 7vw, 5rem) clamp(1.25rem, 4vw, 2.5rem) 4rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      text-align: center;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+    .header-eyebrow {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 1.1rem; display: block;
+    }
+    .header-title {
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+      background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 45%, var(--purple) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .header-sub {
+      font-size: clamp(0.88rem, 2vw, 1.05rem);
+      font-weight: 300; color: var(--muted); letter-spacing: 0.02em;
+    }
+    .header-sub strong { color: rgba(255,255,255,0.5); font-weight: 500; }
+    .header-rule {
+      width: 64px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      margin: 1.5rem auto 0;
+    }
+
+    /* ─── SECTION ─── */
+    .section { margin-bottom: 3.5rem; }
+
+    /* ─── GRID ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      cursor: pointer;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+      opacity: 0; transform: translateY(28px);
+    }
+    .card.in {
+      animation: cardIn 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card:hover {
+      border-color: rgba(108,99,255,0.45);
+      box-shadow:
+        0 0 0 1px rgba(108,99,255,0.15),
+        0 24px 60px rgba(0,0,0,0.55),
+        0 0 50px rgba(108,99,255,0.07);
+    }
+
+    /* ─── PREVIEW ─── */
+    .card-preview {
+      position: relative; height: 190px;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .card-preview iframe {
+      position: absolute; top: 0; left: 0;
+      width: 1280px;
+      pointer-events: none; border: none;
+      opacity: 0; transition: opacity 0.5s ease;
+    }
+    .card-preview iframe.loaded { opacity: 1; }
+    /* Fade bottom edge */
+    .card-preview::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 55%;
+      background: linear-gradient(to bottom, transparent, var(--card));
+      pointer-events: none; z-index: 2;
+    }
+    /* Gradient fallback backgrounds */
+    .g-orange { background: radial-gradient(ellipse at 30% 40%, #2d1608 0%, #0f0a06 100%); }
+    .g-blue   { background: radial-gradient(ellipse at 30% 40%, #0e1a38 0%, #060c1a 100%); }
+    .g-teal   { background: radial-gradient(ellipse at 30% 40%, #0d2820 0%, #061410 100%); }
+    .g-purple { background: radial-gradient(ellipse at 30% 40%, #1e1038 0%, #0d0820 100%); }
+    .g-red    { background: radial-gradient(ellipse at 30% 40%, #2d0e0e 0%, #120606 100%); }
+    .g-green  { background: radial-gradient(ellipse at 30% 40%, #0e2d16 0%, #061008 100%); }
+    .g-navy   { background: radial-gradient(ellipse at 30% 40%, #0a1830 0%, #040810 100%); }
+    .g-gold   { background: radial-gradient(ellipse at 30% 40%, #2d2410 0%, #181000 100%); }
+    /* Fallback icon (shown while/if iframe doesn't load) */
+    .pf {
+      position: absolute; inset: 0; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      transition: opacity 0.4s ease;
+    }
+    .pf-icon { font-size: 2.8rem; line-height: 1; }
+    .pf-name {
+      font-size: 0.68rem; font-weight: 600;
+      color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .card-preview.has-iframe .pf { opacity: 0; pointer-events: none; }
+
+    /* ─── CARD BODY ─── */
+    .card-body {
+      padding: 1rem 1.15rem 1.05rem;
+      display: flex; flex-direction: column; flex: 1; gap: 0.45rem;
+    }
+    .card-top {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 0.5rem;
+    }
+    .card-cat {
+      font-size: 0.62rem; font-weight: 400; color: var(--muted);
+    }
+    .card-badge {
+      font-size: 0.53rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.28);
+      flex-shrink: 0;
+    }
+    .card-badge.app {
+      background: rgba(108,99,255,0.12); color: var(--purple);
+    }
+    .card-title {
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--text); letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .card-desc {
+      font-size: 0.74rem; font-weight: 300;
+      color: var(--muted); line-height: 1.65; flex: 1;
+    }
+    .card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.55rem; border-top: 1px solid var(--border); gap: 0.5rem;
+      margin-top: auto;
+    }
+    .status {
+      font-size: 0.57rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .dot {
+      width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+    }
+    .status.pitch  { color: #F59E0B; }
+    .status.pitch  .dot { background: #F59E0B; }
+    .status.live   { color: var(--cyan); }
+    .status.live   .dot { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+    .status.dev    { color: var(--purple); }
+    .status.dev    .dot { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+    .arrow {
+      color: var(--muted); display: flex;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .card:hover .arrow { color: var(--text); transform: translate(2px, -2px); }
+
+    /* ─── FOOTER ─── */
+    .site-foot {
+      text-align: center; padding: 2.5rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .site-foot span { font-size: 0.68rem; color: var(--muted); }
+    .site-foot .brand {
+      font-size: 0.85rem; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <span class="header-eyebrow">KSH Partners · 2026</span>
+    <h1 class="header-title">Návrhy KSH</h1>
+    <p class="header-sub">Ukázky webů a aplikací pro klienty</p>
+    <div class="header-rule"></div>
+  </header>
+
+  <section class="section">
+    <div class="grid">
+
+      <a href="pizza-nonno/" class="card" target="_blank">
+        <div class="card-preview g-orange">
+          <iframe src="pizza-nonno/"></iframe>
+
+          <div class="pf"><span class="pf-icon">🍕</span><span class="pf-name">Pizza Nonno</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Restaurace · Kamenice nad Lipou</span>
+            <span class="card-badge">Static</span>
+          </div>
+          <h3 class="card-title">Pizza Nonno</h3>
+          <p class="card-desc">Italská pizzerie. Tmavý kinematografický design, menu, ceník, galerie.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="hotel-dyje/" class="card" target="_blank">
+        <div class="card-preview g-blue">
+          <iframe src="hotel-dyje/"></iframe>
+
+          <div class="pf"><span class="pf-icon">🏨</span><span class="pf-name">Hotel Dyje</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Hotel · Dačice</span>
+            <span class="card-badge">Static</span>
+          </div>
+          <h3 class="card-title">Hotel Dyje</h3>
+          <p class="card-desc">Rodinný hotel v centru Dačic. Reálné fotky, pokoje, ceník a rezervace.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="agnes-cafe/" class="card" target="_blank">
+        <div class="card-preview g-teal">
+          <iframe src="agnes-cafe/"></iframe>
+
+          <div class="pf"><span class="pf-icon">☕</span><span class="pf-name">Agnes CAFÉ</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Kavárna & galerie · Jindřichův Hradec</span>
+            <span class="card-badge">Static</span>
+          </div>
+          <h3 class="card-title">Agnes CAFÉ</h3>
+          <p class="card-desc">Art café s výběrovou kávou, dezertem a brunchem. Cream + teal + terracotta.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://smenky-ksh.46.225.180.130.sslip.io" class="card" target="_blank">
+        <div class="card-preview g-purple">
+          <div class="pf"><span class="pf-icon">📅</span><span class="pf-name">Směny.app</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">SaaS · Plánování směn</span>
+            <span class="card-badge app">Web App</span>
+          </div>
+          <h3 class="card-title">Směny.app</h3>
+          <p class="card-desc">Full-stack SaaS pro plánování směn. Manager přiřazuje zaměstnance, zaměstnanci se hlásí na volné směny. Next.js + PostgreSQL.</p>
+          <div class="card-foot">
+            <span class="status dev"><span class="dot"></span>Ve vývoji</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+
+      <a href="https://matyaskral-cyber.github.io/navrhy-webu/marbotim/" class="card" target="_blank">
+        <div class="card-preview g-red">
+          <iframe src="https://matyaskral-cyber.github.io/navrhy-webu/marbotim/"></iframe>
+          <div class="pf"><span class="pf-icon">🔧</span><span class="pf-name">MARBOTIM</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Topenářství · Montáž a servis</span>
+            <span class="card-badge">Static</span>
+          </div>
+          <h3 class="card-title">MARBOTIM Hruška</h3>
+          <p class="card-desc">Topenářská firma s portfoliem realizací, přehledem služeb a kontaktem.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://matyaskral-cyber.github.io/navrhy-webu/autocamp/" class="card" target="_blank">
+        <div class="card-preview g-green">
+          <iframe src="https://matyaskral-cyber.github.io/navrhy-webu/autocamp/"></iframe>
+          <div class="pf"><span class="pf-icon">⛺</span><span class="pf-name">Autocamp Zvůle</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Turismus · Kemp</span>
+            <span class="card-badge app">Web App</span>
+          </div>
+          <h3 class="card-title">Autocamp Zvůle</h3>
+          <p class="card-desc">Rezervační systém kempu. Ceník, galerie, online objednávky. Flask backend.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://matyaskral-cyber.github.io/navrhy-webu/ski/" class="card" target="_blank">
+        <div class="card-preview g-navy">
+          <iframe src="https://matyaskral-cyber.github.io/navrhy-webu/ski/"></iframe>
+          <div class="pf"><span class="pf-icon">⛷️</span><span class="pf-name">AZ Ski School</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Sport · Lyžařská škola</span>
+            <span class="card-badge">Static</span>
+          </div>
+          <h3 class="card-title">AZ Ski School</h3>
+          <p class="card-desc">Lyžařská škola s přehledem kurzů, instruktorů a ceníkem výuky.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://matyaskral-cyber.github.io/navrhy-webu/mpkral/" class="card" target="_blank">
+        <div class="card-preview g-gold">
+          <iframe src="https://matyaskral-cyber.github.io/navrhy-webu/mpkral/"></iframe>
+          <div class="pf"><span class="pf-icon">👷</span><span class="pf-name">M+P výroba</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Výroba · Pracovní oděvy</span>
+            <span class="card-badge">Static</span>
+          </div>
+          <h3 class="card-title">M+P výroba</h3>
+          <p class="card-desc">Výrobce pracovních oděvů a uniforem. Katalog produktů, ceník, objednávky.</p>
+          <div class="card-foot">
+            <span class="status pitch"><span class="dot"></span>Pitch</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://pml-system.cz" class="card" target="_blank">
+        <div class="card-preview g-purple">
+          <div class="pf"><span class="pf-icon">🏪</span><span class="pf-name">PML Systém</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">POS · Správa skladu</span>
+            <span class="card-badge app">Web App</span>
+          </div>
+          <h3 class="card-title">PML Systém</h3>
+          <p class="card-desc">Live pokladní a skladový systém. Správa produktů, prodeje a real-time inventář.</p>
+          <div class="card-foot">
+            <span class="status live"><span class="dot"></span>Live</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://matyaskral-cyber.github.io/navrhy-webu/stocky/" class="card" target="_blank">
+        <div class="card-preview g-blue">
+          <iframe src="https://matyaskral-cyber.github.io/navrhy-webu/stocky/"></iframe>
+          <div class="pf"><span class="pf-icon">📊</span><span class="pf-name">Stocky</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-cat">Finance · Analýza akcií & kryptoměn</span>
+            <span class="card-badge app">Web App</span>
+          </div>
+          <h3 class="card-title">Stocky</h3>
+          <p class="card-desc">Dashboard pro analýzu akcií a kryptoměn s AI doporučeními a real-time daty.</p>
+          <div class="card-foot">
+            <span class="status dev"><span class="dot"></span>Ve vývoji</span>
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13L13 3M13 3H6M13 3v7"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-foot">
+    <span>© 2026 KSH Partners</span>
+    <span class="brand">KSH</span>
+    <span>Záviš Čuchna × Matyáš Král</span>
+  </footer>
+
+</div>
+
+<script>
+
+/* ─── IFRAME SCALE ─── */
+function scaleIframes() {
+  document.querySelectorAll('.card-preview').forEach(function(preview) {
+    var scale = preview.offsetWidth / 1280;
+    var iframe = preview.querySelector('iframe');
+    if (!iframe) return;
+    iframe.style.zoom = scale;
+    iframe.style.height = Math.ceil(190 / scale) + 'px';
+    preview._iframeScale = scale;
+  });
+}
+window.addEventListener('resize', scaleIframes);
+window.addEventListener('load', scaleIframes);
+scaleIframes();
+
+/* ─── IFRAME SCROLL — wheel na preview → scrollBy v iframu ─── */
+document.querySelectorAll('.card-preview').forEach(function(preview) {
+  var iframe = preview.querySelector('iframe');
+  if (!iframe) return;
+  preview.addEventListener('wheel', function(e) {
+    try {
+      var scale = preview._iframeScale || 0.25;
+      iframe.contentWindow.scrollBy(e.deltaX / scale, e.deltaY / scale);
+      e.preventDefault();
+      e.stopPropagation();
+    } catch(err) { /* cross-origin — tiše ignoruj */ }
+  }, { passive: false });
+});
+
+/* ─── IFRAME LOAD ─── */
+document.querySelectorAll('.card-preview iframe').forEach(function(iframe) {
+  iframe.addEventListener('load', function() {
+    iframe.classList.add('loaded');
+    iframe.closest('.card-preview').classList.add('has-iframe');
+  });
+});
+
+/* ─── 3D TILT ─── */
+document.querySelectorAll('.card').forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    var r = card.getBoundingClientRect();
+    var dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+    var dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+    card.style.transform = 'perspective(900px) rotateY(' + (dx * 7) + 'deg) rotateX(' + (-dy * 7) + 'deg) translateZ(4px)';
+  });
+  card.addEventListener('mouseleave', function() {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease';
+    setTimeout(function() { card.style.transition = ''; }, 400);
+  });
+  card.addEventListener('mouseenter', function() {
+    card.style.transition = 'none';
+  });
+});
+
+/* ─── ENTRANCE ANIMATION ─── */
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (!entry.isIntersecting) return;
+    var cards = entry.target.querySelectorAll('.card');
+    cards.forEach(function(card, i) {
+      setTimeout(function() { card.classList.add('in'); }, i * 90);
+    });
+    io.unobserve(entry.target);
+  });
+}, { threshold: 0.04 });
+document.querySelectorAll('.grid').forEach(function(g) { io.observe(g); });
+
+/* ─── PARTICLES ─── */
+(function() {
+  var canvas = document.getElementById('particles');
+  var ctx = canvas.getContext('2d');
+  var W, H, pts = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (var i = 0; i < 75; i++) {
+    pts.push({
+      x: Math.random() * (window.innerWidth || 1400),
+      y: Math.random() * (window.innerHeight || 900),
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.5 + 0.4,
+      a: Math.random() * 0.45 + 0.08
+    });
+  }
+
+  var hue = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    hue = (hue + 0.05) % 360;
+    pts.forEach(function(p) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(108,99,255,' + p.a + ')';
+      ctx.fill();
+    });
+    for (var i = 0; i < pts.length; i++) {
+      for (var j = i + 1; j < pts.length; j++) {
+        var dx = pts[i].x - pts[j].x;
+        var dy = pts[i].y - pts[j].y;
+        var d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.strokeStyle = 'rgba(108,99,255,' + (0.18 * (1 - d/130)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+</body>
+</html>
