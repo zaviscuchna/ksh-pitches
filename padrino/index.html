@@ -3,1031 +3,441 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pizzeria Padrino | Jindřichův Hradec</title>
+  <title>Pizzeria Padrino — Jindřichův Hradec</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'p-black': '#0B0704',
+            'p-dark':  '#141008',
+            'p-cream': '#F5EFE3',
+            'p-warm':  '#EDE4D3',
+            'p-red':   '#A8271C',
+            'p-red2':  '#C0321F',
+            'p-gold':  '#C8913A',
+            'p-muted': '#8A7A68',
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'serif'],
+            body:    ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; }
 
-    :root {
-      --bg:       #08060400;
-      --bg:       #080501;
-      --surface:  #110d07;
-      --red:      #c4273a;
-      --gold:     #c8913a;
-      --cream:    #f2e4cc;
-      --muted:    #7a6550;
-      --border:   rgba(242,228,204,0.08);
-    }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
 
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-    body { background: var(--bg); color: var(--cream); font-family: 'Inter', sans-serif; }
-    h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
+    .nav-blur { background: rgba(11,7,4,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 
-    /* ── NAV ───────────────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(1.5rem, 5vw, 4rem); height: 72px;
-      transition: background 0.4s, backdrop-filter 0.4s;
-    }
-    nav.scrolled {
-      background: rgba(8,5,1,0.94);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 0.7rem;
-      text-decoration: none; color: var(--cream);
-    }
-    .nav-logo img {
-      height: 44px; width: auto;
-      filter: invert(1) brightness(1.1);
-      mix-blend-mode: screen;
-      transition: opacity 0.2s;
-    }
-    .nav-logo:hover img { opacity: 0.85; }
-    .nav-logo .logo-sub {
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--gold);
-      display: none;
-    }
-    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
-    .nav-links a {
-      color: rgba(242,228,204,0.55); text-decoration: none;
-      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.03em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--cream); }
-    .nav-cta {
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      background: #fff; color: #0d0a06; padding: 0.55rem 1.4rem;
-      border-radius: 100px; font-size: 0.82rem; font-weight: 700;
-      text-decoration: none; letter-spacing: 0.02em;
-      transition: all 0.25s; box-shadow: 0 2px 16px rgba(0,0,0,0.25);
-    }
-    .nav-cta:hover { background: #f0ece4; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
-
-    /* ── HERO ──────────────────────────────────────────────────── */
-    .hero {
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 140px 1.5rem 80px; position: relative; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background-image: url('https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=2000&q=85');
-      background-size: cover; background-position: center 40%;
-    }
-    .hero-face {
-      position: absolute; right: -2vw; bottom: 0;
-      height: 92vh; width: auto; z-index: 1;
-      filter: invert(1) brightness(0.9);
-      mix-blend-mode: screen;
-      opacity: 0.18;
-      pointer-events: none;
-      object-fit: contain;
-      object-position: bottom right;
-    }
     .hero-overlay {
-      position: absolute; inset: 0;
       background: linear-gradient(
-        to bottom,
-        rgba(8,5,1,0.82) 0%,
-        rgba(8,5,1,0.65) 40%,
-        rgba(8,5,1,0.92) 100%
+        160deg,
+        rgba(11,7,4,0.52) 0%,
+        rgba(11,7,4,0.36) 40%,
+        rgba(11,7,4,0.78) 80%,
+        rgba(11,7,4,0.96) 100%
       );
     }
-    .hero-content { position: relative; z-index: 2; max-width: 1000px; }
 
-    .hero-loc {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.35rem 1.1rem; border-radius: 100px;
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-      background: rgba(200,145,58,0.12); border: 1px solid rgba(200,145,58,0.3);
-      color: var(--gold); margin-bottom: 2.5rem;
-    }
-    .hero-loc::before { content: '📍'; font-size: 0.8rem; }
+    .divider { width: 44px; height: 1.5px; background: #C8913A; }
 
-    .hero-h1 {
-      font-size: clamp(5.5rem, 18vw, 16rem);
-      line-height: 0.82; letter-spacing: -0.02em; margin-bottom: 0.4rem;
-    }
-    .hero-h1 .l1 {
-      display: block;
-      color: #fff;
-      font-style: italic;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.7), 0 0 80px rgba(0,0,0,0.5);
-    }
-    .hero-h1 .l2 {
-      display: block;
-      color: #fff;
-      font-style: normal; font-weight: 700;
-      letter-spacing: 0.04em;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.8), 0 0 100px rgba(0,0,0,0.6);
-    }
+    .card-img { transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .pizza-card:hover .card-img { transform: scale(1.06); }
+    .pizza-card { transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease; }
+    .pizza-card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,0.5); }
 
-    .hero-rule {
-      width: 48px; height: 1px; background: var(--gold);
-      margin: 2rem auto; opacity: 0.6;
-    }
-
-    .hero-sub {
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      color: rgba(242,228,204,0.68); max-width: 540px; margin: 0 auto 2.8rem;
-      line-height: 1.75;
-    }
-    .hero-sub strong { color: var(--cream); font-weight: 600; }
-
-    .hero-btns {
-      display: flex; gap: 1rem; justify-content: center;
-      flex-wrap: wrap; margin-bottom: 5rem;
-    }
     .btn-primary {
-      background: #fff; color: #0d0a06; font-weight: 700;
-      padding: 1rem 2.2rem; border-radius: 100px; text-decoration: none;
-      font-size: 0.9rem; transition: all 0.25s;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      display: inline-block; background: #A8271C; color: #F5EFE3;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.8rem 1.9rem; text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
     }
-    .btn-primary:hover { background: #f0ece4; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.35); }
-    .btn-secondary {
-      background: transparent; color: #fff;
-      font-weight: 600; padding: 1rem 2.2rem; border-radius: 100px;
-      text-decoration: none; font-size: 0.9rem;
-      border: 1.5px solid rgba(255,255,255,0.5); transition: all 0.25s;
-    }
-    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+    .btn-primary:hover { background: #C0321F; transform: translateY(-1px); }
 
-    .hero-stats {
-      display: flex; gap: clamp(2rem, 6vw, 5rem);
-      justify-content: center; flex-wrap: wrap;
+    .btn-outline {
+      display: inline-block; background: transparent; color: #F5EFE3;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.8rem 1.9rem; text-decoration: none;
+      border: 1px solid rgba(245,239,227,0.25);
+      transition: border-color 0.25s;
     }
-    .hero-stat {}
-    .stat-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 700;
-      color: var(--gold); line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.68rem; color: rgba(242,228,204,0.4);
-      text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;
-    }
+    .btn-outline:hover { border-color: rgba(245,239,227,0.7); }
 
-    /* ── STRIP ─────────────────────────────────────────────────── */
-    .strip {
-      position: relative; z-index: 2;
-      background: #fff; padding: 1.1rem clamp(1.5rem, 5vw, 4rem);
-    }
-    .strip-inner {
-      display: flex; gap: 3rem; align-items: center;
-      justify-content: center; flex-wrap: wrap;
-    }
-    .strip-item {
-      display: flex; align-items: center; gap: 0.6rem;
-      font-size: 0.8rem; font-weight: 600; color: #1a1208;
-      white-space: nowrap;
-    }
-    .strip-item svg { flex-shrink: 0; opacity: 0.6; }
-    .strip-dot {
-      width: 4px; height: 4px; border-radius: 100px;
-      background: rgba(0,0,0,0.2);
-    }
+    .ticker-track { animation: ticker 26s linear infinite; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-    /* ── SECTIONS ──────────────────────────────────────────────── */
-    section { padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem); }
-    .inner { max-width: 1200px; margin: 0 auto; }
-    .sec-tag {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem;
-    }
-    .sec-h2 {
-      font-size: clamp(2.5rem, 5vw, 5rem);
-      line-height: 0.92; margin-bottom: 1.2rem;
-      font-weight: 700;
-    }
-    .sec-desc {
-      color: var(--muted); font-size: 1rem; max-width: 500px; line-height: 1.75;
-    }
+    .logo-img { filter: brightness(0) invert(1); height: 30px; width: auto; }
 
-    /* ── O NÁS ─────────────────────────────────────────────────── */
-    #o-nas { background: var(--surface); }
-    .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
-    }
-    @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; gap: 3rem; } }
-    .about-photo {
-      position: relative; border-radius: 4px; overflow: hidden;
-      aspect-ratio: 4/5;
-    }
-    .about-photo img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: contrast(1.04) saturate(0.9) brightness(0.92);
-    }
-    .about-photo::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(8,5,1,0.5) 0%, transparent 60%);
-    }
-    .about-badge {
-      position: absolute; bottom: 1.5rem; left: 1.5rem; z-index: 2;
-      background: rgba(8,5,1,0.85); backdrop-filter: blur(12px);
-      border: 1px solid rgba(200,145,58,0.3); border-radius: 12px;
-      padding: 0.9rem 1.2rem;
-    }
-    .about-badge-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 700; color: var(--gold); line-height: 1;
-    }
-    .about-badge-text {
-      font-size: 0.7rem; color: rgba(242,228,204,0.5);
-      text-transform: uppercase; letter-spacing: 0.1em;
-    }
-    .about-text { }
-    .about-features { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
-    .about-feat {
-      display: flex; align-items: flex-start; gap: 1rem;
-      padding: 1.1rem 1.3rem; border-radius: 14px;
-      background: rgba(242,228,204,0.03); border: 1px solid var(--border);
-      transition: border-color 0.3s;
-    }
-    .about-feat:hover { border-color: rgba(200,145,58,0.2); }
-    .about-feat-icon {
-      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-      background: rgba(200,145,58,0.1); border: 1px solid rgba(200,145,58,0.2);
-      display: flex; align-items: center; justify-content: center; font-size: 1rem;
-    }
-    .about-feat-title { font-weight: 600; font-size: 0.9rem; color: var(--cream); margin-bottom: 2px; }
-    .about-feat-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-
-    /* ── PEC (dark editorial strip) ───────────────────────────── */
-    .oven-strip {
-      background: var(--bg);
-      padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-    }
-    .oven-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
-    }
-    @media (max-width: 860px) { .oven-inner { grid-template-columns: 1fr; gap: 2.5rem; } }
-    .oven-label {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--red); margin-bottom: 1.2rem;
-    }
-    .oven-h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      font-weight: 700; line-height: 0.95; margin-bottom: 1.5rem;
-    }
-    .oven-h2 em { color: var(--gold); font-style: italic; }
-    .oven-body { color: var(--muted); line-height: 1.75; font-size: 0.95rem; max-width: 440px; }
-    .oven-body p + p { margin-top: 1rem; }
-    .oven-img {
-      border-radius: 4px; overflow: hidden; aspect-ratio: 16/10; position: relative;
-    }
-    .oven-img img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: contrast(1.06) sepia(0.1) brightness(0.88);
-    }
-
-    /* ── MENU ──────────────────────────────────────────────────── */
-    #menu { background: var(--surface); }
-    .price-note {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.35rem 1rem; border-radius: 100px;
-      border: 1px solid rgba(200,145,58,0.25);
-      background: rgba(200,145,58,0.08);
-      font-size: 0.78rem; font-weight: 600; color: var(--gold);
-      margin-bottom: 2.5rem;
-    }
-    .menu-tabs {
-      display: flex; gap: 4px; padding: 4px;
-      background: var(--bg); border-radius: 100px;
-      width: fit-content; margin-bottom: 2rem; flex-wrap: wrap;
-    }
-    .menu-tab {
-      padding: 0.55rem 1.3rem; border-radius: 100px;
-      font-size: 0.8rem; font-weight: 600; cursor: pointer;
-      border: none; background: transparent; color: var(--muted);
-      transition: all 0.2s; font-family: 'Inter', sans-serif;
-    }
-    .menu-tab.active { background: var(--red); color: #fff; }
-    .menu-grid {
-      display: grid; gap: 0.6rem;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    }
-    .menu-card {
-      display: flex; align-items: center; gap: 0.9rem;
-      padding: 0.85rem 1.1rem; border-radius: 14px;
-      background: var(--bg); border: 1px solid var(--border);
-      transition: all 0.22s; cursor: default;
-    }
-    .menu-card:hover {
-      border-color: rgba(196,39,58,0.3); transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(196,39,58,0.06);
-    }
-    .menu-icon {
-      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.15rem; background: var(--surface); border: 1px solid var(--border);
-    }
-    .menu-name {
-      font-family: 'Cormorant Garamond', serif; font-weight: 700;
-      font-size: 0.95rem; color: var(--cream); margin-bottom: 2px;
-    }
-    .menu-ing { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
-    .menu-price {
-      font-weight: 800; font-size: 0.9rem; color: var(--red);
-      flex-shrink: 0; margin-left: auto; padding-left: 0.5rem;
-    }
-    [data-menu]:not(.active-menu) { display: none; }
-    [data-menu].active-menu { display: grid; }
-
-    /* ── GALERIE ───────────────────────────────────────────────── */
-    #galerie { background: var(--bg); }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: 260px 260px;
-      gap: 8px; margin-top: 3rem;
-    }
-    .gallery-grid .g1 { grid-column: span 5; }
-    .gallery-grid .g2 { grid-column: span 4; }
-    .gallery-grid .g3 { grid-column: span 3; }
-    .gallery-grid .g4 { grid-column: span 3; }
-    .gallery-grid .g5 { grid-column: span 4; }
-    .gallery-grid .g6 { grid-column: span 5; }
-    .gallery-item {
-      border-radius: 4px; overflow: hidden; position: relative;
-    }
-    .gallery-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: contrast(1.04) saturate(0.88);
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  filter 0.4s ease;
-    }
-    .gallery-item:hover img {
-      transform: scale(1.04);
-      filter: contrast(1.06) saturate(1.05);
-    }
-    @media (max-width: 768px) {
-      .gallery-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(3, 200px);
-      }
-      .gallery-grid .g1, .gallery-grid .g2, .gallery-grid .g3,
-      .gallery-grid .g4, .gallery-grid .g5, .gallery-grid .g6 {
-        grid-column: span 1;
-      }
-    }
-
-    /* ── KONTAKT ───────────────────────────────────────────────── */
-    #kontakt { background: var(--surface); }
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
-    }
-    @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; gap: 3rem; } }
-    .contact-left {}
-    .hours-table { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.6rem; }
-    .hours-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.7rem 1.1rem; border-radius: 10px;
-      background: rgba(242,228,204,0.03); border: 1px solid var(--border);
-    }
-    .hours-row.today {
-      background: rgba(196,39,58,0.08); border-color: rgba(196,39,58,0.3);
-    }
-    .hours-day { font-size: 0.82rem; font-weight: 600; color: var(--cream); }
-    .hours-time { font-size: 0.82rem; color: var(--muted); font-weight: 500; }
-    .hours-row.today .hours-day { color: var(--red); }
-    .hours-row.today .hours-time { color: var(--cream); }
-
-    .contact-right { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 3rem; }
-    .contact-card {
-      display: flex; align-items: center; gap: 1rem;
-      padding: 1.2rem 1.5rem; border-radius: 16px;
-      background: rgba(242,228,204,0.03); border: 1px solid var(--border);
-      text-decoration: none; transition: border-color 0.25s;
-    }
-    .contact-card:hover { border-color: rgba(200,145,58,0.3); }
-    .contact-icon {
-      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
-      background: rgba(200,145,58,0.1); border: 1px solid rgba(200,145,58,0.2);
-      display: flex; align-items: center; justify-content: center; font-size: 1rem;
-    }
-    .contact-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
-    .contact-value { font-size: 0.9rem; font-weight: 600; color: var(--cream); }
-    .contact-services {
-      margin-top: 1.8rem; display: flex; flex-wrap: wrap; gap: 0.5rem;
-    }
-    .service-tag {
-      padding: 0.35rem 0.9rem; border-radius: 100px; font-size: 0.72rem; font-weight: 600;
-      background: rgba(242,228,204,0.05); border: 1px solid var(--border); color: var(--muted);
-    }
-
-    /* ── MAP ───────────────────────────────────────────────────── */
-    .map-section {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      position: relative;
-    }
-    .map-section iframe {
-      width: 100%; height: 420px; border: none; display: block;
-      filter: grayscale(1) invert(0.88) contrast(0.9) brightness(0.85) sepia(0.25);
-    }
-    .map-overlay-bar {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem;
-      padding: 1rem clamp(1.5rem, 5vw, 4rem);
-      background: linear-gradient(to top, rgba(8,5,1,0.95) 0%, rgba(8,5,1,0.7) 100%);
-    }
-    .map-addr {
-      font-size: 0.85rem; color: var(--muted);
-    }
-    .map-addr strong { color: var(--cream); }
-    .map-link {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.8rem; font-weight: 600; color: var(--gold);
-      text-decoration: none; transition: color 0.2s; white-space: nowrap;
-    }
-    .map-link:hover { color: var(--cream); }
-
-    /* ── FOOTER ────────────────────────────────────────────────── */
-    footer {
-      background: #040200; padding: 3rem clamp(1.5rem, 5vw, 4rem);
-      border-top: 1px solid var(--border);
-    }
-    .footer-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1.5rem;
-    }
-    .footer-logo img {
-      height: 36px; width: auto;
-      filter: invert(1) brightness(1);
-      mix-blend-mode: screen;
-      opacity: 0.35;
-    }
-    .footer-copy { font-size: 0.73rem; color: rgba(242,228,204,0.2); }
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a {
-      font-size: 0.73rem; color: rgba(242,228,204,0.3);
-      text-decoration: none; transition: color 0.2s;
-    }
-    .footer-links a:hover { color: rgba(242,228,204,0.6); }
-
-    /* ── SCROLL ANIMATIONS ─────────────────────────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(28px);
-      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-
-    @media (max-width: 640px) {
-      .nav-links, .nav-cta { display: none; }
-      .hero-h1 { font-size: clamp(4.5rem, 22vw, 7rem); }
-    }
+    iframe { filter: grayscale(1) invert(0.9) contrast(1.05) brightness(0.9); }
   </style>
 </head>
-<body>
+<body class="bg-p-black text-p-cream overflow-x-hidden">
 
   <!-- NAV -->
-  <nav id="nav">
-    <a href="#" class="nav-logo">
-      <img src="assets/logo.png" alt="Pizzeria Padrino" />
-    </a>
-    <ul class="nav-links">
-      <li><a href="#o-nas">O nás</a></li>
-      <li><a href="#menu">Menu</a></li>
-      <li><a href="#galerie">Galerie</a></li>
-      <li><a href="#kontakt">Kontakt</a></li>
-    </ul>
-    <a href="tel:+420777660870" class="nav-cta">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14v2.92z"/></svg>
-      Rezervace
-    </a>
+  <nav class="nav-blur fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06]">
+    <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <a href="#">
+        <img src="assets/logo.png" alt="Padrino" class="logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+        <span class="hidden font-display text-p-cream font-semibold tracking-widest uppercase text-sm">Padrino</span>
+      </a>
+      <ul class="hidden md:flex items-center gap-8">
+        <li><a href="#menu"    class="text-xs tracking-widest uppercase text-p-muted hover:text-p-cream transition-colors">Menu</a></li>
+        <li><a href="#about"   class="text-xs tracking-widest uppercase text-p-muted hover:text-p-cream transition-colors">O nás</a></li>
+        <li><a href="#contact" class="text-xs tracking-widest uppercase text-p-muted hover:text-p-cream transition-colors">Kontakt</a></li>
+        <li><a href="tel:+420777660870" class="btn-primary text-xs !py-2.5 !px-5">Zavolat</a></li>
+      </ul>
+      <button class="md:hidden text-p-muted" onclick="document.getElementById('mnav').classList.toggle('hidden')">
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+          <path d="M0 1h22M0 8h22M0 15h22" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mnav" class="hidden md:hidden border-t border-white/[0.06] px-6 py-5 flex flex-col gap-4">
+      <a href="#menu"    class="text-xs tracking-widest uppercase text-p-muted" onclick="this.closest('#mnav').classList.add('hidden')">Menu</a>
+      <a href="#about"   class="text-xs tracking-widest uppercase text-p-muted" onclick="this.closest('#mnav').classList.add('hidden')">O nás</a>
+      <a href="#contact" class="text-xs tracking-widest uppercase text-p-muted" onclick="this.closest('#mnav').classList.add('hidden')">Kontakt</a>
+      <a href="tel:+420777660870" class="btn-primary text-center">Zavolat</a>
+    </div>
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <img src="assets/logo.png" class="hero-face" alt="" />
-    <div class="hero-content">
-      <div class="hero-loc reveal">nám. Míru · Jindřichův Hradec</div>
-      <h1 class="hero-h1 reveal reveal-delay-1">
-        <span class="l1">Pizza</span>
-        <span class="l2">Padrino</span>
+  <section class="relative min-h-screen flex items-end overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1800&q=85"
+           alt="" class="w-full h-full object-cover" loading="eager" />
+      <div class="hero-overlay absolute inset-0"></div>
+    </div>
+    <div class="relative z-10 max-w-6xl mx-auto w-full px-6 pb-16 md:pb-24">
+      <p class="reveal text-xs tracking-[0.26em] uppercase text-p-gold mb-5">Jindřichův Hradec · Od roku 2002</p>
+      <h1 class="reveal d1 font-display text-p-cream leading-[0.92] tracking-[-0.01em] mb-6"
+          style="font-size:clamp(3rem,8vw,7.5rem)">
+        Pravá italská<br>
+        <em class="not-italic text-p-cream/75">pizza z Verony.</em>
       </h1>
-      <div class="hero-rule reveal reveal-delay-2"></div>
-      <div class="hero-btns reveal reveal-delay-3">
-        <a href="#menu" class="btn-primary">Prohlédnout menu</a>
-        <a href="#kontakt" class="btn-secondary">Kde nás najdeš</a>
+      <p class="reveal d2 text-sm font-light text-p-cream/50 max-w-md mb-8 leading-loose">
+        Pec přímo z Verony, čerstvé suroviny, 24hodinové těsto.
+        Každý den od 11:00.
+      </p>
+      <div class="reveal d3 flex gap-3 flex-wrap">
+        <a href="tel:+420777660870" class="btn-primary">Zavolat a rezervovat</a>
+        <a href="#menu" class="btn-outline">Prohlédnout menu</a>
       </div>
-      <div class="hero-stats reveal reveal-delay-4">
-        <div class="hero-stat">
-          <div class="stat-num">2002</div>
-          <div class="stat-label">Otevřeno od</div>
-        </div>
-        <div class="hero-stat">
-          <div class="stat-num">90</div>
-          <div class="stat-label">Míst k sezení</div>
-        </div>
-        <div class="hero-stat">
-          <div class="stat-num">Verona</div>
-          <div class="stat-label">Původ pece</div>
-        </div>
-        <div class="hero-stat">
-          <div class="stat-num">nám. Míru</div>
-          <div class="stat-label">Hlavní náměstí</div>
-        </div>
-      </div>
+    </div>
+    <div class="absolute bottom-8 right-8 md:right-12 z-10 flex flex-col items-center gap-3">
+      <span class="text-p-cream/20 text-[0.5rem] tracking-[0.22em] uppercase" style="writing-mode:vertical-rl">Scroll</span>
+      <div style="width:1px;height:36px;background:linear-gradient(to bottom,rgba(245,239,227,0.18),transparent)"></div>
     </div>
   </section>
 
-  <!-- STRIP -->
-  <div class="strip">
-    <div class="strip-inner">
-      <div class="strip-item">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Po–Čt 11:00–22:00
-      </div>
-      <div class="strip-dot"></div>
-      <div class="strip-item">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Pá–So 11:00–23:00
-      </div>
-      <div class="strip-dot"></div>
-      <div class="strip-item">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Ne 11:00–22:00
-      </div>
-      <div class="strip-dot"></div>
-      <div class="strip-item">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Rozvoz po JH
-      </div>
-      <div class="strip-dot"></div>
-      <div class="strip-item">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        Stravenky přijímáme
-      </div>
-    </div>
-  </div>
-
-  <!-- O NÁS -->
-  <section id="o-nas">
-    <div class="inner">
-      <div class="about-grid">
-        <div class="about-photo reveal">
-          <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=900&q=85" alt="Příprava pizzy" />
-          <div class="about-badge">
-            <div class="about-badge-num">2002</div>
-            <div class="about-badge-text">Ve službách JH</div>
-          </div>
-        </div>
-        <div class="about-text">
-          <p class="sec-tag reveal">O nás</p>
-          <h2 class="sec-h2 reveal reveal-delay-1">Přes dvacet let<br />pravé Itálie<br />v centru města</h2>
-          <p class="sec-desc reveal reveal-delay-2">
-            Od roku 2002 pečeme pizzu přesně tak, jak se to dělá v Itálii. Naše pec jsme nechali dovézt přímo z Verony a sestavit italskými mistry. Každé těsto, každá rajčatová omáčka, každý kus těsta — vše podle originální receptury.
-          </p>
-          <div class="about-features reveal reveal-delay-3">
-            <div class="about-feat">
-              <div class="about-feat-icon">🔥</div>
-              <div>
-                <div class="about-feat-title">Pec z Verony</div>
-                <div class="about-feat-desc">Dovezena a sestavena italskými specialisty přímo v restauraci.</div>
-              </div>
-            </div>
-            <div class="about-feat">
-              <div class="about-feat-icon">👁️</div>
-              <div>
-                <div class="about-feat-title">Otevřená kuchyně</div>
-                <div class="about-feat-desc">Vidíte celou přípravu — od těsta po hotovou pizzu. Žádná tajemství.</div>
-              </div>
-            </div>
-            <div class="about-feat">
-              <div class="about-feat-icon">📍</div>
-              <div>
-                <div class="about-feat-title">Hlavní náměstí</div>
-                <div class="about-feat-desc">Přímo na náměstí Míru, srdci Jindřichova Hradce. Neprehlédnete nás.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- OVEN STRIP -->
-  <div class="oven-strip">
-    <div class="oven-inner inner">
-      <div>
-        <p class="oven-label reveal">Náš příběh</p>
-        <h2 class="oven-h2 reveal reveal-delay-1">Pec z <em>Verony</em>.<br />Chuť originálu.</h2>
-        <div class="oven-body reveal reveal-delay-2">
-          <p>Pravá neapolská pizza se pozná okamžitě — křupavý okraj, tenký střed, a ta nezaměnitelná chuť ze žhavé kamenné pece. Naše pec pochází přímo z italského Verony a byla sestavena na místě italskými odborníky.</p>
-          <p>Kromě pizzy nabízíme celé italské menu — těstoviny, risotto, saláty i polévky. Na oběd, večeři nebo jen tak na kávu a dezert.</p>
-        </div>
-      </div>
-      <div class="oven-img reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=1000&q=85" alt="Pec na pizzu" />
-      </div>
+  <!-- TICKER -->
+  <div class="overflow-hidden bg-p-red border-y border-p-red2 py-2.5">
+    <div class="ticker-track flex whitespace-nowrap w-max">
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Pizza Margherita</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Pec z Verony</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Od roku 2002</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">90 míst</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Čerstvé těsto</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Rodinná restaurace</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Pizza Margherita</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Pec z Verony</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Od roku 2002</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">90 míst</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Čerstvé těsto</span>
+      <span class="text-white/30 px-2">·</span>
+      <span class="text-[0.58rem] tracking-[0.22em] uppercase text-white/75 px-8">Rodinná restaurace</span>
+      <span class="text-white/30 px-2">·</span>
     </div>
   </div>
 
   <!-- MENU -->
-  <section id="menu">
-    <div class="inner">
-      <p class="sec-tag reveal">Jídelní lístek</p>
-      <h2 class="sec-h2 reveal reveal-delay-1">Menu</h2>
-      <p class="sec-desc reveal reveal-delay-2">Vyberte si z klasické italské nabídky. Pizzy pečeme v peci z Verony, těstoviny a risotto připravujeme z čerstvých surovin.</p>
+  <section id="menu" class="bg-p-black py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="mb-14">
+        <span class="reveal text-xs tracking-[0.24em] uppercase text-p-gold block mb-3">Naše speciality</span>
+        <h2 class="reveal d1 font-display text-p-cream leading-tight tracking-tight"
+            style="font-size:clamp(2.25rem,4.5vw,4rem)">Menu</h2>
+        <div class="reveal d2 divider mt-5"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-      <div class="price-note reveal reveal-delay-2">
-        🍕 Pizzy od 109 Kč
-      </div>
+        <div class="pizza-card reveal bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80" alt="Margherita" class="card-img w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Margherita</h3>
+              <span class="text-p-gold font-medium text-sm">149 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Rajčatová omáčka, mozzarella, čerstvá bazalka</p>
+          </div>
+        </div>
 
-      <div class="menu-tabs reveal reveal-delay-3">
-        <button class="menu-tab active" onclick="switchMenu('pizza', this)">Pizza</button>
-        <button class="menu-tab" onclick="switchMenu('pasta', this)">Těstoviny & Risotto</button>
-        <button class="menu-tab" onclick="switchMenu('ostatni', this)">Saláty & Polévky</button>
-      </div>
+        <div class="pizza-card reveal d1 bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=600&q=80" alt="Diavola" class="card-img w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Diavola</h3>
+              <span class="text-p-gold font-medium text-sm">179 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Rajčatová omáčka, mozzarella, pikantní salám, chilli</p>
+          </div>
+        </div>
 
-      <!-- PIZZA -->
-      <div data-menu="pizza" class="menu-grid active-menu reveal">
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Margherita</div>
-            <div class="menu-ing">rajčata, mozzarella, bazalka</div>
+        <div class="pizza-card reveal d2 bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Prosciutto" class="card-img w-full h-full object-cover" loading="lazy"/>
           </div>
-          <div class="menu-price">109 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Prosciutto</div>
-            <div class="menu-ing">rajčata, mozzarella, šunka</div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Prosciutto</h3>
+              <span class="text-p-gold font-medium text-sm">189 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Rajčatová omáčka, mozzarella, šunka, olivy</p>
           </div>
-          <div class="menu-price">129 Kč</div>
         </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Diavola</div>
-            <div class="menu-ing">rajčata, mozzarella, pikantní salám, chilli</div>
-          </div>
-          <div class="menu-price">135 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Capricciosa</div>
-            <div class="menu-ing">rajčata, mozzarella, šunka, žampiony, olivy</div>
-          </div>
-          <div class="menu-price">139 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Quattro Stagioni</div>
-            <div class="menu-ing">šunka, žampiony, artyčoky, olivy</div>
-          </div>
-          <div class="menu-price">149 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Funghi</div>
-            <div class="menu-ing">rajčata, mozzarella, žampiony, česnek</div>
-          </div>
-          <div class="menu-price">125 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Tonno</div>
-            <div class="menu-ing">rajčata, mozzarella, tuňák, cibule</div>
-          </div>
-          <div class="menu-price">135 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Quattro Formaggi</div>
-            <div class="menu-ing">čtyři druhy sýrů, mozzarella, gorgonzola</div>
-          </div>
-          <div class="menu-price">149 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Padrino Speciale</div>
-            <div class="menu-ing">rajčata, mozzarella, salám, šunka, žampiony, paprika</div>
-          </div>
-          <div class="menu-price">159 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Vegetariana</div>
-            <div class="menu-ing">rajčata, mozzarella, grilovaná zelenina, olivy</div>
-          </div>
-          <div class="menu-price">135 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Salame Piccante</div>
-            <div class="menu-ing">rajčata, mozzarella, pikantní salám</div>
-          </div>
-          <div class="menu-price">135 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍕</div>
-          <div>
-            <div class="menu-name">Calzone</div>
-            <div class="menu-ing">zavínaná pizza, šunka, mozzarella, rajčata</div>
-          </div>
-          <div class="menu-price">155 Kč</div>
-        </div>
-      </div>
 
-      <!-- PASTA & RISOTTO -->
-      <div data-menu="pasta" class="menu-grid" style="display:none">
-        <div class="menu-card">
-          <div class="menu-icon">🍝</div>
-          <div>
-            <div class="menu-name">Spaghetti Bolognese</div>
-            <div class="menu-ing">masová ragú omáčka, parmazán</div>
+        <div class="pizza-card reveal d3 bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=600&q=80" alt="Quattro Formaggi" class="card-img w-full h-full object-cover" loading="lazy"/>
           </div>
-          <div class="menu-price">145 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍝</div>
-          <div>
-            <div class="menu-name">Spaghetti Carbonara</div>
-            <div class="menu-ing">slanina, vejce, parmazán, pepř</div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Quattro Formaggi</h3>
+              <span class="text-p-gold font-medium text-sm">199 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Čtyři druhy italských sýrů, olivový olej</p>
           </div>
-          <div class="menu-price">149 Kč</div>
         </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍝</div>
-          <div>
-            <div class="menu-name">Penne Arrabbiata</div>
-            <div class="menu-ing">pikantní rajčatová omáčka, česnek</div>
-          </div>
-          <div class="menu-price">135 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍝</div>
-          <div>
-            <div class="menu-name">Tagliatelle al Pesto</div>
-            <div class="menu-ing">bazalkové pesto, parmazán, pine nuts</div>
-          </div>
-          <div class="menu-price">145 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍚</div>
-          <div>
-            <div class="menu-name">Risotto ai Funghi</div>
-            <div class="menu-ing">cremini žampiony, bílé víno, parmazán</div>
-          </div>
-          <div class="menu-price">155 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍚</div>
-          <div>
-            <div class="menu-name">Risotto ai Frutti di Mare</div>
-            <div class="menu-ing">mořské plody, rajčata, bílé víno</div>
-          </div>
-          <div class="menu-price">170 Kč</div>
-        </div>
-      </div>
 
-      <!-- SALÁTY & POLÉVKY -->
-      <div data-menu="ostatni" class="menu-grid" style="display:none">
-        <div class="menu-card">
-          <div class="menu-icon">🥗</div>
-          <div>
-            <div class="menu-name">Insalata Mista</div>
-            <div class="menu-ing">mix listů, rajčata, okurka, olivy</div>
+        <div class="pizza-card reveal bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1458642849426-cfb724f15ef7?w=600&q=80" alt="Padrino Special" class="card-img w-full h-full object-cover" loading="lazy"/>
           </div>
-          <div class="menu-price">89 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🥗</div>
-          <div>
-            <div class="menu-name">Insalata Caprese</div>
-            <div class="menu-ing">mozzarella, rajčata, bazalka, olivový olej</div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Padrino Special</h3>
+              <span class="text-p-gold font-medium text-sm">219 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Naše signature pizza — šéfkuchařův výběr surovin</p>
           </div>
-          <div class="menu-price">105 Kč</div>
         </div>
-        <div class="menu-card">
-          <div class="menu-icon">🥗</div>
-          <div>
-            <div class="menu-name">Caesar Salad</div>
-            <div class="menu-ing">Romain, kuřecí, krutony, Caesar dresink</div>
-          </div>
-          <div class="menu-price">119 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍲</div>
-          <div>
-            <div class="menu-name">Minestrone</div>
-            <div class="menu-ing">italská zeleninová polévka, těstoviny</div>
-          </div>
-          <div class="menu-price">75 Kč</div>
-        </div>
-        <div class="menu-card">
-          <div class="menu-icon">🍲</div>
-          <div>
-            <div class="menu-name">Zuppa del Giorno</div>
-            <div class="menu-ing">polévka dne podle sezóny</div>
-          </div>
-          <div class="menu-price">65 Kč</div>
-        </div>
-      </div>
 
-    </div>
-  </section>
+        <div class="pizza-card reveal d1 bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=600&q=80" alt="Vegetariana" class="card-img w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Vegetariana</h3>
+              <span class="text-p-gold font-medium text-sm">169 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Sezónní zelenina, mozzarella, pesto, rukola</p>
+          </div>
+        </div>
 
-  <!-- GALERIE -->
-  <section id="galerie">
-    <div class="inner">
-      <p class="sec-tag reveal">Galerie</p>
-      <h2 class="sec-h2 reveal reveal-delay-1">Přímý přenos<br />z naší kuchyně</h2>
-    </div>
-    <div class="gallery-grid reveal reveal-delay-2" style="max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)">
-      <div class="gallery-item g1">
-        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80" alt="Pizza" />
-      </div>
-      <div class="gallery-item g2">
-        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=700&q=80" alt="Pizza close-up" />
-      </div>
-      <div class="gallery-item g3">
-        <img src="https://images.unsplash.com/photo-1590947132387-155596fffff3?w=600&q=80" alt="Pizza v peci" />
-      </div>
-      <div class="gallery-item g4">
-        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80" alt="Pizzaiolo" />
-      </div>
-      <div class="gallery-item g5">
-        <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=700&q=80" alt="Pec" />
-      </div>
-      <div class="gallery-item g6">
-        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=800&q=80" alt="Těsto" />
+        <div class="pizza-card reveal d2 bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1542834369-f10ebf06d3e0?w=600&q=80" alt="BBQ Chicken" class="card-img w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">BBQ Chicken</h3>
+              <span class="text-p-gold font-medium text-sm">199 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">BBQ omáčka, grilované kuře, červená cibule, jalapeño</p>
+          </div>
+        </div>
+
+        <div class="pizza-card reveal d3 bg-p-dark overflow-hidden">
+          <div class="overflow-hidden aspect-[4/3]">
+            <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=600&q=80" alt="Napoli" class="card-img w-full h-full object-cover" loading="lazy"/>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-baseline mb-1">
+              <h3 class="font-display text-p-cream font-semibold" style="font-size:1.1rem">Napoli</h3>
+              <span class="text-p-gold font-medium text-sm">179 Kč</span>
+            </div>
+            <p class="text-xs text-p-muted font-light leading-relaxed">Rajčatová omáčka, ančovičky, kapary, oregano</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- KONTAKT -->
-  <section id="kontakt">
-    <div class="inner">
-      <div class="contact-grid">
-        <div class="contact-left">
-          <p class="sec-tag reveal">Otevírací doba</p>
-          <h2 class="sec-h2 reveal reveal-delay-1">Kdy nás<br />najdete</h2>
-          <div class="hours-table reveal reveal-delay-2">
-            <div class="hours-row">
-              <span class="hours-day">Pondělí – Čtvrtek</span>
-              <span class="hours-time">11:00 – 22:00</span>
+  <!-- ABOUT -->
+  <section id="about" class="bg-p-dark border-t border-white/[0.06]">
+    <div class="max-w-6xl mx-auto px-6 py-20 md:py-28">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+        <div class="reveal overflow-hidden aspect-[4/5] order-2 md:order-1">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=85"
+               alt="Interiér Padrino"
+               class="w-full h-full object-cover"
+               style="filter:brightness(0.78) saturate(0.82)"
+               loading="lazy" />
+        </div>
+
+        <div class="order-1 md:order-2">
+          <span class="reveal text-xs tracking-[0.24em] uppercase text-p-gold block mb-4">Náš příběh</span>
+          <h2 class="reveal d1 font-display text-p-cream leading-tight tracking-tight mb-6"
+              style="font-size:clamp(2rem,4vw,3.5rem)">
+            Pravá chuť<br>
+            <em class="text-p-cream/65">Itálie v Čechách.</em>
+          </h2>
+          <div class="reveal d1 divider mb-7"></div>
+          <p class="reveal d2 text-sm font-light text-p-cream/50 leading-loose mb-4">
+            Pizzeria Padrino otevřela své dveře v roce 2002 na jindřichohradeckém náměstí Míru.
+            Za více než dvacet let jsme se stali místem, kam se hosté rádi vracejí — pro chuť,
+            atmosféru i přátelský přístup.
+          </p>
+          <p class="reveal d3 text-sm font-light text-p-cream/50 leading-loose">
+            Naše pec dorazila přímo z italské Verony. Těsto kyní 24 hodin, suroviny jsou čerstvé
+            každý den. Nic není z mrazáku. Přesně tak, jak to pizza má být.
+          </p>
+
+          <div class="reveal d3 grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-white/[0.08]">
+            <div>
+              <div class="font-display text-p-gold font-bold leading-none mb-1" style="font-size:1.75rem;letter-spacing:-0.02em">2002</div>
+              <div class="text-xs text-p-muted leading-relaxed">Rok otevření</div>
             </div>
-            <div class="hours-row today">
-              <span class="hours-day">Pátek</span>
-              <span class="hours-time">11:00 – 23:00</span>
+            <div>
+              <div class="font-display text-p-gold font-bold leading-none mb-1" style="font-size:1.75rem;letter-spacing:-0.02em">90</div>
+              <div class="text-xs text-p-muted leading-relaxed">Míst k sezení</div>
             </div>
-            <div class="hours-row today">
-              <span class="hours-day">Sobota</span>
-              <span class="hours-time">11:00 – 23:00</span>
-            </div>
-            <div class="hours-row">
-              <span class="hours-day">Neděle</span>
-              <span class="hours-time">11:00 – 22:00</span>
+            <div>
+              <div class="font-display text-p-gold font-bold leading-none mb-1" style="font-size:1.75rem;letter-spacing:-0.02em">24h</div>
+              <div class="text-xs text-p-muted leading-relaxed">Kynutí těsta</div>
             </div>
           </div>
         </div>
 
-        <div>
-          <p class="sec-tag reveal">Kontakt</p>
-          <h2 class="sec-h2 reveal reveal-delay-1">Kde<br />jsme</h2>
-          <div class="contact-right reveal reveal-delay-2">
-            <a href="tel:+420777660870" class="contact-card">
-              <div class="contact-icon">📞</div>
-              <div>
-                <div class="contact-label">Telefon</div>
-                <div class="contact-value">+420 777 660 870</div>
-              </div>
-            </a>
-            <a href="mailto:info@pizza-padrino.cz" class="contact-card">
-              <div class="contact-icon">✉️</div>
-              <div>
-                <div class="contact-label">E-mail</div>
-                <div class="contact-value">info@pizza-padrino.cz</div>
-              </div>
-            </a>
-            <a href="https://maps.google.com/?q=nám.+Míru+158+Jindřichův+Hradec" target="_blank" rel="noopener" class="contact-card">
-              <div class="contact-icon">📍</div>
-              <div>
-                <div class="contact-label">Adresa</div>
-                <div class="contact-value">nám. Míru 158, 377 01 Jindřichův Hradec</div>
-              </div>
-            </a>
-            <a href="https://www.facebook.com/profile.php?id=61585201863185" target="_blank" rel="noopener" class="contact-card">
-              <div class="contact-icon">👍</div>
-              <div>
-                <div class="contact-label">Facebook</div>
-                <div class="contact-value">PizzeriaPadrino</div>
-              </div>
-            </a>
-          </div>
-          <div class="contact-services reveal reveal-delay-3">
-            <span class="service-tag">🐕 Psi vítáni</span>
-            <span class="service-tag">📶 WiFi zdarma</span>
-            <span class="service-tag">🚗 Rozvoz po JH</span>
-            <span class="service-tag">🎟️ Stravenky</span>
-            <span class="service-tag">♿ Bezbariérový přístup</span>
-            <span class="service-tag">🍽️ Obědy</span>
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- MAP -->
-  <div class="map-section">
-    <iframe
-      src="https://maps.google.com/maps?q=Pizzeria+Padrino,+n%C3%A1m.+M%C3%ADru+158,+377+01+Jind%C5%99ich%C5%AFv+Hradec&output=embed&z=16&hl=cs"
-      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-      title="Pizzeria Padrino na mapě">
-    </iframe>
-    <div class="map-overlay-bar">
-      <div class="map-addr">
-        <strong>Pizzeria Padrino</strong> — nám. Míru 158, 377 01 Jindřichův Hradec<br />
-        <span style="font-size:0.75rem;">Na hlavním náměstí, v centru Jindřichova Hradce</span>
+  <!-- CONTACT -->
+  <section id="contact" class="bg-p-black border-t border-white/[0.06]">
+    <div class="max-w-6xl mx-auto px-6 py-20 md:py-28">
+      <div class="mb-14">
+        <span class="reveal text-xs tracking-[0.24em] uppercase text-p-gold block mb-3">Přijďte k nám</span>
+        <h2 class="reveal d1 font-display text-p-cream leading-tight tracking-tight"
+            style="font-size:clamp(2.25rem,4.5vw,4rem)">Kontakt</h2>
+        <div class="reveal d2 divider mt-5"></div>
       </div>
-      <a href="https://maps.google.com/?q=Pizzeria+Padrino+Jindrichuv+Hradec" target="_blank" rel="noopener" class="map-link">
-        Otevřít v Mapách →
-      </a>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+        <div class="space-y-8">
+          <div class="reveal">
+            <span class="text-[0.58rem] tracking-[0.2em] uppercase text-p-gold block mb-2">Adresa</span>
+            <p class="text-sm font-light text-p-cream/60 leading-loose">nám. Míru 158<br>377 01 Jindřichův Hradec</p>
+          </div>
+          <div class="reveal d1">
+            <span class="text-[0.58rem] tracking-[0.2em] uppercase text-p-gold block mb-2">Telefon</span>
+            <a href="tel:+420777660870"
+               class="font-display text-p-cream hover:text-p-gold transition-colors duration-200 font-semibold"
+               style="font-size:1.35rem;letter-spacing:-0.01em">+420 777 660 870</a>
+          </div>
+          <div class="reveal d2">
+            <span class="text-[0.58rem] tracking-[0.2em] uppercase text-p-gold block mb-3">Otevírací doba</span>
+            <div class="space-y-2">
+              <div class="flex justify-between text-sm border-b border-white/[0.06] pb-2">
+                <span class="font-light text-p-cream/45">Pondělí — Čtvrtek</span>
+                <span class="text-p-cream font-medium">11:00 — 22:00</span>
+              </div>
+              <div class="flex justify-between text-sm border-b border-white/[0.06] pb-2">
+                <span class="font-light text-p-cream/45">Pátek — Sobota</span>
+                <span class="text-p-cream font-medium">11:00 — 23:00</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="font-light text-p-cream/45">Neděle</span>
+                <span class="text-p-cream font-medium">11:00 — 22:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="reveal d3 flex gap-3 flex-wrap">
+            <a href="tel:+420777660870" class="btn-primary">Zavolat</a>
+            <a href="mailto:info@pizza-padrino.cz" class="btn-outline">Napsat e-mail</a>
+          </div>
+        </div>
+
+        <div class="reveal d1 overflow-hidden" style="height:360px">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d655.9!2d15.0035!3d49.1443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4713cd7a8d8e8eaf%3A0x1!2zUGl6emVyaWEgUGFkcmlubyAtIG7DoW3igIkuIE3DrXJ1IDE1OCwgMzc3IDAxIEppbmTFmWljaO-BiW92IEhyYWRlYw!5e0!3m2!1scs!2scz!4v1710000000000"
+            width="100%" height="100%"
+            style="border:0"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-logo"><img src="assets/logo.png" alt="Padrino" /></div>
-      <div class="footer-copy">© 2025 Pizzeria Padrino · nám. Míru 158, Jindřichův Hradec</div>
-      <div class="footer-links">
-        <a href="tel:+420777660870">+420 777 660 870</a>
-        <a href="mailto:info@pizza-padrino.cz">info@pizza-padrino.cz</a>
-        <a href="https://www.facebook.com/profile.php?id=61585201863185" target="_blank" rel="noopener">Facebook</a>
+  <footer class="bg-p-dark border-t border-white/[0.06]">
+    <div class="max-w-6xl mx-auto px-6 py-7 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <span class="font-display text-p-cream/35 text-sm">© 2025 Pizzeria Padrino</span>
+      <div class="flex items-center gap-5">
+        <a href="https://www.facebook.com/profile.php?id=61585201863185" target="_blank" rel="noopener"
+           class="text-p-muted hover:text-p-cream transition-colors" aria-label="Facebook">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
+        </a>
+        <a href="#" class="text-p-muted hover:text-p-cream transition-colors" aria-label="Instagram">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
       </div>
+      <span class="text-[0.6rem] text-p-muted tracking-wide">
+        Návrh: <a href="https://zaviscuchna.github.io/ksh-pitches/" target="_blank" rel="noopener" class="hover:text-p-cream transition-colors">KSH Studio</a>
+      </span>
     </div>
   </footer>
 
   <script>
-    // Nav scroll effect
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
-
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    reveals.forEach(el => observer.observe(el));
-
-    // Trigger hero reveals immediately
-    document.querySelectorAll('.hero .reveal').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), 100 + i * 120);
-    });
-
-    // Menu tabs
-    function switchMenu(key, btn) {
-      document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('[data-menu]').forEach(el => {
-        if (el.dataset.menu === key) {
-          el.style.display = '';
-          el.classList.add('active-menu');
-        } else {
-          el.style.display = 'none';
-          el.classList.remove('active-menu');
-        }
-      });
-    }
+    (function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+      setTimeout(function () {
+        document.querySelectorAll('section:first-of-type .reveal').forEach(function (el) { el.classList.add('in'); });
+      }, 80);
+    })();
   </script>
 </body>
 </html>
