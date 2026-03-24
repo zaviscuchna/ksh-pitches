@@ -1446,6 +1446,13 @@ function toggleHelp() {
 window.addEventListener('beforeunload', () => saveToStorage());
 
 // ── DEMO DATA — reálné menu Hotel Dyje ───────────────────────────────────────
+var MENU_VERSION = 'v2';
+if (localStorage.getItem('dyje_menu_version') !== MENU_VERSION) {
+  localStorage.removeItem('dyje_menu');
+  localStorage.removeItem('dyje_published');
+  localStorage.setItem('dyje_menu_version', MENU_VERSION);
+  menuData = {};
+}
 if (!localStorage.getItem('dyje_menu')) {
   const demo = {};
   demo[todayStr()] = {
