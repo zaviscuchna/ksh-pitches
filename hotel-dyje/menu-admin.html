@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Správce Menu — Hotel Dyje</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:       #1080a8;
+      --blue-dark:  #0a6685;
+      --blue-light: #e8f4f8;
+      --blue-bg:    #f0f7fa;
+      --text:       #1a2332;
+      --muted:      #6b7280;
+      --border:     #e2e8f0;
+      --bg:         #f4f6f9;
+      --white:      #ffffff;
+      --green:      #10b981;
+      --red:        #ef4444;
+      --amber:      #f59e0b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .brand-text .hotel { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .brand-text .sub   { font-size: 0.7rem; color: var(--muted); font-weight: 400; }
+
+    .date-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.35rem 0.75rem;
+    }
+
+    .date-nav button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--blue);
+      font-size: 1rem;
+      padding: 0 0.3rem;
+      line-height: 1;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .date-nav button:hover { background: var(--blue-light); }
+
+    #menuDate {
+      border: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .save-status {
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.3s;
+    }
+
+    .save-status.saved  { color: var(--green); }
+    .save-status.saving { color: var(--amber); }
+
+    .save-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+
+    .btn-danger {
+      background: #fef2f2;
+      color: var(--red);
+      border: 1px solid #fecaca;
+    }
+    .btn-danger:hover { background: #fee2e2; }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 0;
+      min-height: 0;
+    }
+
+    /* ── EDITOR PANEL ── */
+    .editor {
+      padding: 2rem;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+    }
+
+    .editor-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .editor-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .editor-subtitle {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.25rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .section-header:hover { background: var(--bg); }
+
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-icon {
+      font-size: 1.1rem;
+    }
+
+    .section-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-count {
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.1rem 0.55rem;
+    }
+
+    .section-chevron {
+      color: var(--muted);
+      font-size: 0.75rem;
+      transition: transform 0.2s;
+    }
+
+    .section-card.collapsed .section-chevron { transform: rotate(-90deg); }
+    .section-card.collapsed .section-body   { display: none; }
+
+    .section-body { padding: 0.75rem; }
+
+    /* ── DISH ROW ── */
+    .dish-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .dish-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .dish-row:hover {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-light);
+    }
+
+    .dish-num {
+      width: 24px; height: 24px;
+      background: var(--blue-light);
+      color: var(--blue);
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dish-info { flex: 1; min-width: 0; }
+
+    .dish-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dish-desc {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dish-price {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--blue);
+      flex-shrink: 0;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .dish-actions {
+      display: flex;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      width: 30px; height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      transition: all 0.15s;
+      color: var(--muted);
+    }
+
+    .icon-btn:hover { background: var(--bg); color: var(--text); }
+    .icon-btn.delete:hover { background: #fef2f2; color: var(--red); border-color: #fecaca; }
+
+    /* ── ADD FORM ── */
+    .add-form {
+      background: var(--blue-bg);
+      border: 1px dashed var(--blue);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .add-form.visible { display: block; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 100px;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-light);
+    }
+
+    .form-input::placeholder { color: #c4cdd5; }
+
+    .form-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .add-dish-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.65rem 1rem;
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 0.5rem;
+    }
+
+    .add-dish-btn:hover {
+      background: var(--blue-light);
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+
+    /* ── HELP BOX ── */
+    .help-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .help-icon {
+      width: 36px; height: 36px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .help-text h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .help-text p  { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── PREVIEW PANEL ── */
+    .preview {
+      background: var(--bg);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-top {
+      padding: 1.25rem 1.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preview-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .preview-label::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .preview-content {
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    /* ── MENU CARD (preview) ── */
+    .menu-card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .menu-card-header {
+      background: linear-gradient(135deg, #0a6685 0%, #1080a8 60%, #1a9fc4 100%);
+      padding: 1.5rem 1.75rem 1.25rem;
+      color: white;
+    }
+
+    .menu-hotel-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.25rem;
+    }
+
+    .menu-date-line {
+      font-size: 0.78rem;
+      opacity: 0.75;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      margin: 0.85rem 0 0;
+    }
+
+    .menu-section-preview {
+      padding: 1rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .menu-section-preview:last-child { border-bottom: none; }
+
+    .menu-section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--blue);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .menu-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .menu-dish-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.35rem 0;
+    }
+
+    .menu-dish-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .menu-dish-dots {
+      flex: 1;
+      border-bottom: 1px dotted var(--border);
+      margin: 0 0.5rem 3px;
+    }
+
+    .menu-dish-price {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .preview-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .preview-empty .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 999;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      pointer-events: none;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── MODAL (edit) ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--white);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 460px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+      transform: translateY(20px);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title { font-size: 1rem; font-weight: 700; }
+
+    .modal-close {
+      width: 30px; height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .modal-close:hover { background: var(--border); }
+
+    .modal-body { padding: 1.5rem; }
+
+    .form-group { margin-bottom: 1rem; }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; }
+      .preview { display: none; }
+      header { padding: 0 1rem; }
+      .editor { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="brand">
+    <div class="brand-icon">🏨</div>
+    <div class="brand-text">
+      <div class="hotel">Hotel Dyje</div>
+      <div class="sub">Správce denního menu</div>
+    </div>
+  </div>
+
+  <div class="date-nav">
+    <button onclick="shiftDate(-1)" title="Předchozí den">‹</button>
+    <input type="date" id="menuDate" onchange="loadDay()">
+    <button onclick="shiftDate(1)" title="Následující den">›</button>
+  </div>
+
+  <div class="header-right">
+    <div class="save-status saved" id="saveStatus">
+      <div class="save-dot"></div>
+      <span>Vše uloženo</span>
+    </div>
+    <button class="btn btn-ghost" onclick="printMenu()">🖨 Tisknout</button>
+    <button class="btn btn-primary" onclick="publishMenu()">✓ Publikovat menu</button>
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- EDITOR -->
+  <div class="editor">
+
+    <div class="help-box" id="helpBox">
+      <div class="help-icon">💡</div>
+      <div class="help-text">
+        <h4>Jak přidat jídlo?</h4>
+        <p>Klikněte na tlačítko <strong>+ Přidat jídlo</strong> pod libovolnou sekcí. Vyplňte název a cenu, pak klikněte <strong>Přidat</strong>. Vše se automaticky ukládá. Až budete hotovi, klikněte <strong>Publikovat menu</strong>.</p>
+      </div>
+    </div>
+
+    <div class="editor-header">
+      <div class="editor-title">Dnešní menu</div>
+      <div class="editor-subtitle" id="editorDateLabel">Upravte jídla pro zvolený den</div>
+    </div>
+
+    <div id="sectionsContainer"></div>
+
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview">
+    <div class="preview-top">
+      <div class="preview-label">Náhled pro hosty</div>
+      <button class="btn btn-ghost" style="font-size:0.7rem;padding:0.3rem 0.7rem;" onclick="toggleHelp()">
+        Skrýt nápovědu
+      </button>
+    </div>
+    <div class="preview-content">
+      <div class="menu-card" id="previewCard">
+        <div class="menu-card-header">
+          <div class="menu-hotel-name">Hotel Dyje</div>
+          <div class="menu-date-line">
+            📅 <span id="previewDate">—</span>
+          </div>
+          <div class="menu-divider"></div>
+        </div>
+        <div id="previewBody">
+          <div class="preview-empty">
+            <div class="empty-icon">🍽</div>
+            <div>Menu je prázdné.<br>Přidejte jídla vlevo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── EDIT MODAL ── -->
+<div class="modal-overlay" id="editModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Upravit jídlo</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Název jídla *</label>
+        <input type="text" class="form-input" id="editName" placeholder="např. Svíčková na smetaně">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Popis / příloha</label>
+          <input type="text" class="form-input" id="editDesc" placeholder="např. s knedlíkem">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cena (Kč) *</label>
+          <input type="number" class="form-input" id="editPrice" placeholder="149" min="0">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Zrušit</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Uložit změny</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast">✓ <span id="toastMsg">Uloženo</span></div>
+
+<script>
+// ── DATA MODEL ──────────────────────────────────────────────────────────────
+
+const SECTIONS = [
+  { id: 'polevky',  name: 'Polévky',      icon: '🍲', limit: 3  },
+  { id: 'hlavni',   name: 'Hlavní jídla', icon: '🍽', limit: 10 },
+  { id: 'bezzmase', name: 'Bezmasé',      icon: '🥗', limit: 4  },
+  { id: 'dezerty',  name: 'Dezerty',      icon: '🍰', limit: 4  },
+];
+
+// menuData: { [dateKey]: { [sectionId]: [{id, name, desc, price}] } }
+let menuData = JSON.parse(localStorage.getItem('dyje_menu') || '{}');
+let currentDate = todayStr();
+let editingId = null;
+let editingSection = null;
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function saveToStorage() {
+  localStorage.setItem('dyje_menu', JSON.stringify(menuData));
+  setSaveStatus('saved');
+}
+
+function getDay(date) {
+  if (!menuData[date]) menuData[date] = {};
+  return menuData[date];
+}
+
+function getSection(date, secId) {
+  const day = getDay(date);
+  if (!day[secId]) day[secId] = [];
+  return day[secId];
+}
+
+function uid() {
+  return Math.random().toString(36).slice(2, 9);
+}
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+
+document.getElementById('menuDate').value = currentDate;
+renderEditorDateLabel();
+renderAll();
+
+function loadDay() {
+  currentDate = document.getElementById('menuDate').value;
+  renderEditorDateLabel();
+  renderAll();
+}
+
+function shiftDate(delta) {
+  const d = new Date(currentDate + 'T12:00:00');
+  d.setDate(d.getDate() + delta);
+  currentDate = d.toISOString().slice(0, 10);
+  document.getElementById('menuDate').value = currentDate;
+  renderEditorDateLabel();
+  renderAll();
+}
+
+function renderEditorDateLabel() {
+  const d = new Date(currentDate + 'T12:00:00');
+  const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  const label = d.toLocaleDateString('cs-CZ', opts);
+  document.getElementById('editorDateLabel').textContent = label;
+  document.getElementById('previewDate').textContent = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+// ── RENDER ──────────────────────────────────────────────────────────────────
+
+function renderAll() {
+  renderEditor();
+  renderPreview();
+}
+
+function renderEditor() {
+  const container = document.getElementById('sectionsContainer');
+  container.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const items = getSection(currentDate, sec.id);
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.id = 'sec-' + sec.id;
+
+    card.innerHTML = `
+      <div class="section-header" onclick="toggleSection('${sec.id}')">
+        <div class="section-title-row">
+          <span class="section-icon">${sec.icon}</span>
+          <span class="section-name">${sec.name}</span>
+          <span class="section-count">${items.length}</span>
+        </div>
+        <span class="section-chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="dish-list" id="list-${sec.id}"></div>
+        <div class="add-form" id="form-${sec.id}">
+          <div class="form-row">
+            <div>
+              <label class="form-label">Název jídla *</label>
+              <input type="text" class="form-input" id="fname-${sec.id}" placeholder="např. Svíčková na smetaně"
+                onkeydown="if(event.key==='Enter')addDish('${sec.id}')">
+            </div>
+            <div>
+              <label class="form-label">Cena (Kč)</label>
+              <input type="number" class="form-input" id="fprice-${sec.id}" placeholder="149" min="0"
+                onkeydown="if(event.key==='Enter')addDish('${sec.id}')">
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Popis / příloha (nepovinné)</label>
+            <input type="text" class="form-input" id="fdesc-${sec.id}" placeholder="např. bramborový knedlík, svazková zelenina">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="addDish('${sec.id}')">+ Přidat</button>
+            <button class="btn btn-ghost" onclick="hideForm('${sec.id}')">Zrušit</button>
+          </div>
+        </div>
+        ${items.length < sec.limit ? `<button class="add-dish-btn" onclick="showForm('${sec.id}')">+ Přidat jídlo</button>` : ''}
+      </div>
+    `;
+
+    container.appendChild(card);
+    renderDishList(sec.id);
+  });
+}
+
+function renderDishList(secId) {
+  const items  = getSection(currentDate, secId);
+  const list   = document.getElementById('list-' + secId);
+  if (!list) return;
+  list.innerHTML = '';
+
+  items.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'dish-row';
+    row.innerHTML = `
+      <div class="dish-num">${idx + 1}</div>
+      <div class="dish-info">
+        <div class="dish-name">${escHtml(item.name)}</div>
+        ${item.desc ? `<div class="dish-desc">${escHtml(item.desc)}</div>` : ''}
+      </div>
+      <div class="dish-price">${item.price ? item.price + ' Kč' : '—'}</div>
+      <div class="dish-actions">
+        <button class="icon-btn" onclick="moveUp('${secId}',${idx})" title="Nahoru" ${idx===0?'disabled':''}>↑</button>
+        <button class="icon-btn" onclick="moveDown('${secId}',${idx})" title="Dolů" ${idx===items.length-1?'disabled':''}>↓</button>
+        <button class="icon-btn" onclick="openEdit('${secId}',${idx})" title="Upravit">✏️</button>
+        <button class="icon-btn delete" onclick="deleteDish('${secId}',${idx})" title="Smazat">🗑</button>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function renderPreview() {
+  const body = document.getElementById('previewBody');
+  let hasAny = false;
+  let html = '';
+
+  SECTIONS.forEach(sec => {
+    const items = getSection(currentDate, sec.id);
+    if (items.length === 0) return;
+    hasAny = true;
+    html += `<div class="menu-section-preview">
+      <div class="menu-section-title">${sec.icon} ${sec.name}</div>`;
+    items.forEach(item => {
+      html += `<div class="menu-dish-row">
+        <span class="menu-dish-name">${escHtml(item.name)}${item.desc ? ' <small style="color:#9ca3af;font-weight:400;">(' + escHtml(item.desc) + ')</small>' : ''}</span>
+        <span class="menu-dish-dots"></span>
+        <span class="menu-dish-price">${item.price ? item.price + ' Kč' : ''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  if (!hasAny) {
+    html = `<div class="preview-empty">
+      <div class="empty-icon">🍽</div>
+      <div>Menu je prázdné.<br>Přidejte jídla vlevo.</div>
+    </div>`;
+  }
+
+  body.innerHTML = html;
+}
+
+// ── ACTIONS ─────────────────────────────────────────────────────────────────
+
+function showForm(secId) {
+  document.getElementById('form-' + secId).classList.add('visible');
+  setTimeout(() => {
+    const el = document.getElementById('fname-' + secId);
+    if (el) el.focus();
+  }, 50);
+}
+
+function hideForm(secId) {
+  const form = document.getElementById('form-' + secId);
+  form.classList.remove('visible');
+  ['fname','fprice','fdesc'].forEach(f => {
+    const el = document.getElementById(f + '-' + secId);
+    if (el) el.value = '';
+  });
+}
+
+function addDish(secId) {
+  const name  = (document.getElementById('fname-' + secId)?.value  || '').trim();
+  const price = (document.getElementById('fprice-' + secId)?.value || '').trim();
+  const desc  = (document.getElementById('fdesc-' + secId)?.value  || '').trim();
+
+  if (!name) {
+    document.getElementById('fname-' + secId)?.focus();
+    shake('fname-' + secId);
+    return;
+  }
+
+  getSection(currentDate, secId).push({ id: uid(), name, desc, price: price ? parseInt(price) : null });
+  saveToStorage();
+  hideForm(secId);
+  renderAll();
+  showToast('Jídlo přidáno ✓');
+}
+
+function deleteDish(secId, idx) {
+  if (!confirm('Smazat toto jídlo?')) return;
+  const items = getSection(currentDate, secId);
+  items.splice(idx, 1);
+  saveToStorage();
+  renderAll();
+  showToast('Jídlo smazáno');
+}
+
+function moveUp(secId, idx) {
+  const items = getSection(currentDate, secId);
+  if (idx === 0) return;
+  [items[idx-1], items[idx]] = [items[idx], items[idx-1]];
+  saveToStorage();
+  renderAll();
+}
+
+function moveDown(secId, idx) {
+  const items = getSection(currentDate, secId);
+  if (idx === items.length - 1) return;
+  [items[idx+1], items[idx]] = [items[idx], items[idx+1]];
+  saveToStorage();
+  renderAll();
+}
+
+function toggleSection(secId) {
+  document.getElementById('sec-' + secId).classList.toggle('collapsed');
+}
+
+// ── EDIT MODAL ──────────────────────────────────────────────────────────────
+
+function openEdit(secId, idx) {
+  const item = getSection(currentDate, secId)[idx];
+  editingSection = secId;
+  editingId = idx;
+  document.getElementById('editName').value  = item.name  || '';
+  document.getElementById('editDesc').value  = item.desc  || '';
+  document.getElementById('editPrice').value = item.price || '';
+  document.getElementById('editModal').classList.add('open');
+  setTimeout(() => document.getElementById('editName').focus(), 100);
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('editModal')) return;
+  document.getElementById('editModal').classList.remove('open');
+  editingSection = null;
+  editingId = null;
+}
+
+function saveEdit() {
+  const name  = document.getElementById('editName').value.trim();
+  const desc  = document.getElementById('editDesc').value.trim();
+  const price = document.getElementById('editPrice').value.trim();
+  if (!name) { shake('editName'); return; }
+
+  const items = getSection(currentDate, editingSection);
+  items[editingId] = { ...items[editingId], name, desc, price: price ? parseInt(price) : null };
+  saveToStorage();
+  document.getElementById('editModal').classList.remove('open');
+  renderAll();
+  showToast('Změny uloženy ✓');
+}
+
+// ── PUBLISH / PRINT ─────────────────────────────────────────────────────────
+
+function publishMenu() {
+  setSaveStatus('saving');
+  setTimeout(() => {
+    setSaveStatus('saved');
+    showToast('🎉 Menu bylo publikováno! Hosté ho nyní vidí na webu.');
+  }, 800);
+}
+
+function printMenu() {
+  window.print();
+}
+
+// ── HELPERS ─────────────────────────────────────────────────────────────────
+
+function setSaveStatus(state) {
+  const el = document.getElementById('saveStatus');
+  el.className = 'save-status ' + state;
+  el.querySelector('span').textContent = state === 'saved' ? 'Vše uloženo' : 'Ukládám…';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.animation = 'none';
+  el.style.borderColor = 'var(--red)';
+  setTimeout(() => { el.style.borderColor = ''; }, 1200);
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleHelp() {
+  const box = document.getElementById('helpBox');
+  box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+}
+
+// Auto-save indicator on any storage event
+window.addEventListener('beforeunload', () => saveToStorage());
+
+// ── DEMO DATA (první návštěva) ───────────────────────────────────────────────
+if (!localStorage.getItem('dyje_menu')) {
+  const demo = {};
+  demo[todayStr()] = {
+    polevky: [
+      { id: uid(), name: 'Hovězí vývar s nudlemi', desc: 'domácí nudličky', price: 49 }
+    ],
+    hlavni: [
+      { id: uid(), name: 'Svíčková na smetaně', desc: 'houskový knedlík', price: 179 },
+      { id: uid(), name: 'Smažený řízek',        desc: 'bramborový salát',  price: 159 },
+      { id: uid(), name: 'Pečená kachna',         desc: 'zelí, knedlík',    price: 199 },
+    ],
+    bezzmase: [
+      { id: uid(), name: 'Špenátové noky', desc: 'smetanová omáčka, parmazán', price: 139 }
+    ]
+  };
+  localStorage.setItem('dyje_menu', JSON.stringify(demo));
+  menuData = demo;
+  renderAll();
+}
+
+// Keyboard shortcut: Ctrl+S = publish
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    publishMenu();
+  }
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
