@@ -201,6 +201,16 @@
     }
     .menu-admin-link:hover { opacity: 0.8; color: var(--primary); }
 
+    /* Soup dual-price row */
+    .menu-soup-header { display: flex; justify-content: flex-end; gap: 1.2rem; padding: 0.2rem 0; }
+    .menu-soup-header span { font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; min-width: 40px; text-align: right; letter-spacing: 0.05em; }
+    .menu-soup-row { display: flex; align-items: baseline; padding: 0.3rem 0; }
+    .menu-soup-name { flex: 1; font-size: 0.87rem; color: var(--fg); }
+    .menu-soup-prices { display: flex; gap: 1.2rem; }
+    .menu-soup-prices span { font-size: 0.87rem; font-weight: 600; color: var(--primary); min-width: 40px; text-align: right; }
+    .menu-menu-soup { font-size: 0.72rem; color: var(--muted); font-style: italic; margin-bottom: 0.15rem; }
+    .menu-note { padding: 0.75rem 1.75rem; font-size: 0.75rem; color: var(--muted); line-height: 1.5; border-top: 1px solid var(--border); }
+
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; }
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
@@ -584,51 +594,83 @@
 
   // ── DENNÍ MENU z admin panelu ──────────────────────────────────
   (function loadDailyMenu() {
-    const SECTIONS = [
-      { id: 'polevky',  name: 'Polévky',      icon: '🍲' },
-      { id: 'hlavni',   name: 'Hlavní jídla', icon: '🍽' },
-      { id: 'bezzmase', name: 'Bezmasé',      icon: '🥗' },
-      { id: 'dezerty',  name: 'Dezerty',      icon: '🍰' },
-    ];
+    var publishedDate = localStorage.getItem('dyje_published') ||
+                        new Date().toISOString().slice(0, 10);
+    var allData = JSON.parse(localStorage.getItem('dyje_menu') || '{}');
+    var day     = allData[publishedDate] || {};
 
-    const publishedDate = localStorage.getItem('dyje_published') ||
-                          new Date().toISOString().slice(0, 10);
-    const allData = JSON.parse(localStorage.getItem('dyje_menu') || '{}');
-    const dayData = allData[publishedDate] || {};
+    var badge   = document.getElementById('menuDateBadge');
+    var content = document.getElementById('menuContent');
 
-    const badge   = document.getElementById('menuDateBadge');
-    const content = document.getElementById('menuContent');
-
-    // Format date for display
-    const d = new Date(publishedDate + 'T12:00:00');
-    const dateLabel = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
+    var d = new Date(publishedDate + 'T12:00:00');
+    var dateLabel = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
     badge.innerHTML = '<span class="menu-date-badge">📅 ' + dateLabel + '</span>';
 
-    // Check if any section has dishes
-    const hasDishes = SECTIONS.some(s => (dayData[s.id] || []).length > 0);
-    if (!hasDishes) { return; } // leave default empty message
+    var soups    = day.polevky || [];
+    var menus    = day.menu    || [];
+    var specials = day.nabidka || [];
+    if (soups.length === 0 && menus.length === 0 && specials.length === 0) return;
 
-    let html = '<div class="menu-grid">';
-    SECTIONS.forEach(function(sec) {
-      const items = dayData[sec.id] || [];
-      if (items.length === 0) return;
+    var html = '<div class="menu-grid">';
+
+    // Polévky — with 2dcl / 3dcl columns
+    if (soups.length > 0) {
       html += '<div class="menu-col-card reveal">';
-      html += '<div class="menu-col-head">' + sec.icon + ' ' + sec.name + '</div>';
-      items.forEach(function(item) {
+      html += '<div class="menu-col-head">🍲 Polévky</div>';
+      html += '<div style="padding:0.5rem 1.1rem 0.75rem">';
+      html += '<div class="menu-soup-header"><span>2dcl</span><span>3dcl</span></div>';
+      soups.forEach(function(s) {
+        html += '<div class="menu-soup-row">';
+        html += '<span class="menu-soup-name">' + esc(s.name) + '</span>';
+        html += '<div class="menu-soup-prices">';
+        html += '<span>' + (s.price_small ? s.price_small + ',-' : '') + '</span>';
+        html += '<span>' + (s.price_large ? s.price_large + ',-' : '') + '</span>';
+        html += '</div></div>';
+      });
+      html += '</div></div>';
+    }
+
+    // Denní menu — Menu #N with soup
+    if (menus.length > 0) {
+      html += '<div class="menu-col-card reveal">';
+      html += '<div class="menu-col-head">🍽 Denní menu</div>';
+      menus.forEach(function(m, i) {
         html += '<div class="menu-dish">';
-        html += '<div class="menu-dish-n">' + esc(item.name);
-        if (item.desc) html += '<small>' + esc(item.desc) + '</small>';
+        html += '<div class="menu-dish-n">';
+        if (day.menuSoup) html += '<div class="menu-menu-soup">Menu #' + (i+1) + ' — ' + esc(day.menuSoup) + '</div>';
+        html += esc(m.name);
+        if (m.desc) html += '<small>' + esc(m.desc) + '</small>';
         html += '</div>';
-        html += '<div class="menu-dish-p">' + (item.price ? item.price + ' Kč' : '') + '</div>';
+        html += '<div class="menu-dish-p">' + (m.price ? m.price + ',-' : '') + '</div>';
         html += '</div>';
       });
       html += '</div>';
-    });
-    html += '</div>';
-    content.innerHTML = html;
+    }
 
-    // Re-run reveal observer on new elements
-    content.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Nabídka dne
+    if (specials.length > 0) {
+      html += '<div class="menu-col-card reveal">';
+      html += '<div class="menu-col-head">⭐ Nabídka dne</div>';
+      specials.forEach(function(s) {
+        html += '<div class="menu-dish">';
+        html += '<div class="menu-dish-n">' + esc(s.name);
+        if (s.desc) html += '<small>' + esc(s.desc) + '</small>';
+        html += '</div>';
+        html += '<div class="menu-dish-p">' + (s.price ? s.price + ',-' : '') + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div>';
+
+    // Note
+    if (day.note) {
+      html += '<div class="menu-note">' + esc(day.note) + '</div>';
+    }
+
+    content.innerHTML = html;
+    content.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
   })();
 
   function esc(s) {

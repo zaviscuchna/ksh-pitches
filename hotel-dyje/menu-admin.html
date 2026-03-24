@@ -582,6 +582,47 @@
       flex-shrink: 0;
     }
 
+    /* Dual price (polévky 2dcl/3dcl) */
+    .dish-prices {
+      display: flex; gap: 0.5rem; flex-shrink: 0; text-align: right;
+    }
+    .dish-prices .dp { font-size: 0.78rem; font-weight: 600; color: var(--blue); min-width: 42px; }
+    .dish-prices .dp small { display: block; font-size: 0.6rem; color: var(--muted); font-weight: 500; }
+
+    /* Menu soup field */
+    .menu-soup-field {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1rem; background: var(--blue-light); border: 1px solid rgba(16,128,168,0.15);
+      border-radius: 8px; margin-bottom: 0.75rem;
+    }
+    .menu-soup-label { font-size: 0.72rem; font-weight: 700; color: var(--blue); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.06em; }
+    .menu-soup-field .form-input { flex: 1; font-size: 0.82rem; padding: 0.4rem 0.6rem; }
+
+    /* Note field */
+    .note-field { margin-top: 1rem; }
+    .note-field textarea {
+      width: 100%; min-height: 60px; padding: 0.65rem 0.75rem;
+      border: 1px solid var(--border); border-radius: 7px;
+      font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text);
+      background: var(--white); outline: none; resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .note-field textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-light); }
+
+    /* Preview: soup header row */
+    .preview-soup-header { display: flex; justify-content: flex-end; gap: 1.5rem; padding: 0.35rem 0 0.1rem; }
+    .preview-soup-header span { font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; min-width: 42px; text-align: right; }
+    .preview-soup-row { display: flex; align-items: baseline; padding: 0.25rem 0; }
+    .preview-soup-name { flex: 1; font-size: 0.85rem; color: #374151; }
+    .preview-soup-prices { display: flex; gap: 1.5rem; }
+    .preview-soup-prices span { font-size: 0.85rem; font-weight: 600; color: var(--blue); min-width: 42px; text-align: right; }
+    .preview-menu-soup { font-size: 0.72rem; color: var(--muted); font-style: italic; margin-bottom: 0.1rem; }
+    .preview-note { padding: 0.75rem 1.75rem; font-size: 0.75rem; color: #9ca3af; line-height: 1.5; border-top: 1px solid #f3f4f6; }
+
+    /* Form 3-col for soups */
+    .form-row-3 { display: grid; grid-template-columns: 1fr 80px 80px; gap: 0.5rem; margin-bottom: 0.5rem; }
+    @media (max-width: 768px) { .form-row-3 { grid-template-columns: 1fr; } }
+
     .preview-empty {
       text-align: center;
       padding: 3rem 1rem;
@@ -890,14 +931,24 @@
         <label class="form-label">Název jídla *</label>
         <input type="text" class="form-input" id="editName" placeholder="např. Svíčková na smetaně">
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Popis / příloha</label>
-          <input type="text" class="form-input" id="editDesc" placeholder="např. s knedlíkem">
-        </div>
+      <div class="form-group" id="editDescGroup">
+        <label class="form-label">Popis / příloha</label>
+        <input type="text" class="form-input" id="editDesc" placeholder="např. s knedlíkem">
+      </div>
+      <div class="form-row" id="editPriceRow">
         <div class="form-group">
           <label class="form-label">Cena (Kč) *</label>
           <input type="number" class="form-input" id="editPrice" placeholder="149" min="0">
+        </div>
+      </div>
+      <div class="form-row" id="editSoupPriceRow" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Cena 2dcl (Kč)</label>
+          <input type="number" class="form-input" id="editPriceSmall" placeholder="40" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cena 3dcl (Kč)</label>
+          <input type="number" class="form-input" id="editPriceLarge" placeholder="55" min="0">
         </div>
       </div>
     </div>
@@ -915,10 +966,9 @@
 // ── DATA MODEL ──────────────────────────────────────────────────────────────
 
 const SECTIONS = [
-  { id: 'polevky',  name: 'Polévky',      icon: '🍲', limit: 3  },
-  { id: 'hlavni',   name: 'Hlavní jídla', icon: '🍽', limit: 10 },
-  { id: 'bezzmase', name: 'Bezmasé',      icon: '🥗', limit: 4  },
-  { id: 'dezerty',  name: 'Dezerty',      icon: '🍰', limit: 4  },
+  { id: 'polevky', name: 'Polévky',     icon: '🍲', type: 'soup',    limit: 5 },
+  { id: 'menu',    name: 'Denní menu',  icon: '🍽', type: 'menu',    limit: 8 },
+  { id: 'nabidka', name: 'Nabídka dne', icon: '⭐', type: 'default', limit: 6 },
 ];
 
 // menuData: { [dateKey]: { [sectionId]: [{id, name, desc, price}] } }
@@ -990,11 +1040,48 @@ function renderAll() {
 function renderEditor() {
   const container = document.getElementById('sectionsContainer');
   container.innerHTML = '';
+  const day = getDay(currentDate);
+
   SECTIONS.forEach(sec => {
     const items = getSection(currentDate, sec.id);
     const card = document.createElement('div');
     card.className = 'section-card';
     card.id = 'sec-' + sec.id;
+
+    // Build add form based on section type
+    let addFormHtml = '';
+    if (sec.type === 'soup') {
+      addFormHtml = `
+        <div class="form-row-3">
+          <div><label class="form-label">Název polévky *</label>
+            <input type="text" class="form-input" id="fname-${sec.id}" placeholder="např. Kulajda" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
+          <div><label class="form-label">2dcl (Kč)</label>
+            <input type="number" class="form-input" id="fps-${sec.id}" placeholder="40" min="0"></div>
+          <div><label class="form-label">3dcl (Kč)</label>
+            <input type="number" class="form-input" id="fpl-${sec.id}" placeholder="55" min="0"></div>
+        </div>`;
+    } else {
+      addFormHtml = `
+        <div class="form-row">
+          <div><label class="form-label">Název jídla *</label>
+            <input type="text" class="form-input" id="fname-${sec.id}" placeholder="např. Segedínský guláš" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
+          <div><label class="form-label">Cena (Kč)</label>
+            <input type="number" class="form-input" id="fprice-${sec.id}" placeholder="169" min="0" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
+        </div>
+        <div><label class="form-label">Příloha / popis (nepovinné)</label>
+          <input type="text" class="form-input" id="fdesc-${sec.id}" placeholder="např. knedlík houskový, zelí"></div>`;
+    }
+
+    // Menu soup field (only for 'menu' section)
+    let soupFieldHtml = '';
+    if (sec.type === 'menu') {
+      soupFieldHtml = `
+        <div class="menu-soup-field">
+          <span class="menu-soup-label">🍲 Polévka dne:</span>
+          <input type="text" class="form-input" id="menuSoupInput" value="${escHtml(day.menuSoup || '')}"
+            placeholder="např. Frankfurtská s párkem" onchange="saveMenuSoup()">
+        </div>`;
+    }
 
     card.innerHTML = `
       <div class="section-header" onclick="toggleSection('${sec.id}')">
@@ -1006,54 +1093,66 @@ function renderEditor() {
         <span class="section-chevron">▾</span>
       </div>
       <div class="section-body">
+        ${soupFieldHtml}
         <div class="dish-list" id="list-${sec.id}"></div>
         <div class="add-form" id="form-${sec.id}">
-          <div class="form-row">
-            <div>
-              <label class="form-label">Název jídla *</label>
-              <input type="text" class="form-input" id="fname-${sec.id}" placeholder="např. Svíčková na smetaně"
-                onkeydown="if(event.key==='Enter')addDish('${sec.id}')">
-            </div>
-            <div>
-              <label class="form-label">Cena (Kč)</label>
-              <input type="number" class="form-input" id="fprice-${sec.id}" placeholder="149" min="0"
-                onkeydown="if(event.key==='Enter')addDish('${sec.id}')">
-            </div>
-          </div>
-          <div>
-            <label class="form-label">Popis / příloha (nepovinné)</label>
-            <input type="text" class="form-input" id="fdesc-${sec.id}" placeholder="např. bramborový knedlík, svazková zelenina">
-          </div>
+          ${addFormHtml}
           <div class="form-actions">
             <button class="btn btn-primary" onclick="addDish('${sec.id}')">+ Přidat</button>
             <button class="btn btn-ghost" onclick="hideForm('${sec.id}')">Zrušit</button>
           </div>
         </div>
-        ${items.length < sec.limit ? `<button class="add-dish-btn" onclick="showForm('${sec.id}')">+ Přidat jídlo</button>` : ''}
+        ${items.length < sec.limit ? `<button class="add-dish-btn" onclick="showForm('${sec.id}')">+ Přidat ${sec.type==='soup'?'polévku':'jídlo'}</button>` : ''}
       </div>
     `;
-
     container.appendChild(card);
     renderDishList(sec.id);
   });
+
+  // Note field at the end
+  let noteEl = document.getElementById('noteFieldWrap');
+  if (!noteEl) {
+    noteEl = document.createElement('div');
+    noteEl.id = 'noteFieldWrap';
+    noteEl.className = 'note-field';
+    noteEl.innerHTML = `
+      <label class="form-label">Poznámka pod menu (nepovinné)</label>
+      <textarea id="noteInput" placeholder="např. Pro závodní stravování obsahuje každé menu i 2dcl limo, sodu nebo čaj." onchange="saveNote()">${escHtml(day.note || '')}</textarea>
+    `;
+  }
+  container.appendChild(noteEl);
 }
 
 function renderDishList(secId) {
-  const items  = getSection(currentDate, secId);
-  const list   = document.getElementById('list-' + secId);
+  const sec   = SECTIONS.find(s => s.id === secId);
+  const items = getSection(currentDate, secId);
+  const list  = document.getElementById('list-' + secId);
   if (!list) return;
   list.innerHTML = '';
 
   items.forEach((item, idx) => {
     const row = document.createElement('div');
     row.className = 'dish-row';
+
+    let priceHtml = '';
+    if (sec.type === 'soup') {
+      priceHtml = `<div class="dish-prices">
+        <div class="dp"><small>2dcl</small>${item.price_small ? item.price_small + ',-' : '—'}</div>
+        <div class="dp"><small>3dcl</small>${item.price_large ? item.price_large + ',-' : '—'}</div>
+      </div>`;
+    } else {
+      priceHtml = `<div class="dish-price">${item.price ? item.price + ',-' : '—'}</div>`;
+    }
+
+    const label = sec.type === 'menu' ? 'M' + (idx + 1) : (idx + 1);
+
     row.innerHTML = `
-      <div class="dish-num">${idx + 1}</div>
+      <div class="dish-num">${label}</div>
       <div class="dish-info">
         <div class="dish-name">${escHtml(item.name)}</div>
         ${item.desc ? `<div class="dish-desc">${escHtml(item.desc)}</div>` : ''}
       </div>
-      <div class="dish-price">${item.price ? item.price + ' Kč' : '—'}</div>
+      ${priceHtml}
       <div class="dish-actions">
         <button class="icon-btn" onclick="moveUp('${secId}',${idx})" title="Nahoru" ${idx===0?'disabled':''}>↑</button>
         <button class="icon-btn" onclick="moveDown('${secId}',${idx})" title="Dolů" ${idx===items.length-1?'disabled':''}>↓</button>
@@ -1067,24 +1166,68 @@ function renderDishList(secId) {
 
 function renderPreview() {
   const body = document.getElementById('previewBody');
+  const day  = getDay(currentDate);
   let hasAny = false;
   let html = '';
 
-  SECTIONS.forEach(sec => {
-    const items = getSection(currentDate, sec.id);
-    if (items.length === 0) return;
+  // Polévky — with 2dcl/3dcl columns
+  const soups = getSection(currentDate, 'polevky');
+  if (soups.length > 0) {
     hasAny = true;
     html += `<div class="menu-section-preview">
-      <div class="menu-section-title">${sec.icon} ${sec.name}</div>`;
-    items.forEach(item => {
-      html += `<div class="menu-dish-row">
-        <span class="menu-dish-name">${escHtml(item.name)}${item.desc ? ' <small style="color:#9ca3af;font-weight:400;">(' + escHtml(item.desc) + ')</small>' : ''}</span>
-        <span class="menu-dish-dots"></span>
-        <span class="menu-dish-price">${item.price ? item.price + ' Kč' : ''}</span>
+      <div class="menu-section-title">🍲 Polévky</div>
+      <div class="preview-soup-header"><span>2dcl</span><span>3dcl</span></div>`;
+    soups.forEach(s => {
+      html += `<div class="preview-soup-row">
+        <span class="preview-soup-name">${escHtml(s.name)}</span>
+        <div class="preview-soup-prices">
+          <span>${s.price_small ? s.price_small + ',-' : ''}</span>
+          <span>${s.price_large ? s.price_large + ',-' : ''}</span>
+        </div>
       </div>`;
     });
     html += '</div>';
-  });
+  }
+
+  // Denní menu — with Menu #N and soup
+  const menus = getSection(currentDate, 'menu');
+  if (menus.length > 0) {
+    hasAny = true;
+    html += `<div class="menu-section-preview">
+      <div class="menu-section-title">🍽 Denní menu</div>`;
+    menus.forEach((m, i) => {
+      if (day.menuSoup) {
+        html += `<div class="preview-menu-soup">Menu #${i+1} — ${escHtml(day.menuSoup)}</div>`;
+      }
+      html += `<div class="menu-dish-row">
+        <span class="menu-dish-name">${escHtml(m.name)}${m.desc ? ' <small style="color:#9ca3af;font-weight:400;">(' + escHtml(m.desc) + ')</small>' : ''}</span>
+        <span class="menu-dish-dots"></span>
+        <span class="menu-dish-price">${m.price ? m.price + ',-' : ''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Nabídka dne
+  const specials = getSection(currentDate, 'nabidka');
+  if (specials.length > 0) {
+    hasAny = true;
+    html += `<div class="menu-section-preview">
+      <div class="menu-section-title">⭐ Nabídka dne</div>`;
+    specials.forEach(s => {
+      html += `<div class="menu-dish-row">
+        <span class="menu-dish-name">${escHtml(s.name)}${s.desc ? ' <small style="color:#9ca3af;font-weight:400;">(' + escHtml(s.desc) + ')</small>' : ''}</span>
+        <span class="menu-dish-dots"></span>
+        <span class="menu-dish-price">${s.price ? s.price + ',-' : ''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Note
+  if (day.note) {
+    html += `<div class="preview-note">${escHtml(day.note)}</div>`;
+  }
 
   if (!hasAny) {
     html = `<div class="preview-empty">
@@ -1094,6 +1237,20 @@ function renderPreview() {
   }
 
   body.innerHTML = html;
+}
+
+function saveMenuSoup() {
+  const day = getDay(currentDate);
+  day.menuSoup = (document.getElementById('menuSoupInput')?.value || '').trim();
+  saveToStorage();
+  renderPreview();
+}
+
+function saveNote() {
+  const day = getDay(currentDate);
+  day.note = (document.getElementById('noteInput')?.value || '').trim();
+  saveToStorage();
+  renderPreview();
 }
 
 // ── ACTIONS ─────────────────────────────────────────────────────────────────
@@ -1109,16 +1266,15 @@ function showForm(secId) {
 function hideForm(secId) {
   const form = document.getElementById('form-' + secId);
   form.classList.remove('visible');
-  ['fname','fprice','fdesc'].forEach(f => {
+  ['fname','fprice','fdesc','fps','fpl'].forEach(f => {
     const el = document.getElementById(f + '-' + secId);
     if (el) el.value = '';
   });
 }
 
 function addDish(secId) {
-  const name  = (document.getElementById('fname-' + secId)?.value  || '').trim();
-  const price = (document.getElementById('fprice-' + secId)?.value || '').trim();
-  const desc  = (document.getElementById('fdesc-' + secId)?.value  || '').trim();
+  const sec  = SECTIONS.find(s => s.id === secId);
+  const name = (document.getElementById('fname-' + secId)?.value || '').trim();
 
   if (!name) {
     document.getElementById('fname-' + secId)?.focus();
@@ -1126,11 +1282,25 @@ function addDish(secId) {
     return;
   }
 
-  getSection(currentDate, secId).push({ id: uid(), name, desc, price: price ? parseInt(price) : null });
+  let item = { id: uid(), name };
+
+  if (sec.type === 'soup') {
+    const ps = (document.getElementById('fps-' + secId)?.value || '').trim();
+    const pl = (document.getElementById('fpl-' + secId)?.value || '').trim();
+    item.price_small = ps ? parseInt(ps) : null;
+    item.price_large = pl ? parseInt(pl) : null;
+  } else {
+    const price = (document.getElementById('fprice-' + secId)?.value || '').trim();
+    const desc  = (document.getElementById('fdesc-' + secId)?.value  || '').trim();
+    item.price = price ? parseInt(price) : null;
+    item.desc  = desc;
+  }
+
+  getSection(currentDate, secId).push(item);
   saveToStorage();
   hideForm(secId);
   renderAll();
-  showToast('Jídlo přidáno ✓');
+  showToast((sec.type === 'soup' ? 'Polévka' : 'Jídlo') + ' přidáno ✓');
 }
 
 function deleteDish(secId, idx) {
@@ -1165,12 +1335,27 @@ function toggleSection(secId) {
 // ── EDIT MODAL ──────────────────────────────────────────────────────────────
 
 function openEdit(secId, idx) {
+  const sec  = SECTIONS.find(s => s.id === secId);
   const item = getSection(currentDate, secId)[idx];
   editingSection = secId;
   editingId = idx;
-  document.getElementById('editName').value  = item.name  || '';
-  document.getElementById('editDesc').value  = item.desc  || '';
-  document.getElementById('editPrice').value = item.price || '';
+
+  document.getElementById('editName').value = item.name || '';
+
+  // Toggle fields based on type
+  const isSoup = sec.type === 'soup';
+  document.getElementById('editDescGroup').style.display   = isSoup ? 'none' : 'block';
+  document.getElementById('editPriceRow').style.display     = isSoup ? 'none' : 'grid';
+  document.getElementById('editSoupPriceRow').style.display = isSoup ? 'grid' : 'none';
+
+  if (isSoup) {
+    document.getElementById('editPriceSmall').value = item.price_small || '';
+    document.getElementById('editPriceLarge').value = item.price_large || '';
+  } else {
+    document.getElementById('editDesc').value  = item.desc  || '';
+    document.getElementById('editPrice').value = item.price || '';
+  }
+
   document.getElementById('editModal').classList.add('open');
   setTimeout(() => document.getElementById('editName').focus(), 100);
 }
@@ -1183,13 +1368,26 @@ function closeModal(e) {
 }
 
 function saveEdit() {
+  const sec   = SECTIONS.find(s => s.id === editingSection);
   const name  = document.getElementById('editName').value.trim();
-  const desc  = document.getElementById('editDesc').value.trim();
-  const price = document.getElementById('editPrice').value.trim();
   if (!name) { shake('editName'); return; }
 
   const items = getSection(currentDate, editingSection);
-  items[editingId] = { ...items[editingId], name, desc, price: price ? parseInt(price) : null };
+  const item  = { ...items[editingId], name };
+
+  if (sec.type === 'soup') {
+    const ps = document.getElementById('editPriceSmall').value.trim();
+    const pl = document.getElementById('editPriceLarge').value.trim();
+    item.price_small = ps ? parseInt(ps) : null;
+    item.price_large = pl ? parseInt(pl) : null;
+  } else {
+    const desc  = document.getElementById('editDesc').value.trim();
+    const price = document.getElementById('editPrice').value.trim();
+    item.desc  = desc;
+    item.price = price ? parseInt(price) : null;
+  }
+
+  items[editingId] = item;
   saveToStorage();
   document.getElementById('editModal').classList.remove('open');
   renderAll();
@@ -1247,20 +1445,29 @@ function toggleHelp() {
 // Auto-save indicator on any storage event
 window.addEventListener('beforeunload', () => saveToStorage());
 
-// ── DEMO DATA (první návštěva) ───────────────────────────────────────────────
+// ── DEMO DATA — reálné menu Hotel Dyje ───────────────────────────────────────
 if (!localStorage.getItem('dyje_menu')) {
   const demo = {};
   demo[todayStr()] = {
+    menuSoup: 'Frankfurtská s párkem',
+    note: 'Pro závodní stravování obsahuje každé menu i 2dcl limo, sodu nebo čaj. Ostatní hotová jídla dle denní nabídky na našem jídelním lístku.',
     polevky: [
-      { id: uid(), name: 'Hovězí vývar s nudlemi', desc: 'domácí nudličky', price: 49 }
+      { id: uid(), name: 'Frankfurtská s párkem', price_small: 40, price_large: 55 },
+      { id: uid(), name: 'Kulajda',               price_small: 40, price_large: 55 },
+      { id: uid(), name: 'Cibulačka s krutonem',   price_small: 40, price_large: 55 },
     ],
-    hlavni: [
-      { id: uid(), name: 'Svíčková na smetaně', desc: 'houskový knedlík', price: 179 },
-      { id: uid(), name: 'Smažený řízek',        desc: 'bramborový salát',  price: 159 },
-      { id: uid(), name: 'Pečená kachna',         desc: 'zelí, knedlík',    price: 199 },
+    menu: [
+      { id: uid(), name: 'Segedínský guláš',  desc: 'knedlík houskový', price: 169 },
+      { id: uid(), name: 'Šuang-si',          desc: 'hovězí maso, zelenina, mango klíčky, houby, rýže jasmínová', price: 189 },
+      { id: uid(), name: 'Čevabčiči',         desc: 'brambor, hořčice, cibule', price: 169 },
+      { id: uid(), name: 'Vepřový steak',     desc: 'sázené vejce, hranolky',   price: 199 },
+      { id: uid(), name: 'Cordon bleu',       desc: 'brambor, okurka',           price: 179 },
+      { id: uid(), name: 'Vařené uzené maso', desc: 'hrachová kaše, okurka, chléb', price: 179 },
     ],
-    bezzmase: [
-      { id: uid(), name: 'Špenátové noky', desc: 'smetanová omáčka, parmazán', price: 139 }
+    nabidka: [
+      { id: uid(), name: 'PHO BO',         desc: 'vietnamská polévka s hovězím masem, rýžové nudle', price: 169 },
+      { id: uid(), name: 'BUN BO NAM BO',  desc: 'hovězí maso, zelenina, rýžové nudle',             price: 189 },
+      { id: uid(), name: 'NEM RAN',        desc: 'jarní závitky, vepř. maso, zelenina, rýžové nudle', price: 169 },
     ]
   };
   localStorage.setItem('dyje_menu', JSON.stringify(demo));
