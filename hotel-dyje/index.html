@@ -157,6 +157,50 @@
     .map-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); height: 380px; }
     .map-wrap iframe { width: 100%; height: 100%; border: none; filter: grayscale(0.8) brightness(0.75); }
 
+    /* DENNÍ MENU */
+    #denmenu { background: var(--surface); }
+    .menu-date-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--primary-light); border: 1px solid rgba(200,169,110,0.25);
+      color: var(--primary); border-radius: 20px;
+      padding: 0.35rem 1rem; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem; margin-top: 2rem;
+    }
+    .menu-col-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .menu-col-head {
+      padding: 0.75rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--primary);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .menu-dish {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 0.5rem; padding: 0.65rem 1.1rem;
+      border-bottom: 1px solid var(--border); font-size: 0.87rem;
+    }
+    .menu-dish:last-child { border-bottom: none; }
+    .menu-dish-n { color: var(--fg); flex: 1; }
+    .menu-dish-n small { color: var(--muted); font-size: 0.75rem; display: block; }
+    .menu-dish-p { color: var(--primary); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+    .menu-empty {
+      text-align: center; padding: 3rem 1rem;
+      color: var(--muted); font-size: 0.9rem; line-height: 1.8;
+    }
+    .menu-admin-link {
+      display: block; text-align: center; margin-top: 1.5rem;
+      font-size: 0.72rem; color: var(--muted); opacity: 0.4;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .menu-admin-link:hover { opacity: 0.8; color: var(--primary); }
+
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; }
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
@@ -181,6 +225,7 @@
     <li><a href="#o-hotelu">O hotelu</a></li>
     <li><a href="#pokoje">Pokoje</a></li>
     <li><a href="#restaurace">Restaurace</a></li>
+    <li><a href="#denmenu">Denní menu</a></li>
     <li><a href="#aktivity">Aktivity</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
@@ -365,6 +410,19 @@
 </section>
 
 
+<!-- DENNÍ MENU -->
+<section id="denmenu">
+  <div class="container">
+    <div class="section-eyebrow reveal">Jídelníček</div>
+    <h2 class="section-title reveal">Denní menu</h2>
+    <div id="menuDateBadge" class="reveal"></div>
+    <div id="menuContent">
+      <div class="menu-empty">Menu pro dnešní den zatím není k dispozici.<br>Zkuste to znovu později.</div>
+    </div>
+    <a href="menu-admin.html" class="menu-admin-link">⚙ Správa menu</a>
+  </div>
+</section>
+
 <!-- GALERIE -->
 <section style="background:var(--surface);">
   <div class="container">
@@ -523,6 +581,59 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── DENNÍ MENU z admin panelu ──────────────────────────────────
+  (function loadDailyMenu() {
+    const SECTIONS = [
+      { id: 'polevky',  name: 'Polévky',      icon: '🍲' },
+      { id: 'hlavni',   name: 'Hlavní jídla', icon: '🍽' },
+      { id: 'bezzmase', name: 'Bezmasé',      icon: '🥗' },
+      { id: 'dezerty',  name: 'Dezerty',      icon: '🍰' },
+    ];
+
+    const publishedDate = localStorage.getItem('dyje_published') ||
+                          new Date().toISOString().slice(0, 10);
+    const allData = JSON.parse(localStorage.getItem('dyje_menu') || '{}');
+    const dayData = allData[publishedDate] || {};
+
+    const badge   = document.getElementById('menuDateBadge');
+    const content = document.getElementById('menuContent');
+
+    // Format date for display
+    const d = new Date(publishedDate + 'T12:00:00');
+    const dateLabel = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
+    badge.innerHTML = '<span class="menu-date-badge">📅 ' + dateLabel + '</span>';
+
+    // Check if any section has dishes
+    const hasDishes = SECTIONS.some(s => (dayData[s.id] || []).length > 0);
+    if (!hasDishes) { return; } // leave default empty message
+
+    let html = '<div class="menu-grid">';
+    SECTIONS.forEach(function(sec) {
+      const items = dayData[sec.id] || [];
+      if (items.length === 0) return;
+      html += '<div class="menu-col-card reveal">';
+      html += '<div class="menu-col-head">' + sec.icon + ' ' + sec.name + '</div>';
+      items.forEach(function(item) {
+        html += '<div class="menu-dish">';
+        html += '<div class="menu-dish-n">' + esc(item.name);
+        if (item.desc) html += '<small>' + esc(item.desc) + '</small>';
+        html += '</div>';
+        html += '<div class="menu-dish-p">' + (item.price ? item.price + ' Kč' : '') + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+    content.innerHTML = html;
+
+    // Re-run reveal observer on new elements
+    content.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  })();
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 </script>
 </body>
 </html>

@@ -1093,9 +1093,11 @@ function saveEdit() {
 function publishMenu() {
   setSaveStatus('saving');
   setTimeout(() => {
+    localStorage.setItem('dyje_published', currentDate);
+    saveToStorage();
     setSaveStatus('saved');
-    showToast('🎉 Menu bylo publikováno! Hosté ho nyní vidí na webu.');
-  }, 800);
+    showToast('🎉 Menu publikováno! Hosté ho nyní vidí na webu.');
+  }, 600);
 }
 
 function printMenu() {
