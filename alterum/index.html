@@ -6,6 +6,7 @@
     <title>Alterum — Beta</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -143,31 +144,18 @@
             z-index: 1;
         }
 
-        .hero-bg-circle {
-            position: absolute;
-            top: -15%; right: -8%;
-            width: 600px; height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(10,48,128,0.8) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-bg-circle2 {
-            position: absolute;
-            bottom: -15%; left: -8%;
-            width: 500px; height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(212,82,122,0.06) 0%, transparent 65%);
-            pointer-events: none;
-        }
-
-        /* Abstract SVG — large pink arcs like spring-invest */
-        .hero-svg {
+        /* ColorBends WebGL canvas */
+        #hero-canvas {
             position: absolute;
             inset: 0;
-            width: 100%; height: 100%;
+            z-index: 0;
             pointer-events: none;
-            opacity: 1;
+        }
+
+        #hero-canvas canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
         }
 
         .hero-main {
@@ -207,6 +195,7 @@
             color: var(--white);
             margin-bottom: 0;
             max-width: 900px;
+            text-shadow: 0 2px 40px rgba(0,0,0,0.4);
         }
 
         .hero-h1 .line2 {
@@ -282,6 +271,7 @@
 
         .hero-scroll-hint {
             position: absolute;
+            z-index: 1;
             bottom: 3rem; right: 3rem;
             display: flex;
             flex-direction: column;
@@ -301,6 +291,7 @@
 
         .hero-number {
             position: absolute;
+            z-index: 1;
             top: 50%; left: 3rem;
             transform: translateY(-50%) rotate(-90deg);
             font-size: 0.65rem;
@@ -993,21 +984,7 @@
 
 <!-- ─── HERO ─────────────────────────────────────────────────── -->
 <section id="hero">
-    <div class="hero-bg-circle"></div>
-    <div class="hero-bg-circle2"></div>
-
-    <!-- Abstract SVG — large pink arcs, spring-invest style -->
-    <svg class="hero-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Large arc top-right corner -->
-        <circle cx="1320" cy="120" r="420" stroke="#d4527a" stroke-width="1" fill="none" opacity="0.35"/>
-        <circle cx="1320" cy="120" r="310" stroke="#d4527a" stroke-width="0.7" fill="none" opacity="0.25"/>
-        <circle cx="1320" cy="120" r="200" stroke="#e8a0b4" stroke-width="0.5" fill="none" opacity="0.2"/>
-        <!-- Small accent dot -->
-        <circle cx="820" cy="480" r="4" fill="#d4527a" opacity="0.5"/>
-        <circle cx="824" cy="476" r="14" stroke="#d4527a" stroke-width="0.8" fill="none" opacity="0.3"/>
-        <!-- Floating dot bottom-left -->
-        <circle cx="180" cy="720" r="3" fill="#e8a0b4" opacity="0.4"/>
-    </svg>
+    <div id="hero-canvas"></div>
 
     <span class="hero-number">A — 2025</span>
 
@@ -1331,6 +1308,175 @@
         el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
         obs.observe(el);
     });
+
+    // ─── COLOR BENDS ─────────────────────────────────────────────
+    (function initColorBends() {
+        if (typeof THREE === 'undefined') return;
+        const container = document.getElementById('hero-canvas');
+        if (!container) return;
+
+        const MAX_COLORS = 8;
+
+        const frag = [
+            '#define MAX_COLORS ' + MAX_COLORS,
+            'uniform vec2 uCanvas;',
+            'uniform float uTime;',
+            'uniform float uSpeed;',
+            'uniform vec2 uRot;',
+            'uniform int uColorCount;',
+            'uniform vec3 uColors[MAX_COLORS];',
+            'uniform int uTransparent;',
+            'uniform float uScale;',
+            'uniform float uFrequency;',
+            'uniform float uWarpStrength;',
+            'uniform vec2 uPointer;',
+            'uniform float uMouseInfluence;',
+            'uniform float uParallax;',
+            'uniform float uNoise;',
+            'varying vec2 vUv;',
+            'void main() {',
+            '  float t = uTime * uSpeed;',
+            '  vec2 p = vUv * 2.0 - 1.0;',
+            '  p += uPointer * uParallax * 0.1;',
+            '  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);',
+            '  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);',
+            '  q /= max(uScale, 0.0001);',
+            '  q /= 0.5 + 0.2 * dot(q, q);',
+            '  q += 0.2 * cos(t) - 7.56;',
+            '  vec2 toward = (uPointer - rp);',
+            '  q += toward * uMouseInfluence * 0.2;',
+            '  vec3 col = vec3(0.0);',
+            '  float a = 1.0;',
+            '  if (uColorCount > 0) {',
+            '    vec2 s = q;',
+            '    vec3 sumCol = vec3(0.0);',
+            '    float cover = 0.0;',
+            '    for (int i = 0; i < MAX_COLORS; ++i) {',
+            '      if (i >= uColorCount) break;',
+            '      s -= 0.01;',
+            '      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));',
+            '      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);',
+            '      float kBelow = clamp(uWarpStrength, 0.0, 1.0);',
+            '      float kMix = pow(kBelow, 0.3);',
+            '      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);',
+            '      vec2 disp = (r - s) * kBelow;',
+            '      vec2 warped = s + disp * gain;',
+            '      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);',
+            '      float m = mix(m0, m1, kMix);',
+            '      float w = 1.0 - exp(-6.0 / exp(6.0 * m));',
+            '      sumCol += uColors[i] * w;',
+            '      cover = max(cover, w);',
+            '    }',
+            '    col = clamp(sumCol, 0.0, 1.0);',
+            '    a = uTransparent > 0 ? cover : 1.0;',
+            '  }',
+            '  if (uNoise > 0.0001) {',
+            '    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);',
+            '    col += (n - 0.5) * uNoise;',
+            '    col = clamp(col, 0.0, 1.0);',
+            '  }',
+            '  gl_FragColor = vec4(col, a);',
+            '}'
+        ].join('\n');
+
+        const vert = [
+            'varying vec2 vUv;',
+            'void main() {',
+            '  vUv = uv;',
+            '  gl_Position = vec4(position, 1.0);',
+            '}'
+        ].join('\n');
+
+        // Alterum brand colors + #ff40ff accent from user
+        const hexColors = ['#0a0f3d', '#002366', '#ff40ff', '#d4527a', '#0d1a66'];
+
+        const toVec3 = function(hex) {
+            var h = hex.replace('#', '');
+            return new THREE.Vector3(
+                parseInt(h.slice(0,2),16)/255,
+                parseInt(h.slice(2,4),16)/255,
+                parseInt(h.slice(4,6),16)/255
+            );
+        };
+
+        var uColorsArray = [];
+        for (var i = 0; i < MAX_COLORS; i++) uColorsArray.push(new THREE.Vector3(0,0,0));
+        hexColors.slice(0, MAX_COLORS).forEach(function(hex, i) {
+            uColorsArray[i].copy(toVec3(hex));
+        });
+
+        var scene   = new THREE.Scene();
+        var camera  = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+        var geometry = new THREE.PlaneGeometry(2, 2);
+
+        var material = new THREE.ShaderMaterial({
+            vertexShader: vert,
+            fragmentShader: frag,
+            uniforms: {
+                uCanvas:        { value: new THREE.Vector2(1,1) },
+                uTime:          { value: 0 },
+                uSpeed:         { value: 0.35 },
+                uRot:           { value: new THREE.Vector2(1,0) },
+                uColorCount:    { value: hexColors.length },
+                uColors:        { value: uColorsArray },
+                uTransparent:   { value: 0 },
+                uScale:         { value: 0.9 },
+                uFrequency:     { value: 2.4 },
+                uWarpStrength:  { value: 1.0 },
+                uPointer:       { value: new THREE.Vector2(0,0) },
+                uMouseInfluence:{ value: 0.6 },
+                uParallax:      { value: 0.3 },
+                uNoise:         { value: 0.04 }
+            },
+            transparent: false
+        });
+
+        var mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        var renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance', alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.domElement.style.cssText = 'width:100%;height:100%;display:block;';
+        container.appendChild(renderer.domElement);
+
+        var handleResize = function() {
+            var w = container.clientWidth || 1;
+            var h = container.clientHeight || 1;
+            renderer.setSize(w, h, false);
+            material.uniforms.uCanvas.value.set(w, h);
+        };
+        handleResize();
+        new ResizeObserver(handleResize).observe(container);
+
+        var pointerTarget  = new THREE.Vector2(0,0);
+        var pointerCurrent = new THREE.Vector2(0,0);
+        var rotation = 45;
+        var RAD = rotation * Math.PI / 180;
+        material.uniforms.uRot.value.set(Math.cos(RAD), Math.sin(RAD));
+
+        document.addEventListener('pointermove', function(e) {
+            var rect = container.getBoundingClientRect();
+            pointerTarget.set(
+                ((e.clientX - rect.left) / (rect.width  || 1)) * 2 - 1,
+               -(((e.clientY - rect.top)  / (rect.height || 1)) * 2 - 1)
+            );
+        });
+
+        var startTime = null, lastTime = 0;
+        function loop(ts) {
+            if (!startTime) startTime = ts;
+            var elapsed = (ts - startTime) / 1000;
+            var dt = Math.min((ts - lastTime) / 1000, 0.1);
+            lastTime = ts;
+            material.uniforms.uTime.value = elapsed;
+            pointerCurrent.lerp(pointerTarget, Math.min(1, dt * 8));
+            material.uniforms.uPointer.value.copy(pointerCurrent);
+            renderer.render(scene, camera);
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+    })();
+
 </script>
 
 </body>
