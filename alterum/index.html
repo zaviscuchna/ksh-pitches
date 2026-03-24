@@ -23,32 +23,6 @@
 
         html { scroll-behavior: smooth; }
 
-        /* Custom cursor */
-        * { cursor: none; }
-
-        .cursor {
-            position: fixed;
-            width: 12px; height: 12px;
-            background: var(--pink-vivid);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
-            mix-blend-mode: difference;
-        }
-
-        .cursor-ring {
-            position: fixed;
-            width: 40px; height: 40px;
-            border: 1px solid rgba(212,82,122,0.4);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
             background: var(--white);
@@ -992,9 +966,6 @@
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- ─── STICKY BAR ──────────────────────────────────────────── -->
 <div class="sticky-bar">
@@ -1310,40 +1281,6 @@
 </footer>
 
 <script>
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-
-    document.addEventListener('mousemove', e => {
-        mx = e.clientX; my = e.clientY;
-        cursor.style.left = mx + 'px';
-        cursor.style.top = my + 'px';
-    });
-
-    function animRing() {
-        rx += (mx - rx) * 0.12;
-        ry += (my - ry) * 0.12;
-        ring.style.left = rx + 'px';
-        ring.style.top = ry + 'px';
-        requestAnimationFrame(animRing);
-    }
-    animRing();
-
-    document.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            ring.style.width = '60px';
-            ring.style.height = '60px';
-        });
-        el.addEventListener('mouseleave', () => {
-            cursor.style.width = '12px';
-            cursor.style.height = '12px';
-            ring.style.width = '40px';
-            ring.style.height = '40px';
-        });
-    });
 
     // Header scroll
     const header = document.querySelector('header');
