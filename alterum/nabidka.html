@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nabídka — Webová prezentace | KSH Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2129;
+      --border: rgba(255,255,255,0.08);
+      --fg: #e6e1d8;
+      --muted: #7a8290;
+      --blue: #1080a8;
+      --blue-l: rgba(16,128,168,0.1);
+      --pink: #d4527a;
+      --pink-l: rgba(212,82,122,0.1);
+      --green: #10b981;
+      --green-l: rgba(16,185,129,0.1);
+      --red: #ef4444;
+    }
+
+    @media print {
+      @page { size: A4; margin: 0; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .page { break-after: page; }
+      .page:last-child { break-after: auto; }
+      section { break-inside: avoid; }
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 3.5rem;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .ksh-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 0.1em;
+    }
+    .ksh-logo small { display: block; font-size: 0.6rem; color: var(--muted); font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.15rem; }
+
+    .doc-meta { text-align: right; }
+    .doc-meta .label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; }
+    .doc-meta .value { font-size: 0.85rem; color: var(--fg); margin-top: 0.1rem; }
+
+    /* HERO */
+    .offer-hero {
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .offer-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--pink-l); border: 1px solid rgba(212,82,122,0.2);
+      color: var(--pink); border-radius: 20px;
+      padding: 0.35rem 1rem; font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .offer-hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem; font-weight: 700;
+      line-height: 1.15; letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .offer-hero h1 em { font-style: normal; color: var(--blue); }
+
+    .offer-hero p {
+      color: var(--muted); font-size: 0.95rem; max-width: 480px;
+      margin: 0 auto; line-height: 1.7;
+    }
+
+    /* SECTIONS */
+    .section { margin-bottom: 3rem; }
+    .section-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
+    h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+    .text { font-size: 0.88rem; color: var(--muted); line-height: 1.75; margin-bottom: 1rem; }
+
+    /* WHAT'S INCLUDED */
+    .included-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; margin: 1.5rem 0;
+    }
+
+    .included-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+
+    .included-icon {
+      width: 32px; height: 32px;
+      background: var(--blue-l);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+
+    .included-name { font-size: 0.82rem; font-weight: 600; color: var(--fg); }
+    .included-desc { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.5; }
+
+    /* PRICE COMPARISON TABLE */
+    .price-compare {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    .price-compare table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .price-compare thead th {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .price-compare thead th:nth-child(1) { background: var(--surface); color: var(--muted); }
+    .price-compare thead th:nth-child(2) { background: var(--surface); color: var(--muted); }
+    .price-compare thead th:nth-child(3) { background: var(--blue); color: #fff; }
+
+    .price-compare tbody td {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .price-compare tbody td:nth-child(1) {
+      background: var(--surface);
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .price-compare tbody td:nth-child(2) {
+      background: var(--surface);
+      color: var(--muted);
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+    .price-compare tbody td:nth-child(3) {
+      background: rgba(16,128,168,0.04);
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .price-compare tfoot td {
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      border-top: 2px solid var(--border);
+    }
+    .price-compare tfoot td:nth-child(1) { background: var(--surface); font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; }
+    .price-compare tfoot td:nth-child(2) { background: var(--surface); color: var(--muted); font-size: 0.95rem; text-decoration: line-through; }
+    .price-compare tfoot td:nth-child(3) { background: rgba(16,128,168,0.08); color: var(--blue); font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; }
+
+    .savings-banner {
+      background: var(--green-l);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .savings-banner .amount {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--green);
+    }
+
+    .savings-banner .label {
+      font-size: 0.82rem; color: var(--green);
+    }
+
+    /* ONGOING COSTS */
+    .ongoing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .ongoing-row {
+      display: flex; justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .ongoing-row:last-child { border-bottom: none; font-weight: 700; padding-top: 0.75rem; }
+    .ongoing-row .val { color: var(--blue); font-weight: 600; }
+    .ongoing-row:last-child .val { font-size: 1.05rem; }
+
+    .monthly-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+    .monthly-note strong { color: var(--blue); }
+
+    /* ADDONS */
+    .addons-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; margin: 1.5rem 0;
+    }
+
+    .addon-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .addon-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .addon-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin-bottom: 0.5rem; }
+    .addon-price { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--pink); }
+    .addon-price small { font-size: 0.7rem; font-weight: 400; color: var(--muted); }
+
+    /* FAQ */
+    .faq-item {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-q { font-size: 0.88rem; font-weight: 600; color: var(--fg); margin-bottom: 0.35rem; }
+    .faq-a { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+    /* FOOTER */
+    .doc-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      margin-top: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .doc-footer .ksh { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--blue); }
+    .doc-footer .contact { font-size: 0.75rem; color: var(--muted); text-align: right; line-height: 1.6; }
+
+    /* PRINT BUTTON */
+    .print-btn {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--blue); color: #fff;
+      border: none; padding: 0.85rem 1.5rem;
+      border-radius: 10px; font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+      z-index: 100;
+    }
+    .print-btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">📄 Uložit jako PDF</button>
+
+<!-- PAGE 1 -->
+<div class="page">
+
+  <div class="doc-header">
+    <div>
+      <div class="ksh-logo">KSH Studio<small>Web &middot; Apps &middot; Systems</small></div>
+    </div>
+    <div class="doc-meta">
+      <div class="label">Nabídka č.</div>
+      <div class="value">KSH-2026-ALT</div>
+      <div class="label" style="margin-top:0.5rem;">Datum</div>
+      <div class="value">26. března 2026</div>
+    </div>
+  </div>
+
+  <div class="offer-hero">
+    <div class="offer-badge">Individuální nabídka</div>
+    <h1>Webová prezentace<br><em>na míru</em></h1>
+    <p>Kompletní návrh a realizace webových stránek včetně hostingu a domény. Profesionální řešení za zlomek běžné ceny.</p>
+  </div>
+
+  <!-- CO DOSTANETE -->
+  <div class="section">
+    <div class="section-label">Co je v ceně</div>
+    <h2>Kompletní web na klíč</h2>
+    <p class="text">Všechno potřebné pro profesionální online prezentaci — od návrhu designu po spuštění na vlastní doméně.</p>
+
+    <div class="included-grid">
+      <div class="included-item">
+        <div class="included-icon">🎨</div>
+        <div><div class="included-name">Design na míru</div>
+        <div class="included-desc">Originální grafický návrh přesně podle vašeho stylu a potřeb. Žádné šablony.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">💻</div>
+        <div><div class="included-name">Vývoj webu</div>
+        <div class="included-desc">Čistý, rychlý kód. Moderní technologie, plynulé animace, bezpečnost.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📱</div>
+        <div><div class="included-name">Mobilní verze</div>
+        <div class="included-desc">Perfektní zobrazení na telefonu, tabletu i desktopu. Responzivní design.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">⚡</div>
+        <div><div class="included-name">Rychlost & SEO</div>
+        <div class="included-desc">Optimalizace pro vyhledávače, rychlé načítání, správná struktura.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🔒</div>
+        <div><div class="included-name">SSL certifikát</div>
+        <div class="included-desc">Šifrované připojení (https://) — bezpečnost pro vás i návštěvníky. Zdarma.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🚀</div>
+        <div><div class="included-name">Spuštění & nasazení</div>
+        <div class="included-desc">Kompletní nasazení na server, nastavení domény, testování. Vše zařídíme.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🎬</div>
+        <div><div class="included-name">Animace & efekty</div>
+        <div class="included-desc">Plynulé přechody, scroll efekty, interaktivní prvky. Web co zaujme.</div></div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🤝</div>
+        <div><div class="included-name">Podpora po spuštění</div>
+        <div class="included-desc">30 dní bezplatné podpory po spuštění. Drobné úpravy a opravy v ceně.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+
+  <!-- CENOVÉ SROVNÁNÍ -->
+  <div class="section">
+    <div class="section-label">Cenové srovnání</div>
+    <h2>Kolik to stojí jinde — a u nás</h2>
+    <p class="text">Transparentní srovnání s běžnými cenami na trhu. Žádné skryté poplatky, žádné překvapení.</p>
+
+    <div class="price-compare">
+      <table>
+        <thead>
+          <tr>
+            <th>Položka</th>
+            <th>Běžná cena na trhu</th>
+            <th>KSH Studio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Grafický návrh webu</td>
+            <td>5 000 – 12 000 Kč</td>
+            <td>v ceně ✓</td>
+          </tr>
+          <tr>
+            <td>Vývoj & kódování</td>
+            <td>10 000 – 20 000 Kč</td>
+            <td>v ceně ✓</td>
+          </tr>
+          <tr>
+            <td>Responzivní verze (mobil)</td>
+            <td>2 000 – 5 000 Kč</td>
+            <td>v ceně ✓</td>
+          </tr>
+          <tr>
+            <td>Animace & interaktivita</td>
+            <td>3 000 – 8 000 Kč</td>
+            <td>v ceně ✓</td>
+          </tr>
+          <tr>
+            <td>SEO optimalizace</td>
+            <td>2 000 – 5 000 Kč</td>
+            <td>v ceně ✓</td>
+          </tr>
+          <tr>
+            <td>SSL certifikát</td>
+            <td>500 – 1 500 Kč/rok</td>
+            <td>zdarma ✓</td>
+          </tr>
+          <tr>
+            <td>Nasazení & spuštění</td>
+            <td>1 000 – 3 000 Kč</td>
+            <td>v ceně ✓</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Celkem za web</td>
+            <td>23 500 – 54 500 Kč</td>
+            <td>5 000 Kč</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="savings-banner">
+      <div>
+        <div class="amount">Ušetříte 18 000+ Kč</div>
+        <div class="label">oproti běžné ceně na trhu</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROVOZNÍ NÁKLADY -->
+  <div class="section">
+    <div class="section-label">Provozní náklady</div>
+    <h2>Hosting & doména</h2>
+    <p class="text">Aby web fungoval, potřebuje server (hosting) a webovou adresu (doménu). Obojí za vás zařídíme.</p>
+
+    <div class="ongoing-card">
+      <div class="ongoing-row">
+        <span>Doména .cz (registrace + správa)</span>
+        <span class="val">250 Kč/rok</span>
+      </div>
+      <div class="ongoing-row">
+        <span>Hosting (server, SSL, zálohy)</span>
+        <span class="val">1 200 Kč/rok</span>
+      </div>
+      <div class="ongoing-row">
+        <span>Celkem ročně</span>
+        <span class="val">1 450 Kč/rok</span>
+      </div>
+    </div>
+    <div class="monthly-note">
+      To je <strong>121 Kč měsíčně</strong> za profesionální web na vlastní doméně.
+    </div>
+  </div>
+
+  <!-- CELKOVÁ KALKULACE -->
+  <div class="section">
+    <div class="section-label">Souhrn</div>
+    <h2>Celková investice</h2>
+
+    <div class="ongoing-card" style="border-color: rgba(16,128,168,0.3);">
+      <div class="ongoing-row">
+        <span>Web — design + vývoj (jednorázově)</span>
+        <span class="val">5 000 Kč</span>
+      </div>
+      <div class="ongoing-row">
+        <span>Doména .cz (1. rok)</span>
+        <span class="val">250 Kč</span>
+      </div>
+      <div class="ongoing-row">
+        <span>Hosting (1. rok)</span>
+        <span class="val">1 200 Kč</span>
+      </div>
+      <div class="ongoing-row" style="border-bottom: none;">
+        <span style="font-family:'Space Grotesk',sans-serif;">CELKEM — 1. rok</span>
+        <span class="val" style="font-size:1.3rem;">6 450 Kč</span>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:1rem;">
+      <span style="font-size:0.78rem; color:var(--muted);">Další roky: pouze</span>
+      <span style="font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; color:var(--blue);"> 1 450 Kč/rok</span>
+      <span style="font-size:0.78rem; color:var(--muted);"> (hosting + doména)</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+
+  <!-- DOPLŇKOVÉ SLUŽBY -->
+  <div class="section">
+    <div class="section-label">Doplňkové služby</div>
+    <h2>Připlacené služby à la carte</h2>
+    <p class="text">Nepotřebujete? Neplaťte. Každá služba je volitelná a objednáváte pouze to, co skutečně využijete.</p>
+
+    <div class="addons-grid">
+      <div class="addon-card">
+        <div class="addon-name">Logo & vizuální identita</div>
+        <div class="addon-desc">Návrh loga, barevná paleta, typografie. Kompletní brand kit pro online i tisk.</div>
+        <div class="addon-price">od 2 500 Kč</div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-name">Správa sociálních sítí</div>
+        <div class="addon-desc">Obsahový plán, grafika postů, texty. Instagram, Facebook, LinkedIn.</div>
+        <div class="addon-price">od 2 000 Kč <small>/měs</small></div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-name">Google firma (Google Business)</div>
+        <div class="addon-desc">Založení a optimalizace profilu. Zobrazení ve vyhledávání a na mapách.</div>
+        <div class="addon-price">1 500 Kč <small>jednorázově</small></div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-name">Google Analytics (GA4)</div>
+        <div class="addon-desc">Napojení analytiky, sledování návštěvnosti, chování uživatelů.</div>
+        <div class="addon-price">500 Kč <small>jednorázově</small></div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-name">Další stránky / podstránky</div>
+        <div class="addon-desc">Rozšíření webu o další sekce — portfolio, blog, ceník, tým atd.</div>
+        <div class="addon-price">od 1 000 Kč <small>/stránka</small></div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-name">Aktualizace obsahu</div>
+        <div class="addon-desc">Změna textů, fotek, přidání novinek. Rychlé úpravy bez čekání.</div>
+        <div class="addon-price">300 Kč <small>/úprava</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-label">Časté otázky</div>
+    <h2>Co vás může zajímat</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Jak dlouho trvá vytvoření webu?</div>
+      <div class="faq-a">Standardně 3–7 pracovních dní od odsouhlasení návrhu. U jednodušších projektů i dříve.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Co když budu chtít něco změnit po spuštění?</div>
+      <div class="faq-a">Prvních 30 dní po spuštění jsou drobné úpravy zdarma. Poté dle ceníku — 300 Kč za úpravu.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Můžu web kdykoliv zrušit?</div>
+      <div class="faq-a">Ano. Doména je vaše — pokud se rozhodnete odejít, převedeme ji na vás. Žádné vázání.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Co když si rozmyslím a web nechci?</div>
+      <div class="faq-a">Dokud neodsouhlasíte finální verzi, nic neplatíte. Platba až po vašem schválení.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Proč je to tak levné?</div>
+      <div class="faq-a">Neplatíte za kancelář, sekretářku ani obchodníka. Jsme malý tým co dělá weby efektivně a bez zbytečných nákladů. Nízká cena neznamená nízká kvalita.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Co přesně je hosting a proč ho platím zvlášť?</div>
+      <div class="faq-a">Hosting je server kde web běží — jako pronájem místa na internetu. Doména je vaše webová adresa. Obojí jsou měsíční/roční služby třetích stran, proto se platí průběžně. U nás za 121 Kč/měs — méně než kafe.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div>
+      <div class="ksh" style="margin-bottom:0.25rem;">KSH Studio</div>
+      <div style="font-size:0.72rem; color:var(--muted);">Nabídka platí 30 dní od data vystavení.</div>
+    </div>
+    <div class="contact">
+      Záviš Čuchna<br>
+      zavis@ksh.studio<br>
+      ksh.studio
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
