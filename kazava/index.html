@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KAZAVA — Pokrývačské práce | Lukáš Kára</title>
+  <title>KAZAVA — Pokrývačské, tesařské a klempířské práce | Lukáš Kára</title>
+  <link rel="icon" href="https://tesar-pokryvac.cz/icon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:       #0c0f13;
-      --surface:  #13171d;
-      --surface2: #1a1f28;
+      --bg:       #0a0d12;
+      --surface:  #111620;
+      --surface2: #181e2a;
       --border:   rgba(255,255,255,0.06);
       --fg:       #eeeae4;
       --muted:    #6b7280;
-      --orange:   #f07c32;
-      --orange-l: rgba(240,124,50,0.12);
-      --orange-d: #c45f1a;
+      --red:      #c41e3a;
+      --red-l:    rgba(196,30,58,0.12);
+      --red-d:    #9e1830;
+      --blue:     #004F9D;
+      --blue-l:   rgba(0,79,157,0.12);
       --radius:   10px;
     }
 
@@ -26,7 +29,7 @@
 
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
 
     .container { max-width: 1100px; margin: 0 auto; }
 
@@ -34,141 +37,144 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem;
-      background: rgba(12,15,19,0.85);
+      padding: 0.75rem 2rem;
+      background: rgba(10,13,18,0.85);
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
-    .nav-logo .dot { width: 8px; height: 8px; background: var(--orange); border-radius: 2px; }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo img { height: 40px; }
+    .nav-logo span { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--fg); }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: var(--fg); }
-    .nav-cta { background: var(--orange); color: #fff; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.82rem; text-decoration: none; transition: background 0.2s; }
-    .nav-cta:hover { background: var(--orange-d); }
-
-    /* HAMBURGER */
+    .nav-cta { background: var(--red); color: #fff; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.82rem; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .nav-cta:hover { background: var(--red-d); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
-    .hamburger span { width: 22px; height: 1.5px; background: var(--fg); transition: all 0.3s; }
+    .hamburger span { width: 22px; height: 1.5px; background: var(--fg); }
 
     /* HERO */
     .hero {
       min-height: 100vh;
       display: flex; align-items: center;
       padding: 8rem 2rem 4rem;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse at 70% 20%, rgba(240,124,50,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 20% 80%, rgba(240,124,50,0.04) 0%, transparent 50%);
+        radial-gradient(ellipse at 70% 30%, rgba(196,30,58,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 70%, rgba(0,79,157,0.04) 0%, transparent 50%);
+    }
+    .hero-bg {
+      position: absolute; top: 0; right: 0; bottom: 0; width: 45%;
+      background: url('https://tesar-pokryvac.cz/img/home_slide/2.jpg') center/cover no-repeat;
+      opacity: 0.12;
+      mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%);
     }
     .hero-inner { position: relative; max-width: 1100px; margin: 0 auto; width: 100%; }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--orange-l); border: 1px solid rgba(240,124,50,0.2);
-      color: var(--orange); border-radius: 20px;
+      background: var(--red-l); border: 1px solid rgba(196,30,58,0.2);
+      color: var(--red); border-radius: 20px;
       padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 600;
       letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem;
     }
-    .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; }
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(2.8rem, 7vw, 5.5rem);
       font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
       margin-bottom: 1.5rem;
     }
-    .hero h1 em { font-style: normal; color: var(--orange); }
-    .hero-desc { color: var(--muted); font-size: 1rem; line-height: 1.8; max-width: 520px; margin-bottom: 2.5rem; }
+    .hero h1 em { font-style: normal; color: var(--red); }
+    .hero-desc { color: var(--muted); font-size: 1rem; line-height: 1.8; max-width: 540px; margin-bottom: 2.5rem; }
     .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-orange { background: var(--orange); color: #fff; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
-    .btn-orange:hover { background: var(--orange-d); transform: translateY(-2px); }
+    .btn-red { background: var(--red); color: #fff; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn-red:hover { background: var(--red-d); transform: translateY(-2px); }
     .btn-ghost { color: var(--muted); padding: 0.85rem 2rem; border: 1px solid var(--border); border-radius: 8px; font-weight: 500; font-size: 0.85rem; text-decoration: none; transition: all 0.2s; }
-    .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+    .btn-ghost:hover { border-color: var(--red); color: var(--red); }
 
     .hero-stats {
       display: flex; gap: 3rem; margin-top: 4rem; padding-top: 2.5rem;
       border-top: 1px solid var(--border);
     }
-    .stat-n { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; color: var(--orange); line-height: 1; }
+    .stat-n { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; color: var(--red); line-height: 1; }
     .stat-l { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em; }
 
     /* SECTIONS */
     section { padding: clamp(4rem, 8vw, 7rem) 2rem; }
-    .section-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.65rem; }
+    .section-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 0.65rem; }
     .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; margin-bottom: 1rem; }
-    .section-lead { color: var(--muted); font-size: 0.95rem; max-width: 560px; line-height: 1.75; margin-bottom: 2.5rem; }
-    .divider { width: 40px; height: 3px; background: var(--orange); border-radius: 2px; margin: 1.5rem 0; }
+    .section-lead { color: var(--muted); font-size: 0.95rem; max-width: 580px; line-height: 1.75; margin-bottom: 2.5rem; }
+    .divider { width: 40px; height: 3px; background: var(--red); border-radius: 2px; margin: 1.5rem 0; }
 
     /* SLUŽBY */
     #sluzby { background: var(--surface); }
     .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 2rem; }
-    .service-card {
-      background: var(--surface);
-      padding: 2rem; transition: background 0.2s;
-    }
+    .service-card { background: var(--surface); padding: 2rem; transition: background 0.2s; }
     .service-card:hover { background: var(--surface2); }
-    .service-icon { font-size: 1.5rem; margin-bottom: 1rem; width: 44px; height: 44px; background: var(--orange-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .service-icon { font-size: 1.5rem; margin-bottom: 1rem; width: 44px; height: 44px; background: var(--red-l); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .service-name { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
     .service-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
 
+    /* PROCESS */
+    .process-list { list-style: none; margin-top: 2rem; max-width: 700px; }
+    .process-item {
+      display: flex; gap: 1.25rem; padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .process-num {
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem;
+      font-weight: 700; color: var(--red); min-width: 28px;
+      height: 28px; background: var(--red-l); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .process-text { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
     /* PROČ MY */
     .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
-    .why-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      transition: border-color 0.2s;
-    }
-    .why-card:hover { border-color: rgba(240,124,50,0.3); }
-    .why-num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: rgba(240,124,50,0.15); margin-bottom: 0.5rem; }
+    .why-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; transition: border-color 0.2s; }
+    .why-card:hover { border-color: rgba(196,30,58,0.3); }
+    .why-num { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: rgba(196,30,58,0.15); margin-bottom: 0.5rem; }
     .why-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
     .why-text { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
 
-    /* REFERENCE */
-    #reference { background: var(--surface); }
-    .ref-strip {
-      display: flex; gap: 1rem; overflow-x: auto; padding: 1rem 0 2rem;
-      scrollbar-width: none; -ms-overflow-style: none;
-    }
-    .ref-strip::-webkit-scrollbar { display: none; }
-    .ref-card {
-      flex-shrink: 0; width: 300px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
-      transition: border-color 0.2s;
-    }
-    .ref-card:hover { border-color: rgba(240,124,50,0.3); }
-    .ref-img { width: 100%; height: 180px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem; }
-    .ref-body { padding: 1.25rem; }
-    .ref-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
-    .ref-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
-
     /* AWARDS */
-    .awards-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
-    .award-badge {
-      background: var(--orange-l); border: 1px solid rgba(240,124,50,0.2);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
+    .awards-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+    .award-badge { background: var(--red-l); border: 1px solid rgba(196,30,58,0.2); border-radius: var(--radius); overflow: hidden; display: flex; align-items: center; gap: 0; width: 300px; }
+    .award-img { width: 80px; height: 80px; object-fit: cover; flex-shrink: 0; }
+    .award-text { padding: 0.75rem 1rem; }
+    .award-place { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--red); }
+    .award-detail { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.4; }
+
+    /* BRANDS */
+    .brands { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; align-items: center; }
+    .brand-name { font-size: 0.82rem; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; opacity: 0.6; transition: opacity 0.2s; }
+    .brand-name:hover { opacity: 1; }
+
+    /* GALERIE */
+    #galerie { background: var(--surface); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .gallery-card {
+      border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);
+      aspect-ratio: 4/3; position: relative;
     }
-    .award-icon { font-size: 1.5rem; }
-    .award-text .award-place { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--orange); }
-    .award-text .award-detail { font-size: 0.72rem; color: var(--muted); }
+    .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-placeholder { width: 100%; height: 100%; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem; flex-direction: column; gap: 0.5rem; }
 
     /* CTA */
     .cta-section {
-      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-d) 100%);
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-d) 100%);
       border-radius: 16px; padding: 4rem 3rem;
-      text-align: center; margin: 0 2rem 4rem;
-      max-width: 1100px; margin-left: auto; margin-right: auto;
+      text-align: center; max-width: 1100px;
+      margin: 0 auto; margin-bottom: 0;
     }
+    .cta-wrap { padding: 0 2rem 4rem; }
     .cta-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.5rem, 3vw, 2.2rem); color: #fff; margin-bottom: 0.75rem; }
     .cta-section p { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .btn-white { background: #fff; color: var(--orange-d); padding: 0.85rem 2.5rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn-white { background: #fff; color: var(--red-d); padding: 0.85rem 2.5rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
     .btn-white:hover { transform: translateY(-2px); }
 
     /* KONTAKT */
@@ -176,59 +182,61 @@
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; }
     .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
     .ci-item { display: flex; align-items: flex-start; gap: 1rem; }
-    .ci-icon { width: 40px; height: 40px; background: var(--orange-l); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .ci-icon { width: 40px; height: 40px; background: var(--red-l); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
     .ci-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
     .ci-value { font-size: 0.95rem; color: var(--fg); margin-top: 0.15rem; }
     .ci-value a { color: var(--fg); text-decoration: none; transition: color 0.2s; }
-    .ci-value a:hover { color: var(--orange); }
+    .ci-value a:hover { color: var(--red); }
     .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-input {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 0.85rem 1rem;
-      font-family: 'Inter', sans-serif; font-size: 0.88rem;
-      color: var(--fg); outline: none; transition: border-color 0.2s;
-    }
-    .form-input:focus { border-color: var(--orange); }
+    .form-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--fg); outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--red); }
     .form-input::placeholder { color: var(--muted); }
     textarea.form-input { min-height: 120px; resize: vertical; }
+    .map-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); height: 250px; margin-top: 1.5rem; }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; filter: brightness(0.8) contrast(1.1); }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem; }
     .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .footer-logo { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--muted); }
-    .footer-logo span { color: var(--orange); }
+    .footer-logo span { color: var(--red); }
     footer p { font-size: 0.72rem; color: var(--muted); }
-    footer a { color: var(--orange); text-decoration: none; }
+    footer a { color: var(--red); text-decoration: none; }
 
-    /* ANIMATIONS */
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
     .reveal.visible { opacity: 1; transform: none; }
     .d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; } .d4 { transition-delay: 0.32s; }
 
-    /* RESPONSIVE */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: flex; }
-      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(12,15,19,0.97); padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,13,18,0.97); padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid var(--border); }
       .hero h1 { font-size: clamp(2.2rem, 8vw, 3.5rem); }
       .hero-stats { flex-direction: column; gap: 1.5rem; }
+      .hero-bg { display: none; }
       .why-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
-      .cta-section { margin: 0 1rem 3rem; padding: 3rem 1.5rem; }
+      .cta-wrap { padding: 0 1rem 3rem; }
+      .cta-section { padding: 3rem 1.5rem; }
+      .award-badge { width: 100%; }
     }
   </style>
 </head>
 <body>
 
 <nav id="nav">
-  <a href="#" class="nav-logo"><span class="dot"></span> KAZAVA</a>
+  <a href="#" class="nav-logo">
+    <img src="https://tesar-pokryvac.cz/img/logo.png" alt="KAZAVA">
+    <span>KAZAVA</span>
+  </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#sluzby">Služby</a></li>
+    <li><a href="#jak-pracujeme">Jak pracujeme</a></li>
     <li><a href="#proc-my">Proč my</a></li>
-    <li><a href="#reference">Reference</a></li>
+    <li><a href="#galerie">Galerie</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
-  <a href="tel:+420777843043" class="nav-cta">📞 +420 777 843 043</a>
+  <a href="tel:+420777843043" class="nav-cta">📞 777 843 043</a>
   <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
     <span></span><span></span><span></span>
   </button>
@@ -236,28 +244,29 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-bg"></div>
   <div class="hero-inner">
-    <div class="hero-badge reveal">Člen Cechu pokrývačů od 2004</div>
+    <div class="hero-badge reveal">Člen Cechu pokrývačů, klempířů a tesařů ČR od 2004</div>
     <h1 class="reveal d1">Střechy, kterým<br><em>důvěřujete</em></h1>
     <p class="hero-desc reveal d2">
-      Pokrývačské a tesařské práce na profesionální úrovni. Od zaměření střechy po kompletní realizaci — vše z jedné ruky. Bezplatná konzultace a zaměření.
+      Pokrývačské, tesařské a klempířské práce na profesionální úrovni. Od bezplatného zaměření po kompletní realizaci — vše z jedné ruky. Působíme po celé ČR včetně památkových objektů.
     </p>
     <div class="hero-btns reveal d3">
-      <a href="#kontakt" class="btn-orange">Nezávazná poptávka →</a>
+      <a href="#kontakt" class="btn-red">Nezávazná poptávka →</a>
       <a href="#sluzby" class="btn-ghost">Naše služby</a>
     </div>
     <div class="hero-stats reveal d4">
       <div>
-        <div class="stat-n">20+</div>
-        <div class="stat-l">Let zkušeností</div>
+        <div class="stat-n">28</div>
+        <div class="stat-l">Let na trhu (od 1998)</div>
       </div>
       <div>
         <div class="stat-n">1.</div>
         <div class="stat-l">Místo BRAMAC 2010</div>
       </div>
       <div>
-        <div class="stat-n">100%</div>
-        <div class="stat-l">Bezplatné zaměření</div>
+        <div class="stat-n">0 Kč</div>
+        <div class="stat-l">Zaměření + kalkulace</div>
       </div>
     </div>
   </div>
@@ -267,81 +276,115 @@
 <section id="sluzby">
   <div class="container">
     <div class="section-eyebrow reveal">Co děláme</div>
-    <h2 class="section-title reveal">Kompletní servis<br>od střechy po komín</h2>
+    <h2 class="section-title reveal">Kompletní servis<br>od krovu po hřeben</h2>
     <div class="divider reveal"></div>
+    <p class="section-lead reveal">Realizujeme rekonstrukce i novostavby na klíč. Všechny typy střešních krytin — tašky, plech, šindel, břidlice, PVC fólie.</p>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-icon">🏠</div>
-        <div class="service-name">Pokládka střešní krytiny</div>
-        <div class="service-desc">Všechny typy střech — tašky, plech, šindel. Kompletní realizace od laťování po hřeben.</div>
+        <div class="service-name">Pokrývačské práce</div>
+        <div class="service-desc">Pokládka všech typů krytin. Impregnace, fólie, laťování, pokládka. Rekonstrukce i novostavby na klíč.</div>
       </div>
       <div class="service-card reveal d1">
-        <div class="service-icon">📐</div>
-        <div class="service-name">Zaměření a kalkulace</div>
-        <div class="service-desc">Bezplatné zaměření střechy a vypracování cenové nabídky. Přijedeme k vám.</div>
+        <div class="service-icon">🪵</div>
+        <div class="service-name">Tesařské práce</div>
+        <div class="service-desc">Nové krovy i opravy původních. Spolupráce s Břetislavem Kociánem — tesařem památkářem.</div>
       </div>
       <div class="service-card reveal d2">
-        <div class="service-icon">🪟</div>
-        <div class="service-name">Střešní okna</div>
-        <div class="service-desc">Montáž a konzultace střešních oken. Pomůžeme s výběrem ideálního řešení.</div>
-      </div>
-      <div class="service-card reveal d3">
-        <div class="service-icon">🧱</div>
-        <div class="service-name">Zednické práce</div>
-        <div class="service-desc">Stavba komínů, opravy zdiva, práce spojené se střešní konstrukcí.</div>
-      </div>
-      <div class="service-card reveal">
         <div class="service-icon">🔧</div>
         <div class="service-name">Klempířské práce</div>
-        <div class="service-desc">Oplechování komínů, parapetů, okapové systémy. Precizní řemeslná práce.</div>
+        <div class="service-desc">Oplechování komínů, parapetů, okapové systémy. Pozinkovaný plech, titan-zinek, měď, hliník.</div>
       </div>
-      <div class="service-card reveal d1">
+      <div class="service-card reveal d3">
+        <div class="service-icon">🪟</div>
+        <div class="service-name">Střešní okna</div>
+        <div class="service-desc">Kompletní montáž a poradenství. Pomůžeme vybrat ideální řešení pro váš dům.</div>
+      </div>
+      <div class="service-card reveal">
         <div class="service-icon">🧊</div>
         <div class="service-name">Nadkrokevní izolace</div>
-        <div class="service-desc">Dodávka a montáž nadkrokevní tepelné izolace. Šetříme vaše náklady na vytápění.</div>
+        <div class="service-desc">Dodávka a montáž tepelné izolace. Registrovaný dodavatel programu Zelená úsporám.</div>
+      </div>
+      <div class="service-card reveal d1">
+        <div class="service-icon">🧱</div>
+        <div class="service-name">Zednické práce</div>
+        <div class="service-desc">Stavba komínů, štítů, opravy zdiva. Vše spojené se střešní konstrukcí.</div>
       </div>
       <div class="service-card reveal d2">
         <div class="service-icon">🏗️</div>
-        <div class="service-name">Půjčovna plošin</div>
-        <div class="service-desc">Pronájem pracovních plošin pro výškové práce. Montáž i demontáž zajistíme.</div>
+        <div class="service-name">Pronájem autoplošiny</div>
+        <div class="service-desc">Pracovní plošiny pro výškové práce. Montáž i demontáž zajistíme.</div>
       </div>
       <div class="service-card reveal d3">
         <div class="service-icon">🧰</div>
         <div class="service-name">Prodej materiálu</div>
-        <div class="service-desc">Stavební materiál za výhodné ceny. Střešní krytiny, izolace, příslušenství.</div>
+        <div class="service-desc">Střešní krytiny, izolace, příslušenství za výhodné ceny. Zajistíme i dopravu.</div>
       </div>
+    </div>
+
+    <!-- Značky -->
+    <div class="brands reveal" style="margin-top:2.5rem;">
+      <span style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.15em;font-weight:600;">Dodáváme:</span>
+      <span class="brand-name">Bramac</span>
+      <span class="brand-name">KM-Beta</span>
+      <span class="brand-name">Tondach</span>
+      <span class="brand-name">Terran</span>
+      <span class="brand-name">Prefa</span>
+      <span class="brand-name">Lindab</span>
+      <span class="brand-name">Balex Metal</span>
+      <span class="brand-name">KJG</span>
     </div>
   </div>
 </section>
 
+<!-- JAK PRACUJEME -->
+<section id="jak-pracujeme">
+  <div class="container">
+    <div class="section-eyebrow reveal">Postup</div>
+    <h2 class="section-title reveal">Jak to u nás funguje</h2>
+    <div class="divider reveal"></div>
+    <p class="section-lead reveal">Nabídkou zdarma nic neztratíte. Cenové rozpočty vytváříme ve vlastních vzorech — přehledně a srozumitelně i pro laiky.</p>
+    <ol class="process-list">
+      <li class="process-item reveal"><span class="process-num">1</span><span class="process-text">Zdarma vaši střechu <strong>zaměříme</strong> a zhotovíme cenový rozpočet</span></li>
+      <li class="process-item reveal d1"><span class="process-num">2</span><span class="process-text">Zajistíme veškerý <strong>materiál</strong> a postaráme se o jeho dopravu</span></li>
+      <li class="process-item reveal d2"><span class="process-num">3</span><span class="process-text">Starou krytinu <strong>demontujeme</strong>, v nutném případě ekologicky zlikvidujeme</span></li>
+      <li class="process-item reveal d3"><span class="process-num">4</span><span class="process-text">Zhotovíme nový <strong>krov</strong> nebo opravíme původní</span></li>
+      <li class="process-item reveal"><span class="process-num">5</span><span class="process-text">Střechu zafolijujeme, nalatujeme, <strong>položíme krytinu</strong></span></li>
+      <li class="process-item reveal d1"><span class="process-num">6</span><span class="process-text">Provedeme veškeré <strong>klempířské práce</strong> — oplechování komínů, parapetů</span></li>
+      <li class="process-item reveal d2"><span class="process-num">7</span><span class="process-text">Provedeme veškeré <strong>zednické práce</strong> — komín, štít, opravy</span></li>
+      <li class="process-item reveal d3"><span class="process-num">8</span><span class="process-text">Namontujeme <strong>střešní okna, doplňky</strong> — vaše střecha tvoří celek</span></li>
+    </ol>
+  </div>
+</section>
+
 <!-- PROČ MY -->
-<section id="proc-my">
+<section id="proc-my" style="background:var(--surface);">
   <div class="container">
     <div class="section-eyebrow reveal">Proč KAZAVA</div>
     <h2 class="section-title reveal">Řemeslo s garancí kvality</h2>
     <div class="divider reveal"></div>
-    <p class="section-lead reveal">Nejsme anonymní firma. Jsme řemeslníci s jménem, reputací a výsledky, které mluví za nás.</p>
+    <p class="section-lead reveal">Nejsme anonymní firma. Jsme řemeslníci s jménem, reputací a výsledky, které mluví za nás. Na trhu od roku 1998.</p>
 
     <div class="awards-row reveal">
       <div class="award-badge">
-        <div class="award-icon">🏆</div>
+        <img class="award-img" src="https://tesar-pokryvac.cz/img/home_slide/2.jpg" alt="BRAMAC 2010">
         <div class="award-text">
           <div class="award-place">1. místo — BRAMAC 2010</div>
-          <div class="award-detail">Mistrovství pokrývačů</div>
+          <div class="award-detail">Kategorie Cechu — řešení detailu</div>
         </div>
       </div>
       <div class="award-badge">
-        <div class="award-icon">🥇</div>
+        <img class="award-img" src="https://tesar-pokryvac.cz/img/home_slide/4.jpg" alt="BRAMAC 2006">
         <div class="award-text">
           <div class="award-place">1. místo — BRAMAC 2006</div>
-          <div class="award-detail">Soutěž pokrývačů</div>
+          <div class="award-detail">Rodinné domy — rekonstrukce</div>
         </div>
       </div>
       <div class="award-badge">
-        <div class="award-icon">🥉</div>
+        <img class="award-img" src="https://tesar-pokryvac.cz/img/home_slide/3.jpg" alt="BRAMAC 2008">
         <div class="award-text">
           <div class="award-place">3. místo — BRAMAC 2008</div>
-          <div class="award-detail">Soutěž pokrývačů</div>
+          <div class="award-detail">Rodinné domy — rekonstrukce</div>
         </div>
       </div>
     </div>
@@ -349,73 +392,52 @@
     <div class="why-grid">
       <div class="why-card reveal">
         <div class="why-num">01</div>
-        <div class="why-title">20+ let v oboru</div>
-        <div class="why-text">Člen Cechu pokrývačů, klempířů a tesařů ČR od roku 2004. Řemeslo s tradicí a zkušenostmi.</div>
+        <div class="why-title">28 let v oboru</div>
+        <div class="why-text">Na trhu od roku 1998. Člen Cechu klempířů, pokrývačů a tesařů ČR od roku 2004 — záruka profesní kvality.</div>
       </div>
       <div class="why-card reveal d1">
         <div class="why-num">02</div>
         <div class="why-title">Vše z jedné ruky</div>
-        <div class="why-text">Střecha, izolace, klempířina, zednické práce — nemusíte koordinovat 5 firem. Vyřešíme vše.</div>
+        <div class="why-text">Krov, krytina, klempířina, izolace, zedničina — nemusíte koordinovat 5 firem. Vyřešíme kompletně.</div>
       </div>
       <div class="why-card reveal d2">
         <div class="why-num">03</div>
-        <div class="why-title">Bezplatné zaměření</div>
-        <div class="why-text">Přijedeme, zaměříme, vypočítáme cenu. Bez závazků a bez poplatků. Rozhodnutí je na vás.</div>
+        <div class="why-title">Zelená úsporám</div>
+        <div class="why-text">Registrovaný dodavatel programu MŽP ČR. Pomůžeme vám s dotacemi na izolace a střechy.</div>
       </div>
       <div class="why-card reveal d3">
         <div class="why-num">04</div>
-        <div class="why-title">Zelená úsporám</div>
-        <div class="why-text">Registrovaný dodavatel programu MŽP — pomůžeme vám s dotacemi na izolace a střechy.</div>
+        <div class="why-title">Památkové objekty</div>
+        <div class="why-text">Spolupráce s tesařem památkářem Břetislavem Kociánem. Specifické stavby řešíme s pokorou a zkušeností.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- REFERENCE -->
-<section id="reference">
+<!-- GALERIE -->
+<section id="galerie">
   <div class="container">
     <div class="section-eyebrow reveal">Realizace</div>
     <h2 class="section-title reveal">Naše práce mluví za nás</h2>
     <div class="divider reveal"></div>
-    <p class="section-lead reveal">Desítky dokončených projektů — rodinné domy, rekonstrukce, novostavby. Každá střecha s garancí kvality.</p>
-    <div class="ref-strip reveal">
-      <div class="ref-card">
-        <div class="ref-img">📷 Foto realizace</div>
-        <div class="ref-body">
-          <div class="ref-title">Rodinný dům — kompletní střecha</div>
-          <div class="ref-desc">Nová střešní krytina BRAMAC, laťování, izolace, klempířské prvky.</div>
-        </div>
-      </div>
-      <div class="ref-card">
-        <div class="ref-img">📷 Foto realizace</div>
-        <div class="ref-body">
-          <div class="ref-title">Rekonstrukce historické budovy</div>
-          <div class="ref-desc">Kompletní výměna krovu a krytiny. Zachování původního rázu objektu.</div>
-        </div>
-      </div>
-      <div class="ref-card">
-        <div class="ref-img">📷 Foto realizace</div>
-        <div class="ref-body">
-          <div class="ref-title">Novostavba s nadkrokevní izolací</div>
-          <div class="ref-desc">Montáž tepelné izolace + pálená taška. Energeticky úsporné řešení.</div>
-        </div>
-      </div>
-      <div class="ref-card">
-        <div class="ref-img">📷 Foto realizace</div>
-        <div class="ref-body">
-          <div class="ref-title">Oplechování komínů</div>
-          <div class="ref-desc">Precizní klempířské práce — oplechování, lemování, okapové systémy.</div>
-        </div>
-      </div>
+    <div class="gallery-grid">
+      <div class="gallery-card reveal"><img src="https://tesar-pokryvac.cz/img/home_slide/1.jpg" alt="Člen cechu"></div>
+      <div class="gallery-card reveal d1"><img src="https://tesar-pokryvac.cz/img/home_slide/2.jpg" alt="BRAMAC 2010"></div>
+      <div class="gallery-card reveal d2"><img src="https://tesar-pokryvac.cz/articles/0/64/foto/f-93.jpg" alt="Autoplošina"></div>
+      <div class="gallery-card reveal d3"><img src="https://tesar-pokryvac.cz/articles/0/64/foto/f-92.jpg" alt="Technika"></div>
+      <div class="gallery-card reveal"><div class="gallery-placeholder">📷<span>Vaše realizace<br>sem doplníme</span></div></div>
+      <div class="gallery-card reveal d1"><div class="gallery-placeholder">📷<span>Vaše realizace<br>sem doplníme</span></div></div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<div class="cta-section reveal">
-  <h2>Potřebujete novou střechu?</h2>
-  <p>Zavolejte nám nebo napište — zaměření a cenovou nabídku máte do 48 hodin. Zdarma.</p>
-  <a href="tel:+420777843043" class="btn-white">📞 Zavolat: 777 843 043</a>
+<div class="cta-wrap">
+  <div class="cta-section reveal">
+    <h2>Potřebujete novou střechu?</h2>
+    <p>Zavolejte nebo napište — zaměření a cenovou nabídku máte do 48 hodin. Zcela zdarma a nezávazně.</p>
+    <a href="tel:+420777843043" class="btn-white">📞 Zavolat: 777 843 043</a>
+  </div>
 </div>
 
 <!-- KONTAKT -->
@@ -428,60 +450,50 @@
       <div class="contact-info reveal">
         <div class="ci-item">
           <div class="ci-icon">👤</div>
-          <div>
-            <div class="ci-label">Jednatel</div>
-            <div class="ci-value">Lukáš Kára</div>
-          </div>
+          <div><div class="ci-label">Jednatel</div><div class="ci-value">Lukáš Kára</div></div>
         </div>
         <div class="ci-item">
           <div class="ci-icon">📞</div>
-          <div>
-            <div class="ci-label">Telefon</div>
-            <div class="ci-value"><a href="tel:+420777843043">+420 777 843 043</a></div>
-          </div>
+          <div><div class="ci-label">Telefon</div><div class="ci-value"><a href="tel:+420777843043">+420 777 843 043</a></div></div>
         </div>
         <div class="ci-item">
           <div class="ci-icon">✉️</div>
-          <div>
-            <div class="ci-label">Email</div>
-            <div class="ci-value"><a href="mailto:kara@tesar-pokryvac.cz">kara@tesar-pokryvac.cz</a></div>
-          </div>
+          <div><div class="ci-label">Email</div><div class="ci-value"><a href="mailto:kara@tesar-pokryvac.cz">kara@tesar-pokryvac.cz</a></div></div>
         </div>
         <div class="ci-item">
-          <div class="ci-icon">🌐</div>
-          <div>
-            <div class="ci-label">Web</div>
-            <div class="ci-value"><a href="https://tesar-pokryvac.cz">tesar-pokryvac.cz</a></div>
-          </div>
+          <div class="ci-icon">📍</div>
+          <div><div class="ci-label">Adresa</div><div class="ci-value">Bílkov 79, 380 01 Dačice</div></div>
+        </div>
+        <div class="ci-item">
+          <div class="ci-icon">🏢</div>
+          <div><div class="ci-label">IČ / DIČ</div><div class="ci-value">67193722 / CZ7908013850</div></div>
+        </div>
+        <div class="map-wrap">
+          <iframe src="https://maps.google.com/maps?q=B%C3%ADlkov+79,+Da%C4%8Dice&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
         </div>
       </div>
-      <form class="contact-form reveal d1" onsubmit="event.preventDefault(); alert('Děkujeme za zprávu! Ozveme se vám do 24 hodin.');">
+      <form class="contact-form reveal d1" onsubmit="event.preventDefault(); alert('Děkujeme! Ozveme se vám do 24 hodin.');">
         <input class="form-input" type="text" placeholder="Vaše jméno" required>
         <input class="form-input" type="tel" placeholder="Telefon">
         <input class="form-input" type="email" placeholder="Email">
-        <textarea class="form-input" placeholder="Popište váš projekt — typ střechy, rozměry, termín..."></textarea>
-        <button type="submit" class="btn-orange" style="border:none;cursor:pointer;justify-content:center;">Odeslat poptávku →</button>
+        <textarea class="form-input" placeholder="Popište váš projekt — typ střechy, rozměry, lokalita, termín..."></textarea>
+        <button type="submit" class="btn-red" style="border:none;cursor:pointer;justify-content:center;">Odeslat poptávku →</button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <span class="footer-logo">KAZAVA<span>.</span></span>
-    <p>© 2026 KAZAVA — Pokrývačské práce | Web by <a href="#">KSH Studio</a></p>
+    <p>© 2026 KAZAVA — Pokrývačské práce, Lukáš Kára | IČ: 67193722 | Web by <a href="#">KSH Studio</a></p>
   </div>
 </footer>
 
 <script>
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.style.background = window.scrollY > 40 ? 'rgba(12,15,19,0.97)' : 'rgba(12,15,19,0.85)');
-
-  document.querySelectorAll('.nav-links a').forEach(a =>
-    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
-  );
-
+  window.addEventListener('scroll', () => nav.style.background = window.scrollY > 40 ? 'rgba(10,13,18,0.97)' : 'rgba(10,13,18,0.85)');
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.1 });
