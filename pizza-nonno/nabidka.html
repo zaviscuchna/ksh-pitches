@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nabídka — Pizza Nonno | KSH Partners</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f8fa;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --red: #ce2b37;
+      --red-l: #fef2f2;
+      --red-d: #a8222c;
+      --green: #059669;
+      --green-l: #ecfdf5;
+      --blue: #1080a8;
+      --blue-l: #edf7fb;
+    }
+
+    @page { size: A4; margin: 12mm 16mm; }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .page-break { break-before: page; }
+      .section, .price-compare, .savings-banner, .cost-card, .total-card,
+      .included-item, .addon-card, .faq-item, .doc-footer, .offer-hero,
+      .package { break-inside: avoid; }
+      .page { padding: 0; }
+    }
+
+    body { font-family: 'Inter', sans-serif; background: #e8e8e8; color: var(--text); line-height: 1.55; font-size: 13.5px; }
+
+    .page {
+      max-width: 794px; background: var(--bg);
+      margin: 2rem auto; padding: 1.75rem 2.5rem;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    @media print { body { background: white; } .page { margin: 0; padding: 0; box-shadow: none; max-width: 100%; } }
+
+    /* HEADER */
+    .doc-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding-bottom: 0.85rem; border-bottom: 2px solid var(--red); margin-bottom: 1.25rem;
+    }
+    .ksh-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--red); letter-spacing: 0.08em; }
+    .ksh-logo small { display: block; font-size: 0.55rem; color: var(--muted); font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.1rem; font-family: 'Inter', sans-serif; }
+    .doc-meta { text-align: right; font-size: 0.75rem; color: var(--muted); line-height: 1.8; }
+    .doc-meta strong { color: var(--text); font-weight: 600; }
+
+    /* HERO */
+    .offer-hero { text-align: center; padding: 1.25rem 0; }
+    .offer-badge { display: inline-block; background: var(--red-l); color: var(--red); border: 1px solid rgba(206,43,55,0.2); border-radius: 20px; padding: 0.25rem 0.85rem; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .offer-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem; }
+    .offer-hero h1 em { font-style: normal; color: var(--red); }
+    .offer-hero p { color: var(--muted); font-size: 0.82rem; max-width: 440px; margin: 0 auto; line-height: 1.6; }
+
+    /* SECTIONS */
+    .section { margin-bottom: 1.5rem; }
+    .section-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .text { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.5rem; }
+
+    /* PROBLEM/SOLUTION */
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+    .problem-card { border-radius: 8px; padding: 1rem; }
+    .problem-card.bad { background: #fef2f2; border: 1px solid #fecaca; }
+    .problem-card.good { background: var(--green-l); border: 1px solid rgba(5,150,105,0.2); }
+    .problem-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .problem-card.bad h3 { color: #b91c1c; }
+    .problem-card.good h3 { color: var(--green); }
+    .problem-card ul { list-style: none; font-size: 0.72rem; color: var(--muted); line-height: 1.7; }
+    .problem-card ul li::before { content: '×  '; font-weight: 700; }
+    .problem-card.good ul li::before { content: '✓  '; color: var(--green); }
+    .problem-card.bad ul li::before { color: #b91c1c; }
+
+    /* PACKAGES */
+    .packages { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 1rem 0; }
+    .package { border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem; position: relative; }
+    .package.featured { border-color: var(--red); border-width: 2px; }
+    .package-badge { position: absolute; top: -8px; right: 12px; background: var(--red); color: #fff; font-size: 0.55rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .package-name { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.15rem; }
+    .package-desc { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.6rem; line-height: 1.4; }
+    .package-price { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--red); margin-bottom: 0.5rem; }
+    .package-price small { font-size: 0.65rem; color: var(--muted); font-weight: 400; }
+    .package-list { list-style: none; font-size: 0.7rem; color: var(--text); line-height: 1.8; }
+    .package-list li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+    .package-list li.no::before { content: '— '; color: #d1d5db; }
+    .package-list li.no { color: var(--muted); }
+
+    /* WOLT COMPARISON */
+    .wolt-compare {
+      background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: 10px; padding: 1rem 1.25rem; margin: 1rem 0;
+    }
+    .wolt-compare h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: #92400e; margin-bottom: 0.5rem; }
+    .wolt-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+    .wolt-col { text-align: center; padding: 0.6rem; border-radius: 6px; }
+    .wolt-col.wolt { background: #fef3c7; }
+    .wolt-col.us { background: var(--green-l); }
+    .wolt-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; }
+    .wolt-col.wolt .wolt-label { color: #92400e; }
+    .wolt-col.us .wolt-label { color: var(--green); }
+    .wolt-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .wolt-col.wolt .wolt-val { color: #b45309; }
+    .wolt-col.us .wolt-val { color: var(--green); }
+    .wolt-note { font-size: 0.6rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* COST CARDS */
+    .cost-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0.75rem 0; }
+    .cost-row { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.78rem; }
+    .cost-row:last-child { border-bottom: none; font-weight: 700; padding-top: 0.5rem; margin-top: 0.2rem; border-top: 1px solid var(--border); }
+    .cost-row .val { color: var(--red); font-weight: 600; }
+    .cost-row:last-child .val { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; }
+
+    .total-card { background: var(--red-l); border: 2px solid rgba(206,43,55,0.2); border-radius: 10px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
+    .total-card .cost-row { border-color: rgba(206,43,55,0.08); }
+    .total-card .cost-row:last-child { border-color: rgba(206,43,55,0.15); }
+
+    .monthly { text-align: center; font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
+    .monthly strong { color: var(--red); font-size: 0.82rem; }
+
+    /* TIMELINE */
+    .timeline { margin: 0.75rem 0; }
+    .tl-item { display: flex; gap: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; }
+    .tl-num { width: 24px; height: 24px; background: var(--red-l); color: var(--red); border-radius: 6px; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tl-text { font-size: 0.78rem; }
+    .tl-text strong { color: var(--text); }
+    .tl-text span { color: var(--muted); }
+
+    /* FAQ */
+    .faq-item { padding: 0.45rem 0; border-bottom: 1px solid #f3f4f6; }
+    .faq-q { font-size: 0.78rem; font-weight: 600; margin-bottom: 0.1rem; }
+    .faq-a { font-size: 0.7rem; color: var(--muted); line-height: 1.55; }
+
+    /* FOOTER */
+    .doc-footer { border-top: 2px solid var(--red); padding-top: 1rem; margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .doc-footer .ksh { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--red); }
+    .doc-footer .note { font-size: 0.62rem; color: var(--muted); margin-top: 0.15rem; }
+    .doc-footer .contact { font-size: 0.65rem; color: var(--muted); text-align: right; line-height: 1.5; }
+
+    .print-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--red); color: #fff; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.15); z-index: 100; }
+    .print-btn:hover { background: var(--red-d); }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">📄 Uložit jako PDF</button>
+
+<!-- ════════ STRANA 1 ════════ -->
+<div class="page">
+
+  <div class="doc-header">
+    <div><div class="ksh-logo">KSH Partners<small>Web &middot; Apps &middot; Systems</small></div></div>
+    <div class="doc-meta"><strong>Nabídka č. KSH-2026-NONNO</strong><br>30. března 2026<br>Platnost: 30 dní</div>
+  </div>
+
+  <div class="offer-hero">
+    <div class="offer-badge">Pizza Nonno — Kamenice & Počátky</div>
+    <h1>Vlastní objednávkový systém<br><em>bez provizí navždy</em></h1>
+    <p>Dvě pobočky, jeden systém. Zákazníci objednají online, vy vidíte objednávku na tabletu okamžitě. Žádné volání, žádné provize.</p>
+  </div>
+
+  <!-- PROBLÉM vs ŘEŠENÍ -->
+  <div class="section">
+    <div class="section-label">Proč to řešit</div>
+
+    <div class="problem-grid">
+      <div class="problem-card bad">
+        <h3>Jak to funguje teď</h3>
+        <ul>
+          <li>Zákazník musí volat — linka obsazená = ztracená objednávka</li>
+          <li>Pizzař zvedá telefon místo toho aby dělal pizzu</li>
+          <li>Žádná historie objednávek, žádné adresy</li>
+          <li>Wolt/Dáme jídlo berou 25–30 % z každé objednávky</li>
+        </ul>
+      </div>
+      <div class="problem-card good">
+        <h3>Jak to bude s námi</h3>
+        <ul>
+          <li>Zákazník objedná online za 30 sekund</li>
+          <li>Objednávka přijde na tablet — ping, přehled, stav</li>
+          <li>Systém si pamatuje adresy, oblíbené pizzy</li>
+          <li>0 % provize — platíte jednou, používáte navždy</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SROVNÁNÍ S WOLTEM -->
+  <div class="section">
+    <div class="section-label">Porovnání nákladů</div>
+    <h2>Wolt vs. vlastní systém</h2>
+    <p class="text">Při průměrně 15 objednávkách denně a průměrné objednávce 280 Kč:</p>
+
+    <div class="wolt-compare">
+      <h3>💸 Kolik vás stojí provize za rok?</h3>
+      <div class="wolt-grid">
+        <div class="wolt-col wolt">
+          <div class="wolt-label">Wolt (25 %)</div>
+          <div class="wolt-val">383 000 Kč</div>
+          <div class="wolt-note">ročně na provizích</div>
+        </div>
+        <div class="wolt-col wolt">
+          <div class="wolt-label">Dáme jídlo (30 %)</div>
+          <div class="wolt-val">459 000 Kč</div>
+          <div class="wolt-note">ročně na provizích</div>
+        </div>
+        <div class="wolt-col us">
+          <div class="wolt-label">KSH Partners</div>
+          <div class="wolt-val">0 Kč</div>
+          <div class="wolt-note">provize navždy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BALÍČKY -->
+  <div class="section">
+    <div class="section-label">Nabídka</div>
+    <h2>Dvě varianty — vyberte si</h2>
+
+    <div class="packages">
+      <div class="package">
+        <div class="package-name">Základ</div>
+        <div class="package-desc">Jedna pobočka + objednávky</div>
+        <div class="package-price">28 000 Kč <small>jednorázově</small></div>
+        <ul class="package-list">
+          <li>Web Kamenice (design na míru)</li>
+          <li>Online objednávkový systém</li>
+          <li>Košík, adresa, rozvoz / osobní odběr</li>
+          <li>Admin panel na tablet (živé objednávky)</li>
+          <li>Platba hotově + kartou online</li>
+          <li>SSL certifikát zdarma</li>
+          <li>30 dní podpora po spuštění</li>
+          <li class="no">Web Počátky</li>
+          <li class="no">Propojení 2 poboček</li>
+        </ul>
+      </div>
+      <div class="package featured">
+        <div class="package-badge">Doporučujeme</div>
+        <div class="package-name">Komplet 2 pobočky</div>
+        <div class="package-desc">Obě pobočky + plný systém</div>
+        <div class="package-price">39 000 Kč <small>jednorázově</small></div>
+        <ul class="package-list">
+          <li>Web Kamenice (design na míru)</li>
+          <li>Web Počátky (adaptace designu)</li>
+          <li>Online objednávkový systém</li>
+          <li>Košík, adresa, rozvoz / osobní odběr</li>
+          <li>Admin panel — obě pobočky v jednom</li>
+          <li>Platba hotově + kartou online</li>
+          <li>SSL certifikát zdarma</li>
+          <li>30 dní podpora po spuštění</li>
+          <li>Výběr pobočky pro zákazníka</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════ STRANA 2 ════════ -->
+<div class="page page-break">
+
+  <div class="doc-header">
+    <div><div class="ksh-logo">KSH Partners<small>Web &middot; Apps &middot; Systems</small></div></div>
+    <div class="doc-meta"><strong>Nabídka č. KSH-2026-NONNO</strong><br>strana 2/3</div>
+  </div>
+
+  <!-- CO ZÁKAZNÍK VIDÍ -->
+  <div class="section">
+    <div class="section-label">Jak to funguje</div>
+    <h2>Pro zákazníka</h2>
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-num">1</span><div class="tl-text"><strong>Otevře web</strong> — <span>vybere pobočku (Kamenice / Počátky)</span></div></div>
+      <div class="tl-item"><span class="tl-num">2</span><div class="tl-text"><strong>Vybere pizzy</strong> — <span>přehledné menu, klik = přidat do košíku</span></div></div>
+      <div class="tl-item"><span class="tl-num">3</span><div class="tl-text"><strong>Vyplní adresu</strong> — <span>systém si ji pamatuje příště (nebo osobní odběr)</span></div></div>
+      <div class="tl-item"><span class="tl-num">4</span><div class="tl-text"><strong>Zaplatí</strong> — <span>kartou online, nebo hotově při převzetí</span></div></div>
+      <div class="tl-item"><span class="tl-num">5</span><div class="tl-text"><strong>Vidí stav</strong> — <span>„Připravujeme" → „Na cestě" → odhadovaný čas</span></div></div>
+    </div>
+
+    <h2 style="margin-top:1.25rem;">Pro pizzaře (admin tablet)</h2>
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-num">1</span><div class="tl-text"><strong>Přijde objednávka</strong> — <span>zvukový ping + zobrazení na tabletu</span></div></div>
+      <div class="tl-item"><span class="tl-num">2</span><div class="tl-text"><strong>Vidí detail</strong> — <span>jméno, adresa, co objednal, platba, poznámky</span></div></div>
+      <div class="tl-item"><span class="tl-num">3</span><div class="tl-text"><strong>Klik = přijato</strong> — <span>zákazník vidí „Připravujeme vaši pizzu"</span></div></div>
+      <div class="tl-item"><span class="tl-num">4</span><div class="tl-text"><strong>Klik = na cestě</strong> — <span>zákazník vidí „Pizza je na cestě"</span></div></div>
+    </div>
+  </div>
+
+  <!-- PROVOZNÍ NÁKLADY -->
+  <div class="section">
+    <div class="section-label">Provozní náklady</div>
+    <h2>Hosting, domény, backend</h2>
+    <p class="text">Roční náklady na provoz systému. Zahrnuje server, databázi pro objednávky, SSL a zálohy.</p>
+
+    <div class="cost-card">
+      <div class="cost-row"><span>Hosting + real-time backend (Supabase)</span><span class="val">4 500 Kč/rok</span></div>
+      <div class="cost-row"><span>Domény 2× .cz (pokud potřebujete nové)</span><span class="val">500 Kč/rok</span></div>
+      <div class="cost-row"><span>Ročně celkem</span><span class="val">5 000 Kč/rok</span></div>
+    </div>
+    <div class="monthly">= <strong>417 Kč měsíčně</strong> za kompletní provoz obou poboček</div>
+  </div>
+
+  <!-- CELKOVÁ INVESTICE -->
+  <div class="section">
+    <div class="section-label">Souhrn — balíček Komplet</div>
+    <h2>Celková investice</h2>
+
+    <div class="total-card">
+      <div class="cost-row"><span>Web Kamenice (design + vývoj)</span><span class="val">12 000 Kč</span></div>
+      <div class="cost-row"><span>Web Počátky (adaptace)</span><span class="val">8 000 Kč</span></div>
+      <div class="cost-row"><span>Objednávkový systém + admin panel</span><span class="val">15 000 Kč</span></div>
+      <div class="cost-row"><span>Platební brána (GoPay/Stripe)</span><span class="val">4 000 Kč</span></div>
+      <div class="cost-row"><span>Hosting + domény (1. rok)</span><span class="val">5 000 Kč</span></div>
+      <div class="cost-row">
+        <span style="font-family:'Space Grotesk',sans-serif;">CELKEM — 1. rok</span>
+        <span class="val" style="font-size:1.15rem;">44 000 Kč</span>
+      </div>
+    </div>
+    <div class="monthly">Další roky: pouze <strong>5 000 Kč/rok</strong> (hosting + domény)</div>
+
+    <div class="wolt-compare" style="margin-top:1rem;">
+      <h3>📊 Návratnost investice</h3>
+      <p style="font-size:0.75rem; color:#92400e; line-height:1.6; margin:0;">
+        Při 15 objednávkách/den přes Wolt platíte <strong>~32 000 Kč měsíčně</strong> na provizích.
+        Celý náš systém se vám <strong>zaplatí za 6 týdnů</strong>. Každý další měsíc šetříte desítky tisíc.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════ STRANA 3 ════════ -->
+<div class="page page-break">
+
+  <div class="doc-header">
+    <div><div class="ksh-logo">KSH Partners<small>Web &middot; Apps &middot; Systems</small></div></div>
+    <div class="doc-meta"><strong>Nabídka č. KSH-2026-NONNO</strong><br>strana 3/3</div>
+  </div>
+
+  <!-- HARMONOGRAM -->
+  <div class="section">
+    <div class="section-label">Harmonogram</div>
+    <h2>Kdy to bude hotové</h2>
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-num">1</span><div class="tl-text"><strong>Týden 1–2</strong> — <span>Návrh designu webu + schválení</span></div></div>
+      <div class="tl-item"><span class="tl-num">2</span><div class="tl-text"><strong>Týden 2–3</strong> — <span>Vývoj obou webů + objednávkový systém</span></div></div>
+      <div class="tl-item"><span class="tl-num">3</span><div class="tl-text"><strong>Týden 3–4</strong> — <span>Admin panel, platební brána, testování</span></div></div>
+      <div class="tl-item"><span class="tl-num">4</span><div class="tl-text"><strong>Týden 4</strong> — <span>Spuštění, zaškolení, ostrý provoz</span></div></div>
+    </div>
+    <p class="text" style="margin-top:0.5rem;">Kompletní dodání do <strong>4 týdnů</strong> od odsouhlasení nabídky.</p>
+  </div>
+
+  <!-- MOŽNOST SPLÁCENÍ -->
+  <div class="section">
+    <div class="section-label">Platební podmínky</div>
+    <h2>Flexibilní platba</h2>
+    <p class="text">Rozumíme, že jednorázová investice může být náročnější. Nabízíme dvě možnosti:</p>
+
+    <div class="problem-grid">
+      <div class="problem-card good" style="background:var(--surface); border-color:var(--border);">
+        <h3 style="color:var(--text);">Jednorázově</h3>
+        <ul style="list-style:none;">
+          <li style="font-size:0.78rem;">50 % před zahájením prací</li>
+          <li style="font-size:0.78rem;">50 % po spuštění a schválení</li>
+        </ul>
+      </div>
+      <div class="problem-card good">
+        <h3>Na 3 splátky</h3>
+        <ul style="list-style:none;">
+          <li style="font-size:0.78rem;">15 000 Kč — před zahájením</li>
+          <li style="font-size:0.78rem;">15 000 Kč — po dodání webů</li>
+          <li style="font-size:0.78rem;">14 000 Kč — po spuštění systému</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-label">Časté otázky</div>
+    <h2>Co vás může zajímat</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Můžeme systém používat i bez Woltu?</div>
+      <div class="faq-a">Samozřejmě — celý smysl je nahradit Wolt vlastním řešením. Ale můžete mít obojí paralelně.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Co když otevřeme Počátky později?</div>
+      <div class="faq-a">Žádný problém. Začnete balíčkem Základ (28 000 Kč), druhou pobočku přidáme kdykoliv za 11 000 Kč.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Co když se změní menu?</div>
+      <div class="faq-a">Budete mít admin panel kde si menu upravíte sami — přidáte pizzu, změníte cenu, odeberete položku. Bez nás.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Musíme mít speciální tablet?</div>
+      <div class="faq-a">Ne. Funguje v jakémkoliv prohlížeči — tablet, počítač, i starý telefon. Stačí internet.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Co když nefunguje internet?</div>
+      <div class="faq-a">Objednávky se ukládají na serveru. Jakmile se připojíte, vše se synchronizuje. Zákazníci mezitím stále mohou volat.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Vlastníme ten systém?</div>
+      <div class="faq-a">Ano. Kód i data jsou vaše. Nejste na nás závislí, ale jsme tu kdyby bylo potřeba.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div>
+      <div class="ksh">KSH Partners</div>
+      <div class="note">Nabídka platí 30 dní od data vystavení.<br>Ceny jsou uvedeny jako konečné (neplátce DPH).</div>
+    </div>
+    <div class="contact">
+      Záviš Čuchna<br>
+      cuchna@ksh-partners.cz<br>
+      ksh-partners.cz
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
