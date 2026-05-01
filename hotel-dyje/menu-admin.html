@@ -112,6 +112,26 @@
       flex-shrink: 0;
     }
 
+    .header-nav {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.25rem;
+    }
+    .header-nav a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: 7px;
+      transition: all 0.15s;
+    }
+    .header-nav a.active { background: var(--white); color: var(--blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .header-nav a:hover:not(.active) { color: var(--text); }
+
     .save-status {
       font-size: 0.75rem;
       color: var(--muted);
@@ -764,6 +784,8 @@
       .brand-text .hotel { font-size: 0.85rem; }
       .brand-text .sub   { display: none; }
       .brand-icon        { width: 30px; height: 30px; font-size: 0.9rem; }
+      .header-nav        { order: 3; width: 100%; justify-content: center; }
+      .header-nav a      { flex: 1; text-align: center; font-size: 0.75rem; padding: 0.4rem 0.5rem; }
       .date-nav          { flex: 1; justify-content: center; }
       #menuDate          { font-size: 0.8rem; }
       .header-right      { width: 100%; justify-content: space-between; padding-bottom: 0.25rem; }
@@ -844,6 +866,11 @@
       <div class="sub">Správce denního menu</div>
     </div>
   </div>
+
+  <nav class="header-nav">
+    <a href="menu-admin.html" class="active">🍽 Menu</a>
+    <a href="rooms-admin.html">🛏 Ubytování</a>
+  </nav>
 
   <div class="date-nav">
     <button onclick="shiftDate(-1)" title="Předchozí den">‹</button>
