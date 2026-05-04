@@ -789,8 +789,6 @@
 
     /* ─── NOTE NODE — sticky note glass ─── */
     .node-note {
-      width: 220px;
-      min-height: 130px;
       padding: 0.85rem 1rem 1.85rem;
       background: var(--note-yellow);
       backdrop-filter: blur(20px) saturate(160%);
@@ -802,17 +800,25 @@
         inset 0 -1px 0 rgba(0,0,0,0.25),
         var(--shadow-md);
       cursor: grab;
+      /* width / min-height nastavuje JS přes inline style */
+    }
+    .node-note[data-size="sm"] .note-text { font-size: 0.74rem; line-height: 1.45; }
+    .node-note[data-size="md"] .note-text { font-size: 0.86rem; line-height: 1.5; }
+    .node-note[data-size="lg"] .note-text { font-size: 1.05rem; line-height: 1.5; font-weight: 600; letter-spacing: -0.01em; }
+    .node-note[data-size="xl"] .note-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.025em;
     }
     .node-note[data-color="pink"] { background: var(--note-pink); border-color: var(--note-pink-brd); }
     .node-note[data-color="blue"] { background: var(--note-blue); border-color: var(--note-blue-brd); }
     .node-note[data-color="green"]{ background: var(--note-green); border-color: var(--note-green-brd); }
 
     .note-text {
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       line-height: 1.5;
       color: var(--text);
       outline: none;
-      min-height: 90px;
+      min-height: 60px;
       cursor: text;
       white-space: pre-wrap;
       word-break: break-word;
@@ -846,6 +852,56 @@
     .note-color.pink   { background: #e07aa6; }
     .note-color.blue   { background: #7a9cd4; }
     .note-color.green  { background: #8ecf9c; }
+    .note-size-btn {
+      width: 18px; height: 18px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 4px;
+      color: rgba(255,255,255,0.65);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.15s, color 0.15s;
+      padding: 0;
+    }
+    .note-size-btn:hover { color: #fff; }
+    .node-note[data-size="sm"] .note-size-btn[data-s="sm"],
+    .node-note[data-size="md"] .note-size-btn[data-s="md"],
+    .node-note[data-size="lg"] .note-size-btn[data-s="lg"],
+    .node-note[data-size="xl"] .note-size-btn[data-s="xl"] {
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+      border-color: rgba(255,255,255,0.3);
+    }
+    .note-resize {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      cursor: nwse-resize;
+      background:
+        linear-gradient(135deg,
+          transparent 0%,
+          transparent 45%,
+          rgba(255,255,255,0.55) 45%,
+          rgba(255,255,255,0.55) 55%,
+          transparent 55%,
+          transparent 70%,
+          rgba(255,255,255,0.4) 70%,
+          rgba(255,255,255,0.4) 80%,
+          transparent 80%);
+      border-radius: 0 0 12px 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 5;
+    }
+    .node-note:hover .note-resize,
+    .node-note:focus-within .note-resize { opacity: 0.85; }
+    .note-resize:hover { opacity: 1 !important; }
     .note-spacer { flex: 1; }
     .note-del {
       width: 22px; height: 22px;
@@ -2374,8 +2430,11 @@ function makeNoteNode(note) {
   el.className = 'node node-note';
   el.dataset.nodeId = 'note-' + note.id;
   el.dataset.color = note.color || 'yellow';
+  el.dataset.size  = note.size  || 'md';
   el.style.left = note.x + 'px';
   el.style.top  = note.y + 'px';
+  el.style.width     = (note.w || 220) + 'px';
+  el.style.minHeight = (note.h || 130) + 'px';
   el.innerHTML = `
     <div class="note-text" contenteditable="true" spellcheck="false">${esc(note.text || '')}</div>
     <div class="note-toolbar">
@@ -2383,9 +2442,14 @@ function makeNoteNode(note) {
       <span class="note-color pink"   data-c="pink"   title="Růžová"></span>
       <span class="note-color blue"   data-c="blue"   title="Modrá"></span>
       <span class="note-color green"  data-c="green"  title="Zelená"></span>
+      <button class="note-size-btn" data-s="sm" title="Malé">S</button>
+      <button class="note-size-btn" data-s="md" title="Střední">M</button>
+      <button class="note-size-btn" data-s="lg" title="Velké">L</button>
+      <button class="note-size-btn" data-s="xl" title="Headline">H</button>
       <div class="note-spacer"></div>
       <button class="note-del" title="Smazat">✕</button>
     </div>
+    <div class="note-resize" title="Roztáhnout"></div>
   `;
   bindDrag(el, 'note-' + note.id, { isNote: true });
 
@@ -2406,6 +2470,46 @@ function makeNoteNode(note) {
       saveState();
     });
   });
+
+  // Size buttons
+  $$('.note-size-btn', el).forEach(b => {
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      note.size = b.dataset.s;
+      el.dataset.size = b.dataset.s;
+      saveState();
+      drawLinks();
+    });
+  });
+
+  // Resize handle
+  const resize = $('.note-resize', el);
+  resize.addEventListener('mousedown', e => {
+    e.stopPropagation();
+    e.preventDefault();
+    const startW = parseFloat(el.style.width)     || 220;
+    const startH = parseFloat(el.style.minHeight) || 130;
+    const sx = e.clientX, sy = e.clientY;
+
+    function onMove(ev) {
+      const dx = (ev.clientX - sx) / viewState.scale;
+      const dy = (ev.clientY - sy) / viewState.scale;
+      const w = Math.max(160, Math.min(720, startW + dx));
+      const h = Math.max(90,  Math.min(720, startH + dy));
+      el.style.width     = w + 'px';
+      el.style.minHeight = h + 'px';
+      note.w = w; note.h = h;
+      drawLinks();
+    }
+    function onUp() {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      saveState();
+    }
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  });
+
   // Delete
   $('.note-del', el).addEventListener('click', e => {
     e.stopPropagation();
@@ -2468,6 +2572,7 @@ function bindDrag(el, nodeId, opts = {}) {
     if (e.button !== 0) return;
     if (e.target.closest('.note-text') ||
         e.target.closest('.note-toolbar') ||
+        e.target.closest('.note-resize') ||
         e.target.closest('.link-del')) return;
     e.stopPropagation();
     start = {
