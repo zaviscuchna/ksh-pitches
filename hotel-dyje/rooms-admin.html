@@ -887,46 +887,72 @@
 <!-- ── TOAST ── -->
 <div class="toast" id="toast">✓ <span id="toastMsg">Uloženo</span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── DEFAULT DATA (z reálného webu Hotel Dyje) ──────────────────────────────
+// ── SUPABASE ───────────────────────────────────────────────────────────────
+const { createClient } = supabase;
+const sb = createClient(
+  'https://wwdddeoteucqgvzgtjwi.supabase.co',
+  'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
+);
 
-const DEFAULT_DATA = {
-  rooms: [
-    { id: 'jl-se',  name: 'Jednolůžkový se soc. zař.',  prices: [600,  null, null, null], category: 'se' },
-    { id: 'jl-bez', name: 'Jednolůžkový bez soc. zař.', prices: [350,  null, null, null], category: 'bez' },
-    { id: 'dl-se',  name: 'Dvoulůžkový se soc. zař.',   prices: [600,  1200, 1700, null], category: 'se' },
-    { id: 'dl-bez', name: 'Dvoulůžkový bez soc. zař.',  prices: [350,  700,  1050, null], category: 'bez' },
-    { id: 'tl-se',  name: 'Třílůžkový se soc. zař.',    prices: [600,  1200, 1700, 2200], category: 'se' },
-    { id: 'tl-bez', name: 'Třílůžkový bez soc. zař.',   prices: [350,  700,  1050, 1200], category: 'bez' },
-    { id: 'pejsek', name: 'Pejsek',                     prices: [100,  null, null, null], category: 'extra' }
-  ],
-  meals: { snidane: 100, polopenze: 300, pp: 450 },
-  note: 'Ceny za noc · U delších pobytů individuální ceny'
-};
+// ── STATE ──────────────────────────────────────────────────────────────────
+let data = { rooms: [], meals: { snidane: null, polopenze: null, pp: null }, note: '' };
 
-const ROOMS_VERSION = 'v1';
+// ── INIT — načtení z Supabase ──────────────────────────────────────────────
+async function init() {
+  setSaveStatus('saving');
+  const [roomsRes, configRes] = await Promise.all([
+    sb.from('hd_rooms').select('*').order('sort_order'),
+    sb.from('hd_meals_config').select('*').eq('id', 1).single()
+  ]);
 
-if (localStorage.getItem('dyje_rooms_version') !== ROOMS_VERSION) {
-  localStorage.removeItem('dyje_rooms');
-  localStorage.removeItem('dyje_rooms_published');
-  localStorage.setItem('dyje_rooms_version', ROOMS_VERSION);
-}
+  data.rooms = (roomsRes.data || []).map(r => ({
+    id: r.id, name: r.name, category: r.category,
+    prices: [r.price_1, r.price_2, r.price_3, r.price_4]
+  }));
 
-let data = JSON.parse(localStorage.getItem('dyje_rooms') || 'null') || JSON.parse(JSON.stringify(DEFAULT_DATA));
-// Migrace pro starší data
-if (!data.meals) data.meals = { ...DEFAULT_DATA.meals };
-if (data.note === undefined) data.note = DEFAULT_DATA.note;
-if (!Array.isArray(data.rooms)) data.rooms = [...DEFAULT_DATA.rooms];
+  const cfg = configRes.data || {};
+  data.meals = { snidane: cfg.snidane ?? null, polopenze: cfg.polopenze ?? null, pp: cfg.pp ?? null };
+  data.note = cfg.note || '';
 
-// ── STORAGE ────────────────────────────────────────────────────────────────
-
-function save() {
-  localStorage.setItem('dyje_rooms', JSON.stringify(data));
+  document.getElementById('mealSnidane').value   = data.meals.snidane  ?? '';
+  document.getElementById('mealPolopenze').value = data.meals.polopenze ?? '';
+  document.getElementById('mealPp').value        = data.meals.pp        ?? '';
+  document.getElementById('noteInput').value     = data.note;
+  renderAll();
   setSaveStatus('saved');
 }
 
-function uid() {
-  return 'r' + Math.random().toString(36).slice(2, 9);
+// ── SUPABASE SAVE ──────────────────────────────────────────────────────────
+async function saveRoom(room) {
+  await sb.from('hd_rooms').update({
+    name: room.name,
+    price_1: room.prices[0], price_2: room.prices[1],
+    price_3: room.prices[2], price_4: room.prices[3]
+  }).eq('id', room.id);
+  setSaveStatus('saved');
+}
+
+async function saveMeals() {
+  await sb.from('hd_meals_config').update({
+    snidane: data.meals.snidane, polopenze: data.meals.polopenze,
+    pp: data.meals.pp, note: data.note,
+    updated_at: new Date().toISOString()
+  }).eq('id', 1);
+  setSaveStatus('saved');
+}
+
+const roomTimers = {};
+function scheduleRoomSave(room) {
+  clearTimeout(roomTimers[room.id]);
+  roomTimers[room.id] = setTimeout(() => saveRoom(room), 500);
+}
+
+let mealsTimer = null;
+function scheduleMealsSave() {
+  clearTimeout(mealsTimer);
+  mealsTimer = setTimeout(saveMeals, 500);
 }
 
 function setSaveStatus(state) {
@@ -935,29 +961,17 @@ function setSaveStatus(state) {
   el.querySelector('span').textContent = state === 'saved' ? 'Vše uloženo' : 'Ukládám…';
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
-
-function init() {
-  document.getElementById('mealSnidane').value   = data.meals.snidane ?? '';
-  document.getElementById('mealPolopenze').value = data.meals.polopenze ?? '';
-  document.getElementById('mealPp').value        = data.meals.pp ?? '';
-  document.getElementById('noteInput').value     = data.note || '';
-  renderAll();
-}
-
+// ── RENDER ─────────────────────────────────────────────────────────────────
 function renderAll() {
   renderRooms();
   renderPreview();
   document.getElementById('roomCount').textContent = data.rooms.length;
 }
 
-// ── RENDER EDITOR ──────────────────────────────────────────────────────────
-
 function renderRooms() {
   const tbody = document.getElementById('roomsBody');
   tbody.innerHTML = '';
-
-  data.rooms.forEach((room, idx) => {
+  data.rooms.forEach(room => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>
@@ -970,8 +984,7 @@ function renderRooms() {
           <div class="price-input-wrap">
             <input type="number" class="price-input"
                    value="${room.prices[i] ?? ''}"
-                   placeholder="—"
-                   min="0"
+                   placeholder="—" min="0"
                    oninput="updateRoomPrice('${room.id}', ${i}, this.value)">
             <span class="kc">Kč</span>
           </div>
@@ -985,34 +998,24 @@ function renderRooms() {
   });
 }
 
-// ── RENDER PREVIEW ─────────────────────────────────────────────────────────
-
 function renderPreview() {
-  // Cards: bez soc. zař. / se soc. zař. / rodinný (3+4 os.)
   const findRoom = (kw, cat) => data.rooms.find(r => r.category === cat && r.name.toLowerCase().includes(kw));
-
   const cards = [
-    {
-      cat: 'Základní kategorie',
-      name: 'Pokoje bez soc. zař.',
+    { cat: 'Základní kategorie', name: 'Pokoje bez soc. zař.',
       chips: [
         { osob: '1 os.', price: findRoom('jednolůžk', 'bez')?.prices[0] },
         { osob: '2 os.', price: findRoom('dvoulůžk', 'bez')?.prices[1] },
         { osob: '3 os.', price: findRoom('třílůžk', 'bez')?.prices[2] }
       ]
     },
-    {
-      cat: 'Lepší kategorie',
-      name: 'Pokoje se soc. zař.',
+    { cat: 'Lepší kategorie', name: 'Pokoje se soc. zař.',
       chips: [
         { osob: '1 os.', price: findRoom('jednolůžk', 'se')?.prices[0] },
         { osob: '2 os.', price: findRoom('dvoulůžk', 'se')?.prices[1] },
         { osob: '3 os.', price: findRoom('třílůžk', 'se')?.prices[2] }
       ]
     },
-    {
-      cat: 'Rodinné ubytování',
-      name: 'Rodinný pokoj',
+    { cat: 'Rodinné ubytování', name: 'Rodinný pokoj',
       chips: [
         { osob: '3 os.', price: findRoom('třílůžk', 'se')?.prices[2] },
         { osob: '4 os.', price: findRoom('třílůžk', 'se')?.prices[3] }
@@ -1020,23 +1023,20 @@ function renderPreview() {
     }
   ];
 
-  const cardsEl = document.getElementById('previewCards');
-  cardsEl.innerHTML = cards.map(c => `
+  document.getElementById('previewCards').innerHTML = cards.map(c => `
     <div class="pv-room">
       <div class="pv-room-cat">${escHtml(c.cat)}</div>
       <div class="pv-room-name">${escHtml(c.name)}</div>
       <div class="pv-chips">
-        ${c.chips.filter(ch => ch.price).map(ch => `
-          <span class="pv-chip">${ch.osob} — ${formatPrice(ch.price)} Kč</span>
-        `).join('')}
+        ${c.chips.filter(ch => ch.price).map(ch =>
+          `<span class="pv-chip">${ch.osob} — ${formatPrice(ch.price)} Kč</span>`
+        ).join('')}
         ${c.chips.every(ch => !ch.price) ? '<span class="pv-chip" style="opacity:0.4;">Ceny zatím neuvedeny</span>' : ''}
       </div>
     </div>
   `).join('');
 
-  // Table
-  const tableEl = document.getElementById('previewTable');
-  tableEl.innerHTML = data.rooms.map(r => `
+  document.getElementById('previewTable').innerHTML = data.rooms.map(r => `
     <tr>
       <td>${escHtml(r.name)}</td>
       ${r.prices.map(p => p
@@ -1046,112 +1046,93 @@ function renderPreview() {
     </tr>
   `).join('');
 
-  // Meals
   const m = data.meals;
-  const mealsEl = document.getElementById('previewMeals');
   const parts = [];
   if (m.snidane)   parts.push(`Snídaně <strong>${m.snidane} Kč</strong>`);
   if (m.polopenze) parts.push(`Polopenze <strong>${m.polopenze} Kč</strong>`);
   if (m.pp)        parts.push(`Plná penze <strong>${m.pp} Kč</strong>`);
   let mealsHtml = parts.join(' &nbsp;·&nbsp; ');
   if (data.note) mealsHtml += `<div style="margin-top:0.5rem;font-size:0.6rem;opacity:0.7;">${escHtml(data.note)}</div>`;
-  mealsEl.innerHTML = mealsHtml;
+  document.getElementById('previewMeals').innerHTML = mealsHtml;
 }
 
-function formatPrice(n) {
-  return Number(n).toLocaleString('cs-CZ');
-}
+function formatPrice(n) { return Number(n).toLocaleString('cs-CZ'); }
 
-// ── ACTIONS ────────────────────────────────────────────────────────────────
-
+// ── MUTATIONS ──────────────────────────────────────────────────────────────
 function updateRoomName(id, val) {
   const room = data.rooms.find(r => r.id === id);
   if (!room) return;
   room.name = val;
   setSaveStatus('saving');
-  scheduleSave();
+  scheduleRoomSave(room);
   renderPreview();
 }
 
 function updateRoomPrice(id, idx, val) {
   const room = data.rooms.find(r => r.id === id);
   if (!room) return;
-  const trimmed = String(val).trim();
-  room.prices[idx] = trimmed === '' ? null : Math.max(0, parseInt(trimmed) || 0);
+  const t = String(val).trim();
+  room.prices[idx] = t === '' ? null : Math.max(0, parseInt(t) || 0);
   setSaveStatus('saving');
-  scheduleSave();
+  scheduleRoomSave(room);
   renderPreview();
 }
 
 function updateMeal(key, val) {
-  const trimmed = String(val).trim();
-  data.meals[key] = trimmed === '' ? null : Math.max(0, parseInt(trimmed) || 0);
+  const t = String(val).trim();
+  data.meals[key] = t === '' ? null : Math.max(0, parseInt(t) || 0);
   setSaveStatus('saving');
-  scheduleSave();
+  scheduleMealsSave();
   renderPreview();
 }
 
 function updateNote(val) {
   data.note = val;
   setSaveStatus('saving');
-  scheduleSave();
+  scheduleMealsSave();
   renderPreview();
 }
 
-let saveTimer = null;
-function scheduleSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(save, 400);
-}
-
-function addRoom() {
-  data.rooms.push({
-    id: uid(),
-    name: '',
-    prices: [null, null, null, null],
-    category: 'se'
-  });
-  save();
+async function addRoom() {
+  const maxOrder = data.rooms.reduce((m, r) => Math.max(m, r.sort_order || 0), data.rooms.length);
+  const { data: nr, error } = await sb.from('hd_rooms').insert({
+    name: '', category: 'se',
+    price_1: null, price_2: null, price_3: null, price_4: null,
+    sort_order: maxOrder + 1
+  }).select().single();
+  if (error) { showToast('Chyba při přidávání'); return; }
+  data.rooms.push({ id: nr.id, name: '', category: 'se', prices: [null, null, null, null] });
   renderAll();
-  // Fokus na nový řádek
   setTimeout(() => {
     const inputs = document.querySelectorAll('.room-name-input');
-    const last = inputs[inputs.length - 1];
-    if (last) last.focus();
+    inputs[inputs.length - 1]?.focus();
   }, 50);
   showToast('Řádek přidán ✓');
 }
 
-function removeRoom(id) {
+async function removeRoom(id) {
   const room = data.rooms.find(r => r.id === id);
   if (!room) return;
   if (!confirm(`Smazat řádek „${room.name || 'bez názvu'}"?`)) return;
+  const { error } = await sb.from('hd_rooms').delete().eq('id', id);
+  if (error) { showToast('Chyba při mazání'); return; }
   data.rooms = data.rooms.filter(r => r.id !== id);
-  save();
   renderAll();
   showToast('Řádek smazán');
 }
 
-// ── PUBLISH ────────────────────────────────────────────────────────────────
-
-function publishRooms() {
+async function publishRooms() {
   setSaveStatus('saving');
-  setTimeout(() => {
-    save();
-    localStorage.setItem('dyje_rooms_published', new Date().toISOString());
-    setSaveStatus('saved');
-    showToast('🎉 Ceník publikován! Hosté nyní vidí novou cenu na webu.');
-  }, 500);
+  await Promise.all([...data.rooms.map(r => saveRoom(r)), saveMeals()]);
+  setSaveStatus('saved');
+  showToast('🎉 Ceník uložen! Hosté nyní vidí novou cenu na webu.');
 }
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
-
 function escHtml(str) {
   return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function escAttr(str) {
-  return escHtml(str);
-}
+function escAttr(str) { return escHtml(str); }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1159,8 +1140,6 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
-
-// ── MOBILE TABS ────────────────────────────────────────────────────────────
 
 function switchTab(tab) {
   const preview = document.querySelector('.preview');
@@ -1177,8 +1156,6 @@ function switchTab(tab) {
   }
 }
 
-// ── KEYBOARD ───────────────────────────────────────────────────────────────
-
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 's') {
     e.preventDefault();
@@ -1186,9 +1163,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-window.addEventListener('beforeunload', () => save());
-
-// Start
 init();
 </script>
 
