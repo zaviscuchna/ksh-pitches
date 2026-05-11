@@ -885,6 +885,7 @@
     </div>
     <button class="btn btn-ghost" onclick="printMenu()">🖨 Tisknout</button>
     <button class="btn btn-primary" onclick="publishMenu()">✓ Publikovat menu</button>
+    <button class="btn btn-ghost" onclick="logout()" title="Odhlásit se" style="padding:0.55rem 0.8rem;">⎋</button>
   </div>
 </header>
 
@@ -997,6 +998,11 @@ const sb = createClient(
   'https://wwdddeoteucqgvzgtjwi.supabase.co',
   'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
 );
+
+// ── AUTH GUARD ─────────────────────────────────────────────────────────────
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (!session) window.location.href = 'admin-login.html?next=menu-admin.html';
+});
 
 // ── DATA MODEL ─────────────────────────────────────────────────────────────
 const SECTIONS = [
@@ -1444,6 +1450,11 @@ function shake(id) {
   if (!el) return;
   el.style.borderColor = 'var(--red)';
   setTimeout(() => { el.style.borderColor = ''; }, 1200);
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = 'admin-login.html';
 }
 
 function toggleHelp() {

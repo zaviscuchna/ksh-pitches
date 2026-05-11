@@ -741,6 +741,7 @@
       <span>Vše uloženo</span>
     </div>
     <button class="btn btn-primary" onclick="publishRooms()">✓ Publikovat změny</button>
+    <button class="btn btn-ghost" onclick="logout()" title="Odhlásit se" style="padding:0.55rem 0.8rem;">⎋</button>
   </div>
 </header>
 
@@ -895,6 +896,15 @@ const sb = createClient(
   'https://wwdddeoteucqgvzgtjwi.supabase.co',
   'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
 );
+
+// ── AUTH GUARD ─────────────────────────────────────────────────────────────
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (!session) {
+    window.location.href = 'admin-login.html?next=rooms-admin.html';
+  } else {
+    init();
+  }
+});
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let data = { rooms: [], meals: { snidane: null, polopenze: null, pp: null }, note: '' };
@@ -1141,6 +1151,11 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = 'admin-login.html';
+}
+
 function switchTab(tab) {
   const preview = document.querySelector('.preview');
   const tabE = document.getElementById('tabEditor');
@@ -1162,8 +1177,6 @@ document.addEventListener('keydown', e => {
     publishRooms();
   }
 });
-
-init();
 </script>
 
 </body>
