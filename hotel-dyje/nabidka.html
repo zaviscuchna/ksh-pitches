@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cenová nabídka — Hotel Dyje Dačice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .pdf-btn { position:fixed;bottom:2rem;right:2rem;background:#1080a8;color:white;border:none;padding:0.7rem 1.4rem;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(16,128,168,0.35);z-index:999;transition:opacity 0.2s; }
+    .pdf-btn:hover { opacity:0.85; }
+    @media print { .pdf-btn { display:none; } }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold:    #1080a8;
+      --dark:    #0d1a22;
+      --text:    #1a1a1a;
+      --muted:   #6b6b6b;
+      --border:  #dce8ed;
+      --bg:      #f7fafb;
+      --surface: #ffffff;
+    }
+
+    html { font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+    .logo-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .header-meta {
+      text-align: right;
+    }
+    .doc-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.25rem;
+    }
+    .doc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+    .doc-info {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      line-height: 1.8;
+    }
+
+    /* ─── INTRO ─── */
+    .intro {
+      margin-bottom: 3rem;
+    }
+    .intro-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .intro h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .intro h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .intro p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 560px;
+      line-height: 1.8;
+    }
+
+    /* ─── WHAT'S INCLUDED ─── */
+    .scope {
+      background: var(--dark);
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+    }
+    .scope-title {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .scope-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .scope-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .scope-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: 0.45rem;
+      flex-shrink: 0;
+    }
+    .scope-text {
+      font-size: 0.82rem;
+      color: rgba(240,236,228,0.8);
+      line-height: 1.6;
+    }
+    .scope-text strong {
+      color: #f0ece4;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    /* ─── PACKAGES ─── */
+    .packages-title {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .packages-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--dark);
+      margin-bottom: 1.75rem;
+    }
+    .packages-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+    .pkg {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface);
+      position: relative;
+    }
+    .pkg.featured {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+    .pkg-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: #ffffff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.9rem;
+      border-radius: 0 0 6px 6px;
+      white-space: nowrap;
+    }
+    .pkg-header {
+      padding: 1.75rem 1.5rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .pkg-name {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .pkg-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .pkg-price span {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+    }
+    .pkg-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      line-height: 1.5;
+    }
+    .pkg-features {
+      padding: 1.25rem 1.5rem 1.75rem;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .pkg-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .pkg-features li.muted {
+      color: #bbb;
+    }
+    .check {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #e8f5e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .check svg { width: 8px; height: 8px; }
+    .check.gold { background: rgba(16,128,168,0.12); }
+    .check.none { background: #f3f3f3; }
+    .check.none svg { opacity: 0.3; }
+
+    /* ─── MENU EDITOR SECTION ─── */
+    .menu-section {
+      background: linear-gradient(135deg, #fdf9f3 0%, #faf6ee 100%);
+      border: 1px solid rgba(16,128,168,0.25);
+      border-radius: 12px;
+      padding: 2.25rem;
+      margin-bottom: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .menu-left {}
+    .menu-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .menu-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .menu-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .menu-mockup {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .mockup-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .mockup-field {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.78rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .mockup-field.placeholder { color: #bbb; }
+    .mockup-btn {
+      background: var(--gold);
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      margin-top: 0.25rem;
+      display: inline-block;
+    }
+
+    /* ─── PROCESS ─── */
+    .process-section {
+      margin-bottom: 3rem;
+    }
+    .process-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .process-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--dark);
+      margin-bottom: 1.75rem;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .step {
+      position: relative;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--dark);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+    .step-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.35rem;
+    }
+    .step-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── CHANGES POLICY ─── */
+    .policy {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+    }
+    .policy-title {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .policy-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--dark);
+      margin-bottom: 1.25rem;
+    }
+    .policy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .policy-item {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .policy-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .policy-icon svg { width: 14px; height: 14px; }
+    .policy-text strong {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.2rem;
+    }
+    .policy-text p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .footer-left p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .footer-left strong {
+      color: var(--dark);
+      font-weight: 600;
+    }
+    .footer-note {
+      font-size: 0.7rem;
+      color: #bbb;
+      text-align: right;
+      line-height: 1.7;
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      @page {
+        margin: 1.2cm 1.4cm;
+        size: A4;
+      }
+      @page :first { margin-top: 1cm; }
+
+      body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { padding: 0; max-width: 100%; }
+      .pdf-btn { display: none !important; }
+
+      /* Nikdy nelámej uprostřed */
+      .scope,
+      .pkg,
+      .pkg-features,
+      .menu-section,
+      .menu-mockup,
+      .step,
+      .policy,
+      .policy-item,
+      .footer { break-inside: avoid; page-break-inside: avoid; }
+
+      /* Každý doplněk card */
+      [style*="border-radius:12px"] { break-inside: avoid; page-break-inside: avoid; }
+
+      /* Logické zlomy stránek */
+      .packages-grid { break-before: page; page-break-before: always; }
+      .process-section { break-before: page; page-break-before: always; }
+
+      /* Skryj header a URL které přidává prohlížeč — funguje v Chrome */
+      html { -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-name">KSH Partners</div>
+      <div class="logo-sub">Web Studio</div>
+    </div>
+    <div class="header-meta">
+      <div class="doc-label">Cenová nabídka</div>
+      <div class="doc-title">Hotel Dyje Dačice</div>
+      <div class="doc-info">
+        Platnost nabídky: 30 dní
+      </div>
+    </div>
+  </div>
+
+  <!-- EMOTIONAL HOOK -->
+  <div style="background:var(--dark);border-radius:12px;padding:2rem 2.5rem;margin-bottom:2.5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid rgba(16,128,168,0.2);">
+    <div style="text-align:center;padding:0 1.5rem;border-right:1px solid rgba(255,255,255,0.07);">
+      <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#1080a8;line-height:1;">94 %</div>
+      <div style="font-size:0.75rem;color:rgba(240,236,228,0.55);margin-top:0.4rem;line-height:1.5;">hostů si vybírá hotel<br>podle webu ještě před rezervací</div>
+    </div>
+    <div style="text-align:center;padding:0 1.5rem;border-right:1px solid rgba(255,255,255,0.07);">
+      <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#1080a8;line-height:1;">8 s</div>
+      <div style="font-size:0.75rem;color:rgba(240,236,228,0.55);margin-top:0.4rem;line-height:1.5;">tolik trvá první dojem —<br>zastaralý web ztrácí hosty okamžitě</div>
+    </div>
+    <div style="text-align:center;padding:0 1.5rem;">
+      <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#1080a8;line-height:1;">↑ 30 %</div>
+      <div style="font-size:0.75rem;color:rgba(240,236,228,0.55);margin-top:0.4rem;line-height:1.5;">průměrný nárůst přímých rezervací<br>po redesignu webu</div>
+    </div>
+  </div>
+  <div style="background:rgba(16,128,168,0.06);border-left:3px solid #1080a8;border-radius:0 8px 8px 0;padding:1rem 1.5rem;margin-bottom:2.5rem;">
+    <p style="font-size:0.85rem;color:var(--dark);line-height:1.7;"><strong>Většina hotelů v regionu stále jede na zastaralém webu.</strong> To je vaše příležitost — moderní prezentace neznamená jen lepší vzhled, ale přímé rezervace bez provize booking.com.</p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-eyebrow">Nový web pro hotel</div>
+    <h1>Moderní web, který<br><em>prodává pokoje.</em></h1>
+    <p>Na základě naší komunikace jsme připravili nabídku ve třech variantách. Každá zahrnuje <strong style="color:var(--dark)">design vytvořený na míru pro Hotel Dyje</strong> — nejde o šablonu. Web po dokončení plně vlastníte vy, včetně zdrojových souborů. Denní menu budete moci aktualizovat sami, každý den, bez nutnosti kontaktovat nás.</p>
+  </div>
+
+  <!-- SCOPE -->
+  <div class="scope">
+    <div class="scope-title">Co je součástí každé varianty</div>
+    <div class="scope-grid">
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text">
+          <strong>Plně responzivní web</strong>
+          Perfektní zobrazení na mobilu, tabletu i počítači
+        </div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text">
+          <strong>Sekce pokojů a aktivit</strong>
+          Přehledná prezentace ubytování a nabídky hotelu
+        </div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text">
+          <strong>Kontaktní formulář</strong>
+          S přímým přeposláním na váš e-mail
+        </div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text">
+          <strong>SEO optimalizace</strong>
+          Meta tagy, rychlost načítání, sitemap, Google-ready struktura — vše v základu
+        </div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text">
+          <strong>Galerie fotek</strong>
+          Elegantní zobrazení fotografií hotelu a okolí
+        </div>
+      </div>
+      <div class="scope-item">
+        <div class="scope-dot"></div>
+        <div class="scope-text">
+          <strong>Plný přístup + předání souborů</strong>
+          Web je váš — dostanete kód, přístupy, vše. Nejste na nás závislí
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="packages-title">Varianty spolupráce</div>
+  <div class="packages-heading">Vyberte, co vám sedí</div>
+  <div class="packages-grid">
+
+    <!-- ZÁKLAD -->
+    <div class="pkg">
+      <div class="pkg-header">
+        <div class="pkg-name">Základ</div>
+        <div class="pkg-price">9 900 <span>Kč</span></div>
+        <div class="pkg-desc">Web na klíč, plný přístup ke kódu</div>
+      </div>
+      <ul class="pkg-features">
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Webová prezentace dle návrhu
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Sekce denního menu (statická)
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Kontaktní formulář + galerie
+        </li>
+        <li class="muted">
+          <span class="check none">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          Editor menu (vlastní úpravy)
+        </li>
+        <li class="muted">
+          <span class="check none">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          Hosting v ceně
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Změny obsahu: 490 Kč / úprava
+        </li>
+      </ul>
+    </div>
+
+    <!-- STANDARD -->
+    <div class="pkg featured">
+      <div class="pkg-badge">Doporučujeme</div>
+      <div class="pkg-header">
+        <div class="pkg-name">Standard</div>
+        <div class="pkg-price">13 900 <span>Kč</span></div>
+        <div class="pkg-desc">Web + editor menu pro váš tým</div>
+      </div>
+      <ul class="pkg-features">
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Webová prezentace dle návrhu
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Editor denního menu (sami měníte)
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Kontaktní formulář + galerie
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Přístup heslem, žádné technické znalosti
+        </li>
+        <li class="muted">
+          <span class="check none">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          Hosting v ceně
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Změny obsahu: 490 Kč / úprava
+        </li>
+      </ul>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="pkg">
+      <div class="pkg-header">
+        <div class="pkg-name">Premium</div>
+        <div class="pkg-price">20 990 <span>Kč</span></div>
+        <div class="pkg-desc">Kompletní digitální start hotelu</div>
+      </div>
+      <ul class="pkg-features">
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Webová prezentace dle návrhu
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Editor denního menu (sami měníte)
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Kontaktní formulář + galerie
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Hosting na našich serverech — 2 roky
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Google Business profil (nastavení + fotky)
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Google Analytics 4 — přehled návštěvnosti
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          1× roční online konzultace (co zlepšit, SEO)
+        </li>
+        <li>
+          <span class="check gold">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Prioritní podpora — odpověď do 24 h
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- MENU EDITOR -->
+  <div class="menu-section">
+    <div class="menu-left">
+      <div class="menu-eyebrow">Denní menu editor</div>
+      <div class="menu-title">Aktualizujte menu sami,<br>každý den, za 30 vteřin</div>
+      <div class="menu-desc">
+        Váš tým dostane přístup do jednoduchého rozhraní — stačí heslo, žádná instalace ani technické znalosti. Změníte název jídla, cenu, přílohu a uložíte. Na webu se změna okamžitě projeví.<br><br>
+        Funguje z počítače, tabletu i telefonu.
+      </div>
+    </div>
+    <div class="menu-right">
+      <div class="menu-mockup">
+        <div class="mockup-label">Administrace — Denní menu</div>
+        <div class="mockup-field">Polévka: Hovězí vývar s nudlemi — 45 Kč</div>
+        <div class="mockup-field">Hlavní jídlo 1: Svíčková na smetaně — 159 Kč</div>
+        <div class="mockup-field">Hlavní jídlo 2: Smažený sýr s hranolky — 129 Kč</div>
+        <div class="mockup-field placeholder">Poznámka pro hosty (volitelné)…</div>
+        <div class="mockup-btn">Uložit a zveřejnit →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="process-section">
+    <div class="process-eyebrow">Jak to probíhá</div>
+    <div class="process-heading">Od schválení po spuštění</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Schválení nabídky</div>
+        <div class="step-desc">Potvrdíte variantu, podepíšeme objednávku e-mailem a obdržíte fakturu.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Podklady</div>
+        <div class="step-desc">Dodáte fotografie, texty a informace o hotelu. Pomůžeme s výběrem a přípravou.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Vývoj webu</div>
+        <div class="step-desc">Do 14 pracovních dní předložíme hotový web ke schválení. Zapracujeme připomínky.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Spuštění</div>
+        <div class="step-desc">Nasadíme web, nastavíme doménu a předáme přístupy. Provedeme vás editorem menu.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGES POLICY -->
+  <div class="policy">
+    <div class="policy-title">Změny na webu</div>
+    <div class="policy-heading">Co se stane, když potřebujete upravit aktivity nebo texty?</div>
+    <div class="policy-grid">
+      <div class="policy-item">
+        <div class="policy-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5a1.5 1.5 0 012.12 2.12L5 13H3v-2L11 2.5z"/></svg>
+        </div>
+        <div class="policy-text">
+          <strong>Drobné úpravy textu</strong>
+          <p>Napište nám e-mail nebo zprávu. Zapracujeme do 48 hodin. Cena 490 Kč za úpravu (Standard) nebo 2× ročně zdarma (Premium).</p>
+        </div>
+      </div>
+      <div class="policy-item">
+        <div class="policy-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>
+        </div>
+        <div class="policy-text">
+          <strong>Nové aktivity nebo sekce</strong>
+          <p>Větší rozšíření nacenujeme individuálně. Vždy dopředu víte, co zaplatíte — žádná překvapení.</p>
+        </div>
+      </div>
+      <div class="policy-item">
+        <div class="policy-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="5.5" cy="6.5" r="1.2"/><path d="M2 11l3.5-3 3 3 2-2 3 2.5"/></svg>
+        </div>
+        <div class="policy-text">
+          <strong>Výměna fotografií</strong>
+          <p>Dodáte nové fotografie e-mailem, my je zapracujeme. Součástí pravidelných aktualizací (Premium) nebo 490 Kč.</p>
+        </div>
+      </div>
+      <div class="policy-item">
+        <div class="policy-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v2M8 12v2M2 8h2M12 8h2"/><circle cx="8" cy="8" r="3"/></svg>
+        </div>
+        <div class="policy-text">
+          <strong>Denní menu</strong>
+          <p>To měníte vy sami, kdykoliv, bez poplatku. Přístup přes heslo, funguje z telefonu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD-ONS -->
+  <div style="margin-bottom:3rem;">
+    <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Doplňky à la carte</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--dark);margin-bottom:0.6rem;">Poskládejte si web přesně podle sebe</div>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem;max-width:560px;line-height:1.75;">Každý doplněk lze přidat k libovolné variantě kdykoliv — i dodatečně po spuštění webu.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;">
+        <div style="background:var(--dark);border-radius:8px;width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v12M2 8h12"/><circle cx="8" cy="8" r="6"/></svg>
+        </div>
+        <div>
+          <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.2rem;">Nástěnka / novinky</div>
+          <div style="font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:0.6rem;">Přidáváte si sami oznámení, nabídky práce, akce. Zobrazí se na webu jako novinky.</div>
+          <div style="font-size:0.9rem;font-weight:700;color:var(--dark);">+ 2 900 Kč</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;">
+        <div style="background:var(--dark);border-radius:8px;width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M8 9V7M7 8h2"/></svg>
+        </div>
+        <div>
+          <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.2rem;">Rezervační formulář</div>
+          <div style="font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:0.6rem;">Hosté si požádají o termín přímo na webu. Přijde vám e-mail s detaily.</div>
+          <div style="font-size:0.9rem;font-weight:700;color:var(--dark);">+ 2 900 Kč</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;">
+        <div style="background:var(--dark);border-radius:8px;width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+        </div>
+        <div>
+          <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.2rem;">Hosting + doména .cz</div>
+          <div style="font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:0.6rem;">Provoz webu na našich serverech včetně SSL certifikátu a .cz domény. Žádné starosti s technikou.</div>
+          <div style="display:flex;align-items:baseline;gap:0.5rem;">
+            <div style="font-size:0.9rem;font-weight:700;color:var(--dark);">3 500 Kč / rok</div>
+            <div style="font-size:0.72rem;color:var(--muted);">= 292 Kč / měs, SSL + zálohy v ceně</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;">
+        <div style="background:var(--dark);border-radius:8px;width:36px;height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1080a8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M8 3v10"/><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+        </div>
+        <div>
+          <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.2rem;">Správa webu — měsíční plán</div>
+          <div style="font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:0.6rem;">Neomezené drobné úpravy textu, fotek a obsahu. Prioritní e-mailová podpora do 24 hodin.</div>
+          <div style="font-size:0.9rem;font-weight:700;color:var(--dark);">990 Kč / měs</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Příklad sestavení -->
+    <div style="margin-top:1.5rem;background:linear-gradient(135deg,#0f1114,#1a1d24);border-radius:12px;padding:1.75rem 2rem;">
+      <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Příklad sestavení — varianta Základ + doplňky</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;">
+          <span style="color:rgba(240,236,228,0.7);">Web Základ</span>
+          <span style="color:#f0ece4;font-weight:600;">9 900 Kč</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;">
+          <span style="color:rgba(240,236,228,0.7);">Editor denního menu</span>
+          <span style="color:#f0ece4;font-weight:600;">+ 3 500 Kč</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;">
+          <span style="color:rgba(240,236,228,0.7);">Nástěnka / novinky</span>
+          <span style="color:#f0ece4;font-weight:600;">+ 2 900 Kč</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;">
+          <span style="color:rgba(240,236,228,0.7);">Hosting + doména (1 rok)</span>
+          <span style="color:#f0ece4;font-weight:600;">+ 3 500 Kč</span>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.08);margin:0.5rem 0;"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:0.82rem;color:rgba(240,236,228,0.6);">Celkem jednorázově</span>
+          <span style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold);font-weight:700;">19 800 Kč</span>
+        </div>
+        <div style="font-size:0.72rem;color:rgba(240,236,228,0.35);margin-top:0.25rem;text-align:right;">pak pouze 3 500 Kč/rok za hosting</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL COST TABLE -->
+  <div style="margin-bottom:3rem;">
+    <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Transparentní ceny</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--dark);margin-bottom:0.6rem;">Kolik zaplatíte celkem?</div>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.75rem;max-width:560px;line-height:1.75;">Jednou zaplatíte za tvorbu webu. V dalších letech platíte jen provoz — nebo vůbec nic, pokud použijete vlastní hosting.</p>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--dark);padding:0.9rem 1.5rem;">
+        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,236,228,0.5);">Varianta</div>
+        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,236,228,0.5);text-align:center;">Základ</div>
+        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-align:center;">Standard ★</div>
+        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,236,228,0.5);text-align:center;">Premium</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:1rem 1.5rem;border-bottom:1px solid var(--border);align-items:center;">
+        <div style="font-size:0.82rem;color:var(--text);font-weight:500;">Tvorba webu (jednorázově)</div>
+        <div style="text-align:center;font-size:0.9rem;font-weight:700;color:var(--dark);">9 900 Kč</div>
+        <div style="text-align:center;font-size:0.9rem;font-weight:700;color:var(--dark);">13 900 Kč</div>
+        <div style="text-align:center;font-size:0.9rem;font-weight:700;color:var(--dark);">20 990 Kč</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:1rem 1.5rem;border-bottom:1px solid var(--border);align-items:center;background:#fdfcfa;">
+        <div>
+          <div style="font-size:0.82rem;color:var(--text);font-weight:500;">Hosting + doména (1. rok)</div>
+          <div style="font-size:0.72rem;color:var(--muted);">SSL, zálohy, monitoring, správa serveru — volitelné</div>
+        </div>
+        <div style="text-align:center;font-size:0.9rem;color:var(--muted);">+ 3 500 Kč</div>
+        <div style="text-align:center;font-size:0.9rem;color:var(--muted);">+ 3 500 Kč</div>
+        <div style="text-align:center;font-size:0.82rem;color:#4caf50;font-weight:600;">v ceně</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:1rem 1.5rem;border-bottom:1px solid var(--border);align-items:center;">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Celkem rok 1 (s hostingem)</div>
+        <div style="text-align:center;font-size:1rem;font-weight:700;color:var(--dark);">13 400 Kč</div>
+        <div style="text-align:center;font-size:1rem;font-weight:700;color:var(--dark);">17 400 Kč</div>
+        <div style="text-align:center;font-size:1rem;font-weight:700;color:var(--dark);">20 990 Kč</div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:1rem 1.5rem;align-items:center;background:#fdfcfa;">
+        <div>
+          <div style="font-size:0.82rem;color:var(--text);font-weight:500;">Každý další rok</div>
+          <div style="font-size:0.72rem;color:var(--muted);">Jen provoz — tvorbu platíte jednou</div>
+        </div>
+        <div style="text-align:center;font-size:0.85rem;color:var(--muted);">3 500 Kč/rok</div>
+        <div style="text-align:center;font-size:0.85rem;color:var(--muted);">3 500 Kč/rok</div>
+        <div style="text-align:center;">
+          <div style="font-size:0.78rem;color:#4caf50;font-weight:600;">rok 2 zdarma</div>
+          <div style="font-size:0.72rem;color:var(--muted);">od roku 3: 3 500 Kč/rok</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.72rem;color:#bbb;margin-top:0.75rem;">* Hosting zahrnuje: doménu .cz, SSL certifikát, denní zálohy, monitoring dostupnosti a správu serveru. Tržní cena managed hostingu je 500–1 500 Kč/měs — náš paušál 292 Kč/měs je záměrně férový. Lze řešit i u vlastního poskytovatele.</p>
+  </div>
+
+  <!-- FAQ -->
+  <div style="margin-bottom:3rem;">
+    <div style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;">Časté otázky</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--dark);margin-bottom:1.5rem;">Na co se nejčastěji ptají</div>
+
+    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.4rem;">Je to design na míru, nebo šablona?</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.7;">Čistý design na míru — vytvořený přímo pro Hotel Dyje Dačice. Žádný template, žádný WordPress, žádný jiný hotel nebude mít stejný web.</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.4rem;">Budu závislý na KSH při každé změně?</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.7;">Ne. Po dokončení dostanete plný přístup ke všem souborům. Denní menu měníte sami. Pro větší úpravy nás jednoduše kontaktujte — reagujeme do 48 hodin — nebo si vše upravte sami. Web je váš.</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.4rem;">Musím mít hosting u vás, nebo mohu jít jinam?</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.7;">Hosting u nás je volitelný — není podmínkou. Náš hosting nabízíme jako pohodlné řešení bez starostí (SSL, zálohy, správa serveru). Pokud preferujete vlastního poskytovatele, web nasadíme i tam.</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--dark);margin-bottom:0.4rem;">Lze přidat editor menu i k variantě Základ?</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.7;">Ano. Všechny doplňky (editor menu, nástěnka, rezervační formulář) lze přidat k libovolné variantě — viz sekce Doplňky à la carte výše. Nemusíte nutně volit dražší balíček.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;">
+        <img src="ksh-logo.png" alt="KSH Partners" style="height:40px;width:auto;opacity:0.85;" />
+        <div>
+          <div style="font-size:0.78rem;font-weight:700;color:var(--dark);">KSH Partners</div>
+          <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Web Studio</div>
+        </div>
+      </div>
+      <p>
+        <strong>Záviš Čuchna</strong><br>
+        cuchna@ksh-partners.cz<br>
+      </p>
+    </div>
+    <div class="footer-note">
+      Nabídka platí 30 dní od data vystavení.<br>
+      Ceny jsou uvedeny bez DPH.<br>
+      © 2026 KSH Partners
+    </div>
+  </div>
+
+</div>
+<button class="pdf-btn" onclick="window.print()">⬇ Uložit jako PDF</button>
+</body>
+</html>
