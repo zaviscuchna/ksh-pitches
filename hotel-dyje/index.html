@@ -429,7 +429,6 @@
     <div id="menuContent">
       <div class="menu-empty">Menu pro dnešní den zatím není k dispozici.<br>Zkuste to znovu později.</div>
     </div>
-    <a href="menu-admin.html" class="menu-admin-link">⚙ Správa menu</a>
   </div>
 </section>
 
@@ -576,6 +575,7 @@
 </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
@@ -592,28 +592,38 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ── DENNÍ MENU z admin panelu ──────────────────────────────────
-  (function loadDailyMenu() {
-    var publishedDate = localStorage.getItem('dyje_published') ||
-                        new Date().toISOString().slice(0, 10);
-    var allData = JSON.parse(localStorage.getItem('dyje_menu') || '{}');
-    var day     = allData[publishedDate] || {};
+  var _sb = supabase.createClient(
+    'https://wwdddeoteucqgvzgtjwi.supabase.co',
+    'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
+  );
 
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── DENNÍ MENU ze Supabase ──────────────────────────────────
+  async function loadDailyMenu() {
+    var today   = new Date().toISOString().slice(0, 10);
     var badge   = document.getElementById('menuDateBadge');
     var content = document.getElementById('menuContent');
 
-    var d = new Date(publishedDate + 'T12:00:00');
+    var d = new Date(today + 'T12:00:00');
     var dateLabel = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
     badge.innerHTML = '<span class="menu-date-badge">📅 ' + dateLabel + '</span>';
 
-    var soups    = day.polevky || [];
-    var menus    = day.menu    || [];
-    var specials = day.nabidka || [];
+    var { data: dayRow } = await _sb.from('hd_menu_days').select('*').eq('date', today).maybeSingle();
+    if (!dayRow) return;
+
+    var { data: items } = await _sb.from('hd_menu_items').select('*').eq('day_id', dayRow.id).order('sort_order');
+    items = items || [];
+
+    var soups    = items.filter(function(i) { return i.section === 'polevky'; });
+    var menus    = items.filter(function(i) { return i.section === 'menu'; });
+    var specials = items.filter(function(i) { return i.section === 'nabidka'; });
     if (soups.length === 0 && menus.length === 0 && specials.length === 0) return;
 
     var html = '<div class="menu-grid">';
 
-    // Polévky — with 2dcl / 3dcl columns
     if (soups.length > 0) {
       html += '<div class="menu-col-card reveal">';
       html += '<div class="menu-col-head">🍲 Polévky</div>';
@@ -630,16 +640,15 @@
       html += '</div></div>';
     }
 
-    // Denní menu — Menu #N with soup
     if (menus.length > 0) {
       html += '<div class="menu-col-card reveal">';
       html += '<div class="menu-col-head">🍽 Denní menu</div>';
       menus.forEach(function(m, i) {
         html += '<div class="menu-dish">';
         html += '<div class="menu-dish-n">';
-        if (day.menuSoup) html += '<div class="menu-menu-soup">Menu #' + (i+1) + ' — ' + esc(day.menuSoup) + '</div>';
+        if (dayRow.menu_soup) html += '<div class="menu-menu-soup">Menu #' + (i+1) + ' — ' + esc(dayRow.menu_soup) + '</div>';
         html += esc(m.name);
-        if (m.desc) html += '<small>' + esc(m.desc) + '</small>';
+        if (m.description) html += '<small>' + esc(m.description) + '</small>';
         html += '</div>';
         html += '<div class="menu-dish-p">' + (m.price ? m.price + ',-' : '') + '</div>';
         html += '</div>';
@@ -647,14 +656,13 @@
       html += '</div>';
     }
 
-    // Nabídka dne
     if (specials.length > 0) {
       html += '<div class="menu-col-card reveal">';
       html += '<div class="menu-col-head">⭐ Nabídka dne</div>';
       specials.forEach(function(s) {
         html += '<div class="menu-dish">';
         html += '<div class="menu-dish-n">' + esc(s.name);
-        if (s.desc) html += '<small>' + esc(s.desc) + '</small>';
+        if (s.description) html += '<small>' + esc(s.description) + '</small>';
         html += '</div>';
         html += '<div class="menu-dish-p">' + (s.price ? s.price + ',-' : '') + '</div>';
         html += '</div>';
@@ -663,39 +671,36 @@
     }
 
     html += '</div>';
-
-    // Note
-    if (day.note) {
-      html += '<div class="menu-note">' + esc(day.note) + '</div>';
-    }
+    if (dayRow.note) html += '<div class="menu-note">' + esc(dayRow.note) + '</div>';
 
     content.innerHTML = html;
     content.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
-  })();
-
-  function esc(s) {
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
+  loadDailyMenu();
 
-  // ── CENÍK UBYTOVÁNÍ z admin panelu ───────────────────────────────
-  (function loadRooms() {
-    var data = JSON.parse(localStorage.getItem('dyje_rooms') || 'null');
-    if (!data || !Array.isArray(data.rooms)) return;
+  // ── CENÍK UBYTOVÁNÍ ze Supabase ───────────────────────────────
+  async function loadRooms() {
+    var [roomsRes, configRes] = await Promise.all([
+      _sb.from('hd_rooms').select('*').order('sort_order'),
+      _sb.from('hd_meals_config').select('*').eq('id', 1).maybeSingle()
+    ]);
+    var rooms  = roomsRes.data || [];
+    var config = configRes.data;
+    if (rooms.length === 0) return;
 
     function fmt(n) { return Number(n).toLocaleString('cs-CZ'); }
 
     function findRoom(kw, cat) {
-      return data.rooms.find(function(r) {
+      return rooms.find(function(r) {
         return r.category === cat && (r.name || '').toLowerCase().indexOf(kw) !== -1;
       });
     }
 
-    // 1) Karty pokojů
     function renderCard(key, chips) {
       var el = document.querySelector('[data-card="' + key + '"]');
       if (!el) return;
       var visible = chips.filter(function(c) { return c.price; });
-      if (visible.length === 0) return; // necháme fallback HTML
+      if (visible.length === 0) return;
       el.innerHTML = visible.map(function(c) {
         return '<span class="price-chip">' + c.osob + ' — ' + fmt(c.price) + ' Kč</span>';
       }).join('');
@@ -709,54 +714,46 @@
     var tlSe  = findRoom('třílůžk', 'se');
 
     renderCard('bez', [
-      { osob: '1 os.', price: jlBez && jlBez.prices[0] },
-      { osob: '2 os.', price: dlBez && dlBez.prices[1] },
-      { osob: '3 os.', price: tlBez && tlBez.prices[2] }
+      { osob: '1 os.', price: jlBez && jlBez.price_1 },
+      { osob: '2 os.', price: dlBez && dlBez.price_2 },
+      { osob: '3 os.', price: tlBez && tlBez.price_3 }
     ]);
     renderCard('se', [
-      { osob: '1 os.', price: jlSe && jlSe.prices[0] },
-      { osob: '2 os.', price: dlSe && dlSe.prices[1] },
-      { osob: '3 os.', price: tlSe && tlSe.prices[2] }
+      { osob: '1 os.', price: jlSe && jlSe.price_1 },
+      { osob: '2 os.', price: dlSe && dlSe.price_2 },
+      { osob: '3 os.', price: tlSe && tlSe.price_3 }
     ]);
     renderCard('family', [
-      { osob: '3 os.', price: tlSe && tlSe.prices[2] },
-      { osob: '4 os.', price: tlSe && tlSe.prices[3] }
+      { osob: '3 os.', price: tlSe && tlSe.price_3 },
+      { osob: '4 os.', price: tlSe && tlSe.price_4 }
     ]);
 
-    // 2) Tabulka cen
     var tbody = document.getElementById('roomsPriceTbody');
-    if (tbody && data.rooms.length > 0) {
-      tbody.innerHTML = data.rooms.map(function(r) {
-        var cells = r.prices.map(function(p) {
-          return p
-            ? '<td class="price-tag">' + fmt(p) + ' Kč</td>'
-            : '<td>—</td>';
+    if (tbody) {
+      tbody.innerHTML = rooms.map(function(r) {
+        var cells = [r.price_1, r.price_2, r.price_3, r.price_4].map(function(p) {
+          return p ? '<td class="price-tag">' + fmt(p) + ' Kč</td>' : '<td>—</td>';
         }).join('');
         return '<tr><td>' + esc(r.name) + '</td>' + cells + '</tr>';
       }).join('');
     }
 
-    // 3) Stravování — meal items v restauraci
-    if (data.meals) {
-      var keys = ['snidane', 'polopenze', 'pp'];
-      keys.forEach(function(k) {
+    if (config) {
+      ['snidane', 'polopenze', 'pp'].forEach(function(k) {
         var el = document.querySelector('[data-meal="' + k + '"]');
-        if (el && data.meals[k] != null) {
-          el.textContent = fmt(data.meals[k]) + ' Kč';
-        }
+        if (el && config[k] != null) el.textContent = fmt(config[k]) + ' Kč';
       });
-
-      // Note pod tabulkou
       var note = document.getElementById('roomsPriceNote');
       if (note) {
         var parts = [];
-        if (data.meals.snidane   != null) parts.push('Snídaně '   + fmt(data.meals.snidane)   + ' Kč');
-        if (data.meals.polopenze != null) parts.push('Polopenze ' + fmt(data.meals.polopenze) + ' Kč');
-        if (data.meals.pp        != null) parts.push('Plná penze ' + fmt(data.meals.pp)       + ' Kč');
+        if (config.snidane   != null) parts.push('Snídaně '   + fmt(config.snidane)   + ' Kč');
+        if (config.polopenze != null) parts.push('Polopenze ' + fmt(config.polopenze) + ' Kč');
+        if (config.pp        != null) parts.push('Plná penze ' + fmt(config.pp)       + ' Kč');
         if (parts.length > 0) note.innerHTML = parts.join(' &nbsp;·&nbsp; ');
       }
     }
-  })();
+  }
+  loadRooms();
 </script>
 </body>
 </html>
