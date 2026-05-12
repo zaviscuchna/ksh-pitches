@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /hd-9k2xm7.html
+Disallow: /ubytovani-4p8nq.html
+Disallow: /menu-3w9jr.html
+
+Sitemap: https://hoteldyje.cz/sitemap.xml
