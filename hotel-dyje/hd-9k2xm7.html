@@ -168,21 +168,17 @@
   <div class="footer">Hotel Dyje Dačice · Správa obsahu</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js"></script>
 <script>
-  const { createClient } = supabase;
-  const sb = createClient(
-    'https://wwdddeoteucqgvzgtjwi.supabase.co',
-    'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
-  );
+  const pb = new PocketBase('https://pb.hoteldyje.cz');
 
   // Pokud je již přihlášen → přesměrovat
-  sb.auth.getSession().then(({ data: { session } }) => {
-    if (session) goToAdmin();
-  });
+  if (pb.authStore.isValid) {
+    goToAdmin();
+  }
 
   function goToAdmin() {
-    const dest = new URLSearchParams(window.location.search).get('next') || 'ubytovani-4p8nq.html';
+    const dest = new URLSearchParams(window.location.search).get('next') || 'ubytovani-4p8nq-pb.html';
     window.location.href = dest;
   }
 
@@ -197,17 +193,15 @@
     btn.textContent = 'Přihlašuji…';
     error.classList.remove('show');
 
-    const { data, error: err } = await sb.auth.signInWithPassword({ email, password: pass });
-
-    if (err) {
+    try {
+      await pb.collection('users').authWithPassword(email, pass);
+      goToAdmin();
+    } catch (err) {
       error.textContent = 'Nesprávný e-mail nebo heslo.';
       error.classList.add('show');
       btn.disabled = false;
       btn.textContent = 'Přihlásit se';
-      return;
     }
-
-    goToAdmin();
   }
 
   if ('serviceWorker' in navigator) {

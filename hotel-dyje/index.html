@@ -652,7 +652,7 @@
 </footer>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js"></script>
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
@@ -669,10 +669,7 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  var _sb = supabase.createClient(
-    'https://wwdddeoteucqgvzgtjwi.supabase.co',
-    'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
-  );
+  var _pb = new PocketBase('https://pb.hoteldyje.cz');
 
   function esc(s) {
     return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -688,11 +685,14 @@
     var dateLabel = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
     badge.innerHTML = '<span class="menu-date-badge">📅 ' + dateLabel + '</span>';
 
-    var { data: dayRow } = await _sb.from('hd_menu_days').select('*').eq('date', today).maybeSingle();
+    var dayRow = null;
+    try {
+      dayRow = await _pb.collection('hd_menu_days').getFirstListItem('date="' + today + '"');
+    } catch (e) { /* not found */ }
     if (!dayRow) return;
 
-    var { data: items } = await _sb.from('hd_menu_items').select('*').eq('day_id', dayRow.id).order('sort_order');
-    items = items || [];
+    var itemsRes = await _pb.collection('hd_menu_items').getList(1, 100, { filter: 'day_id="' + dayRow.id + '"', sort: 'sort_order' });
+    var items = itemsRes.items || [];
 
     var soups    = items.filter(function(i) { return i.section === 'polevky'; });
     var menus    = items.filter(function(i) { return i.section === 'menu'; });
@@ -758,11 +758,11 @@
   // ── CENÍK UBYTOVÁNÍ ze Supabase ───────────────────────────────
   async function loadRooms() {
     var [roomsRes, configRes] = await Promise.all([
-      _sb.from('hd_rooms').select('*').order('sort_order'),
-      _sb.from('hd_meals_config').select('*').eq('id', 1).maybeSingle()
+      _pb.collection('hd_rooms').getList(1, 100, { sort: 'sort_order' }),
+      _pb.collection('hd_meals_config').getList(1, 1)
     ]);
-    var rooms  = roomsRes.data || [];
-    var config = configRes.data;
+    var rooms  = roomsRes.items || [];
+    var config = (configRes.items && configRes.items[0]) || null;
     if (rooms.length === 0) return;
 
     function fmt(n) { return Number(n).toLocaleString('cs-CZ'); }

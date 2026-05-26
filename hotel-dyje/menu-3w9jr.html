@@ -990,19 +990,15 @@
 <!-- ── TOAST ── -->
 <div class="toast" id="toast">✓ <span id="toastMsg">Uloženo</span></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js"></script>
 <script>
-// ── SUPABASE ───────────────────────────────────────────────────────────────
-const { createClient } = supabase;
-const sb = createClient(
-  'https://wwdddeoteucqgvzgtjwi.supabase.co',
-  'sb_publishable_DLbMXUcj8CSw8MBQR3n9tQ_q67xbInH'
-);
+// ── POCKETBASE ─────────────────────────────────────────────────────────────
+const pb = new PocketBase('https://pb.hoteldyje.cz');
 
 // ── AUTH GUARD ─────────────────────────────────────────────────────────────
-sb.auth.getSession().then(({ data: { session } }) => {
-  if (!session) window.location.href = 'hd-9k2xm7.html?next=menu-3w9jr.html';
-});
+if (!pb.authStore.isValid) {
+  window.location.href = 'hd-9k2xm7-pb.html?next=menu-3w9jr-pb.html';
+}
 
 // ── DATA MODEL ─────────────────────────────────────────────────────────────
 const SECTIONS = [
@@ -1033,24 +1029,30 @@ function getDay(date) {
 
 function getSection(date, secId) { return getDay(date)[secId] || []; }
 
-// ── LOAD DAY FROM SUPABASE ─────────────────────────────────────────────────
+// ── LOAD DAY FROM POCKETBASE ───────────────────────────────────────────────
 async function fetchDay(date) {
   if (menuData[date]?._loaded) return;
   setSaveStatus('saving');
 
-  const { data: dayRow } = await sb.from('hd_menu_days').select('*').eq('date', date).single();
+  let dayRow = null;
+  try {
+    dayRow = await pb.collection('hd_menu_days').getFirstListItem('date="' + date + '"');
+  } catch (e) { /* not found */ }
 
   if (dayRow) {
-    const { data: items } = await sb.from('hd_menu_items').select('*')
-      .eq('day_id', dayRow.id).order('sort_order');
+    const itemsRes = await pb.collection('hd_menu_items').getList(1, 100, {
+      filter: 'day_id="' + dayRow.id + '"',
+      sort: 'sort_order'
+    });
+    const items = itemsRes.items || [];
 
     menuData[date] = {
       _id: dayRow.id, _loaded: true,
       menuSoup: dayRow.menu_soup || '',
       note:     dayRow.note     || '',
-      polevky:  (items || []).filter(i => i.section === 'polevky').map(mapItem),
-      menu:     (items || []).filter(i => i.section === 'menu').map(mapItem),
-      nabidka:  (items || []).filter(i => i.section === 'nabidka').map(mapItem),
+      polevky:  items.filter(i => i.section === 'polevky').map(mapItem),
+      menu:     items.filter(i => i.section === 'menu').map(mapItem),
+      nabidka:  items.filter(i => i.section === 'nabidka').map(mapItem),
     };
   } else {
     menuData[date] = { _id: null, _loaded: true, menuSoup: '', note: '', polevky: [], menu: [], nabidka: [] };
@@ -1068,9 +1070,9 @@ function mapItem(i) {
 async function getOrCreateDayId(date) {
   const day = getDay(date);
   if (day._id) return day._id;
-  const { data: newDay } = await sb.from('hd_menu_days').insert({
+  const newDay = await pb.collection('hd_menu_days').create({
     date, menu_soup: day.menuSoup || '', note: day.note || ''
-  }).select().single();
+  });
   day._id = newDay.id;
   return newDay.id;
 }
@@ -1300,8 +1302,12 @@ async function addDish(secId) {
     insert.description = desc;
   }
 
-  const { data: newItem, error } = await sb.from('hd_menu_items').insert(insert).select().single();
-  if (error) { showToast('Chyba při přidávání'); setSaveStatus('saved'); return; }
+  let newItem;
+  try {
+    newItem = await pb.collection('hd_menu_items').create(insert);
+  } catch (e) {
+    showToast('Chyba při přidávání'); setSaveStatus('saved'); return;
+  }
 
   items.push(mapItem(newItem));
   setSaveStatus('saved');
@@ -1315,7 +1321,7 @@ async function deleteDish(secId, idx) {
   const items = getSection(currentDate, secId);
   const item  = items[idx];
   setSaveStatus('saving');
-  await sb.from('hd_menu_items').delete().eq('id', item.id);
+  await pb.collection('hd_menu_items').delete(item.id);
   items.splice(idx, 1);
   setSaveStatus('saved');
   renderAll();
@@ -1327,8 +1333,8 @@ async function moveUp(secId, idx) {
   if (idx === 0) return;
   setSaveStatus('saving');
   await Promise.all([
-    sb.from('hd_menu_items').update({ sort_order: idx - 1 }).eq('id', items[idx].id),
-    sb.from('hd_menu_items').update({ sort_order: idx     }).eq('id', items[idx-1].id)
+    pb.collection('hd_menu_items').update(items[idx].id,   { sort_order: idx - 1 }),
+    pb.collection('hd_menu_items').update(items[idx-1].id, { sort_order: idx     })
   ]);
   [items[idx-1], items[idx]] = [items[idx], items[idx-1]];
   setSaveStatus('saved');
@@ -1340,8 +1346,8 @@ async function moveDown(secId, idx) {
   if (idx === items.length - 1) return;
   setSaveStatus('saving');
   await Promise.all([
-    sb.from('hd_menu_items').update({ sort_order: idx + 1 }).eq('id', items[idx].id),
-    sb.from('hd_menu_items').update({ sort_order: idx     }).eq('id', items[idx+1].id)
+    pb.collection('hd_menu_items').update(items[idx].id,   { sort_order: idx + 1 }),
+    pb.collection('hd_menu_items').update(items[idx+1].id, { sort_order: idx     })
   ]);
   [items[idx], items[idx+1]] = [items[idx+1], items[idx]];
   setSaveStatus('saved');
@@ -1357,7 +1363,7 @@ async function saveMenuSoup() {
   day.menuSoup = (document.getElementById('menuSoupInput')?.value || '').trim();
   setSaveStatus('saving');
   const dayId = await getOrCreateDayId(currentDate);
-  await sb.from('hd_menu_days').update({ menu_soup: day.menuSoup }).eq('id', dayId);
+  await pb.collection('hd_menu_days').update(dayId, { menu_soup: day.menuSoup });
   setSaveStatus('saved');
   renderPreview();
 }
@@ -1367,7 +1373,7 @@ async function saveNote() {
   day.note = (document.getElementById('noteInput')?.value || '').trim();
   setSaveStatus('saving');
   const dayId = await getOrCreateDayId(currentDate);
-  await sb.from('hd_menu_days').update({ note: day.note }).eq('id', dayId);
+  await pb.collection('hd_menu_days').update(dayId, { note: day.note });
   setSaveStatus('saved');
   renderPreview();
 }
@@ -1418,7 +1424,7 @@ async function saveEdit() {
     update.description = desc; update.price = item.price;
   }
   setSaveStatus('saving');
-  await sb.from('hd_menu_items').update(update).eq('id', item.id);
+  await pb.collection('hd_menu_items').update(item.id, update);
   items[editingId] = item;
   setSaveStatus('saved');
   document.getElementById('editModal').classList.remove('open');
@@ -1453,8 +1459,8 @@ function shake(id) {
 }
 
 async function logout() {
-  await sb.auth.signOut();
-  window.location.href = 'hd-9k2xm7.html';
+  pb.authStore.clear();
+  window.location.href = 'hd-9k2xm7-pb.html';
 }
 
 function toggleHelp() {
