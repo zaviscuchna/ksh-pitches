@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Dyje Dačice — Rodinný hotel v centru Dačic</title>
+  <meta name="description" content="Rodinný hotel v centru Dačic, Česká Kanada. Ubytování s snídaní, restaurace s denním menu, příjemné prostředí za lidské ceny. Rezervace: +420 384 420 090." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hoteldyje.cz/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hoteldyje.cz/" />
+  <meta property="og:title" content="Hotel Dyje Dačice — Rodinný hotel v centru Dačic" />
+  <meta property="og:description" content="Rodinný hotel v centru Dačic, Česká Kanada. Ubytování, restaurace s denním menu, příjemné prostředí za lidské ceny." />
+  <meta property="og:image" content="https://hoteldyje.cz/galerie/hotel01.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="cs_CZ" />
+  <meta property="og:site_name" content="Hotel Dyje Dačice" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hotel Dyje Dačice — Rodinný hotel v centru Dačic" />
+  <meta name="twitter:description" content="Rodinný hotel v centru Dačic, Česká Kanada. Ubytování, restaurace, denní menu." />
+  <meta name="twitter:image" content="https://hoteldyje.cz/galerie/hotel01.jpg" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["Hotel", "Restaurant"],
+        "@id": "https://hoteldyje.cz/#hotel",
+        "name": "Hotel Dyje",
+        "alternateName": "Hotel Dyje Dačice",
+        "description": "Rodinný hotel v centru města Dačice, oblast Česká Kanada. Ubytování s snídaní, restaurace s denním menu, příjemné prostředí za lidské ceny.",
+        "url": "https://hoteldyje.cz",
+        "telephone": ["+420384420090", "+420773941770"],
+        "email": "info@hoteldyje.cz",
+        "image": "https://hoteldyje.cz/galerie/hotel01.jpg",
+        "priceRange": "$$",
+        "currenciesAccepted": "CZK",
+        "servesCuisine": "Česká kuchyně",
+        "hasMap": "https://maps.google.com/maps?q=Hotel+Dyje+Da%C4%8Dice",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jemnická 1/III",
+          "postalCode": "380 01",
+          "addressLocality": "Dačice",
+          "addressRegion": "Jihočeský kraj",
+          "addressCountry": "CZ"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 49.0827,
+          "longitude": 15.4320
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+            "opens": "00:00",
+            "closes": "23:59"
+          }
+        ],
+        "sameAs": ["https://www.hoteldyje.cz"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://hoteldyje.cz/#website",
+        "url": "https://hoteldyje.cz",
+        "name": "Hotel Dyje Dačice",
+        "publisher": { "@id": "https://hoteldyje.cz/#hotel" }
+      }
+    ]
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #08090b;
+      --surface:   #0f1114;
+      --surface2:  #161820;
+      --border:    rgba(255,255,255,0.07);
+      --fg:        #f0ece4;
+      --muted:     #7a7870;
+      --primary:   #c8a96e;
+      --primary-light: rgba(200,169,110,0.12);
+      --radius:    10px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(8,9,11,0.8);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    nav.scrolled { background: rgba(8,9,11,0.97); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--fg); text-decoration: none; display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-logo small { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-cta { background: var(--primary); color: #1a1000; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.82rem; text-decoration: none; transition: opacity 0.2s; white-space: nowrap; }
+    .nav-cta:hover { opacity: 0.85; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 1.5px; background: var(--fg); transition: all 0.3s; }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; position: fixed; top: 60px; left: 0; right: 0; background: var(--surface); flex-direction: column; padding: 2rem; gap: 1.5rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .nav-cta { display: none; }
+    }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; padding: 0 2rem 5rem; }
+    .hero-img { position: absolute; inset: 0; background: url('https://hoteldyje.cz/galerie/hotel01.jpg') center/cover no-repeat; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,9,11,1) 0%, rgba(8,9,11,0.6) 50%, rgba(8,9,11,0.25) 100%); }
+    .hero-content { position: relative; max-width: 1100px; margin: 0 auto; width: 100%; }
+    .hero-label { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary); border: 1px solid rgba(200,169,110,0.3); padding: 0.35rem 0.9rem; border-radius: 4px; margin-bottom: 1.25rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 7vw, 5.5rem); line-height: 1.05; font-weight: 700; margin-bottom: 1rem; }
+    .hero h1 em { font-style: italic; color: var(--primary); }
+    .hero-desc { color: rgba(240,236,228,0.65); font-size: 1rem; max-width: 520px; line-height: 1.75; margin-bottom: 2.25rem; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn { padding: 0.8rem 1.8rem; border-radius: 7px; font-weight: 600; font-size: 0.875rem; text-decoration: none; transition: all 0.2s; display: inline-block; }
+    .btn-gold { background: var(--primary); color: #1a1000; }
+    .btn-gold:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-ghost { border: 1px solid rgba(200,169,110,0.35); color: var(--primary); }
+    .btn-ghost:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .btn-menu { border-color: rgba(200,169,110,0.2); color: rgba(200,169,110,0.75); font-size: 0.82rem; }
+    .btn-menu:hover { border-color: rgba(200,169,110,0.4); color: var(--primary); background: var(--primary-light); }
+
+    /* SECTIONS */
+    section { padding: clamp(3.5rem,7vw,6rem) 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.65rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,4vw,2.8rem); line-height: 1.15; margin-bottom: 1rem; }
+    .section-lead { color: var(--muted); font-size: 0.975rem; max-width: 580px; line-height: 1.75; margin-bottom: 2.5rem; }
+    .divider { width: 40px; height: 2px; background: var(--primary); margin: 1rem 0 2rem; }
+
+    /* O HOTELU */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+    .about-img { border-radius: var(--radius); overflow: hidden; }
+    .about-img img { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; }
+    .amenities { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 1.75rem; }
+    .amenity { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--muted); }
+    .amenity::before { content: '✓'; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+
+    /* POKOJE */
+    .rooms-bg { background: var(--surface); }
+    .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    .room-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.25s; }
+    .room-card:hover { border-color: rgba(200,169,110,0.3); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+    .room-img { aspect-ratio: 16/9; overflow: hidden; }
+    .room-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+    .room-card:hover .room-img img { transform: scale(1.04); }
+    .room-body { padding: 1.4rem; }
+    .room-type { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.4rem; }
+    .room-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .room-body p { color: var(--muted); font-size: 0.82rem; line-height: 1.6; margin-bottom: 1rem; }
+    .room-prices { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .price-chip { background: var(--primary-light); border: 1px solid rgba(200,169,110,0.2); color: var(--primary); font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 4px; }
+
+    /* CENÍK TABULKA */
+    .price-note { font-size: 0.82rem; color: var(--muted); margin-top: 1.5rem; line-height: 1.7; }
+    .price-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.85rem; overflow-x: auto; display: block; }
+    .price-table th { text-align: left; padding: 0.6rem 1rem; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .price-table td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); white-space: nowrap; }
+    .price-table tr:hover td { background: rgba(200,169,110,0.04); }
+    .price-tag { color: var(--primary); font-weight: 600; }
+
+    /* RESTAURACE */
+    .restaurant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 768px) { .restaurant-grid { grid-template-columns: 1fr; } }
+    .restaurant-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .restaurant-photos img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; display: block; }
+    .restaurant-photos img:first-child { grid-column: 1 / -1; aspect-ratio: 16/8; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.5rem; }
+    .feature-list li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.875rem; color: var(--muted); }
+    .feature-list li span:first-child { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .meals-row { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .meal-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1.1rem; text-align: center; flex: 1; min-width: 90px; }
+    .meal-item .price { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--primary); }
+    .meal-item .label { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+
+    /* GALERIE */
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+    .gallery-grid .g-main { grid-column: 1 / 3; grid-row: 1 / 3; }
+    .gallery-item { border-radius: 8px; overflow: hidden; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 4/3; transition: transform 0.4s; }
+    .gallery-grid .g-main img { aspect-ratio: unset; height: 100%; min-height: 280px; }
+    .gallery-item:hover img { transform: scale(1.04); }
+    @media (max-width: 640px) { .gallery-grid { grid-template-columns: 1fr 1fr; } .gallery-grid .g-main { grid-column: 1 / -1; grid-row: auto; } .gallery-grid .g-main img { min-height: auto; } }
+
+    /* AKTIVITY */
+    .activities-bg { background: var(--surface); }
+    .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+    .activity-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: border-color 0.2s; }
+    .activity-card:hover { border-color: rgba(200,169,110,0.3); }
+    .activity-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .activity-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .activity-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+    .activity-dist { font-size: 0.7rem; color: var(--primary); font-weight: 600; margin-top: 0.4rem; }
+
+    /* KONTAKT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
+    @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .contact-card-icon { width: 40px; height: 40px; background: var(--primary-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-card h4 { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+    .contact-card p, .contact-card a { font-size: 0.9rem; color: var(--fg); text-decoration: none; display: block; }
+    .contact-card a:hover { color: var(--primary); }
+    .contact-card .sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+    .map-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); height: 380px; }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; filter: grayscale(0.8) brightness(0.75); }
+
+    /* DENNÍ MENU */
+    #denmenu { background: var(--surface); }
+    .menu-date-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--primary-light); border: 1px solid rgba(200,169,110,0.25);
+      color: var(--primary); border-radius: 20px;
+      padding: 0.35rem 1rem; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem; margin-top: 2rem;
+    }
+    .menu-col-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .menu-col-head {
+      padding: 0.75rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--primary);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .menu-dish {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 0.5rem; padding: 0.65rem 1.1rem;
+      border-bottom: 1px solid var(--border); font-size: 0.87rem;
+    }
+    .menu-dish:last-child { border-bottom: none; }
+    .menu-dish-n { color: var(--fg); flex: 1; }
+    .menu-dish-n small { color: var(--muted); font-size: 0.75rem; display: block; }
+    .menu-dish-p { color: var(--primary); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+    .menu-empty {
+      text-align: center; padding: 3rem 1rem;
+      color: var(--muted); font-size: 0.9rem; line-height: 1.8;
+    }
+    .menu-admin-link {
+      display: block; text-align: center; margin-top: 1.5rem;
+      font-size: 0.72rem; color: var(--muted); opacity: 0.4;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .menu-admin-link:hover { opacity: 0.8; color: var(--primary); }
+
+    /* Soup dual-price row */
+    .menu-soup-header { display: flex; justify-content: flex-end; gap: 1.2rem; padding: 0.2rem 0; }
+    .menu-soup-header span { font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; min-width: 40px; text-align: right; letter-spacing: 0.05em; }
+    .menu-soup-row { display: flex; align-items: baseline; padding: 0.3rem 0; }
+    .menu-soup-name { flex: 1; font-size: 0.87rem; color: var(--fg); }
+    .menu-soup-prices { display: flex; gap: 1.2rem; }
+    .menu-soup-prices span { font-size: 0.87rem; font-weight: 600; color: var(--primary); min-width: 40px; text-align: right; }
+    .menu-menu-soup { font-size: 0.72rem; color: var(--muted); font-style: italic; margin-bottom: 0.15rem; }
+    .menu-note { padding: 0.75rem 1.75rem; font-size: 0.75rem; color: var(--muted); line-height: 1.5; border-top: 1px solid var(--border); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--muted); }
+    footer p { font-size: 0.78rem; color: var(--muted); }
+    footer a { color: var(--primary); text-decoration: none; }
+
+    /* ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; } .d4 { transition-delay: 0.32s; }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#uvod" class="nav-logo">
+    Hotel Dyje
+    <small>Dačice · Česká Kanada</small>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#o-hotelu">O hotelu</a></li>
+    <li><a href="#pokoje">Pokoje</a></li>
+    <li><a href="#restaurace">Restaurace</a></li>
+    <li><a href="#denmenu">Denní menu</a></li>
+    <li><a href="#aktivity">Aktivity</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="mailto:info@hoteldyje.cz" class="nav-cta">Napsat nám</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+
+<!-- HERO -->
+<section class="hero" id="uvod">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-label">Centrum Dačic · Česká Kanada</div>
+    <h1>Rodinný hotel<br /><em>s lidskými cenami</em></h1>
+    <p class="hero-desc">
+      Hotel Dyje najdete prakticky v centru města Dačice, okres Jindřichův Hradec,
+      v oblasti nazvané Česká Kanada. Jsme menší rodinný hotel — restaurace, ubytování, příjemné prostředí.
+    </p>
+    <div class="hero-btns">
+      <a href="#pokoje" class="btn btn-gold">Ubytování a ceny</a>
+      <a href="#kontakt" class="btn btn-ghost">Zavolat a rezervovat</a>
+      <a href="#denmenu" class="btn btn-ghost btn-menu">🍽 Denní menu</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- O HOTELU -->
+<section id="o-hotelu">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <div class="section-eyebrow reveal">O nás</div>
+        <h2 class="section-title reveal">Malý hotel,<br />velká pohoda</h2>
+        <div class="divider reveal"></div>
+        <p class="reveal" style="color:var(--muted);font-size:0.95rem;line-height:1.8;">
+          Hotel Dyje najdete prakticky v centru města Dačice, v oblasti nazvané Česká Kanada.
+          Jsme menší rodinný hotel s „lidovými cenami". Zavolejte nám, napište nám — máme rádi přímou komunikaci s hosty.
+        </p>
+        <div class="amenities reveal" style="margin-top:1.75rem;">
+          <div class="amenity">Restaurace a pivnice</div>
+          <div class="amenity">Letní zahrádka</div>
+          <div class="amenity">Bezplatný internet</div>
+          <div class="amenity">Parkoviště</div>
+          <div class="amenity">Domácí mazlíčci vítáni</div>
+          <div class="amenity">Nekuřácké prostředí</div>
+          <div class="amenity">Konferenční místnost</div>
+          <div class="amenity">TV místnost</div>
+          <div class="amenity">Úschovna kol</div>
+          <div class="amenity">Projížďky na koních</div>
+        </div>
+      </div>
+      <div class="about-img reveal d1">
+        <img src="https://hoteldyje.cz/galerie/hotel2.jpg" alt="Hotel Dyje — průčelí" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- POKOJE -->
+<section class="rooms-bg" id="pokoje">
+  <div class="container">
+    <div class="section-eyebrow reveal">Ubytování</div>
+    <h2 class="section-title reveal">Pokoje a ceny</h2>
+    <div class="divider reveal"></div>
+    <p class="section-lead reveal">Nabízíme jedno-, dvou- i třílůžkové pokoje ve dvou kategoriích — s vlastním sociálním zařízením nebo s WC a sprchou na patře.</p>
+
+    <div class="rooms-grid">
+      <div class="room-card reveal d1">
+        <div class="room-img">
+          <img src="https://hoteldyje.cz/galerie/pokoj01.jpg" alt="Pokoj" loading="lazy" />
+        </div>
+        <div class="room-body">
+          <div class="room-type">Základní kategorie</div>
+          <h3>Pokoje bez soc. zař.</h3>
+          <p>Umyvadlo s teplou a studenou vodou na pokoji. Sprcha a WC jsou společné na patře.</p>
+          <div class="room-prices" data-card="bez">
+            <span class="price-chip">1 os. — 350 Kč</span>
+            <span class="price-chip">2 os. — 700 Kč</span>
+            <span class="price-chip">3 os. — 1 050 Kč</span>
+          </div>
+        </div>
+      </div>
+      <div class="room-card reveal d2">
+        <div class="room-img">
+          <img src="https://hoteldyje.cz/galerie/pokoj03.jpg" alt="Pokoj se sociálním zařízením" loading="lazy" />
+        </div>
+        <div class="room-body">
+          <div class="room-type">Lepší kategorie</div>
+          <h3>Pokoje se soc. zař.</h3>
+          <p>Umyvadlo, sprcha, WC a barevná TV přímo na pokoji.</p>
+          <div class="room-prices" data-card="se">
+            <span class="price-chip">1 os. — 600 Kč</span>
+            <span class="price-chip">2 os. — 1 200 Kč</span>
+            <span class="price-chip">3 os. — 1 700 Kč</span>
+          </div>
+        </div>
+      </div>
+      <div class="room-card reveal d3">
+        <div class="room-img">
+          <img src="https://hoteldyje.cz/galerie/pokoj05.jpg" alt="Třílůžkový pokoj" loading="lazy" />
+        </div>
+        <div class="room-body">
+          <div class="room-type">Rodinné ubytování</div>
+          <h3>Třílůžkový se soc. zař.</h3>
+          <p>Ideální pro rodiny — lůžka pro až 4 osoby. Sprcha, WC a TV na pokoji.</p>
+          <div class="room-prices" data-card="family">
+            <span class="price-chip">3 os. — 1 700 Kč</span>
+            <span class="price-chip">4 os. — 2 200 Kč</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem;" class="reveal">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.25rem;">Kompletní ceník ubytování</h3>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;">Ceny za noc · U delších pobytů individuální ceny</p>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Typ pokoje</th>
+            <th>1 os.</th>
+            <th>2 os.</th>
+            <th>3 os.</th>
+            <th>4 os.</th>
+          </tr>
+        </thead>
+        <tbody id="roomsPriceTbody">
+          <tr><td>Jednolůžkový se soc. zař.</td><td class="price-tag">600 Kč</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Jednolůžkový bez soc. zař.</td><td class="price-tag">350 Kč</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Dvoulůžkový se soc. zař.</td><td class="price-tag">600 Kč</td><td class="price-tag">1 200 Kč</td><td class="price-tag">1 700 Kč</td><td>—</td></tr>
+          <tr><td>Dvoulůžkový bez soc. zař.</td><td class="price-tag">350 Kč</td><td class="price-tag">700 Kč</td><td class="price-tag">1 050 Kč</td><td>—</td></tr>
+          <tr><td>Třílůžkový se soc. zař.</td><td class="price-tag">600 Kč</td><td class="price-tag">1 200 Kč</td><td class="price-tag">1 700 Kč</td><td class="price-tag">2 200 Kč</td></tr>
+          <tr><td>Třílůžkový bez soc. zař.</td><td class="price-tag">350 Kč</td><td class="price-tag">700 Kč</td><td class="price-tag">1 050 Kč</td><td class="price-tag">1 200 Kč</td></tr>
+          <tr><td>Pejsek</td><td class="price-tag">100 Kč</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p class="price-note" id="roomsPriceNote">Snídaně 100 Kč &nbsp;·&nbsp; Polopenze 300 Kč &nbsp;·&nbsp; Plná penze 450 Kč</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- RESTAURACE -->
+<section id="restaurace">
+  <div class="container">
+    <div class="restaurant-grid">
+      <div>
+        <div class="section-eyebrow reveal">Stravování</div>
+        <h2 class="section-title reveal">Restaurace<br />a akce</h2>
+        <div class="divider reveal"></div>
+        <ul class="feature-list reveal">
+          <li><span>🍽</span><span>Denní menu — 8 hotových jídel každý den. Česká kuchyně, ryby, vegetariánská jídla.</span></li>
+          <li><span>📋</span><span>Minutkový jídelníček pro hosty i veřejnost.</span></li>
+          <li><span>🎉</span><span>Salonek s kapacitou cca 50 osob — oslavy, svatby, abiturientské večírky, školení, firemní akce.</span></li>
+          <li><span>🌿</span><span>Letní zahrádka.</span></li>
+          <li><span>🚭</span><span>Nekuřácké prostředí.</span></li>
+        </ul>
+        <div class="meals-row reveal">
+          <div class="meal-item">
+            <div class="price" data-meal="snidane">100 Kč</div>
+            <div class="label">Snídaně</div>
+          </div>
+          <div class="meal-item">
+            <div class="price" data-meal="polopenze">300 Kč</div>
+            <div class="label">Polopenze</div>
+          </div>
+          <div class="meal-item">
+            <div class="price" data-meal="pp">450 Kč</div>
+            <div class="label">Plná penze</div>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-photos reveal d1">
+        <img src="https://hoteldyje.cz/galerie/restaurace01.jpg" alt="Restaurace Hotel Dyje" loading="lazy" />
+        <img src="https://hoteldyje.cz/galerie/raut01.jpg" alt="Salonek" loading="lazy" />
+        <img src="https://hoteldyje.cz/galerie/raut02.jpg" alt="Salonek — akce" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- DENNÍ MENU -->
+<section id="denmenu">
+  <div class="container">
+    <div class="section-eyebrow reveal">Jídelníček</div>
+    <h2 class="section-title reveal">Denní menu</h2>
+    <div id="menuDateBadge" class="reveal"></div>
+    <div id="menuContent">
+      <div class="menu-empty">Menu pro dnešní den zatím není k dispozici.<br>Zkuste to znovu později.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section style="background:var(--surface);">
+  <div class="container">
+    <div class="section-eyebrow reveal">Galerie</div>
+    <h2 class="section-title reveal">Fotky z hotelu</h2>
+    <div class="divider reveal"></div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item g-main">
+        <img src="https://hoteldyje.cz/galerie/hotel3.jpg" alt="Hotel Dyje" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://hoteldyje.cz/galerie/pokoj02.jpg" alt="Pokoj" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://hoteldyje.cz/galerie/pokoj04.jpg" alt="Pokoj" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://hoteldyje.cz/galerie/koupelna1.jpg" alt="Koupelna" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://hoteldyje.cz/galerie/raut03.jpg" alt="Salonek" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AKTIVITY -->
+<section class="activities-bg" id="aktivity">
+  <div class="container">
+    <div class="section-eyebrow reveal">Okolí</div>
+    <h2 class="section-title reveal">Co dělat v okolí</h2>
+    <div class="divider reveal"></div>
+    <p class="section-lead reveal">Dačice leží v srdci České Kanady — panenská příroda, historická města a klid.</p>
+    <div class="activities-grid">
+      <div class="activity-card reveal d1">
+        <div class="activity-icon">🏰</div>
+        <h3>Státní zámek Dačice</h3>
+        <p>Zámek s galerií a zámeckým parkem přímo ve městě. Hudební festivaly v létě.</p>
+      </div>
+      <div class="activity-card reveal d2">
+        <div class="activity-icon">🌟</div>
+        <h3>Telč — UNESCO</h3>
+        <p>Historické centrum zapsané na seznam UNESCO.</p>
+        <div class="activity-dist">13 km</div>
+      </div>
+      <div class="activity-card reveal d3">
+        <div class="activity-icon">🏘</div>
+        <h3>Slavonice</h3>
+        <p>Unikátní renesanční město na česko-rakouské hranici.</p>
+        <div class="activity-dist">14 km</div>
+      </div>
+      <div class="activity-card reveal d4">
+        <div class="activity-icon">🏯</div>
+        <h3>Hrad Landštejn</h3>
+        <p>Romantická zřícenina středověkého hradu v přírodě České Kanady.</p>
+      </div>
+      <div class="activity-card reveal d1">
+        <div class="activity-icon">🚴</div>
+        <h3>Cyklotrasy</h3>
+        <p>Vyjížďky na kolech do panenské přírody. Cyklo-sport Petr Kunkal — zapůjčení s dovozem přímo do hotelu.</p>
+      </div>
+      <div class="activity-card reveal d2">
+        <div class="activity-icon">🏊</div>
+        <h3>Koupaliště Dačice</h3>
+        <p>Moderní koupaliště přímo ve městě.</p>
+      </div>
+      <div class="activity-card reveal d3">
+        <div class="activity-icon">🥾</div>
+        <h3>Pěší turistika</h3>
+        <p>Nespočet turistických stezek krajinou České Kanady.</p>
+      </div>
+      <div class="activity-card reveal d4">
+        <div class="activity-icon">🐴</div>
+        <h3>Projížďky na koních</h3>
+        <p>Zeptejte se na recepci — projížďky dostupné v okolí hotelu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <div class="container">
+    <div class="section-eyebrow reveal">Kontakt</div>
+    <h2 class="section-title reveal">Napište nebo zavolejte</h2>
+    <div class="divider reveal"></div>
+    <p class="section-lead reveal">Máme rádi přímou komunikaci. Rezervace, dotazy i skupinové pobyty — ozvěte se.</p>
+    <div class="contact-grid">
+      <div class="contact-cards">
+        <div class="contact-card reveal d1">
+          <div class="contact-card-icon">📞</div>
+          <div>
+            <h4>Telefon</h4>
+            <a href="tel:+420384420090">+420 384 420 090</a>
+            <a href="tel:+420773941770">+420 773 941 770</a>
+            <span class="sub">Jiří Tran</span>
+          </div>
+        </div>
+        <div class="contact-card reveal d2">
+          <div class="contact-card-icon">✉️</div>
+          <div>
+            <h4>E-mail</h4>
+            <a href="mailto:info@hoteldyje.cz">info@hoteldyje.cz</a>
+          </div>
+        </div>
+        <div class="contact-card reveal d3">
+          <div class="contact-card-icon">📍</div>
+          <div>
+            <h4>Adresa</h4>
+            <p>Jemnická 1/III<br />380 01 Dačice</p>
+          </div>
+        </div>
+        <div class="contact-card reveal d4">
+          <div class="contact-card-icon">🏢</div>
+          <div>
+            <h4>Provozovatel</h4>
+            <p>HOTEL DYJE TRAN s.r.o.</p>
+            <span class="sub">IČO: 09666117 · DIČ: CZ009666117</span>
+          </div>
+        </div>
+      </div>
+      <div class="map-wrap reveal d2">
+        <iframe
+          src="https://maps.google.com/maps?q=Hotel+Dyje+Da%C4%8Dice&output=embed&z=17"
+          allowfullscreen loading="lazy" title="Mapa — Hotel Dyje Dačice">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Hotel Dyje · Dačice</div>
+    <p><a href="mailto:info@hoteldyje.cz">info@hoteldyje.cz</a> &nbsp;·&nbsp; <a href="tel:+420384420090">+420 384 420 090</a></p>
+    <p style="color:#3a3836;">Návrh webu: <a href="https://ksh-partners.cz" target="_blank" rel="noopener">KSH Partners</a></p>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js"></script>
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+  );
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  var _pb = new PocketBase('https://pb.hoteldyje.cz');
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── DENNÍ MENU ze Supabase ──────────────────────────────────
+  async function loadDailyMenu() {
+    var today   = new Date().toISOString().slice(0, 10);
+    var badge   = document.getElementById('menuDateBadge');
+    var content = document.getElementById('menuContent');
+
+    var d = new Date(today + 'T12:00:00');
+    var dateLabel = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
+    badge.innerHTML = '<span class="menu-date-badge">📅 ' + dateLabel + '</span>';
+
+    var dayRow = null;
+    try {
+      dayRow = await _pb.collection('hd_menu_days').getFirstListItem('date="' + today + '"');
+    } catch (e) { /* not found */ }
+    if (!dayRow) return;
+
+    var itemsRes = await _pb.collection('hd_menu_items').getList(1, 100, { filter: 'day_id="' + dayRow.id + '"', sort: 'sort_order' });
+    var items = itemsRes.items || [];
+
+    var soups    = items.filter(function(i) { return i.section === 'polevky'; });
+    var menus    = items.filter(function(i) { return i.section === 'menu'; });
+    var specials = items.filter(function(i) { return i.section === 'nabidka'; });
+    if (soups.length === 0 && menus.length === 0 && specials.length === 0) return;
+
+    var html = '<div class="menu-grid">';
+
+    if (soups.length > 0) {
+      html += '<div class="menu-col-card reveal">';
+      html += '<div class="menu-col-head">🍲 Polévky</div>';
+      html += '<div style="padding:0.5rem 1.1rem 0.75rem">';
+      html += '<div class="menu-soup-header"><span>2dcl</span><span>3dcl</span></div>';
+      soups.forEach(function(s) {
+        html += '<div class="menu-soup-row">';
+        html += '<span class="menu-soup-name">' + esc(s.name) + '</span>';
+        html += '<div class="menu-soup-prices">';
+        html += '<span>' + (s.price_small ? s.price_small + ',-' : '') + '</span>';
+        html += '<span>' + (s.price_large ? s.price_large + ',-' : '') + '</span>';
+        html += '</div></div>';
+      });
+      html += '</div></div>';
+    }
+
+    if (menus.length > 0) {
+      html += '<div class="menu-col-card reveal">';
+      html += '<div class="menu-col-head">🍽 Denní menu</div>';
+      menus.forEach(function(m, i) {
+        html += '<div class="menu-dish">';
+        html += '<div class="menu-dish-n">';
+        if (dayRow.menu_soup) html += '<div class="menu-menu-soup">Menu #' + (i+1) + ' — ' + esc(dayRow.menu_soup) + '</div>';
+        html += esc(m.name);
+        if (m.description) html += '<small>' + esc(m.description) + '</small>';
+        html += '</div>';
+        html += '<div class="menu-dish-p">' + (m.price ? m.price + ',-' : '') + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (specials.length > 0) {
+      html += '<div class="menu-col-card reveal">';
+      html += '<div class="menu-col-head">⭐ Nabídka dne</div>';
+      specials.forEach(function(s) {
+        html += '<div class="menu-dish">';
+        html += '<div class="menu-dish-n">' + esc(s.name);
+        if (s.description) html += '<small>' + esc(s.description) + '</small>';
+        html += '</div>';
+        html += '<div class="menu-dish-p">' + (s.price ? s.price + ',-' : '') + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div>';
+    if (dayRow.note) html += '<div class="menu-note">' + esc(dayRow.note) + '</div>';
+
+    content.innerHTML = html;
+    content.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+  }
+  loadDailyMenu();
+
+  // ── CENÍK UBYTOVÁNÍ ze Supabase ───────────────────────────────
+  async function loadRooms() {
+    var [roomsRes, configRes] = await Promise.all([
+      _pb.collection('hd_rooms').getList(1, 100, { sort: 'sort_order' }),
+      _pb.collection('hd_meals_config').getList(1, 1)
+    ]);
+    var rooms  = roomsRes.items || [];
+    var config = (configRes.items && configRes.items[0]) || null;
+    if (rooms.length === 0) return;
+
+    function fmt(n) { return Number(n).toLocaleString('cs-CZ'); }
+
+    function findRoom(kw, cat) {
+      return rooms.find(function(r) {
+        return r.category === cat && (r.name || '').toLowerCase().indexOf(kw) !== -1;
+      });
+    }
+
+    function renderCard(key, chips) {
+      var el = document.querySelector('[data-card="' + key + '"]');
+      if (!el) return;
+      var visible = chips.filter(function(c) { return c.price; });
+      if (visible.length === 0) return;
+      el.innerHTML = visible.map(function(c) {
+        return '<span class="price-chip">' + c.osob + ' — ' + fmt(c.price) + ' Kč</span>';
+      }).join('');
+    }
+
+    var jlBez = findRoom('jednolůžk', 'bez');
+    var dlBez = findRoom('dvoulůžk', 'bez');
+    var tlBez = findRoom('třílůžk', 'bez');
+    var jlSe  = findRoom('jednolůžk', 'se');
+    var dlSe  = findRoom('dvoulůžk', 'se');
+    var tlSe  = findRoom('třílůžk', 'se');
+
+    renderCard('bez', [
+      { osob: '1 os.', price: jlBez && jlBez.price_1 },
+      { osob: '2 os.', price: dlBez && dlBez.price_2 },
+      { osob: '3 os.', price: tlBez && tlBez.price_3 }
+    ]);
+    renderCard('se', [
+      { osob: '1 os.', price: jlSe && jlSe.price_1 },
+      { osob: '2 os.', price: dlSe && dlSe.price_2 },
+      { osob: '3 os.', price: tlSe && tlSe.price_3 }
+    ]);
+    renderCard('family', [
+      { osob: '3 os.', price: tlSe && tlSe.price_3 },
+      { osob: '4 os.', price: tlSe && tlSe.price_4 }
+    ]);
+
+    var tbody = document.getElementById('roomsPriceTbody');
+    if (tbody) {
+      tbody.innerHTML = rooms.map(function(r) {
+        var cells = [r.price_1, r.price_2, r.price_3, r.price_4].map(function(p) {
+          return p ? '<td class="price-tag">' + fmt(p) + ' Kč</td>' : '<td>—</td>';
+        }).join('');
+        return '<tr><td>' + esc(r.name) + '</td>' + cells + '</tr>';
+      }).join('');
+    }
+
+    if (config) {
+      ['snidane', 'polopenze', 'pp'].forEach(function(k) {
+        var el = document.querySelector('[data-meal="' + k + '"]');
+        if (el && config[k] != null) el.textContent = fmt(config[k]) + ' Kč';
+      });
+      var note = document.getElementById('roomsPriceNote');
+      if (note) {
+        var parts = [];
+        if (config.snidane   != null) parts.push('Snídaně '   + fmt(config.snidane)   + ' Kč');
+        if (config.polopenze != null) parts.push('Polopenze ' + fmt(config.polopenze) + ' Kč');
+        if (config.pp        != null) parts.push('Plná penze ' + fmt(config.pp)       + ' Kč');
+        if (parts.length > 0) note.innerHTML = parts.join(' &nbsp;·&nbsp; ');
+      }
+    }
+  }
+  loadRooms();
+</script>
+</body>
+</html>

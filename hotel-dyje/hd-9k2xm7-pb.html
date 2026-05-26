@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Přihlášení — Hotel Dyje</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#c8a96e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hotel Dyje">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d0a08;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: #1a1510;
+      border: 1px solid rgba(200,169,110,0.15);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-icon {
+      width: 56px; height: 56px;
+      background: rgba(200,169,110,0.12);
+      border: 1px solid rgba(200,169,110,0.25);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 1rem;
+    }
+
+    .logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: #f0ebe3;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-sub {
+      font-size: 0.75rem;
+      color: #7a6f65;
+      margin-top: 0.2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #7a6f65;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: #0d0a08;
+      border: 1px solid rgba(200,169,110,0.15);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: #f0ebe3;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    input:focus {
+      border-color: rgba(200,169,110,0.5);
+    }
+
+    input::placeholder { color: #4a443d; }
+
+    .btn {
+      width: 100%;
+      padding: 0.95rem;
+      background: #c8a96e;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0d0a08;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .btn:hover { background: #d4b87a; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .error {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #fca5a5;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .error.show { display: block; }
+
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: #4a443d;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon">🏨</div>
+    <div class="logo-name">Hotel Dyje</div>
+    <div class="logo-sub">Správa systému</div>
+  </div>
+
+  <div class="error" id="errorMsg"></div>
+
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="vas@email.cz"
+             autocomplete="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Heslo</label>
+      <input type="password" id="password" placeholder="••••••••"
+             autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="btn" id="submitBtn">Přihlásit se</button>
+  </form>
+
+  <div class="footer">Hotel Dyje Dačice · Správa obsahu</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js"></script>
+<script>
+  const pb = new PocketBase('https://pb.hoteldyje.cz');
+
+  // Pokud je již přihlášen → přesměrovat
+  if (pb.authStore.isValid) {
+    goToAdmin();
+  }
+
+  function goToAdmin() {
+    const dest = new URLSearchParams(window.location.search).get('next') || 'ubytovani-4p8nq-pb.html';
+    window.location.href = dest;
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const btn   = document.getElementById('submitBtn');
+    const error = document.getElementById('errorMsg');
+    const email = document.getElementById('email').value.trim();
+    const pass  = document.getElementById('password').value;
+
+    btn.disabled = true;
+    btn.textContent = 'Přihlašuji…';
+    error.classList.remove('show');
+
+    try {
+      await pb.collection('users').authWithPassword(email, pass);
+      goToAdmin();
+    } catch (err) {
+      error.textContent = 'Nesprávný e-mail nebo heslo.';
+      error.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Přihlásit se';
+    }
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+
+</body>
+</html>
