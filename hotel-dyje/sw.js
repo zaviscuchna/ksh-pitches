@@ -1,10 +1,10 @@
-const CACHE = 'hotel-dyje-v1';
+const CACHE = 'hotel-dyje-v2';
 const ASSETS = [
-  '/admin-login.html',
-  '/rooms-admin.html',
-  '/menu-admin.html',
+  '/hd-9k2xm7.html',
+  '/ubytovani-4p8nq.html',
+  '/menu-3w9jr.html',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap',
-  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'
+  'https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js'
 ];
 
 self.addEventListener('install', e => {
@@ -20,8 +20,8 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Supabase API vždy z netu (live data)
-  if (e.request.url.includes('supabase.co')) return;
+  // PocketBase API vždy z netu (live data)
+  if (e.request.url.includes('pb.hoteldyje.cz')) return;
   e.respondWith(
     fetch(e.request).catch(() => caches.match(e.request))
   );
