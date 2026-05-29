@@ -831,6 +831,15 @@
     }
   }
   loadRooms();
+
+  var _scrollTarget = sessionStorage.getItem("scrollTo");
+  if (_scrollTarget) {
+    sessionStorage.removeItem("scrollTo");
+    window.addEventListener("load", function() {
+      var el = document.getElementById(_scrollTarget);
+      if (el) setTimeout(function() { el.scrollIntoView({ behavior: "smooth" }); }, 100);
+    });
+  }
 </script>
 </body>
 </html>
