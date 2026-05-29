@@ -329,6 +329,15 @@
       text-overflow: ellipsis;
     }
 
+    .dish-allergens {
+      font-size: 0.62rem;
+      color: var(--amber);
+      margin-top: 0.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .dish-price {
       font-size: 0.875rem;
       font-weight: 700;
@@ -980,6 +989,10 @@
           <input type="number" class="form-input" id="editPriceLarge" placeholder="55" min="0">
         </div>
       </div>
+      <div class="form-group" id="editAllergensGroup">
+        <label class="form-label">Alergeny (nepovinné)</label>
+        <input type="text" class="form-input" id="editAllergens" placeholder="např. 1, 3, 7, 9">
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Zrušit</button>
@@ -990,6 +1003,7 @@
 
 <!-- ── TOAST ── -->
 <div class="toast" id="toast">✓ <span id="toastMsg">Uloženo</span></div>
+<datalist id="hdFoodSuggest"></datalist>
 
 <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.22.0/dist/pocketbase.umd.js"></script>
 <script>
@@ -1003,9 +1017,9 @@ if (!pb.authStore.isValid) {
 
 // ── DATA MODEL ─────────────────────────────────────────────────────────────
 const SECTIONS = [
-  { id: 'polevky', name: 'Polévky',     icon: '🍲', type: 'soup',    limit: 5 },
-  { id: 'menu',    name: 'Denní menu',  icon: '🍽', type: 'menu',    limit: 8 },
-  { id: 'nabidka', name: 'Nabídka dne', icon: '⭐', type: 'default', limit: 6 },
+  { id: 'polevky', name: 'Polévky',     icon: '🍲', type: 'soup',    limit: 20 },
+  { id: 'menu',    name: 'Denní menu',  icon: '🍽', type: 'menu',    limit: 50 },
+  { id: 'nabidka', name: 'Nabídka dne', icon: '⭐', type: 'default', limit: 30 },
 ];
 
 // menuData: { [dateKey]: { _id: uuid|null, menuSoup, note, polevky:[], menu:[], nabidka:[] } }
@@ -1125,7 +1139,7 @@ function renderEditor() {
     let addFormHtml = sec.type === 'soup' ? `
       <div class="form-row-3">
         <div><label class="form-label">Název polévky *</label>
-          <input type="text" class="form-input" id="fname-${sec.id}" placeholder="např. Kulajda" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
+          <input type="text" class="form-input" list="hdFoodSuggest" id="fname-${sec.id}" placeholder="např. Kulajda" oninput="acInput('${sec.id}')" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
         <div><label class="form-label">2dcl (Kč)</label>
           <input type="number" class="form-input" id="fps-${sec.id}" placeholder="40" min="0"></div>
         <div><label class="form-label">3dcl (Kč)</label>
@@ -1133,12 +1147,14 @@ function renderEditor() {
       </div>` : `
       <div class="form-row">
         <div><label class="form-label">Název jídla *</label>
-          <input type="text" class="form-input" id="fname-${sec.id}" placeholder="např. Segedínský guláš" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
+          <input type="text" class="form-input" list="hdFoodSuggest" id="fname-${sec.id}" placeholder="např. Segedínský guláš" oninput="acInput('${sec.id}')" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
         <div><label class="form-label">Cena (Kč)</label>
           <input type="number" class="form-input" id="fprice-${sec.id}" placeholder="169" min="0" onkeydown="if(event.key==='Enter')addDish('${sec.id}')"></div>
       </div>
       <div><label class="form-label">Příloha / popis (nepovinné)</label>
-        <input type="text" class="form-input" id="fdesc-${sec.id}" placeholder="např. knedlík houskový, zelí"></div>`;
+        <input type="text" class="form-input" id="fdesc-${sec.id}" placeholder="např. knedlík houskový, zelí"></div>
+      <div style="margin-top:0.5rem"><label class="form-label">Alergeny (nepovinné)</label>
+        <input type="text" class="form-input" id="fallergens-${sec.id}" placeholder="např. 1, 3, 7, 9"></div>`;
 
     const soupFieldHtml = sec.type === 'menu' ? `
       <div class="menu-soup-field">
@@ -1184,11 +1200,12 @@ function renderEditor() {
 }
 
 function renderDishList(secId) {
-  const sec   = SECTIONS.find(s => s.id === secId);
-  const items = getSection(currentDate, secId);
-  const list  = document.getElementById('list-' + secId);
+  const sec    = SECTIONS.find(s => s.id === secId);
+  const items  = getSection(currentDate, secId);
+  const list   = document.getElementById('list-' + secId);
   if (!list) return;
   list.innerHTML = '';
+  const foodDB = loadFoodDB();
   items.forEach((item, idx) => {
     const row = document.createElement('div');
     row.className = 'dish-row';
@@ -1198,12 +1215,14 @@ function renderDishList(secId) {
           <div class="dp"><small>3dcl</small>${item.price_large ? item.price_large + ',-' : '—'}</div>
          </div>`
       : `<div class="dish-price">${item.price ? item.price + ',-' : '—'}</div>`;
-    const label = sec.type === 'menu' ? 'M' + (idx + 1) : (idx + 1);
+    const label      = sec.type === 'menu' ? 'M' + (idx + 1) : (idx + 1);
+    const allergens  = foodDB[item.name]?.allergens || '';
     row.innerHTML = `
       <div class="dish-num">${label}</div>
       <div class="dish-info">
         <div class="dish-name">${escHtml(item.name)}</div>
         ${item.desc ? `<div class="dish-desc">${escHtml(item.desc)}</div>` : ''}
+        ${allergens  ? `<div class="dish-allergens">Al: ${escHtml(allergens)}</div>` : ''}
       </div>
       ${priceHtml}
       <div class="dish-actions">
@@ -1310,6 +1329,11 @@ async function addDish(secId) {
     showToast('Chyba při přidávání'); setSaveStatus('saved'); return;
   }
 
+  if (sec.type !== 'soup') {
+    const allergens = (document.getElementById('fallergens-' + secId)?.value || '').trim();
+    saveDishToFoodDB(name, insert.description || '', insert.price || null, allergens);
+  }
+
   items.push(mapItem(newItem));
   setSaveStatus('saved');
   hideForm(secId);
@@ -1389,12 +1413,15 @@ function openEdit(secId, idx) {
   document.getElementById('editDescGroup').style.display    = isSoup ? 'none' : 'block';
   document.getElementById('editPriceRow').style.display     = isSoup ? 'none' : 'grid';
   document.getElementById('editSoupPriceRow').style.display = isSoup ? 'grid' : 'none';
+  document.getElementById('editAllergensGroup').style.display = isSoup ? 'none' : 'block';
   if (isSoup) {
     document.getElementById('editPriceSmall').value = item.price_small || '';
     document.getElementById('editPriceLarge').value = item.price_large || '';
+    document.getElementById('editAllergens').value = '';
   } else {
-    document.getElementById('editDesc').value  = item.desc  || '';
-    document.getElementById('editPrice').value = item.price || '';
+    document.getElementById('editDesc').value      = item.desc  || '';
+    document.getElementById('editPrice').value     = item.price || '';
+    document.getElementById('editAllergens').value = loadFoodDB()[item.name]?.allergens || '';
   }
   document.getElementById('editModal').classList.add('open');
   setTimeout(() => document.getElementById('editName').focus(), 100);
@@ -1423,6 +1450,10 @@ async function saveEdit() {
     const price = document.getElementById('editPrice').value.trim();
     item.desc  = desc; item.price = price ? parseInt(price) : null;
     update.description = desc; update.price = item.price;
+  }
+  if (sec.type !== 'soup') {
+    const allergens = document.getElementById('editAllergens').value.trim();
+    saveDishToFoodDB(name, item.desc || '', item.price || null, allergens);
   }
   setSaveStatus('saving');
   await pb.collection('hd_menu_items').update(item.id, update);
@@ -1488,6 +1519,54 @@ document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); publishMenu(); }
   if (e.key === 'Escape') closeModal();
 });
+
+// ── FOOD DATABASE (localStorage) ───────────────────────────────────────────
+const FOOD_DB_KEY = 'hd_food_db_v1';
+
+function loadFoodDB() {
+  try { return JSON.parse(localStorage.getItem(FOOD_DB_KEY) || '{}'); }
+  catch (e) { return {}; }
+}
+
+function saveDishToFoodDB(name, desc, price, allergens) {
+  if (!name) return;
+  const db = loadFoodDB();
+  db[name] = {
+    desc:      desc      || db[name]?.desc      || '',
+    price:     price     || db[name]?.price     || null,
+    allergens: allergens !== undefined ? allergens : (db[name]?.allergens || '')
+  };
+  try { localStorage.setItem(FOOD_DB_KEY, JSON.stringify(db)); } catch (e) {}
+}
+
+// ── AUTOCOMPLETE ───────────────────────────────────────────────────────────
+function acInput(secId) {
+  const input = document.getElementById('fname-' + secId);
+  const q     = (input?.value || '').trim();
+  const dl    = document.getElementById('hdFoodSuggest');
+  const db    = loadFoodDB();
+
+  if (!dl) return;
+
+  if (q.length < 1) { dl.innerHTML = ''; return; }
+
+  const matches = Object.keys(db)
+    .filter(n => n.toLowerCase().includes(q.toLowerCase()))
+    .slice(0, 12);
+
+  dl.innerHTML = matches.map(n => `<option value="${escHtml(n)}"></option>`).join('');
+
+  // auto-fill pokud přesná shoda (uživatel vybral z nabídky)
+  const match = db[input.value];
+  if (match) {
+    const descEl      = document.getElementById('fdesc-'      + secId);
+    const priceEl     = document.getElementById('fprice-'     + secId);
+    const allergensEl = document.getElementById('fallergens-' + secId);
+    if (descEl      && match.desc)      descEl.value      = match.desc;
+    if (priceEl     && match.price)     priceEl.value     = match.price;
+    if (allergensEl && match.allergens) allergensEl.value = match.allergens;
+  }
+}
 </script>
 
 </body>
