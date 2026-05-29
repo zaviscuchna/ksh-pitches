@@ -2,21 +2,10 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=/" />
   <title>Hotel Dyje Dačice</title>
-  <script>
-    var path = window.location.pathname.toLowerCase();
-    var anchor = "";
-    if (path.indexOf("ubytov") !== -1 || path.indexOf("pokoj") !== -1 || path.indexOf("rezerv") !== -1) {
-      anchor = "#pokoje";
-    } else if (path.indexOf("restaur") !== -1 || path.indexOf("stravov") !== -1 || path.indexOf("menu") !== -1 || path.indexOf("jidlo") !== -1) {
-      anchor = "#restaurace";
-    } else if (path.indexOf("aktiv") !== -1) {
-      anchor = "#aktivity";
-    } else if (path.indexOf("kontakt") !== -1) {
-      anchor = "#kontakt";
-    }
-    window.location.replace("/" + anchor);
-  </script>
 </head>
-<body></body>
+<body>
+  <script>window.location.replace("/");</script>
+</body>
 </html>
