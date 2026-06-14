@@ -60,9 +60,21 @@
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-            "opens": "00:00",
-            "closes": "23:59"
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Saturday"],
+            "opens": "09:00",
+            "closes": "21:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Friday",
+            "opens": "09:00",
+            "closes": "23:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Sunday",
+            "opens": "10:00",
+            "closes": "18:00"
           }
         ],
         "sameAs": ["https://www.hoteldyje.cz"]
@@ -232,6 +244,15 @@
     .contact-card .sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
     .map-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); height: 380px; }
     .map-wrap iframe { width: 100%; height: 100%; border: none; filter: grayscale(0.8) brightness(0.75); }
+    /* Kontaktní karta s více ikonkovými řádky (telefon + obálka) */
+    .contact-card--stack { flex-direction: column; gap: 1.25rem; }
+    .contact-line { display: flex; gap: 1rem; align-items: flex-start; }
+    /* Otevírací doba */
+    .hours { margin-top: 0.15rem; width: 100%; }
+    .hours-row { display: flex; justify-content: space-between; gap: 1.5rem; font-size: 0.85rem; padding: 0.18rem 0; }
+    .hours-row > span:first-child { color: var(--muted); }
+    .hours-row > span:last-child { color: var(--fg); font-variant-numeric: tabular-nums; }
+    .hours-row.today > span { color: var(--primary); font-weight: 600; }
 
     /* DENNÍ MENU */
     #denmenu { background: var(--surface); }
@@ -600,23 +621,48 @@
     <p class="section-lead reveal">Máme rádi přímou komunikaci. Rezervace, dotazy i skupinové pobyty — ozvěte se.</p>
     <div class="contact-grid">
       <div class="contact-cards">
-        <div class="contact-card reveal d1">
-          <div class="contact-card-icon">📞</div>
-          <div>
-            <h4>Telefon</h4>
-            <a href="tel:+420384420090">+420 384 420 090</a>
-            <a href="tel:+420773941770">+420 773 941 770</a>
-            <span class="sub">Jiří Tran</span>
+        <div class="contact-card contact-card--stack reveal d1">
+          <div class="contact-line">
+            <div class="contact-card-icon">📞</div>
+            <div>
+              <h4>Telefon</h4>
+              <a href="tel:+420384420090">+420 384 420 090</a>
+              <a href="tel:+420773941770">+420 773 941 770</a>
+            </div>
+          </div>
+          <div class="contact-line">
+            <div class="contact-card-icon">✉️</div>
+            <div>
+              <h4>E-mail</h4>
+              <a href="mailto:info@hoteldyje.cz">info@hoteldyje.cz</a>
+              <span class="sub">Jiří Tran</span>
+            </div>
           </div>
         </div>
         <div class="contact-card reveal d2">
-          <div class="contact-card-icon">✉️</div>
+          <div class="contact-card-icon">🛏️</div>
           <div>
-            <h4>E-mail</h4>
-            <a href="mailto:info@hoteldyje.cz">info@hoteldyje.cz</a>
+            <h4>Rezervace ubytování</h4>
+            <a href="mailto:rezervace@hoteldyje.cz">rezervace@hoteldyje.cz</a>
+            <span class="sub">Ubytování a rezervace pokojů</span>
           </div>
         </div>
         <div class="contact-card reveal d3">
+          <div class="contact-card-icon">🕒</div>
+          <div>
+            <h4>Otevírací doba</h4>
+            <div class="hours">
+              <div class="hours-row" data-dow="1"><span>Pondělí</span><span>9:00–21:00</span></div>
+              <div class="hours-row" data-dow="2"><span>Úterý</span><span>9:00–21:00</span></div>
+              <div class="hours-row" data-dow="3"><span>Středa</span><span>9:00–21:00</span></div>
+              <div class="hours-row" data-dow="4"><span>Čtvrtek</span><span>9:00–21:00</span></div>
+              <div class="hours-row" data-dow="5"><span>Pátek</span><span>9:00–23:00</span></div>
+              <div class="hours-row" data-dow="6"><span>Sobota</span><span>9:00–21:00</span></div>
+              <div class="hours-row" data-dow="0"><span>Neděle</span><span>10:00–18:00</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-card reveal d4">
           <div class="contact-card-icon">📍</div>
           <div>
             <h4>Adresa</h4>
@@ -668,6 +714,10 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Zvýraznění dnešního dne v otevírací době
+  var _todayRow = document.querySelector('.hours-row[data-dow="' + new Date().getDay() + '"]');
+  if (_todayRow) _todayRow.classList.add('today');
 
   var _pb = new PocketBase('https://pb.hoteldyje.cz');
 
