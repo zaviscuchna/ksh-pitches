@@ -60,11 +60,14 @@
   .st-rating .big { font-size:2rem; line-height:1; }
   .st-rating .sm { font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; margin-top:.3rem; font-weight:700; }
   .st-rating .stars { font-size:.8rem; letter-spacing:.1em; }
-  .hero-hand { font-family:'Caveat',cursive; font-weight:600; position:absolute; left:50%; transform:translate(-50%,0) rotate(-2deg); bottom:-64px; font-size:2.15rem; background:#FFFDF6; border:2px solid var(--ink); padding:.5rem 1.6rem; box-shadow:5px 6px 0 rgba(22,19,14,.85); white-space:nowrap; z-index:3; }
-  .hero-hand::before, .hero-hand::after { content:""; position:absolute; top:-14px; width:64px; height:26px; background:rgba(242,180,30,.85); border:1.5px solid rgba(22,19,14,.35); transform:rotate(-4deg); }
-  .hero-hand::before { left:-22px; }
-  .hero-hand::after { right:-22px; transform:rotate(5deg); }
+  .hero-hand { font-family:'Caveat',cursive; font-weight:600; position:absolute; left:50%; transform:translate(-50%,0) rotate(-3.5deg); bottom:-70px; font-size:2.2rem; color:var(--ink); padding:1.1rem 2.6rem 1.3rem; white-space:nowrap; z-index:3;
+    background-color:#FBF7EA;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='140'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.028 0.045' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeDiffuseLighting surface-scale='2.6' diffuseConstant='1.12' lighting-color='%23ffffff'%3E%3CfeDistantLight azimuth='58' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='420' height='140' filter='url(%23c)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size:cover;
+    clip-path:polygon(1.5% 18%, 6% 4%, 14% 10%, 23% 2%, 33% 9%, 44% 1%, 54% 8%, 65% 3%, 76% 10%, 86% 2%, 94% 12%, 99% 26%, 97% 44%, 99.5% 62%, 95% 80%, 97% 94%, 88% 99%, 76% 93%, 64% 99%, 52% 92%, 40% 99%, 28% 93%, 16% 98%, 7% 91%, 2.5% 78%, 0.5% 58%, 3% 38%);
+    filter:drop-shadow(6px 8px 0 rgba(22,19,14,.5)); }
   .hero-hand span { border-bottom:3px solid var(--mustard); }
+  .hero-hand .arr { color:rgba(22,19,14,.65); margin-right:.4rem; }
 
   /* MARQUEE */
   .torn { height:26px; background:var(--ink); clip-path:polygon(0 100%,100% 100%,100% 40%,97% 65%,94% 35%,91% 70%,88% 38%,85% 62%,82% 30%,79% 68%,76% 42%,73% 60%,70% 32%,67% 66%,64% 40%,61% 70%,58% 34%,55% 62%,52% 38%,49% 66%,46% 30%,43% 64%,40% 42%,37% 70%,34% 36%,31% 60%,28% 32%,25% 68%,22% 40%,19% 64%,16% 34%,13% 62%,10% 38%,7% 66%,4% 32%,0 60%); margin-bottom:-1px; }
@@ -160,7 +163,7 @@
         <span class="big">5,0</span>
         <span class="sm">280 recenzí<br>na Google</span>
       </div>
-      <div class="hero-hand">balíme do papíru, <span>ne do řečí</span></div>
+      <div class="hero-hand"><span class="arr">→</span>balíme do papíru, <span>ne do řečí</span></div>
     </div>
   </div>
 </header>
