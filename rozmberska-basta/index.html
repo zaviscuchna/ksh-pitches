@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rožmberská bašta — Rybí restaurace & penzion Třeboň</title>
+<meta name="description" content="Rybí restaurace a penzion v srdci Třeboně. Kapr, candát i pstruh z jihočeských rybníků — poctivá kuchyně s rybářskou tradicí.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --green: #16311F;
+    --green-2: #1D3E28;
+    --cream: #F4EFE2;
+    --cream-2: #EDE6D3;
+    --rose: #A93B44;
+    --gold: #C0A164;
+    --ink: #21221C;
+    --muted: #6E6A5B;
+    --border: rgba(22,49,31,.14);
+  }
+  html { scroll-behavior:smooth; }
+  body { background:var(--cream); color:var(--ink); font-family:'Inter',sans-serif; font-weight:300; }
+  h1,h2,h3,.serif { font-family:'Cormorant Garamond',serif; font-weight:600; }
+  img { display:block; max-width:100%; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 24px; }
+
+  /* NAV */
+  nav { position:fixed; inset:0 0 auto 0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.2rem,4vw,3rem); height:78px; transition:.35s; }
+  nav.scrolled { background:rgba(244,239,226,.96); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+  .nav-brand { display:flex; align-items:center; gap:.75rem; text-decoration:none; }
+  .nav-brand .rose-mark { width:34px; height:34px; }
+  .nav-brand span { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:700; color:var(--cream); letter-spacing:.02em; transition:.35s; }
+  nav.scrolled .nav-brand span { color:var(--green); }
+  .nav-links { display:flex; gap:2.2rem; align-items:center; }
+  .nav-links a { color:var(--cream); text-decoration:none; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; transition:.35s; }
+  nav.scrolled .nav-links a { color:var(--green); }
+  .nav-links a.btn { border:1px solid currentColor; padding:.55rem 1.3rem; border-radius:2px; }
+  @media (max-width:820px){ .nav-links a:not(.btn){ display:none; } }
+
+  /* HERO */
+  header {
+    position:relative; min-height:100svh; display:flex; align-items:center;
+    background:linear-gradient(rgba(13,28,18,.55),rgba(13,28,18,.78)), url('img/fasada.jpg') center 30%/cover no-repeat;
+  }
+  .hero-in { position:relative; width:100%; max-width:1240px; margin:0 auto; padding:120px 24px 90px; color:var(--cream); text-align:center; }
+  .hero-kicker { font-size:.85rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); font-weight:500; }
+  .hero-in h1 { font-size:clamp(3rem,8vw,6.2rem); line-height:1.04; margin-top:1.4rem; font-weight:600; }
+  .hero-in h1 em { font-style:italic; font-weight:500; color:#EAD9A8; }
+  .hero-sub { margin:1.6rem auto 0; max-width:560px; font-size:1.06rem; line-height:1.7; color:rgba(244,239,226,.85); }
+  .hero-cta { margin-top:2.6rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .hero-cta a { text-decoration:none; font-size:.85rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500; padding:.95rem 2.1rem; border-radius:2px; }
+  .hero-cta .primary { background:var(--rose); color:#fff; }
+  .hero-cta .ghost { border:1px solid rgba(244,239,226,.6); color:var(--cream); }
+  .hero-note { position:absolute; left:0; right:0; bottom:26px; text-align:center; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; color:rgba(244,239,226,.66); }
+
+  /* STRIP */
+  .strip { background:var(--green); color:var(--cream); padding:.85rem 0; text-align:center; font-size:.78rem; letter-spacing:.3em; text-transform:uppercase; font-weight:500; }
+  .strip span { color:var(--gold); }
+
+  /* ABOUT */
+  .about { padding:110px 0 90px; }
+  .about-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:70px; align-items:center; }
+  @media (max-width:860px){ .about-grid{ grid-template-columns:1fr; gap:40px; } }
+  .kicker { font-size:.78rem; letter-spacing:.34em; text-transform:uppercase; color:var(--rose); font-weight:600; }
+  .about h2 { font-size:clamp(2.2rem,4.5vw,3.4rem); line-height:1.12; margin-top:1rem; color:var(--green); }
+  .about p { margin-top:1.4rem; line-height:1.85; color:#4d4a3f; font-size:1.02rem; }
+  .about blockquote { margin-top:2rem; padding-left:1.4rem; border-left:2px solid var(--gold); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.35rem; color:var(--green); line-height:1.5; }
+  .about-photos { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .about-photos img { width:100%; height:250px; object-fit:cover; border-radius:2px; }
+  .about-photos img:first-child { grid-column:1/-1; height:300px; }
+
+  /* MENU */
+  .menu { background:var(--green); color:var(--cream); padding:110px 0; }
+  .menu .kicker { color:var(--gold); }
+  .menu h2 { font-size:clamp(2.2rem,4.5vw,3.4rem); margin-top:1rem; }
+  .menu-head { display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+  .menu-head .serif { font-style:italic; font-weight:500; color:rgba(244,239,226,.75); font-size:1.15rem; }
+  .menu-grid { margin-top:3.5rem; display:grid; grid-template-columns:repeat(2,1fr); gap:0 70px; }
+  @media (max-width:820px){ .menu-grid{ grid-template-columns:1fr; } }
+  .mi { display:flex; justify-content:space-between; align-items:baseline; gap:1.2rem; padding:1.15rem 0; border-bottom:1px solid rgba(244,239,226,.16); }
+  .mi .n { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:600; }
+  .mi .n small { display:block; font-family:'Inter',sans-serif; font-size:.8rem; font-weight:300; color:rgba(244,239,226,.6); margin-top:.25rem; letter-spacing:.02em; }
+  .mi .g { font-size:.8rem; color:var(--gold); white-space:nowrap; letter-spacing:.08em; }
+  .menu-note { margin-top:2.6rem; text-align:center; }
+  .menu-note a { color:var(--gold); font-size:.83rem; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid rgba(192,161,100,.5); padding-bottom:4px; font-weight:500; }
+
+  /* SPECIAL */
+  .special { padding:110px 0; }
+  .special-grid { display:grid; grid-template-columns:.95fr 1.05fr; gap:70px; align-items:center; }
+  @media (max-width:860px){ .special-grid{ grid-template-columns:1fr; gap:40px; } }
+  .special img { width:100%; height:430px; object-fit:cover; border-radius:2px; }
+  .special h2 { font-size:clamp(2rem,4vw,3rem); color:var(--green); margin-top:1rem; line-height:1.15; }
+  .special p { margin-top:1.3rem; line-height:1.85; color:#4d4a3f; }
+  .special ul { margin-top:1.6rem; list-style:none; }
+  .special li { padding:.65rem 0; border-bottom:1px solid var(--border); font-family:'Cormorant Garamond',serif; font-size:1.25rem; color:var(--green); font-weight:600; }
+  .special li em { font-family:'Inter',sans-serif; font-style:normal; font-size:.8rem; color:var(--muted); font-weight:300; margin-left:.6rem; }
+
+  /* PENZION */
+  .penzion { background:var(--cream-2); padding:110px 0; }
+  .pz-grid { display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; }
+  @media (max-width:860px){ .pz-grid{ grid-template-columns:1fr; gap:40px; } }
+  .pz-photos { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .pz-photos img { width:100%; height:230px; object-fit:cover; border-radius:2px; }
+  .penzion h2 { font-size:clamp(2rem,4vw,3rem); color:var(--green); margin-top:1rem; }
+  .penzion p { margin-top:1.3rem; line-height:1.85; color:#4d4a3f; }
+  .pz-cta { margin-top:2rem; display:inline-block; text-decoration:none; background:var(--green); color:var(--cream); font-size:.83rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500; padding:.95rem 2rem; border-radius:2px; }
+
+  /* REVIEWS */
+  .reviews { padding:100px 0; text-align:center; }
+  .stars { color:var(--gold); font-size:1.6rem; letter-spacing:.35em; }
+  .reviews .score { font-family:'Cormorant Garamond',serif; font-size:clamp(3.4rem,7vw,5.2rem); font-weight:600; color:var(--green); margin-top:.6rem; }
+  .reviews .score small { font-size:1.4rem; color:var(--muted); font-weight:500; }
+  .reviews .src { margin-top:.6rem; font-size:.85rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+  .reviews .serif { display:block; margin:2.2rem auto 0; max-width:620px; font-style:italic; font-weight:500; font-size:1.45rem; line-height:1.55; color:var(--green); }
+
+  /* CONTACT */
+  .contact { background:var(--green); color:var(--cream); padding:110px 0 90px; }
+  .ct-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:70px; }
+  @media (max-width:860px){ .ct-grid{ grid-template-columns:1fr; gap:44px; } }
+  .contact h2 { font-size:clamp(2.2rem,4.5vw,3.4rem); margin-top:1rem; }
+  .ct-item { margin-top:1.9rem; }
+  .ct-item .l { font-size:.75rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); font-weight:500; }
+  .ct-item .v { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; margin-top:.35rem; }
+  .ct-item .v a { color:var(--cream); text-decoration:none; }
+  .hours { border-top:1px solid rgba(244,239,226,.2); margin-top:1rem; }
+  .hours div { display:flex; justify-content:space-between; padding:.85rem 0; border-bottom:1px solid rgba(244,239,226,.14); font-size:.98rem; }
+  .hours div span:last-child { font-weight:500; color:#EAD9A8; }
+  footer { background:#0F2416; color:rgba(244,239,226,.55); padding:1.6rem 0; text-align:center; font-size:.82rem; letter-spacing:.06em; }
+  footer b { color:rgba(244,239,226,.8); font-weight:500; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-brand" href="#">
+    <svg class="rose-mark" viewBox="0 0 40 40" fill="none"><path d="M20 3 37 20 20 37 3 20Z" fill="#A93B44"/><circle cx="20" cy="20" r="5.5" fill="#F4EFE2"/><circle cx="20" cy="20" r="2.4" fill="#C0A164"/></svg>
+    <span>Rožmberská bašta</span>
+  </a>
+  <div class="nav-links">
+    <a href="#onas">O nás</a>
+    <a href="#menu">Jídelní lístek</a>
+    <a href="#penzion">Penzion</a>
+    <a href="#kontakt">Kontakt</a>
+    <a class="btn" href="tel:+420777218077">777 218 077</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hero-in">
+    <div class="hero-kicker">Rybí restaurace · Třeboň · od rybníka na talíř</div>
+    <h1>Ryby, jak je umí<br><em>jen Třeboň</em>.</h1>
+    <p class="hero-sub">Kapr, candát i pstruh z jihočeských rybníků, poctivá kuchyně a rybářská tradice v historickém domě pár kroků od náměstí.</p>
+    <div class="hero-cta">
+      <a class="primary" href="#menu">Prohlédnout menu</a>
+      <a class="ghost" href="#kontakt">Rezervovat stůl</a>
+    </div>
+  </div>
+  <div class="hero-note">„Při rybaření se uvolňuji. Druhý den jsem tak uvolněný, že bych šel zase na ryby.“</div>
+</header>
+
+<div class="strip">Otevřeno denně &nbsp;·&nbsp; <span>Po–Pá 11.30–22.00</span> &nbsp;·&nbsp; So 11.00–22.00 &nbsp;·&nbsp; Ne 11.00–21.00</div>
+
+<section class="about" id="onas">
+  <div class="wrap about-grid">
+    <div>
+      <div class="kicker">O nás</div>
+      <h2>Bašta, kde ryba není jen položka na lístku</h2>
+      <p>Rožmberská bašta stojí v historickém centru Třeboně — města, které rybám rozumí už šest století. Vaříme z ryb od místních rybářů: třeboňskou rybí polévku, kapra na desítky způsobů, candáta i pstruha na česnekovém másle.</p>
+      <p>K tomu rustikální interiér s rybářskými sítěmi, ochotná obsluha a atmosféra, do které se hosté vracejí — na Googlu nás hodnotí přes tisíc spokojených hostů.</p>
+      <blockquote>Poctivá jihočeská kuchyně bez zbytečných příkras — ryba, oheň a čas.</blockquote>
+    </div>
+    <div class="about-photos">
+      <img src="img/interier1.jpg" alt="Interiér restaurace">
+      <img src="img/interier2.jpg" alt="Posezení v restauraci">
+      <img src="img/interier3.jpg" alt="Rustikální interiér">
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="menu-head">
+      <div>
+        <div class="kicker">Jídelní lístek</div>
+        <h2>Z našich rybníků</h2>
+      </div>
+      <div class="serif">kompletní lístek česky / deutsch / english</div>
+    </div>
+    <div class="menu-grid">
+      <div class="mi"><div class="n">Rybí třeboňská polévka<small>s krutóny a šlehačkou · 0,3 l</small></div><div class="g">polévka</div></div>
+      <div class="mi"><div class="n">Matjesy s cibulí<small>s čerstvým pečivem · 150 g</small></div><div class="g">předkrm</div></div>
+      <div class="mi"><div class="n">Kapří kostky v česnekovo-medové omáčce<small>specialita šéfkuchaře · 150 g</small></div><div class="g">specialita</div></div>
+      <div class="mi"><div class="n">Třeboňské kapří hranolky<small>místní klasika, jinde je nenajdete · 150 g</small></div><div class="g">specialita</div></div>
+      <div class="mi"><div class="n">Rybí špíz dvou chutí<small>candát a kapr z grilu · 200 g</small></div><div class="g">z grilu</div></div>
+      <div class="mi"><div class="n">Kapr smažený<small>tak, jak má být · 200 g</small></div><div class="g">kapr</div></div>
+      <div class="mi"><div class="n">Kapr po židovsku<small>s cibulí, česnekem a vínem · 200 g</small></div><div class="g">kapr</div></div>
+      <div class="mi"><div class="n">Pstruh na česnekovém másle<small>pečený na roštu · 200 g</small></div><div class="g">pstruh</div></div>
+    </div>
+    <div class="menu-note"><a href="#kontakt">Celý jídelní lístek k nahlédnutí v restauraci →</a></div>
+  </div>
+</section>
+
+<section class="special">
+  <div class="wrap special-grid">
+    <img src="img/pstruh.jpg" alt="Pstruh na česnekovém másle">
+    <div>
+      <div class="kicker">Specialita domu</div>
+      <h2>Čerstvé ryby, které ráno ještě plavaly</h2>
+      <p>Suroviny nebereme z mrazáku. Ryby k nám jezdí od rybářů z třeboňských rybníků a na talíř jdou v den, kdy je kuchyně zpracuje. Proto chutná naše kuchyně jinak, než na co jste zvyklí.</p>
+      <ul>
+        <li>Kapr <em>smažený · na česneku · po novohradsku · po židovsku</em></li>
+        <li>Candát <em>v česnekovo-medové omáčce · na špízu</em></li>
+        <li>Pstruh <em>na česnekovém másle z roštu</em></li>
+        <li>Vodnický mls <em>pro odvážné gurmány</em></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="penzion" id="penzion">
+  <div class="wrap pz-grid">
+    <div>
+      <div class="kicker">Penzion</div>
+      <h2>Přespěte nad baštou</h2>
+      <p>Přijeli jste na kole kolem rybníků, nebo se po večeři nechcete nikam trmácet? Přímo nad restaurací nabízíme útulné pokoje penzionu Rožmberská bašta — ideální základna pro objevování Třeboňska.</p>
+      <p>Lázně, rybník Svět, Schwarzenberská hrobka i cyklostezky kolem Rožmberka — všude to máte pár minut.</p>
+      <a class="pz-cta" href="#kontakt">Poptat ubytování</a>
+    </div>
+    <div class="pz-photos">
+      <img src="img/pokoj1.jpg" alt="Pokoj penzionu">
+      <img src="img/pokoj2.jpg" alt="Dvoulůžkový pokoj">
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <div class="wrap">
+    <div class="stars">★★★★★</div>
+    <div class="score">4,3<small> / 5</small></div>
+    <div class="src">1 111 hodnocení na Google</div>
+    <span class="serif">„Výborná rybí kuchyně a příjemná obsluha — na Třeboni jedno z míst, kam se vracíme.“</span>
+  </div>
+</section>
+
+<section class="contact" id="kontakt">
+  <div class="wrap ct-grid">
+    <div>
+      <div class="kicker" style="color:var(--gold)">Kontakt & rezervace</div>
+      <h2>Najdete nás v centru Třeboně</h2>
+      <div class="ct-item"><div class="l">Adresa</div><div class="v">Rožmberská 59, 379 01 Třeboň</div></div>
+      <div class="ct-item"><div class="l">Rezervace & telefon</div><div class="v"><a href="tel:+420777218077">+420 777 218 077</a> · <a href="tel:+420725524393">+420 725 524 393</a></div></div>
+      <div class="ct-item"><div class="l">E-mail</div><div class="v"><a href="mailto:restaurace@rozmberskabasta.eu">restaurace@rozmberskabasta.eu</a></div></div>
+    </div>
+    <div>
+      <div class="kicker" style="color:var(--gold)">Otevírací doba</div>
+      <div class="hours" style="margin-top:1.4rem;">
+        <div><span>Pondělí — Pátek</span><span>11.30 — 22.00</span></div>
+        <div><span>Sobota</span><span>11.00 — 22.00</span></div>
+        <div><span>Neděle</span><span>11.00 — 21.00</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>Rožmberská bašta</b> · Determinatio s.r.o. · Rožmberská 59, Třeboň &nbsp;—&nbsp; návrh webu: KSH Partners
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+</script>
+</body>
+</html>
