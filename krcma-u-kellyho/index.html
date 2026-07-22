@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krčma U Kellyho — středověká krčma na zámku Třeboň</title>
+<meta name="description" content="Stylová zámecká krčma v Třeboni. Krmě dle receptur starých, středověké hostiny, svatby i firemní programy — v průchodu z náměstí do zámeckého parku.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --night: #120E09;
+    --night-2:#1B150D;
+    --parch: #E9DCC0;
+    --parch-dim: rgba(233,220,192,.72);
+    --gold: #C9A227;
+    --wax: #9A3324;
+    --border: rgba(233,220,192,.14);
+  }
+  html { scroll-behavior:smooth; }
+  body { background:var(--night); color:var(--parch); font-family:'Inter',sans-serif; font-weight:300; }
+  h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
+  .fell { font-family:'IM Fell English',serif; }
+  img { display:block; max-width:100%; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 24px; }
+
+  /* NAV */
+  nav { position:fixed; inset:0 0 auto 0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.2rem,4vw,3rem); height:80px; transition:.35s; }
+  nav.scrolled { background:rgba(18,14,9,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+  .brand { display:flex; align-items:center; gap:.8rem; text-decoration:none; color:var(--parch); }
+  .brand img { height:46px; }
+  .brand span { font-family:'Cinzel',serif; font-size:1.25rem; font-weight:600; letter-spacing:.05em; }
+  .nav-links { display:flex; gap:2.1rem; align-items:center; }
+  .nav-links a { color:var(--parch); text-decoration:none; font-size:.8rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500; }
+  .nav-links a.btn { border:1px solid var(--gold); color:var(--gold); padding:.55rem 1.3rem; }
+  @media (max-width:860px){ .nav-links a:not(.btn){ display:none; } }
+
+  /* HERO */
+  header { position:relative; min-height:100svh; display:flex; align-items:center; justify-content:center; text-align:center;
+    background:linear-gradient(rgba(18,14,9,.5),rgba(18,14,9,.86)), url('img/interier2.jpg') center/cover no-repeat; }
+  .hero-in { position:relative; padding:130px 24px 110px; max-width:900px; }
+  .hero-kicker { font-size:.8rem; letter-spacing:.44em; text-transform:uppercase; color:var(--gold); font-weight:500; }
+  header h1 { font-size:clamp(2.8rem,7.5vw,5.6rem); line-height:1.08; margin-top:1.4rem; }
+  .hero-fell { margin-top:1.8rem; font-family:'IM Fell English',serif; font-style:italic; font-size:clamp(1.15rem,2.2vw,1.5rem); color:var(--parch-dim); line-height:1.6; }
+  .hero-cta { margin-top:2.8rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .hero-cta a { text-decoration:none; font-size:.83rem; letter-spacing:.18em; text-transform:uppercase; font-weight:500; padding:1rem 2.2rem; }
+  .hero-cta .primary { background:var(--wax); color:var(--parch); }
+  .hero-cta .ghost { border:1px solid rgba(233,220,192,.5); color:var(--parch); }
+  .hero-orn { position:absolute; left:50%; transform:translateX(-50%); bottom:30px; color:var(--gold); font-size:1.5rem; opacity:.8; }
+
+  /* STRIP */
+  .strip { background:var(--gold); color:var(--night); padding:.8rem 0; text-align:center; font-size:.78rem; letter-spacing:.28em; text-transform:uppercase; font-weight:600; }
+
+  /* LEGEND */
+  .legend { padding:120px 0 100px; position:relative; }
+  .lg-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  @media (max-width:880px){ .lg-grid{ grid-template-columns:1fr; gap:44px; } }
+  .kicker { font-size:.76rem; letter-spacing:.36em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .legend h2 { font-size:clamp(2rem,4.2vw,3.2rem); margin-top:1rem; line-height:1.18; }
+  .legend p { margin-top:1.4rem; line-height:1.9; color:var(--parch-dim); font-size:1.01rem; }
+  .legend .fell-q { margin-top:2rem; font-family:'IM Fell English',serif; font-style:italic; font-size:1.4rem; color:var(--gold); line-height:1.55; }
+  .lg-photo { position:relative; }
+  .lg-photo img { width:100%; height:560px; object-fit:cover; border:1px solid var(--border); }
+  .lg-photo .cap { margin-top:14px; font-family:'IM Fell English',serif; font-style:italic; color:var(--parch-dim); font-size:1.02rem; text-align:center; }
+
+  /* MENU */
+  .menu { background:var(--night-2); border-block:1px solid var(--border); padding:110px 0; }
+  .menu-head { text-align:center; }
+  .menu h2 { font-size:clamp(2.2rem,4.6vw,3.6rem); margin-top:1rem; }
+  .menu-head .fell { font-style:italic; color:var(--parch-dim); margin-top:1rem; font-size:1.2rem; }
+  .menu-grid { margin-top:3.6rem; display:grid; grid-template-columns:1fr 1fr; gap:0 80px; }
+  @media (max-width:860px){ .menu-grid{ grid-template-columns:1fr; } }
+  .mi { padding:1.35rem 0; border-bottom:1px solid var(--border); }
+  .mi .row { display:flex; justify-content:space-between; align-items:baseline; gap:1.4rem; }
+  .mi .n { font-family:'IM Fell English',serif; font-size:1.32rem; line-height:1.35; }
+  .mi .p { font-family:'Cinzel',serif; color:var(--gold); font-weight:600; white-space:nowrap; }
+  .mi .d { margin-top:.45rem; font-size:.85rem; color:rgba(233,220,192,.55); letter-spacing:.02em; }
+  .menu-note { margin-top:2.8rem; text-align:center; }
+  .menu-note .fell { font-style:italic; color:var(--parch-dim); font-size:1.1rem; }
+  .menu-note a { display:inline-block; margin-top:1.2rem; color:var(--gold); font-size:.82rem; letter-spacing:.2em; text-transform:uppercase; text-decoration:none; border:1px solid rgba(201,162,39,.5); padding:.85rem 1.9rem; font-weight:500; }
+
+  /* HOSTINY */
+  .feast { padding:110px 0; }
+  .ft-grid { display:grid; grid-template-columns:.95fr 1.05fr; gap:80px; align-items:center; }
+  @media (max-width:880px){ .ft-grid{ grid-template-columns:1fr; gap:44px; } }
+  .ft-grid img { width:100%; height:520px; object-fit:cover; border:1px solid var(--border); }
+  .feast h2 { font-size:clamp(2rem,4.2vw,3.2rem); margin-top:1rem; line-height:1.18; }
+  .feast p { margin-top:1.4rem; line-height:1.9; color:var(--parch-dim); }
+  .ft-list { margin-top:2rem; list-style:none; }
+  .ft-list li { display:flex; gap:1rem; padding:.8rem 0; border-bottom:1px solid var(--border); align-items:baseline; }
+  .ft-list li::before { content:"✦"; color:var(--gold); }
+  .ft-list b { font-weight:500; color:var(--parch); }
+
+  /* REVIEWS */
+  .reviews { background:var(--night-2); border-block:1px solid var(--border); padding:100px 0; text-align:center; }
+  .stars { color:var(--gold); font-size:1.7rem; letter-spacing:.4em; }
+  .reviews .score { font-family:'Cinzel',serif; font-size:clamp(3.6rem,8vw,5.6rem); font-weight:700; margin-top:.7rem; }
+  .reviews .score small { font-size:1.5rem; color:var(--parch-dim); }
+  .reviews .src { margin-top:.7rem; font-size:.82rem; letter-spacing:.26em; text-transform:uppercase; color:var(--parch-dim); }
+  .reviews .fell-q { margin:2.4rem auto 0; max-width:620px; font-family:'IM Fell English',serif; font-style:italic; font-size:1.45rem; line-height:1.6; color:var(--parch); }
+
+  /* CONTACT */
+  .contact { padding:110px 0 90px; }
+  .ct-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:80px; }
+  @media (max-width:880px){ .ct-grid{ grid-template-columns:1fr; gap:44px; } }
+  .contact h2 { font-size:clamp(2.2rem,4.6vw,3.4rem); margin-top:1rem; line-height:1.2; }
+  .contact .fell { margin-top:1.2rem; font-style:italic; color:var(--parch-dim); font-size:1.15rem; }
+  .ct-item { margin-top:1.9rem; }
+  .ct-item .l { font-size:.74rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+  .ct-item .v { font-family:'Cinzel',serif; font-size:1.35rem; font-weight:600; margin-top:.4rem; }
+  .ct-item .v a { color:var(--parch); text-decoration:none; }
+  .hours { border-top:1px solid rgba(233,220,192,.3); margin-top:1.3rem; }
+  .hours div { display:flex; justify-content:space-between; padding:.8rem 0; border-bottom:1px solid var(--border); font-size:.97rem; }
+  .hours div span:last-child { color:var(--gold); font-weight:400; }
+  .hours-note { margin-top:1.2rem; font-family:'IM Fell English',serif; font-style:italic; color:var(--parch-dim); font-size:1.05rem; }
+  footer { border-top:1px solid var(--border); padding:1.7rem 0; text-align:center; font-size:.8rem; color:rgba(233,220,192,.5); letter-spacing:.05em; }
+  footer b { color:var(--parch-dim); font-weight:500; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="brand" href="#">
+    <img src="img/znak.png" alt="Znak Krčmy U Kellyho">
+    <span>Krčma U Kellyho</span>
+  </a>
+  <div class="nav-links">
+    <a href="#legenda">Legenda</a>
+    <a href="#krme">Krmě</a>
+    <a href="#hostiny">Hostiny</a>
+    <a href="#kontakt">Kontakt</a>
+    <a class="btn" href="tel:+420777267701">Rezervace · 777 267 701</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hero-in">
+    <div class="hero-kicker">Středověká krčma · Zámek Třeboň · L.P. 1584</div>
+    <h1>Zastav se,<br>poutníče.</h1>
+    <p class="hero-fell">Přenes se s námi do časů, kdy v těchto zdech věhlasní alchymisté<br>ve službách posledních Rožmberků vařili elixíry — a dnes se tu vaří krmě,<br>za kterou by i císař Rudolf poslal posla.</p>
+    <div class="hero-cta">
+      <a class="primary" href="tel:+420777267701">Zamluvit stůl</a>
+      <a class="ghost" href="#krme">Prohlédnout krmě</a>
+    </div>
+  </div>
+  <div class="hero-orn">✦ ✦ ✦</div>
+</header>
+
+<div class="strip">Otevřeno denně od 11 hodin &nbsp;·&nbsp; krmě upravíme s libostí do 21:15 &nbsp;·&nbsp; 60 míst + salonek</div>
+
+<section class="legend" id="legenda">
+  <div class="wrap lg-grid">
+    <div>
+      <div class="kicker">Legenda praví</div>
+      <h2>Kelley, Dee<br>a kámen mudrců</h2>
+      <p>Roku 1584 přijíždí do Českého království největší vzdělanci své doby — alchymisté Edward Kelley a John Dee. Když se jejich rozmluvy s anděly znelíbí církvi i císaři, uchýlí se potají na sídlo Viléma z Rožmberka: třeboňský zámek.</p>
+      <p>Právě zde, praví legenda, se jim podařilo získat kámen mudrců — a dodnes prý zůstává ukryt v zámeckých zdech. Naše krčma stojí v místech, kde alchymisté bádali, hodovali a popíjeli.</p>
+      <div class="fell-q">„Zde se v plamenech výhně rodí elixíry i tajné lektvary — dle přání vrchnosti.“</div>
+    </div>
+    <div class="lg-photo">
+      <img src="img/kelley-krb.jpg" alt="Mistr Kelley u krbu">
+      <div class="cap">mistr Kelley dohlíží na oheň i pohár — každý den v krčmě</div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="krme">
+  <div class="wrap">
+    <div class="menu-head">
+      <div class="kicker">Jídelní lístek</div>
+      <h2>Krmě dle receptur starých</h2>
+      <div class="fell">každý pokrm nese jméno, jež stojí za přečtení nahlas</div>
+    </div>
+    <div class="menu-grid">
+      <div class="mi"><div class="row"><div class="n">„Nařezaný jazyk staré klevetnice“</div><div class="p">180,-</div></div><div class="d">uzený hovězí jazyk, hořčice, cibulky, kyselá okurka</div></div>
+      <div class="mi"><div class="row"><div class="n">„Kouzlo proti peklu věz, kotel oukropu sněz!“</div><div class="p">65,-</div></div><div class="d">česnečka se sýrem</div></div>
+      <div class="mi"><div class="row"><div class="n">„Výtvor plný smradu, co vyhodili z hradu“</div><div class="p">185,-</div></div><div class="d">rozpečené olomoucké tvarůžky, topinky s česnekem</div></div>
+      <div class="mi"><div class="row"><div class="n">„Candát, ryba dravá, pro každýho kmána zdravá“</div><div class="p">325,-</div></div><div class="d">filet z candáta, máslo, bylinky, citron</div></div>
+      <div class="mi"><div class="row"><div class="n">„Medová jíše s kapounem zacloumá i chrapounem“</div><div class="p">295,-</div></div><div class="d">kuřecí steak, medovo-hořčičná omáčka</div></div>
+      <div class="mi"><div class="row"><div class="n">„Ať jsi pán či podkoní, z panenky špíz ti zavoní“</div><div class="p">300,-</div></div><div class="d">vepřová panenka na jehle, cibule, slanina</div></div>
+      <div class="mi"><div class="row"><div class="n">„Panna švestkou nadívaná, v povidlech vykoupaná“</div><div class="p">305,-</div></div><div class="d">vepřová panenka, sušené švestky, povidlová omáčka</div></div>
+      <div class="mi"><div class="row"><div class="n">„Losos tatarskýho chána, chutná jako božská mana“</div><div class="p">235,-</div></div><div class="d">tatarák z lososa, rozpečená bageta</div></div>
+    </div>
+    <div class="menu-note">
+      <div class="fell">…a k tomu polévka, co dnes zbyla v alchymistickém kotli</div>
+      <a href="#kontakt">Celý lístek & polední menu</a>
+    </div>
+  </div>
+</section>
+
+<section class="feast" id="hostiny">
+  <div class="wrap ft-grid">
+    <img src="img/kelley-pohar.jpg" alt="Přípitek mistra Kelleyho">
+    <div>
+      <div class="kicker">Hostiny & slavnosti</div>
+      <h2>Středověká hostina,<br>na kterou se nezapomíná</h2>
+      <p>Pořádáme hostiny, jaké zažil málokdo — s programem na míru dle vašich přání a představ. Klenutý sál pojme 60 hodovníků, k tomu salonek pro uzavřenou společnost.</p>
+      <ul class="ft-list">
+        <li><div><b>Středověké hostiny</b> — s obsluhou v dobovém a programem na míru</div></li>
+        <li><div><b>Stylové svatby</b> — obřad i hostina jako z dob Rožmberků</div></li>
+        <li><div><b>Firemní programy</b> — kompletní večery pro firmy i spolky</div></li>
+        <li><div><b>Oslavy & večírky</b> — v kulisách, které nikde jinde nenajdete</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="reviews">
+  <div class="wrap">
+    <div class="stars">★★★★★</div>
+    <div class="score">4,7<small> / 5</small></div>
+    <div class="src">2 252 hodnocení na Google</div>
+    <div class="fell-q">„Atmosféra, jakou v Čechách nenajdete — jídlo výborné, obsluha v dobovém a člověk odchází s úsměvem.“</div>
+  </div>
+</section>
+
+<section class="contact" id="kontakt">
+  <div class="wrap ct-grid">
+    <div>
+      <div class="kicker">Kudy do krčmy</div>
+      <h2>V průchodu z náměstí<br>do zámeckého parku</h2>
+      <div class="fell">hledej bránu mezi náměstím a zámeckou zahradou — tam nalezneš nás</div>
+      <div class="ct-item"><div class="l">Adresa</div><div class="v">Zámek I/110, 379 01 Třeboň</div></div>
+      <div class="ct-item"><div class="l">Rezervace</div><div class="v"><a href="tel:+420777267701">777 267 701</a> · <a href="tel:+420384721530">384 721 530</a></div></div>
+      <div class="ct-item"><div class="l">E-mail</div><div class="v"><a href="mailto:krcmakelly@seznam.cz">krcmakelly@seznam.cz</a></div></div>
+    </div>
+    <div>
+      <div class="kicker">Otevírací doba</div>
+      <div class="hours">
+        <div><span>Pondělí — Čtvrtek</span><span>11:00 — 22:00</span></div>
+        <div><span>Pátek — Sobota</span><span>11:00 — 23:00</span></div>
+        <div><span>Neděle</span><span>11:00 — 22:00</span></div>
+      </div>
+      <div class="hours-note">Krmi pro Vás s libostí upravíme denně do 21:15.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>Krčma U Kellyho</b> · Festonia s.r.o. · Zámek I/110, Třeboň &nbsp;—&nbsp; návrh webu: KSH Partners
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+</script>
+</body>
+</html>
