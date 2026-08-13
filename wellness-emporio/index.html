@@ -206,7 +206,7 @@ section{padding:clamp(5.5rem,10vw,9rem) clamp(1.5rem,5vw,5rem)}
 
 /* kontakt */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,5vw,4.5rem);margin-top:3rem}
-.hours-row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.hours-row{display:flex;justify-content:space-between;align-items:baseline;gap:.4rem 1rem;padding:1rem 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .hours-row .time{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--gold-deep);font-size:1.2rem;font-variant-numeric:tabular-nums}
 .c-item{margin-top:1.7rem}
 .c-item .lbl{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
@@ -218,7 +218,7 @@ section{padding:clamp(5.5rem,10vw,9rem) clamp(1.5rem,5vw,5rem)}
 .benefits{margin-top:2rem;font-size:.85rem;color:var(--muted)}
 .map-wrap{position:relative;min-height:430px;border:1px solid var(--line)}
 .map-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(.7) sepia(.12)}
-@media(max-width:900px){.contact-grid{grid-template-columns:1fr}.map-wrap{min-height:320px}}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}.map-wrap{min-height:320px}.hours-row .time{font-size:1rem}}
 
 footer{border-top:1px solid var(--line);padding:2.8rem clamp(1.5rem,5vw,5rem);display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;color:var(--muted);font-size:.84rem}
 footer .flogo{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;letter-spacing:.12em;color:var(--ink)}
