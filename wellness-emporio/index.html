@@ -242,7 +242,7 @@ footer a:hover{text-decoration:underline}
     <li><a href="#poukazy">Poukazy</a></li>
     <li><a href="#sluzby">Služby</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
-    <li><a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="nav-cta">Rezervovat</a></li>
+    <li><a href="rezervace/" class="nav-cta">Rezervovat</a></li>
   </ul>
 </nav>
 
@@ -254,7 +254,7 @@ footer a:hover{text-decoration:underline}
     <h1><span class="w">Wellness</span> <span class="w">Emporio</span></h1>
     <p class="hero-sub">Privátní wellness a apartmány v Lošticích. Přelivová vířivka, finská sauna, infrasauna i ochlazovací vana — a to vše jen pro vás.</p>
     <div class="hero-ctas">
-      <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="btn btn-gold">Rezervovat termín</a>
+      <a href="rezervace/" class="btn btn-gold">Rezervovat termín</a>
       <a href="#nove-spa" class="btn btn-light">Prohlédnout nové spa</a>
     </div>
   </div>
@@ -339,7 +339,7 @@ footer a:hover{text-decoration:underline}
         <div class="plabel">Cena celkem</div>
         <div class="calc-price"><span id="calcPrice">2 290</span> <small>Kč</small></div>
         <div class="calc-note" id="calcNote">za celé wellness · 2 hodiny · 1–2 osoby</div>
-        <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="btn btn-gold" style="align-self:center">Rezervovat tento termín</a>
+        <a href="rezervace/" id="calcReserve" class="btn btn-gold" style="align-self:center">Rezervovat tento termín</a>
       </div>
     </div>
 
@@ -456,14 +456,13 @@ footer a:hover{text-decoration:underline}
     <div class="ra-grid" style="text-align:left">
       <div class="ra reveal">
         <h3>Online rezervace</h3>
-        <p>Nový web plynule naváže na váš stávající rezervační systém Reservio — hosté rezervují na dvě kliknutí přímo z webu, bez přeučování a bez ztráty historie.</p>
+        <p>Rezervace přímo na webu — host si vybere termín v kalendáři, systém sám pohlídá vaše časy i ceník a vy máte vše přehledně v administraci. Alternativně web umí navázat i na vaše stávající Reservio.</p>
         <ul>
-          <li>Rezervační tlačítka u každého ceníku i poukazu</li>
-          <li>Kalkulačka převede hosta rovnou na správný termín</li>
-          <li>Připraveno i na vlastní rezervační systém v budoucnu</li>
+          <li>Kalendář s volnými termíny dle vašich pravidel</li>
+          <li>Automatický výpočet ceny vč. večerů a víkendů</li>
+          <li>Potvrzení e-mailem i SMS, připomínka den předem</li>
         </ul>
-        <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="btn btn-green">Vyzkoušet rezervaci</a>
-        <a href="rezervace/" class="btn btn-ghost" style="margin-left:.6rem;border:1px solid var(--line);color:#6d6459">Ukázka vlastního systému</a>
+        <a href="rezervace/" class="btn btn-green">Vyzkoušet rezervaci</a>
       </div>
       <div class="ra reveal" style="transition-delay:.08s">
         <h3>Administrace webu</h3>
@@ -497,7 +496,7 @@ footer a:hover{text-decoration:underline}
         <div class="socials reveal">
           <a href="https://www.instagram.com/wellnessemporio/" target="_blank" rel="noopener">Instagram</a>
           <a href="https://www.facebook.com/wellnesslostice/" target="_blank" rel="noopener">Facebook</a>
-          <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener">Rezervace</a>
+          <a href="rezervace/">Rezervace</a>
         </div>
         <p class="benefits reveal">Přijímáme zaměstnanecké benefity: Benefit Plus · Pluxee · Edenred · FKSP</p>
       </div>
@@ -552,6 +551,7 @@ function calc(){
   if(selD===3)p+=supl[selT][selO];
   document.getElementById('calcPrice').textContent=p.toLocaleString('cs-CZ');
   document.getElementById('calcNote').textContent=`za celé wellness · ${selD} hodiny · ${osobyLbl[selO]} · ${terminLbl[selT]}`;
+  document.getElementById('calcReserve').href=`rezervace/?osoby=${selO}&delka=${selD}`;
 }
 calc();
 
