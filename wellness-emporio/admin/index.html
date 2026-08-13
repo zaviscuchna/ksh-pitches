@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administrace — Wellness Emporio (ukázka)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ea;--surface:#fff;--ink:#2b2620;--gold:#b08d4f;--gold-deep:#96733a;--green:#47593c;--muted:#8d8478;--line:#e5ddce;--ease:cubic-bezier(.25,.46,.45,.94)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.demo-bar{background:var(--green);color:#e8ebdd;text-align:center;font-size:.8rem;padding:.55rem 1rem;letter-spacing:.06em}
+.demo-bar b{color:#dfc084}
+.demo-bar a{color:#dfc084;text-decoration:underline}
+.layout{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 33px)}
+.side{background:var(--ink);color:#cfc8bc;padding:1.8rem 0;display:flex;flex-direction:column}
+.side .logo{font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.16em;color:#fff;font-size:1.05rem;padding:0 1.6rem 1.6rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:1.2rem}
+.side .logo small{display:block;font-family:'DM Sans',sans-serif;font-size:.58rem;letter-spacing:.4em;color:var(--gold);font-weight:600;margin-top:.2rem}
+.side nav{display:grid}
+.side nav a{padding:.8rem 1.6rem;font-size:.88rem;display:flex;gap:.8rem;align-items:center;border-left:3px solid transparent;transition:background .25s,color .25s,border-color .25s;cursor:pointer}
+.side nav a:hover{background:rgba(255,255,255,.05);color:#fff}
+.side nav a.active{background:rgba(176,141,79,.14);color:#fff;border-left-color:var(--gold)}
+.side .foot{margin-top:auto;padding:1.4rem 1.6rem 0;font-size:.72rem;color:#7d766b;border-top:1px solid rgba(255,255,255,.08)}
+.main{padding:2.4rem clamp(1.4rem,3.5vw,3.2rem)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem;flex-wrap:wrap}
+.topbar h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700}
+.topbar .user{display:flex;align-items:center;gap:.8rem;font-size:.85rem;color:var(--muted)}
+.topbar .avatar{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#fff;display:grid;place-items:center;font-weight:700}
+.panel{display:none}
+.panel.active{display:block;animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1.4rem 1.5rem}
+.card .k{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.card .v{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--green);margin-top:.2rem}
+.card .d{font-size:.78rem;color:var(--muted)}
+.card .v.up::after{content:" ↑";color:#5f8e4e;font-size:.6em}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:1.6rem}
+.box-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 1.5rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.box-head h2{font-size:1rem;font-weight:700}
+.box-head .hint{font-size:.78rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{text-align:left;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:.85rem 1.5rem;border-bottom:1px solid var(--line);background:#faf8f3}
+td{padding:.85rem 1.5rem;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+td[contenteditable]{background:#fdfaf3;border-left:2px solid var(--gold);cursor:text;font-weight:600;color:var(--gold-deep);min-width:110px;transition:background .2s,box-shadow .2s}
+td[contenteditable]:focus{outline:none;background:#fff;box-shadow:inset 0 0 0 2px var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.06em;padding:.68rem 1.4rem;border-radius:6px;transition:background .25s,transform .25s}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:var(--gold-deep);transform:translateY(-1px)}
+.btn-ghost{background:none;border:1px solid var(--line);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-deep)}
+.pill{display:inline-block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.28rem .7rem;border-radius:99px}
+.pill.on{background:#e4eedd;color:#47593c}
+.pill.off{background:#f3e3e0;color:#9c4a3c}
+.pill.draft{background:#efe8d8;color:#96733a}
+.switch{position:relative;width:44px;height:24px;background:#d8d2c4;border-radius:99px;cursor:pointer;transition:background .25s;flex-shrink:0}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .25s var(--ease)}
+.switch.on{background:var(--green)}
+.switch.on::after{left:23px}
+.news-item{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.news-item:last-child{border-bottom:none}
+.news-item .t{font-weight:600;font-size:.95rem}
+.news-item .d{font-size:.78rem;color:var(--muted)}
+.news-item .actions{display:flex;gap:.5rem;align-items:center}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.8rem;padding:1.5rem}
+.gal .ph{position:relative;aspect-ratio:1;border-radius:6px;overflow:hidden;cursor:grab}
+.gal .ph img{width:100%;height:100%;object-fit:cover}
+.gal .ph .x{position:absolute;top:.4rem;right:.4rem;width:24px;height:24px;border-radius:50%;background:rgba(24,20,14,.6);color:#fff;border:none;cursor:pointer;font-size:.8rem;line-height:1;opacity:0;transition:opacity .25s}
+.gal .ph:hover .x{opacity:1}
+.gal .add{aspect-ratio:1;border:2px dashed var(--line);border-radius:6px;display:grid;place-items:center;color:var(--muted);font-size:.8rem;cursor:pointer;text-align:center;padding:1rem;transition:border-color .25s,color .25s}
+.gal .add:hover{border-color:var(--gold);color:var(--gold-deep)}
+.res-row td .who{font-weight:600}
+.res-row td .what{font-size:.78rem;color:var(--muted)}
+.toast{position:fixed;bottom:1.6rem;left:50%;transform:translate(-50%,120%);background:var(--green);color:#fff;padding:.9rem 1.8rem;border-radius:8px;font-size:.9rem;font-weight:600;box-shadow:0 18px 40px -14px rgba(0,0,0,.4);transition:transform .45s var(--ease);z-index:50}
+.toast.show{transform:translate(-50%,0)}
+.mobile-note{display:none}
+@media(max-width:860px){
+  .layout{grid-template-columns:1fr}
+  .side{flex-direction:row;align-items:center;overflow-x:auto;padding:.6rem 1rem;gap:.4rem}
+  .side .logo{border:none;padding:0 1rem 0 0;margin:0;white-space:nowrap}
+  .side nav{display:flex;gap:.2rem}
+  .side nav a{padding:.55rem .9rem;border-left:none;border-bottom:2px solid transparent;white-space:nowrap;font-size:.8rem}
+  .side nav a.active{border-left:none;border-bottom-color:var(--gold)}
+  .side .foot{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">🖥️ <b>Ukázka administrace</b> pro Wellness Emporio — takto jednoduše byste spravovali svůj nový web. Zkuste kliknout na zvýrazněné ceny a přepsat je. <a href="../">← zpět na návrh webu</a></div>
+
+<div class="layout">
+  <aside class="side">
+    <div class="logo">EMPORIO<small>ADMINISTRACE</small></div>
+    <nav id="sideNav">
+      <a data-p="dash" class="active">📊 Přehled</a>
+      <a data-p="cenik">💰 Ceník wellness</a>
+      <a data-p="aktuality">📰 Aktuality</a>
+      <a data-p="poukazy">🎁 Poukazy</a>
+      <a data-p="galerie">🖼️ Fotogalerie</a>
+      <a data-p="rezervace">📅 Rezervace</a>
+    </nav>
+    <div class="foot">Přihlášena:<br><b style="color:#cfc8bc">Eva M. Kolářová</b></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Přehled</h1>
+      <div class="user"><span>admin@wellness-emporio.cz</span><div class="avatar">EK</div></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="panel active" id="p-dash">
+      <div class="cards">
+        <div class="card"><div class="k">Návštěvy webu (30 dní)</div><div class="v up">4 218</div><div class="d">+18 % oproti minulému měsíci</div></div>
+        <div class="card"><div class="k">Prokliky na rezervaci</div><div class="v up">612</div><div class="d">14,5 % návštěvníků</div></div>
+        <div class="card"><div class="k">Objednané poukazy</div><div class="v">23</div><div class="d">tento měsíc</div></div>
+        <div class="card"><div class="k">Hodnocení Google</div><div class="v">4,9 ★</div><div class="d">za posledních 90 dní</div></div>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Poslední změny</h2><span class="hint">vše se ukládá automaticky s historií</span></div>
+        <div class="news-item"><div><div class="t">Změna ceníku — víkendové vstupy</div><div class="d">včera 14:32 · Eva M. Kolářová</div></div><span class="pill on">publikováno</span></div>
+        <div class="news-item"><div><div class="t">Nová aktualita „Znovu otevíráme"</div><div class="d">před 3 dny · Eva M. Kolářová</div></div><span class="pill on">publikováno</span></div>
+        <div class="news-item"><div><div class="t">Přidáno 6 fotek nového spa</div><div class="d">před 5 dny · Eva M. Kolářová</div></div><span class="pill on">publikováno</span></div>
+      </div>
+    </div>
+
+    <!-- CENÍK -->
+    <div class="panel" id="p-cenik">
+      <div class="box">
+        <div class="box-head">
+          <h2>Wellness · Po–Pá denní (2 hodiny)</h2>
+          <span class="hint">✏️ klikněte na cenu a přepište ji — poté Uložit</span>
+        </div>
+        <table>
+          <tr><th>Počet osob</th><th>Cena</th><th>Stav</th></tr>
+          <tr><td>1–2 osoby</td><td contenteditable="true" spellcheck="false">2 290 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+          <tr><td>3 osoby</td><td contenteditable="true" spellcheck="false">2 990 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+          <tr><td>4 osoby</td><td contenteditable="true" spellcheck="false">3 790 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+          <tr><td>5 osob</td><td contenteditable="true" spellcheck="false">4 590 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+          <tr><td>6 osob</td><td contenteditable="true" spellcheck="false">5 390 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+        </table>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Pátek večer + víkend (2 hodiny)</h2><span class="hint">stejné taby pro Po–Čt večer i 3hodinové vstupy</span></div>
+        <table>
+          <tr><th>Počet osob</th><th>Cena</th><th>Stav</th></tr>
+          <tr><td>1–2 osoby</td><td contenteditable="true" spellcheck="false">2 690 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+          <tr><td>3 osoby</td><td contenteditable="true" spellcheck="false">3 490 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+          <tr><td>4 osoby</td><td contenteditable="true" spellcheck="false">4 290 Kč</td><td><span class="pill on">aktivní</span></td></tr>
+        </table>
+      </div>
+      <button class="btn btn-gold" onclick="toast('Ceník byl uložen a je okamžitě na webu ✓')">Uložit změny</button>
+      <button class="btn btn-ghost" onclick="toast('Změny zahozeny')">Zahodit</button>
+    </div>
+
+    <!-- AKTUALITY -->
+    <div class="panel" id="p-aktuality">
+      <div class="box">
+        <div class="box-head"><h2>Aktuality na webu</h2><button class="btn btn-gold" onclick="toast('Nová aktualita vytvořena (ukázka)')">+ Nová aktualita</button></div>
+        <div class="news-item"><div><div class="t">Znovu otevíráme — zcela nové wellness!</div><div class="d">publikováno · zobrazí se na úvodní stránce</div></div><div class="actions"><span class="pill on">publikováno</span><div class="switch on" onclick="this.classList.toggle('on');toast(this.classList.contains('on')?'Aktualita zapnuta':'Aktualita skryta')"></div></div></div>
+        <div class="news-item"><div><div class="t">Nové 3D masážní křesílko s infra LED relaxací</div><div class="d">publikováno 3/2026</div></div><div class="actions"><span class="pill on">publikováno</span><div class="switch on" onclick="this.classList.toggle('on');toast(this.classList.contains('on')?'Aktualita zapnuta':'Aktualita skryta')"></div></div></div>
+        <div class="news-item"><div><div class="t">Vánoční poukazy — akční nabídka</div><div class="d">koncept · naplánováno na 15. 11. 2026</div></div><div class="actions"><span class="pill draft">koncept</span><div class="switch" onclick="this.classList.toggle('on');toast(this.classList.contains('on')?'Aktualita zapnuta':'Aktualita skryta')"></div></div></div>
+      </div>
+    </div>
+
+    <!-- POUKAZY -->
+    <div class="panel" id="p-poukazy">
+      <div class="box">
+        <div class="box-head"><h2>Dárkové poukazy</h2><span class="hint">ceny i texty upravíte stejně jako ceník</span></div>
+        <table>
+          <tr><th>Poukaz</th><th>Cena</th><th>Prodej</th></tr>
+          <tr><td>Wellness Classic</td><td contenteditable="true" spellcheck="false">2 490 Kč</td><td><div class="switch on" onclick="this.classList.toggle('on');toast('Uloženo')"></div></td></tr>
+          <tr><td>Wellness Flexi</td><td contenteditable="true" spellcheck="false">2 690 Kč</td><td><div class="switch on" onclick="this.classList.toggle('on');toast('Uloženo')"></div></td></tr>
+          <tr><td>Wellness Romantic</td><td contenteditable="true" spellcheck="false">4 390 Kč</td><td><div class="switch on" onclick="this.classList.toggle('on');toast('Uloženo')"></div></td></tr>
+          <tr><td>Wellness Night</td><td contenteditable="true" spellcheck="false">5 990 Kč</td><td><div class="switch on" onclick="this.classList.toggle('on');toast('Uloženo')"></div></td></tr>
+          <tr><td>Wellness Night Deluxe</td><td contenteditable="true" spellcheck="false">9 990 Kč</td><td><div class="switch on" onclick="this.classList.toggle('on');toast('Uloženo')"></div></td></tr>
+        </table>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Objednávky poukazů z webu</h2><span class="hint">přijdou vám e-mailem i sem</span></div>
+        <table>
+          <tr><th>Datum</th><th>Zákazník</th><th>Poukaz</th><th>Stav</th></tr>
+          <tr class="res-row"><td>12. 8.</td><td><div class="who">Jana N.</div><div class="what">doručení e-mailem</div></td><td>Romantic</td><td><span class="pill on">zaplaceno</span></td></tr>
+          <tr class="res-row"><td>11. 8.</td><td><div class="who">Petr K.</div><div class="what">osobní vyzvednutí</div></td><td>Classic</td><td><span class="pill draft">čeká na platbu</span></td></tr>
+          <tr class="res-row"><td>9. 8.</td><td><div class="who">Firma XYZ s.r.o.</div><div class="what">5× poukaz, benefity</div></td><td>Flexi</td><td><span class="pill on">zaplaceno</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- GALERIE -->
+    <div class="panel" id="p-galerie">
+      <div class="box">
+        <div class="box-head"><h2>Fotogalerie — Nové spa</h2><span class="hint">přetažením změníte pořadí</span></div>
+        <div class="gal">
+          <div class="ph"><img src="../img/spa-1.webp" alt=""><button class="x" onclick="this.parentElement.remove();toast('Fotka odstraněna')">×</button></div>
+          <div class="ph"><img src="../img/spa-2.jpg" alt=""><button class="x" onclick="this.parentElement.remove();toast('Fotka odstraněna')">×</button></div>
+          <div class="ph"><img src="../img/spa-4.jpg" alt=""><button class="x" onclick="this.parentElement.remove();toast('Fotka odstraněna')">×</button></div>
+          <div class="ph"><img src="../img/spa-5.jpg" alt=""><button class="x" onclick="this.parentElement.remove();toast('Fotka odstraněna')">×</button></div>
+          <div class="ph"><img src="../img/spa-terasa.webp" alt=""><button class="x" onclick="this.parentElement.remove();toast('Fotka odstraněna')">×</button></div>
+          <div class="add" onclick="toast('V ostré verzi zde nahrajete fotky přetažením')">+ Nahrát<br>fotografie</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REZERVACE -->
+    <div class="panel" id="p-rezervace">
+      <div class="cards">
+        <div class="card"><div class="k">Dnes</div><div class="v">5</div><div class="d">rezervací wellness</div></div>
+        <div class="card"><div class="k">Tento týden</div><div class="v">31</div><div class="d">rezervací celkem</div></div>
+        <div class="card"><div class="k">Obsazenost víkendu</div><div class="v">92 %</div><div class="d">so + ne</div></div>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Dnešní rezervace</h2><span class="hint">data z vašeho systému Reservio — vše na jednom místě</span></div>
+        <table>
+          <tr><th>Čas</th><th>Host</th><th>Služba</th><th>Stav</th></tr>
+          <tr class="res-row"><td>10:00</td><td><div class="who">Novákovi</div><div class="what">2 osoby</div></td><td>Wellness 2 hod.</td><td><span class="pill on">potvrzeno</span></td></tr>
+          <tr class="res-row"><td>12:30</td><td><div class="who">M. Svobodová</div><div class="what">4 osoby · poukaz Romantic</div></td><td>Wellness 2 hod.</td><td><span class="pill on">potvrzeno</span></td></tr>
+          <tr class="res-row"><td>15:00</td><td><div class="who">R. Dvořák</div><div class="what">6 osob · firemní akce</div></td><td>Wellness 3 hod.</td><td><span class="pill draft">čeká na zálohu</span></td></tr>
+          <tr class="res-row"><td>20:00</td><td><div class="who">L. + T. Horákovi</div><div class="what">2 osoby · apartmán č. 1</div></td><td>Wellness + ubytování</td><td><span class="pill on">potvrzeno</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">Uloženo ✓</div>
+
+<script>
+const titles={dash:'Přehled',cenik:'Ceník wellness',aktuality:'Aktuality',poukazy:'Dárkové poukazy',galerie:'Fotogalerie',rezervace:'Rezervace'};
+document.getElementById('sideNav').addEventListener('click',e=>{
+  const a=e.target.closest('a');if(!a)return;
+  document.querySelectorAll('#sideNav a').forEach(x=>x.classList.remove('active'));
+  a.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+a.dataset.p).classList.add('active');
+  document.getElementById('pageTitle').textContent=titles[a.dataset.p];
+});
+let tt;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2400);
+}
+</script>
+</body>
+</html>

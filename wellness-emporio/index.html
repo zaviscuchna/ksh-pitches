@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wellness Emporio — Privátní wellness & apartmány | Loštice</title>
+<meta name="description" content="Zcela nové privátní wellness v Lošticích. Přelivová vířivka, finská sauna, infrasauna, ochlazovací vana a apartmány. 100% soukromí jen pro vás.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3ec;
+  --surface:#fffdf9;
+  --ink:#2b2620;
+  --gold:#b08d4f;
+  --gold-deep:#96733a;
+  --green:#47593c;
+  --muted:#8d8478;
+  --line:rgba(176,141,79,.25);
+  --ease:cubic-bezier(.25,.46,.45,.94);
+  --ease-bounce:cubic-bezier(.34,1.56,.64,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:"kern" 1,"liga" 1}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.12}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:#fff}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem clamp(1.5rem,4vw,4rem);transition:background .5s var(--ease),box-shadow .5s,padding .5s}
+.nav.scrolled{background:rgba(247,243,236,.94);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line);padding:.7rem clamp(1.5rem,4vw,4rem)}
+.nav-logo{display:flex;align-items:center;gap:.7rem}
+.nav-logo img{height:44px;width:auto}
+.nav-logo .t{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;letter-spacing:.14em}
+.nav-logo .t small{display:block;font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.42em;color:var(--gold-deep);font-weight:500}
+.nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center}
+.nav-links a{font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#6d6459;position:relative;padding:.3rem 0;transition:color .3s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--gold);transition:width .35s var(--ease)}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--green);color:#f4f1e8!important;padding:.65rem 1.4rem!important;transition:background .3s!important}
+.nav-cta:hover{background:#37472e}
+.nav-cta::after{display:none}
+.burger{display:none;background:none;border:none;cursor:pointer;z-index:110;width:34px;height:26px;position:relative}
+.burger span{position:absolute;left:0;width:100%;height:2px;background:var(--ink);transition:transform .35s var(--ease),opacity .3s,top .35s var(--ease)}
+.burger span:nth-child(1){top:2px}.burger span:nth-child(2){top:12px}.burger span:nth-child(3){top:22px}
+.burger.open span:nth-child(1){top:12px;transform:rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){top:12px;transform:rotate(-45deg)}
+@media(max-width:1120px){
+  .nav-links{position:fixed;inset:0;background:rgba(247,243,236,.98);backdrop-filter:blur(18px);flex-direction:column;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+  .nav-links.open{opacity:1;pointer-events:auto}
+  .nav-links a{font-size:1.05rem}
+  .burger{display:block}
+}
+
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.hero-bg{position:absolute;inset:-4%;background:url('img/spa-1.webp') center/cover;animation:heroZoom 16s var(--ease) forwards}
+@keyframes heroZoom{from{transform:scale(1.09)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(24,20,14,.42) 0%,rgba(24,20,14,.18) 45%,rgba(24,20,14,.62) 100%)}
+.hero-inner{position:relative;z-index:2;margin:auto;text-align:center;padding:9rem 1.5rem 4rem;max-width:960px;color:#f6f2e9}
+.hero-badge{display:inline-block;background:rgba(176,141,79,.92);color:#fff;font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;padding:.55rem 1.4rem;margin-bottom:2rem;opacity:0;animation:fadeUp .8s var(--ease) .2s forwards}
+.hero h1{font-size:clamp(3rem,8.5vw,7rem);letter-spacing:.02em;font-weight:600}
+.hero h1 .w{display:inline-block;opacity:0;transform:translateY(40px);animation:fadeUp .9s var(--ease) forwards}
+.hero h1 .w:nth-child(2){animation-delay:.15s;font-style:italic;font-weight:500;color:#e3c07f}
+.hero-sub{font-size:clamp(1.02rem,1.7vw,1.25rem);max-width:36rem;margin:1.4rem auto 0;color:#eee7d8;opacity:0;animation:fadeUp .7s var(--ease) .55s forwards}
+.hero-ctas{display:flex;gap:1rem;justify-content:center;margin-top:2.6rem;flex-wrap:wrap;opacity:0;animation:fadeUp .6s var(--ease) .75s forwards}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:1rem 2.1rem;font-size:.84rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;transition:transform .3s var(--ease-bounce),background .3s,color .3s,box-shadow .3s;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{transform:translateY(-3px);background:var(--gold-deep);box-shadow:0 16px 34px -14px rgba(176,141,79,.7)}
+.btn-light{border:1px solid rgba(246,242,233,.55);color:#f6f2e9;background:transparent}
+.btn-light:hover{border-color:#e3c07f;color:#e3c07f;transform:translateY(-3px)}
+.btn-green{background:var(--green);color:#f4f1e8}
+.btn-green:hover{background:#37472e;transform:translateY(-3px)}
+.hero-strip{position:relative;z-index:3;display:flex;justify-content:center;gap:clamp(1.4rem,5vw,4.5rem);padding:1.3rem 1rem;border-top:1px solid rgba(246,242,233,.22);backdrop-filter:blur(8px);font-size:.85rem;color:#eee7d8;flex-wrap:wrap;opacity:0;animation:fadeIn 1s var(--ease) 1.1s forwards}
+.hero-strip b{color:#e3c07f;font-weight:600}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* shared */
+section{padding:clamp(5.5rem,10vw,9rem) clamp(1.5rem,5vw,5rem)}
+.container{max-width:1240px;margin:0 auto}
+.overline{font-size:.76rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep);font-weight:600;display:flex;align-items:center;gap:.9rem;margin-bottom:1.3rem}
+.overline::before{content:"";width:36px;height:1px;background:var(--gold)}
+.center .overline{justify-content:center}
+.center .overline::after{content:"";width:36px;height:1px;background:var(--gold)}
+.h2{font-size:clamp(2.3rem,5vw,3.9rem);letter-spacing:0;margin-bottom:1.3rem}
+.h2 em{font-style:italic;font-weight:500;color:var(--gold-deep)}
+.lead{color:#6d6459;max-width:62ch;font-size:1.04rem}
+.center{text-align:center}
+.center .lead{margin-left:auto;margin-right:auto}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* proof */
+.proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:0}
+.proof div{background:var(--bg);padding:2.5rem 1.5rem;text-align:center}
+.proof .num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--gold-deep);font-variant-numeric:tabular-nums}
+.proof .lbl{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.35rem}
+
+/* nové spa */
+.spa-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;margin-top:3.4rem}
+.spa-card{position:relative;overflow:hidden;cursor:pointer;border-radius:2px}
+.spa-card img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.spa-card:hover img{transform:scale(1.05)}
+.spa-card .cap{position:absolute;left:0;right:0;bottom:0;padding:1.6rem 1.4rem .9rem;background:linear-gradient(to top,rgba(24,20,14,.72),transparent);color:#f6f2e9;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.spa-card.a{grid-column:span 7;aspect-ratio:16/10}
+.spa-card.b{grid-column:span 5;aspect-ratio:auto}
+.spa-card.c{grid-column:span 4;aspect-ratio:4/3.4}
+@media(max-width:900px){.spa-card.a,.spa-card.b,.spa-card.c{grid-column:span 12;aspect-ratio:16/10}}
+
+/* vybavení list */
+.equip{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:3rem}
+.eq{background:var(--surface);border:1px solid var(--line);padding:1.9rem 1.7rem;transition:transform .4s var(--ease),box-shadow .4s}
+.eq:hover{transform:translateY(-5px);box-shadow:0 24px 44px -26px rgba(43,38,32,.28)}
+.eq h4{font-size:1.35rem;margin-bottom:.45rem;color:var(--ink)}
+.eq p{font-size:.9rem;color:var(--muted)}
+.eq .tag{display:inline-block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:.9rem}
+
+/* kalkulačka + ceník */
+.calc-wrap{background:var(--green);color:#eef0e6;border-radius:2px;margin-top:3.4rem;display:grid;grid-template-columns:1.05fr .95fr;overflow:hidden}
+.calc-left{padding:clamp(2rem,4.5vw,3.6rem)}
+.calc-left h3{font-size:clamp(1.8rem,3vw,2.5rem);color:#fff}
+.calc-left h3 em{font-style:italic;color:#dfc084}
+.calc-left p{color:#c9cfba;font-size:.95rem;margin-top:.7rem;max-width:44ch}
+.calc-form{display:grid;gap:1.5rem;margin-top:2.2rem}
+.calc-field .lbl{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:#aab58f;font-weight:600;margin-bottom:.7rem}
+.seg{display:flex;flex-wrap:wrap;gap:.5rem}
+.seg button{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#dfe3d2;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;padding:.6rem 1.15rem;cursor:pointer;transition:background .25s,border-color .25s,color .25s}
+.seg button:hover{border-color:#dfc084}
+.seg button.active{background:#dfc084;border-color:#dfc084;color:#2c2413;font-weight:700}
+.calc-right{background:rgba(0,0,0,.16);padding:clamp(2rem,4.5vw,3.6rem);display:flex;flex-direction:column;justify-content:center;text-align:center}
+.calc-right .plabel{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:#aab58f;font-weight:600}
+.calc-price{font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,6vw,5.4rem);font-weight:700;color:#fff;line-height:1;margin:.8rem 0 .4rem;font-variant-numeric:tabular-nums}
+.calc-price small{font-size:.35em;color:#dfc084}
+.calc-note{font-size:.8rem;color:#aab58f;max-width:30ch;margin:0 auto 1.6rem}
+@media(max-width:900px){.calc-wrap{grid-template-columns:1fr}}
+.price-tables{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:2.6rem}
+.pt{background:var(--surface);border:1px solid var(--line);padding:1.9rem 1.7rem}
+.pt h4{font-size:1.15rem;font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:1.2rem;font-size:.85rem}
+.pt .row{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;padding:.55rem 0;border-bottom:1px dashed var(--line);font-size:.94rem}
+.pt .row:last-child{border-bottom:none}
+.pt .row b{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold-deep);font-weight:700;font-variant-numeric:tabular-nums}
+.incl{margin-top:2.4rem;background:var(--surface);border:1px solid var(--line);padding:1.8rem 2rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;justify-content:center}
+.incl span{font-size:.85rem;color:#6d6459;display:flex;align-items:center;gap:.5rem}
+.incl span::before{content:"✦";color:var(--gold);font-size:.7rem}
+
+/* apartmány */
+.apts{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.apt-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2.5rem,5vw,4.5rem);align-items:center;margin-top:3rem}
+.apt-photos{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.apt-photos img{aspect-ratio:4/3;object-fit:cover;border-radius:2px}
+.apt-photos img:first-child{grid-column:1/-1;aspect-ratio:16/9}
+.apt-rooms{display:grid;gap:.9rem;margin-top:1.8rem}
+.apt-room{display:flex;justify-content:space-between;align-items:center;gap:1rem;background:var(--bg);border:1px solid var(--line);padding:1.15rem 1.5rem}
+.apt-room .t{font-weight:600;font-size:.98rem}
+.apt-room .p{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:700;color:var(--gold-deep);white-space:nowrap}
+.apt-room .p small{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--muted);font-weight:400;display:block;text-align:right}
+.apt-amen{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.8rem}
+.apt-amen span{border:1px solid var(--line);background:var(--bg);color:#6d6459;padding:.45rem 1rem;font-size:.8rem;letter-spacing:.06em}
+@media(max-width:900px){.apt-grid{grid-template-columns:1fr}}
+
+/* poukazy */
+.vouchers{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:3.2rem}
+.vch{background:var(--surface);border:1px solid var(--line);padding:2.1rem 1.7rem;text-align:center;position:relative;transition:transform .4s var(--ease),box-shadow .4s,border-color .3s}
+.vch:hover{transform:translateY(-6px);box-shadow:0 26px 48px -28px rgba(43,38,32,.3);border-color:var(--gold)}
+.vch .vt{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.vch h4{font-size:1.6rem;margin:.5rem 0 .9rem}
+.vch .vp{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold-deep);font-variant-numeric:tabular-nums}
+.vch p{font-size:.85rem;color:var(--muted);margin-top:.8rem}
+.vch.best{background:var(--green);border-color:var(--green)}
+.vch.best .vt{color:#aab58f}
+.vch.best h4,.vch.best .vp{color:#fff}
+.vch.best .vp{color:#dfc084}
+.vch.best p{color:#c9cfba}
+.vch .ribbon{position:absolute;top:-.85rem;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;padding:.35rem 1rem;white-space:nowrap}
+
+/* služby */
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem;margin-top:3rem}
+.svc{background:var(--surface);border:1px solid var(--line);padding:1.9rem 1.7rem}
+.svc h4{font-size:1.3rem;margin-bottom:.4rem}
+.svc p{font-size:.88rem;color:var(--muted)}
+.svc .who{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);font-weight:600;margin-top:.9rem}
+
+/* rezervace + admin */
+.resadmin{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ra-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem}
+.ra{border:1px solid var(--line);background:var(--bg);padding:clamp(2rem,4vw,3rem);position:relative}
+.ra h3{font-size:1.9rem;margin-bottom:.8rem}
+.ra p{color:#6d6459;font-size:.95rem;max-width:52ch}
+.ra ul{list-style:none;margin:1.4rem 0 2rem;display:grid;gap:.7rem}
+.ra li{display:flex;gap:.7rem;align-items:baseline;font-size:.92rem;color:#6d6459}
+.ra li::before{content:"✦";color:var(--gold);font-size:.7rem}
+@media(max-width:900px){.ra-grid{grid-template-columns:1fr}}
+
+/* galerie/lightbox */
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(24,20,14,.95);display:none;align-items:center;justify-content:center;padding:3rem}
+.lightbox.open{display:flex}
+.lightbox img{max-width:92vw;max-height:84vh;object-fit:contain}
+.lightbox .close{position:absolute;top:1.4rem;right:1.8rem;background:none;border:none;color:#f6f2e9;font-size:2.2rem;cursor:pointer;line-height:1;transition:color .3s,transform .3s}
+.lightbox .close:hover{color:var(--gold);transform:rotate(90deg)}
+
+/* kontakt */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,5vw,4.5rem);margin-top:3rem}
+.hours-row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+.hours-row .time{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--gold-deep);font-size:1.2rem;font-variant-numeric:tabular-nums}
+.c-item{margin-top:1.7rem}
+.c-item .lbl{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.c-item a,.c-item .val{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;transition:color .3s}
+.c-item a:hover{color:var(--gold-deep)}
+.socials{display:flex;gap:.9rem;margin-top:2rem}
+.socials a{border:1px solid var(--line);padding:.65rem 1.3rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#6d6459;transition:background .3s,color .3s,border-color .3s}
+.socials a:hover{background:var(--green);border-color:var(--green);color:#f4f1e8}
+.benefits{margin-top:2rem;font-size:.85rem;color:var(--muted)}
+.map-wrap{position:relative;min-height:430px;border:1px solid var(--line)}
+.map-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(.7) sepia(.12)}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}.map-wrap{min-height:320px}}
+
+footer{border-top:1px solid var(--line);padding:2.8rem clamp(1.5rem,5vw,5rem);display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;color:var(--muted);font-size:.84rem}
+footer .flogo{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;letter-spacing:.12em;color:var(--ink)}
+footer a{color:var(--gold-deep)}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#uvod" class="nav-logo">
+    <img src="img/logo-gold.webp" alt="Wellness Emporio">
+    <span class="t">EMPORIO<small>WELLNESS · LOŠTICE</small></span>
+  </a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#nove-spa">Nové&nbsp;spa</a></li>
+    <li><a href="#cenik">Ceník</a></li>
+    <li><a href="#apartmany">Apartmány</a></li>
+    <li><a href="#poukazy">Poukazy</a></li>
+    <li><a href="#sluzby">Služby</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+    <li><a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="nav-cta">Rezervovat</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="uvod">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Znovu otevíráme — zcela nové wellness 2026</div>
+    <h1><span class="w">Wellness</span> <span class="w">Emporio</span></h1>
+    <p class="hero-sub">Privátní wellness a apartmány v Lošticích. Přelivová vířivka, finská sauna, infrasauna i ochlazovací vana — a to vše jen pro vás.</p>
+    <div class="hero-ctas">
+      <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="btn btn-gold">Rezervovat termín</a>
+      <a href="#nove-spa" class="btn btn-light">Prohlédnout nové spa</a>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <span><b>100%</b> soukromí — jen pro vás</span>
+    <span><b>★ 9,5/10</b> na Booking.com</span>
+    <span><b>Top firma 2025</b> Firmy.cz</span>
+    <span>Denně <b>10:00–22:00</b></span>
+  </div>
+</header>
+
+<!-- PROOF -->
+<div class="proof">
+  <div class="reveal"><div class="num">9,5/10</div><div class="lbl">hodnocení Booking.com</div></div>
+  <div class="reveal" style="transition-delay:.08s"><div class="num">100&nbsp;%</div><div class="lbl">soukromí — bez cizích hostů</div></div>
+  <div class="reveal" style="transition-delay:.16s"><div class="num">64</div><div class="lbl">trysek nové vířivky Melibia</div></div>
+  <div class="reveal" style="transition-delay:.24s"><div class="num">2026</div><div class="lbl">kompletně nové wellness</div></div>
+</div>
+
+<!-- NOVÉ SPA -->
+<section id="nove-spa">
+  <div class="container">
+    <div class="overline reveal">Rekonstrukce za miliony korun</div>
+    <h2 class="h2 reveal">Zcela <em>nové</em> privátní spa</h2>
+    <p class="lead reveal">Ve spolupráci se studiem PEARL DESIGN vzniká wellness nové generace — přelivová vířivka s 64 tryskami a chromoterapií, finská sauna ze dřeva Dark Thermo Abachi s hvězdným stropem, infrasauna AURA 2, ochlazovací vana Cryo Ice Tub a nový Kneippův chodník. To vše v naprostém soukromí, vždy jen pro vaši skupinu.</p>
+    <div class="spa-grid">
+      <div class="spa-card a reveal"><img src="img/spa-1.webp" alt="Vířivka s výhledem" loading="lazy"><div class="cap">Přelivová vířivka Melibia</div></div>
+      <div class="spa-card b reveal"><img src="img/spa-4.jpg" alt="Vstup s mechovou stěnou" loading="lazy"><div class="cap">Vstup s živou stěnou</div></div>
+      <div class="spa-card c reveal"><img src="img/spa-2.jpg" alt="Finská sauna" loading="lazy"><div class="cap">Finská sauna</div></div>
+      <div class="spa-card c reveal"><img src="img/spa-5.jpg" alt="Relaxační zóna" loading="lazy"><div class="cap">Relaxační zóna</div></div>
+      <div class="spa-card c reveal"><img src="img/spa-terasa.webp" alt="Terasa" loading="lazy"><div class="cap">Soukromá terasa</div></div>
+    </div>
+    <div class="equip">
+      <div class="eq reveal"><span class="tag">Hydroterapie</span><h4>Vířivka Melibia</h4><p>Přelivová, 64 trysek, UV-C dezinfekce a chromoterapie. Hygiena bez kompromisů.</p></div>
+      <div class="eq reveal" style="transition-delay:.06s"><span class="tag">Teplo</span><h4>Finská sauna</h4><p>Dřevo Dark Thermo Abachi, hvězdný strop a 6kW kamna pro dokonalé prohřátí.</p></div>
+      <div class="eq reveal" style="transition-delay:.12s"><span class="tag">Regenerace</span><h4>Infrasauna AURA 2</h4><p>Nano uhlíková fólie s IR-C technologií — šetrné prohřátí do hloubky.</p></div>
+      <div class="eq reveal" style="transition-delay:.18s"><span class="tag">Ochlazení</span><h4>Cryo Ice Tub &amp; Kneipp</h4><p>Ochlazovací vana a nový Kneippův chodník pro nastartování cirkulace.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CENÍK + KALKULAČKA -->
+<section id="cenik" style="padding-top:0">
+  <div class="container">
+    <div class="overline reveal">Ceník platný od 23. 5. 2026</div>
+    <h2 class="h2 reveal">Spočítejte si <em>svůj termín</em></h2>
+    <p class="lead reveal">Žádné složité tabulky. Vyberte počet osob, délku a termín — cenu vidíte okamžitě.</p>
+
+    <div class="calc-wrap reveal">
+      <div class="calc-left">
+        <h3>Kalkulačka <em>wellness</em></h3>
+        <p>Cena je vždy za celé privátní wellness — nikoho cizího u nás nepotkáte.</p>
+        <div class="calc-form">
+          <div class="calc-field">
+            <div class="lbl">Počet osob</div>
+            <div class="seg" id="segOsoby">
+              <button data-i="0" class="active">1–2</button>
+              <button data-i="1">3</button>
+              <button data-i="2">4</button>
+              <button data-i="3">5</button>
+              <button data-i="4">6</button>
+            </div>
+          </div>
+          <div class="calc-field">
+            <div class="lbl">Délka pobytu</div>
+            <div class="seg" id="segDelka">
+              <button data-d="2" class="active">2 hodiny</button>
+              <button data-d="3">3 hodiny</button>
+            </div>
+          </div>
+          <div class="calc-field">
+            <div class="lbl">Termín</div>
+            <div class="seg" id="segTermin">
+              <button data-t="0" class="active">Po–Pá denní</button>
+              <button data-t="1">Po–Čt večer</button>
+              <button data-t="2">Pá večer &amp; víkend</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="calc-right">
+        <div class="plabel">Cena celkem</div>
+        <div class="calc-price"><span id="calcPrice">2 290</span> <small>Kč</small></div>
+        <div class="calc-note" id="calcNote">za celé wellness · 2 hodiny · 1–2 osoby</div>
+        <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="btn btn-gold" style="align-self:center">Rezervovat tento termín</a>
+      </div>
+    </div>
+
+    <div class="price-tables">
+      <div class="pt reveal">
+        <h4>Wellness · Po–Pá (2 hod.)</h4>
+        <div class="row"><span>1–2 osoby</span><b>2 290 Kč</b></div>
+        <div class="row"><span>3 osoby</span><b>2 990 Kč</b></div>
+        <div class="row"><span>4 osoby</span><b>3 790 Kč</b></div>
+        <div class="row"><span>5 osob</span><b>4 590 Kč</b></div>
+        <div class="row"><span>6 osob</span><b>5 390 Kč</b></div>
+      </div>
+      <div class="pt reveal" style="transition-delay:.07s">
+        <h4>Wellness · Po–Čt večer (2 hod.)</h4>
+        <div class="row"><span>1–2 osoby</span><b>2 490 Kč</b></div>
+        <div class="row"><span>3 osoby</span><b>3 190 Kč</b></div>
+        <div class="row"><span>4 osoby</span><b>3 990 Kč</b></div>
+        <div class="row"><span>5 osob</span><b>4 790 Kč</b></div>
+        <div class="row"><span>6 osob</span><b>5 590 Kč</b></div>
+      </div>
+      <div class="pt reveal" style="transition-delay:.14s">
+        <h4>Pátek večer + víkend (2 hod.)</h4>
+        <div class="row"><span>1–2 osoby</span><b>2 690 Kč</b></div>
+        <div class="row"><span>3 osoby</span><b>3 490 Kč</b></div>
+        <div class="row"><span>4 osoby</span><b>4 290 Kč</b></div>
+        <div class="row"><span>5 osob</span><b>5 090 Kč</b></div>
+        <div class="row"><span>6 osob</span><b>5 890 Kč</b></div>
+      </div>
+    </div>
+    <p class="reveal" style="color:var(--muted);font-size:.85rem;margin-top:1.2rem;font-style:italic">Tříhodinové vstupy za příplatek 700–1 300 Kč dle termínu a počtu osob. Občerstvení navíc: NOVÉ MENU se sektem +500 Kč, láhev sektu +250 Kč.</p>
+    <div class="incl reveal">
+      <span>Osuška, prostěradlo &amp; deka</span>
+      <span>Župan a pantofle</span>
+      <span>Kosmetika Rituals</span>
+      <span>Voda, čaj a káva</span>
+      <span>Sušené ovoce &amp; ořechy</span>
+      <span>Platba benefity vč. FKSP</span>
+    </div>
+  </div>
+</section>
+
+<!-- APARTMÁNY -->
+<section class="apts" id="apartmany">
+  <div class="container">
+    <div class="overline reveal">Zůstaňte přes noc</div>
+    <h2 class="h2 reveal">Moderní <em>apartmány</em></h2>
+    <div class="apt-grid">
+      <div class="apt-photos reveal">
+        <img src="img/apt-6.webp" alt="Apartmán" loading="lazy">
+        <img src="img/apt-1.webp" alt="Kuchyň apartmánu" loading="lazy">
+        <img src="img/apt-3.webp" alt="Koupelna" loading="lazy">
+      </div>
+      <div>
+        <p class="lead reveal">Plně vybavené, klimatizované apartmány s kuchyní, myčkou i pračkou — přímo nad wellness. Ideální základna pro výlety po Olomouckém kraji i romantický pobyt s privátním spa o patro níž.</p>
+        <div class="apt-rooms">
+          <div class="apt-room reveal"><span class="t">1–2 osoby</span><span class="p">2 500 Kč<small>za noc</small></span></div>
+          <div class="apt-room reveal"><span class="t">3 osoby</span><span class="p">3 000 Kč<small>za noc</small></span></div>
+          <div class="apt-room reveal"><span class="t">4 osoby</span><span class="p">3 500 Kč<small>za noc</small></span></div>
+        </div>
+        <div class="apt-amen">
+          <span class="reveal">Klimatizace</span>
+          <span class="reveal">Plná kuchyň</span>
+          <span class="reveal">Wi-Fi zdarma</span>
+          <span class="reveal">Parkování s kamerami</span>
+          <span class="reveal">EV nabíjení</span>
+          <span class="reveal">Snídaně +300 Kč</span>
+          <span class="reveal">Děti do 6 let zdarma</span>
+        </div>
+        <p class="reveal" style="color:var(--muted);font-size:.85rem;margin-top:1.6rem;font-style:italic">Check-in 15:00–20:00 (po domluvě flexibilně) · check-out do 11:00 · ★ 9,5/10 na Booking.com</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POUKAZY -->
+<section id="poukazy">
+  <div class="container center">
+    <div class="overline reveal">Darujte zážitek</div>
+    <h2 class="h2 reveal">Dárkové <em>poukazy</em></h2>
+    <p class="lead reveal">Platnost minimálně 12 měsíců. Doručení osobně, e-mailem nebo poštou — a lze platit i zaměstnaneckými benefity.</p>
+    <div class="vouchers">
+      <div class="vch reveal"><div class="vt">Pro dva · 2 hodiny</div><h4>Classic</h4><div class="vp">2 490 Kč</div><p>Po–Čt ve všech časech, pátek v omezených.</p></div>
+      <div class="vch reveal" style="transition-delay:.06s"><div class="vt">Pro dva · 2 hodiny</div><h4>Flexi</h4><div class="vp">2 690 Kč</div><p>Kdykoli v týdnu — maximální flexibilita.</p></div>
+      <div class="vch best reveal" style="transition-delay:.12s"><div class="ribbon">Nejoblíbenější</div><div class="vt">Pro dva · 2 hodiny</div><h4>Romantic</h4><div class="vp">4 390 Kč</div><p>Výběrové občerstvení, kytice růží, romantická výzdoba a sekt se zlatem.</p></div>
+      <div class="vch reveal" style="transition-delay:.18s"><div class="vt">Noc + wellness</div><h4>Night</h4><div class="vp">5 990 Kč</div><p>Ubytování, 2 hodiny wellness a snídaně.</p></div>
+      <div class="vch reveal" style="transition-delay:.24s"><div class="vt">2 noci + 2× wellness</div><h4>Night Deluxe</h4><div class="vp">9 990 Kč</div><p>Dvě noci a dva dvouhodinové vstupy do spa.</p></div>
+    </div>
+    <p class="reveal" style="color:var(--muted);font-size:.85rem;margin-top:1.6rem;font-style:italic">Gastro balíček k poukazu +500 Kč · zaslání poštou +85 Kč · Benefit Plus, Pluxee, Edenred i FKSP</p>
+  </div>
+</section>
+
+<!-- SLUŽBY -->
+<section id="sluzby" style="padding-top:0">
+  <div class="container">
+    <div class="overline reveal">Péče o tělo i duši</div>
+    <h2 class="h2 reveal">Masáže <em>&amp;</em> beauty služby</h2>
+    <p class="lead reveal">Polyfunkční dům EMPORIO BEAUTY nabízí pod jednou střechou kompletní péči — objednání přímo u našich specialistek.</p>
+    <div class="services">
+      <div class="svc reveal"><h4>Masáže</h4><p>Relaxační, thajské i sportovní masáže. Flexibilní objednání včetně víkendů.</p><div class="who">Věra Machačová · Aneta Staňková</div></div>
+      <div class="svc reveal" style="transition-delay:.05s"><h4>Kosmetika</h4><p>Kosmetická ošetření, barvení řas a obočí, depilace, aplikace umělých řas.</p><div class="who">Martina Kolářová</div></div>
+      <div class="svc reveal" style="transition-delay:.1s"><h4>Permanentní make-up</h4><p>Precizní permanentní make-up pro přirozený vzhled každý den.</p><div class="who">Mgr. Veronika Kolář</div></div>
+      <div class="svc reveal" style="transition-delay:.15s"><h4>Maderoterapie &amp; Head Spa</h4><p>Japonské techniky péče o pokožku hlavy a tělo.</p><div class="who">Nadija Kolář</div></div>
+      <div class="svc reveal" style="transition-delay:.2s"><h4>Trichologie &amp; vlasy</h4><p>Trichologické ošetření a prodlužování vlasů.</p><div class="who">Eva Minaříková Kolářová</div></div>
+      <div class="svc reveal" style="transition-delay:.25s"><h4>EMS křeslo</h4><p>Posílení pánevního dna — 30 minut / 990 Kč. Novinka i světelná terapie a 3D masážní křeslo.</p><div class="who">Wellness Emporio</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REZERVACE + ADMIN -->
+<section class="resadmin" id="rezervace">
+  <div class="container center">
+    <div class="overline reveal">Vše pod kontrolou</div>
+    <h2 class="h2 reveal">Rezervace <em>&amp;</em> správa webu</h2>
+    <div class="ra-grid" style="text-align:left">
+      <div class="ra reveal">
+        <h3>Online rezervace</h3>
+        <p>Nový web plynule naváže na váš stávající rezervační systém Reservio — hosté rezervují na dvě kliknutí přímo z webu, bez přeučování a bez ztráty historie.</p>
+        <ul>
+          <li>Rezervační tlačítka u každého ceníku i poukazu</li>
+          <li>Kalkulačka převede hosta rovnou na správný termín</li>
+          <li>Připraveno i na vlastní rezervační systém v budoucnu</li>
+        </ul>
+        <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener" class="btn btn-green">Vyzkoušet rezervaci</a>
+      </div>
+      <div class="ra reveal" style="transition-delay:.08s">
+        <h3>Administrace webu</h3>
+        <p>Ceníky, aktuality, poukazy i fotogalerii si upravíte sami — bez programátora a bez čekání. Změna ceny zabere minutu.</p>
+        <ul>
+          <li>Úprava ceníků wellness i apartmánů</li>
+          <li>Aktuality a sezónní nabídky jedním kliknutím</li>
+          <li>Správa dárkových poukazů a fotografií</li>
+        </ul>
+        <a href="admin/" class="btn btn-gold">Prohlédnout ukázku administrace</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section id="kontakt">
+  <div class="container">
+    <div class="overline reveal">Těšíme se na vás</div>
+    <h2 class="h2 reveal">Kontakt <em>&amp;</em> otevírací doba</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="reveal">
+          <div class="hours-row"><span>Pondělí</span><span class="time">12:30 — 22:00</span></div>
+          <div class="hours-row"><span>Úterý — Neděle</span><span class="time">10:00 — 22:00</span></div>
+          <div class="hours-row"><span>Tříhodinové vstupy</span><span class="time">9:00—12:00 · 20:00—23:00</span></div>
+        </div>
+        <div class="c-item reveal"><div class="lbl">Telefon</div><a href="tel:+420606333214">+420 606 333 214</a></div>
+        <div class="c-item reveal"><div class="lbl">E-mail</div><a href="mailto:info@wellness-emporio.cz">info@wellness-emporio.cz</a></div>
+        <div class="c-item reveal"><div class="lbl">Adresa</div><span class="val">Hradská 817/6a, 789 83 Loštice</span></div>
+        <div class="socials reveal">
+          <a href="https://www.instagram.com/wellnessemporio/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.facebook.com/wellnesslostice/" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://wellness-emporio2.reservio.com" target="_blank" rel="noopener">Rezervace</a>
+        </div>
+        <p class="benefits reveal">Přijímáme zaměstnanecké benefity: Benefit Plus · Pluxee · Edenred · FKSP</p>
+      </div>
+      <div class="map-wrap reveal">
+        <iframe src="https://maps.google.com/maps?q=Hradsk%C3%A1%20817%2F6a%2C%20Lo%C5%A1tice&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy" title="Mapa — Wellness Emporio, Loštice"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" aria-label="Zavřít">×</button>
+  <img src="" alt="Fotografie">
+</div>
+
+<footer>
+  <div class="flogo">WELLNESS EMPORIO</div>
+  <div>Hradská 817/6a, Loštice · <a href="tel:+420606333214">606 333 214</a> · <a href="mailto:info@wellness-emporio.cz">info@wellness-emporio.cz</a></div>
+  <div>© 2026 Wellness Emporio · návrh webu <a href="https://ksh-partners.cz" target="_blank" rel="noopener">KSH Partners</a></div>
+</footer>
+
+<script>
+// nav
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+const burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
+burger.addEventListener('click',()=>{burger.classList.toggle('open');navLinks.classList.toggle('open')});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{burger.classList.remove('open');navLinks.classList.remove('open')}));
+
+// reveals
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// kalkulačka — ceník platný od 23.5.2026
+const base=[[2290,2990,3790,4590,5390],[2490,3190,3990,4790,5590],[2690,3490,4290,5090,5890]];
+const supl=[[700,800,900,1000,1100],[800,900,1000,1100,1200],[900,1000,1100,1200,1300]];
+const osobyLbl=['1–2 osoby','3 osoby','4 osoby','5 osob','6 osob'];
+const terminLbl=['Po–Pá denní','Po–Čt večer','Pá večer & víkend'];
+let selO=0,selD=2,selT=0;
+function segInit(id,attr,cb){
+  document.getElementById(id).addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');cb(+b.dataset[attr]);calc();
+  });
+}
+segInit('segOsoby','i',v=>selO=v);
+segInit('segDelka','d',v=>selD=v);
+segInit('segTermin','t',v=>selT=v);
+function calc(){
+  let p=base[selT][selO];
+  if(selD===3)p+=supl[selT][selO];
+  document.getElementById('calcPrice').textContent=p.toLocaleString('cs-CZ');
+  document.getElementById('calcNote').textContent=`za celé wellness · ${selD} hodiny · ${osobyLbl[selO]} · ${terminLbl[selT]}`;
+}
+calc();
+
+// lightbox pro spa karty
+const lb=document.getElementById('lightbox'),lbImg=lb.querySelector('img');
+document.querySelectorAll('.spa-card').forEach(c=>c.addEventListener('click',()=>{
+  lbImg.src=c.querySelector('img').src;lb.classList.add('open');document.body.style.overflow='hidden';
+}));
+function lbClose(){lb.classList.remove('open');document.body.style.overflow=''}
+lb.querySelector('.close').addEventListener('click',lbClose);
+lb.addEventListener('click',e=>{if(e.target===lb)lbClose()});
+addEventListener('keydown',e=>{if(e.key==='Escape')lbClose()});
+</script>
+</body>
+</html>
