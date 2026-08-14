@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cenová nabídka — Pekárna Krajíček</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;700&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --paper:#F3EFEB; --surface:#FFFFFF; --ink:#22201D; --text:#3A3733;
+    --crust:#A97B4A; --crust-deep:#8A6236; --blush:#E8D6CC;
+    --muted:#8B8378; --border:#E4DDD4;
+  }
+  html { font-size:16px; }
+  body {
+    background:var(--paper); color:var(--text);
+    font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.6;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .page { max-width:820px; margin:0 auto; padding:3rem 2rem 4rem; }
+  .serif { font-family:'EB Garamond',serif; }
+  .script { font-family:'Sacramento',cursive; }
+  .eyebrow { font-size:.65rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--crust-deep); margin-bottom:.6rem; }
+  .h-sec { font-family:'EB Garamond',serif; font-size:1.65rem; font-weight:500; color:var(--ink); margin-bottom:.6rem; }
+  .lead { font-size:.85rem; color:var(--muted); max-width:560px; line-height:1.75; margin-bottom:1.75rem; }
+
+  .pdf-btn { position:fixed; bottom:2rem; right:2rem; background:var(--crust); color:#fff; border:none; padding:.7rem 1.4rem; border-radius:99px; font-family:'DM Sans',sans-serif; font-size:.82rem; font-weight:600; cursor:pointer; z-index:999; }
+  .pdf-btn:hover { background:var(--crust-deep); }
+
+  /* HEADER */
+  .header { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:2.2rem; border-bottom:1px solid var(--border); margin-bottom:2.6rem; }
+  .logo-name { font-family:'EB Garamond',serif; font-size:1.4rem; font-weight:600; color:var(--ink); }
+  .logo-sub { font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .header-meta { text-align:right; }
+  .doc-label { font-size:.65rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--crust-deep); margin-bottom:.25rem; }
+  .doc-title { font-family:'EB Garamond',serif; font-size:1.15rem; font-weight:500; color:var(--ink); }
+  .doc-info { font-size:.78rem; color:var(--muted); margin-top:.4rem; line-height:1.8; }
+
+  /* HOOK */
+  .hook { background:var(--ink); border-radius:12px; padding:2rem 1.5rem; margin-bottom:1.5rem; display:grid; grid-template-columns:1fr 1fr 1fr; }
+  .hook > div { text-align:center; padding:0 1.25rem; }
+  .hook > div + div { border-left:1px solid rgba(255,255,255,.09); }
+  .hook b { display:block; font-family:'EB Garamond',serif; font-size:2.2rem; font-weight:600; color:var(--blush); line-height:1; }
+  .hook span { font-size:.75rem; color:rgba(243,239,235,.6); margin-top:.4rem; line-height:1.5; display:inline-block; }
+
+  .callout { background:rgba(169,123,74,.08); border-left:3px solid var(--crust); border-radius:0 8px 8px 0; padding:1rem 1.5rem; margin-bottom:2.4rem; font-size:.85rem; color:var(--ink); line-height:1.7; }
+
+  /* NÁHLED */
+  .preview { margin-bottom:2.6rem; }
+  .preview img { width:100%; border-radius:10px; border:1px solid var(--border); display:block; }
+  .preview figcaption { font-size:.72rem; color:var(--muted); margin-top:.6rem; text-align:center; }
+  .preview figcaption a { color:var(--crust-deep); }
+
+  /* INTRO */
+  .intro { margin-bottom:2.6rem; }
+  .intro h1 { font-family:'EB Garamond',serif; font-size:2.3rem; font-weight:500; line-height:1.15; color:var(--ink); margin-bottom:1rem; }
+  .intro h1 em { font-style:italic; color:var(--crust-deep); font-weight:400; }
+  .intro p { color:var(--muted); font-size:.9rem; max-width:600px; line-height:1.8; }
+  .intro strong { color:var(--ink); font-weight:500; }
+
+  /* SCOPE */
+  .scope { background:var(--ink); border-radius:12px; padding:2.2rem 2.4rem; margin-bottom:2.8rem; }
+  .scope-title { font-size:.65rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--blush); margin-bottom:1.4rem; }
+  .scope-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem 1.5rem; }
+  .scope-item { display:flex; gap:.75rem; align-items:flex-start; }
+  .scope-dot { width:6px; height:6px; border-radius:50%; background:var(--crust); margin-top:.45rem; flex-shrink:0; }
+  .scope-text { font-size:.82rem; color:rgba(243,239,235,.75); line-height:1.6; }
+  .scope-text strong { color:#F3EFEB; font-weight:500; display:block; margin-bottom:.1rem; }
+
+  /* PACKAGES */
+  .packages-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.1rem; margin-bottom:2.8rem; }
+  .pkg { border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--surface); position:relative; }
+  .pkg.featured { border:2px solid var(--crust); }
+  .pkg-badge { position:absolute; top:-1px; left:50%; transform:translateX(-50%); background:var(--crust); color:#fff; font-size:.6rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:.25rem .9rem; border-radius:0 0 6px 6px; white-space:nowrap; }
+  .pkg-header { padding:1.7rem 1.4rem 1.2rem; border-bottom:1px solid var(--border); }
+  .pkg-name { font-size:.65rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:.35rem; }
+  .pkg-price { font-family:'EB Garamond',serif; font-size:2rem; font-weight:600; color:var(--ink); line-height:1; }
+  .pkg-price span { font-size:.85rem; font-weight:400; color:var(--muted); font-family:'DM Sans',sans-serif; }
+  .pkg-desc { font-size:.76rem; color:var(--muted); margin-top:.5rem; line-height:1.5; }
+  .pkg-features { padding:1.2rem 1.4rem 1.6rem; list-style:none; display:flex; flex-direction:column; gap:.55rem; }
+  .pkg-features li { position:relative; padding-left:1.5rem; font-size:.78rem; color:var(--text); line-height:1.45; }
+  .pkg-features li.muted { color:#BBB3A8; }
+  .pkg-features li strong { font-weight:600; }
+  .check { position:absolute; left:0; top:.12rem; width:14px; height:14px; border-radius:50%; background:rgba(169,123,74,.13); display:flex; align-items:center; justify-content:center; }
+  .check svg { width:8px; height:8px; }
+  .check.none { background:#F0ECE6; }
+
+  /* TABLES */
+  .tbl { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .tbl-head { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; background:var(--ink); padding:.9rem 1.5rem; }
+  .tbl-head div { font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(243,239,235,.5); text-align:center; }
+  .tbl-head div:first-child { text-align:left; }
+  .tbl-head .hl { color:var(--blush); }
+  .tbl-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:1rem 1.5rem; border-bottom:1px solid var(--border); align-items:center; }
+  .tbl-row:last-child { border-bottom:none; }
+  .tbl-row.alt { background:#FBF8F4; }
+  .tbl-row > div { text-align:center; font-size:.85rem; }
+  .tbl-row > div:first-child { text-align:left; font-size:.82rem; font-weight:500; color:var(--text); }
+  .tbl-row small { display:block; font-size:.7rem; color:var(--muted); font-weight:300; }
+  .price-b { font-weight:700; color:var(--ink); }
+  .ok-g { color:#6A9A5E; font-weight:600; font-size:.82rem; }
+
+  /* ADDONS */
+  .addons { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .addon { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.4rem 1.5rem; }
+  .addon-title { font-size:.85rem; font-weight:600; color:var(--ink); margin-bottom:.2rem; }
+  .addon-desc { font-size:.78rem; color:var(--muted); line-height:1.6; margin-bottom:.6rem; }
+  .addon-price { font-size:.9rem; font-weight:700; color:var(--ink); }
+  .addon-price small { font-weight:400; color:var(--muted); font-size:.72rem; }
+
+  /* PROCESS */
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+  .step-num { width:32px; height:32px; border-radius:50%; background:var(--ink); color:var(--blush); font-size:.78rem; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:.75rem; font-family:'EB Garamond',serif; }
+  .step-title { font-size:.82rem; font-weight:600; color:var(--ink); margin-bottom:.35rem; }
+  .step-desc { font-size:.75rem; color:var(--muted); line-height:1.6; }
+
+  /* FAQ */
+  .faq { display:flex; flex-direction:column; gap:.75rem; }
+  .faq-item { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.2rem 1.5rem; }
+  .faq-q { font-size:.85rem; font-weight:600; color:var(--ink); margin-bottom:.35rem; }
+  .faq-a { font-size:.8rem; color:var(--muted); line-height:1.7; }
+
+  .sec { margin-bottom:2.8rem; }
+
+  /* FOOTER */
+  .footer { border-top:1px solid var(--border); padding-top:2rem; display:flex; justify-content:space-between; align-items:flex-end; }
+  .footer-left p { font-size:.78rem; color:var(--muted); line-height:1.8; }
+  .footer-left strong { color:var(--ink); font-weight:600; }
+  .footer-note { font-size:.7rem; color:#B8B0A5; text-align:right; line-height:1.7; }
+
+  @media print {
+    @page { margin:1.2cm 1.4cm; size:A4; }
+    body { background:var(--paper); }
+    .page { padding:0; max-width:100%; }
+    .pdf-btn { display:none !important; }
+    * { box-shadow:none !important; text-shadow:none !important; }
+    .hook, .scope, .pkg, .tbl, .addon, .step, .faq-item, .footer, .preview, .callout { break-inside:avoid; page-break-inside:avoid; }
+    .pg-break { break-before:page; page-break-before:always; }
+  }
+  @media (max-width:700px){
+    .packages-grid,.addons,.steps,.scope-grid,.hook{grid-template-columns:1fr}
+    .hook > div + div{border-left:none;border-top:1px solid rgba(255,255,255,.09);padding-top:1rem;margin-top:1rem}
+    .tbl-head,.tbl-row{grid-template-columns:1.4fr 1fr 1fr 1fr;padding:.8rem .8rem}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="logo-name">KSH Partners</div>
+      <div class="logo-sub">Web Studio</div>
+    </div>
+    <div class="header-meta">
+      <div class="doc-label">Cenová nabídka</div>
+      <div class="doc-title">Pekárna Krajíček · Počátky</div>
+      <div class="doc-info">Vystaveno: 14. 8. 2026<br>Platnost nabídky: 30 dní</div>
+    </div>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook">
+    <div><b>87 %</b><span>zákazníků si podnik<br>nejdřív vyhledá online</span></div>
+    <div><b>8 s</b><span>tolik má web na to,<br>aby zaujal</span></div>
+    <div><b>3×</b><span>více poptávek zakázek<br>po spuštění webu</span></div>
+  </div>
+  <div class="callout">
+    <strong>Skvělé pečivo si zaslouží skvělou výlohu i na internetu.</strong>
+    Svatební koláčky, dorty a chlebíčky si dnes lidé hledají na Googlu — a když vás nenajdou,
+    objednají jinde. Web je vaše výloha, která má otevřeno 7 dní v týdnu.
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="eyebrow">Nový web pro pekárnu</div>
+    <h1>Web, který voní<br><em>jako čerstvý chleba.</em></h1>
+    <p>Připravili jsme nabídku ve <strong>třech variantách</strong> — od jednoduché webové vizitky po web
+    s administrací a online objednávkami zakázek. Každá varianta je <strong>design na míru podle vašeho loga</strong> —
+    žádná šablona. Hotový web plně vlastníte vy, včetně zdrojových souborů.</p>
+  </div>
+
+  <!-- NÁHLED -->
+  <figure class="preview">
+    <div class="eyebrow">Návrh už je hotový</div>
+    <div class="h-sec">Takhle může váš web vypadat</div>
+    <p class="lead">Připravili jsme kompletní grafický návrh přímo pro vaši pekárnu — vychází z vašeho krásného loga a fotek. Prohlédněte si ho živě v mobilu i počítači:</p>
+    <img src="foto/nahled-web.jpg" alt="Náhled návrhu webu Pekárny Krajíček">
+    <figcaption>Živý návrh: <a href="https://zaviscuchna.github.io/ksh-pitches/pekarna-krajicek/">zaviscuchna.github.io/ksh-pitches/pekarna-krajicek</a></figcaption>
+  </figure>
+
+  <!-- SCOPE -->
+  <div class="scope">
+    <div class="scope-title">Co je součástí každé varianty</div>
+    <div class="scope-grid">
+      <div class="scope-item"><div class="scope-dot"></div><div class="scope-text"><strong>Design na míru podle vašeho loga</strong>Jemný, ručně kreslený styl — jako váš krajíček</div></div>
+      <div class="scope-item"><div class="scope-dot"></div><div class="scope-text"><strong>Perfektní na mobilu</strong>Většina zákazníků vás otevře z telefonu</div></div>
+      <div class="scope-item"><div class="scope-dot"></div><div class="scope-text"><strong>Otevírací doba, kontakt, mapa</strong>Vše, co zákazník hledá, na jednom místě</div></div>
+      <div class="scope-item"><div class="scope-dot"></div><div class="scope-text"><strong>SEO základy</strong>Google vás najde na „pekárna Počátky"</div></div>
+      <div class="scope-item"><div class="scope-dot"></div><div class="scope-text"><strong>Propojení s Facebookem</strong>Web a FB stránka si vzájemně pomáhají</div></div>
+      <div class="scope-item"><div class="scope-dot"></div><div class="scope-text"><strong>Web je váš</strong>Předáme kód i přístupy — nejste na nás závislí</div></div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="sec pg-break">
+    <div class="eyebrow">Varianty spolupráce</div>
+    <div class="h-sec">Vyberte si, co vám sedí</div>
+    <div class="packages-grid">
+
+      <!-- VIZITKA -->
+      <div class="pkg">
+        <div class="pkg-header">
+          <div class="pkg-name">Webová vizitka</div>
+          <div class="pkg-price">7 900 <span>Kč</span></div>
+          <div class="pkg-desc">Elegantní jednostránkový web — ať vás zákazníci najdou</div>
+        </div>
+        <ul class="pkg-features">
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Jedna stránka: úvod, nabídka ve zkratce, otevírací doba, kontakt + mapa</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Design podle vašeho loga</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Vaše fotky (pomůžeme vybrat)</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Hotovo do 7 pracovních dní</li>
+          <li class="muted"><span class="check none"><svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg></span>Galerie a sekce sortimentu</li>
+          <li class="muted"><span class="check none"><svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg></span>Admin panel — úpravy svépomocí</li>
+          <li class="muted"><span class="check none"><svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg></span>Online objednávky zakázek</li>
+        </ul>
+      </div>
+
+      <!-- WEB NA MÍRU -->
+      <div class="pkg featured">
+        <div class="pkg-badge">To, co vidíte v návrhu</div>
+        <div class="pkg-header">
+          <div class="pkg-name">Web na míru</div>
+          <div class="pkg-price">14 900 <span>Kč</span></div>
+          <div class="pkg-desc">Kompletní web přesně podle připraveného návrhu</div>
+        </div>
+        <ul class="pkg-features">
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>Celý připravený návrh</strong> — úvod, o pekárně, sortiment, zakázky, kontakt</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sekce svatebních koláčků a dortů na zakázku</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Galerie fotek</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Úpravy návrhu podle vašich připomínek</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>Hosting + doména první rok v ceně</strong></li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Google Business profil + Analytics</li>
+          <li class="muted"><span class="check none"><svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg></span>Admin panel — úpravy svépomocí</li>
+          <li class="muted"><span class="check none"><svg viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg></span>Online objednávky zakázek</li>
+        </ul>
+      </div>
+
+      <!-- PEKÁRNA ONLINE -->
+      <div class="pkg">
+        <div class="pkg-header">
+          <div class="pkg-name">Pekárna online</div>
+          <div class="pkg-price">24 900 <span>Kč</span></div>
+          <div class="pkg-desc">Web + administrace + objednávky zakázek</div>
+        </div>
+        <ul class="pkg-features">
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Vše z varianty Web na míru</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>Admin panel</strong> — nabídku, ceny, otevírací dobu i fotky si měníte sami, bez nás</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>Objednávky zakázek online</strong> — koláčky, dorty a chlebíčky s výběrem termínu; objednávka vám přijde e-mailem</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sekce „Novinky z pekárny" — akce a sezónní nabídka</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sezónní předobjednávky (Vánoce, Velikonoce) — modul zapnete jen když chcete</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Zaškolení + videonávod</li>
+          <li><span class="check"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#A97B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Prioritní podpora — odpověď do 24 h</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="sec">
+    <div class="eyebrow">Transparentní ceny</div>
+    <div class="h-sec">Kolik zaplatíte celkem?</div>
+    <p class="lead">Tvorbu webu platíte jednou. Dál už jen provoz — nebo vůbec nic, pokud si zvolíte vlastní hosting.</p>
+    <div class="tbl">
+      <div class="tbl-head">
+        <div>Položka</div><div>Vizitka</div><div class="hl">Web na míru ★</div><div>Pekárna online</div>
+      </div>
+      <div class="tbl-row">
+        <div>Tvorba webu (jednorázově)</div>
+        <div class="price-b">7 900 Kč</div><div class="price-b">14 900 Kč</div><div class="price-b">24 900 Kč</div>
+      </div>
+      <div class="tbl-row alt">
+        <div>Hosting + doména .cz — 1. rok<small>SSL, zálohy, technická správa</small></div>
+        <div style="color:var(--muted)">+ 3 500 Kč</div><div class="ok-g">v ceně</div><div class="ok-g">v ceně</div>
+      </div>
+      <div class="tbl-row">
+        <div style="font-weight:700;color:var(--ink)">Celkem první rok</div>
+        <div class="price-b" style="font-size:1rem">11 400 Kč</div><div class="price-b" style="font-size:1rem">14 900 Kč</div><div class="price-b" style="font-size:1rem">24 900 Kč</div>
+      </div>
+      <div class="tbl-row alt">
+        <div>Každý další rok<small>Jen provoz — tvorbu platíte jednou</small></div>
+        <div style="color:var(--muted)">3 500 Kč/rok</div><div style="color:var(--muted)">3 500 Kč/rok</div><div style="color:var(--muted)">3 500 Kč/rok</div>
+      </div>
+    </div>
+    <p style="font-size:.72rem;color:#B8B0A5;margin-top:.75rem">* Hosting zahrnuje doménu .cz, SSL certifikát, zálohy a správu serveru. Web lze nasadit i k vlastnímu poskytovateli — pak neplatíte nám nic.</p>
+  </div>
+
+  <!-- ADDONS -->
+  <div class="sec pg-break">
+    <div class="eyebrow">Doplňky à la carte</div>
+    <div class="h-sec">Přidejte si, co potřebujete</div>
+    <p class="lead">Každý doplněk jde přidat k libovolné variantě — i dodatečně, až se web rozjede.</p>
+    <div class="addons">
+      <div class="addon">
+        <div class="addon-title">Profesionální nafocení pekárny</div>
+        <div class="addon-desc">Přijedeme do Počátek a nafotíme pečivo, interiér i vás při práci. Fotky jsou vaše — použijete je i na Facebook.</div>
+        <div class="addon-price">+ 2 500 Kč</div>
+      </div>
+      <div class="addon">
+        <div class="addon-title">Sekce „Novinky z pekárny"</div>
+        <div class="addon-desc">Sami si přidáváte příspěvky, akce a sezónní nabídku. Zákazníci mají důvod se vracet.</div>
+        <div class="addon-price">+ 2 900 Kč</div>
+      </div>
+      <div class="addon">
+        <div class="addon-title">Objednávky zakázek online</div>
+        <div class="addon-desc">Formulář s výběrem termínu pro koláčky, dorty a chlebíčky. Objednávky vám chodí e-mailem.</div>
+        <div class="addon-price">+ 4 900 Kč <small>(v ceně varianty Pekárna online)</small></div>
+      </div>
+      <div class="addon">
+        <div class="addon-title">Správa webu — měsíční plán</div>
+        <div class="addon-desc">Drobné úpravy textů, fotek a obsahu děláme za vás. Prioritní odpověď do 24 hodin.</div>
+        <div class="addon-price">790 Kč / měs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="sec">
+    <div class="eyebrow">Jak to probíhá</div>
+    <div class="h-sec">Od schválení po spuštění</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Domluva</div>
+        <div class="step-desc">Vyberete variantu, doladíme detaily — klidně osobně u vás v pekárně. Záloha 50 %.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Podklady</div>
+        <div class="step-desc">Dodáte fotky a texty — nebo je nafotíme a sepíšeme společně.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Doladění webu</div>
+        <div class="step-desc">Návrh už existuje — doplníme vaše podklady a zapracujeme připomínky. Do 14 dní.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Spuštění</div>
+        <div class="step-desc">Nasadíme web na vaši doménu a předáme přístupy. Web je navždy váš.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="sec">
+    <div class="eyebrow">Časté otázky</div>
+    <div class="h-sec">Na co se lidé nejčastěji ptají</div>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-q">Návrh se mi líbí, ale chtěla bych něco jinak.</div>
+        <div class="faq-a">Samozřejmě — návrh je výchozí bod. Barvy, fotky, texty i rozložení upravíme podle vás. Připomínky zapracováváme, dokud nejste spokojená.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Je to šablona, nebo web na míru?</div>
+        <div class="faq-a">Čistý design na míru, vytvořený podle vašeho loga. Žádný WordPress, žádná šablona — žádná jiná pekárna nebude mít stejný web.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Budu na vás závislá při každé změně?</div>
+        <div class="faq-a">Ne. U varianty Pekárna online si obsah měníte sama v jednoduché administraci. U ostatních variant dostanete zdrojové soubory a úpravy pro vás uděláme rychle a levně — nebo si je zajistíte kdekoli jinde.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Musím mít hosting u vás?</div>
+        <div class="faq-a">Nemusíte. Náš hosting je pohodlné řešení bez starostí (doména, SSL, zálohy), ale web vám rádi nasadíme i k vlastnímu poskytovateli.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <div style="margin-bottom:.75rem">
+        <div style="font-size:.78rem;font-weight:700;color:var(--ink)">KSH Partners</div>
+        <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Web Studio</div>
+      </div>
+      <p><strong>Záviš Čuchna</strong><br>cuchna@ksh-partners.cz</p>
+    </div>
+    <div class="footer-note">
+      Nabídka platí 30 dní od data vystavení.<br>
+      Ceny jsou konečné — nejsme plátci DPH.<br>
+      © 2026 KSH Partners
+    </div>
+  </div>
+
+</div>
+<button class="pdf-btn" onclick="window.print()">⬇ Uložit jako PDF</button>
+</body>
+</html>
