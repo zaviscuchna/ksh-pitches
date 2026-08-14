@@ -46,15 +46,6 @@ body::after{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ————— kurzor ————— */
-@media(pointer:fine){
-  .cur-dot,.cur-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:200;transform:translate(-50%,-50%);opacity:0;transition:opacity .4s}
-  body.cur-on .cur-dot,body.cur-on .cur-ring{opacity:1}
-  .cur-dot{width:5px;height:5px;background:var(--crust)}
-  .cur-ring{width:30px;height:30px;border:1px solid rgba(169,123,74,.55);transition:width .35s var(--ease),height .35s var(--ease),border-color .3s}
-  .cur-ring.big{width:56px;height:56px;border-color:rgba(169,123,74,.9)}
-}
-
 /* ————— navigace ————— */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
@@ -273,8 +264,6 @@ footer{
 </head>
 <body>
 
-<div class="cur-dot"></div><div class="cur-ring"></div>
-
 <nav id="nav">
   <a class="nav-brand" href="#" aria-label="Pekárna Krajíček">krajíček</a>
   <ul class="nav-links">
@@ -482,22 +471,6 @@ document.querySelectorAll('.rev').forEach((el,i)=>{
   el.style.transitionDelay=(el.closest('.cards,.stats')? (i%4)*0.08 : 0)+'s';
   io.observe(el);
 });
-
-// ————— kurzor —————
-if(matchMedia('(pointer:fine)').matches){
-  const dot=document.querySelector('.cur-dot'),ring=document.querySelector('.cur-ring');
-  let x=0,y=0,rx=0,ry=0;
-  addEventListener('mousemove',e=>{
-    x=e.clientX;y=e.clientY;
-    document.body.classList.add('cur-on');
-    dot.style.left=x+'px';dot.style.top=y+'px';
-  });
-  (function loop(){rx+=(x-rx)*.14;ry+=(y-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
-  document.querySelectorAll('a,button,[data-hover]').forEach(el=>{
-    el.addEventListener('mouseenter',()=>ring.classList.add('big'));
-    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
-  });
-}
 
 // ————— zvýraznění dnešního dne —————
 (()=>{
