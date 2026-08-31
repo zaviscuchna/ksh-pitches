@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyklo Wellness Penzion Palice — Jindřichův Hradec</title>
+<meta name="description" content="Nově postavený penzion v klidné části Jindřichova Hradce. Wellness se saunou a vířivkou, úschovna a půjčovna kol, 10 minut pěšky do historického centra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --paper:#F6F2E9;
+  --paper-2:#EFE9DC;
+  --card:#FFFDF8;
+  --ink:#151D18;
+  --text:#3D453E;
+  --muted:#7C8279;
+  --forest:#22392E;
+  --forest-deep:#152219;
+  --moss:#4E6B58;
+  --amber:#BC7038;
+  --amber-lt:#D98F52;
+  --hair:#DDD4C2;
+  --hair-dk:rgba(246,242,233,.16);
+  --ease:cubic-bezier(.25,.46,.45,.94);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);color:var(--text);
+  font-family:'DM Sans',-apple-system,sans-serif;font-weight:300;
+  font-size:clamp(1rem,1.1vw,1.0625rem);line-height:1.7;
+  font-feature-settings:"kern" 1,"liga" 1;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;font-weight:500;color:var(--ink);letter-spacing:-.015em;line-height:1.12}
+em{font-style:italic}
+::selection{background:var(--amber);color:#fff}
+
+.wrap{width:min(1280px,92vw);margin:0 auto}
+.wrap-nar{width:min(1080px,92vw);margin:0 auto}
+section{position:relative}
+.sec{padding:clamp(5.5rem,11vw,10.5rem) 0}
+
+/* ---------- eyebrow / headings ---------- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.75rem;
+  font-size:.72rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:1.35rem;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:currentColor;opacity:.6}
+.eyebrow.c{justify-content:center}
+h2.big{font-size:clamp(2.3rem,5.2vw,4rem)}
+h2.big em{color:var(--moss)}
+.lead{max-width:60ch;font-size:clamp(1.02rem,1.35vw,1.2rem);color:var(--muted);line-height:1.75;margin-top:1.5rem}
+.on-dark h2.big,.on-dark h3,.on-dark h4{color:var(--paper)}
+.on-dark .lead{color:rgba(246,242,233,.62)}
+.on-dark .eyebrow{color:var(--amber-lt)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.7rem;
+  padding:1.05rem 2rem;border-radius:2px;border:1px solid transparent;
+  font-size:.8rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:background .45s var(--ease),color .45s var(--ease),border-color .45s var(--ease),transform .45s var(--ease);
+}
+.btn svg{width:14px;height:14px;transition:transform .45s var(--ease-out)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-solid{background:var(--amber);color:#fff}
+.btn-solid:hover{background:var(--ink);transform:translateY(-2px)}
+.btn-line{border-color:currentColor;color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-2px)}
+.on-dark .btn-line{color:var(--paper);border-color:rgba(246,242,233,.4)}
+.on-dark .btn-line:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;inset:0 0 auto;z-index:90;
+  display:flex;align-items:center;gap:2rem;
+  padding:1.5rem clamp(1.25rem,4vw,3rem);
+  transition:background .5s var(--ease),padding .5s var(--ease),box-shadow .5s var(--ease),border-color .5s var(--ease);
+  border-bottom:1px solid transparent;
+}
+.nav.stuck{background:rgba(246,242,233,.94);backdrop-filter:blur(14px);padding:.9rem clamp(1.25rem,4vw,3rem);border-bottom-color:var(--hair);box-shadow:0 1px 24px rgba(21,29,24,.05)}
+.brand{display:flex;flex-direction:column;line-height:1.1}
+.brand b{font-family:'Playfair Display',serif;font-size:1.24rem;font-weight:500;color:var(--paper);transition:color .5s var(--ease)}
+.brand span{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(246,242,233,.6);font-weight:400;margin-top:.2rem;transition:color .5s var(--ease)}
+.nav.stuck .brand b{color:var(--ink)}
+.nav.stuck .brand span{color:var(--muted)}
+.nav-links{display:flex;gap:2.1rem;margin-left:auto}
+.nav-links a{
+  font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;font-weight:400;
+  color:rgba(246,242,233,.82);padding-bottom:3px;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-size:0% 1px;background-repeat:no-repeat;background-position:0 100%;
+  transition:background-size .45s var(--ease-out),color .5s var(--ease);
+}
+.nav-links a:hover{background-size:100% 1px}
+.nav.stuck .nav-links a{color:var(--text)}
+.nav-cta{
+  padding:.72rem 1.4rem;border:1px solid rgba(246,242,233,.45);border-radius:2px;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--paper);
+  transition:background .45s var(--ease),color .45s var(--ease),border-color .45s var(--ease);
+}
+.nav-cta:hover{background:var(--paper);color:var(--ink)}
+.nav.stuck .nav-cta{background:var(--amber);border-color:var(--amber);color:#fff}
+.nav.stuck .nav-cta:hover{background:var(--ink);border-color:var(--ink)}
+.burger{display:none;margin-left:auto;width:34px;height:22px;position:relative;cursor:pointer;background:none;border:0}
+.burger i{position:absolute;left:0;right:0;height:1.5px;background:var(--paper);transition:transform .4s var(--ease-out),opacity .3s,background .5s}
+.burger i:nth-child(1){top:2px}.burger i:nth-child(2){top:10px}.burger i:nth-child(3){top:18px}
+.nav.stuck .burger i{background:var(--ink)}
+.nav.open .burger i:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.nav.open .burger i:nth-child(2){opacity:0}
+.nav.open .burger i:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;background:var(--forest-deep)}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:70% center;filter:saturate(.92) contrast(1.04) brightness(.9);transform:scale(1.06);animation:heroZoom 14s var(--ease-out) forwards}
+@keyframes heroZoom{to{transform:scale(1)}}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(11,20,14,.62) 0%,rgba(11,20,14,.22) 34%,rgba(11,20,14,.55) 68%,rgba(11,20,14,.88) 100%);
+}
+.hero-inner{position:relative;z-index:2;padding:0 0 clamp(2.5rem,6vw,4.5rem)}
+.hero h1{
+  color:var(--paper);font-size:clamp(2.9rem,7.4vw,6.5rem);line-height:1.03;letter-spacing:-.03em;
+  max-width:16ch;text-shadow:0 2px 40px rgba(0,0,0,.35);
+}
+.hero h1 em{color:#EFC49A;font-weight:400}
+.hero p{
+  color:rgba(246,242,233,.8);max-width:46ch;margin-top:1.8rem;
+  font-size:clamp(1rem,1.4vw,1.2rem);line-height:1.7;text-shadow:0 1px 20px rgba(0,0,0,.35);
+}
+.hero-btns{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.6rem}
+.hero-facts{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  margin-top:clamp(2.6rem,5vw,4rem);border-top:1px solid rgba(246,242,233,.2);
+}
+.hero-fact{padding:1.6rem 1.6rem 0 0}
+.hero-fact b{display:block;font-family:'Playfair Display',serif;font-size:clamp(1.1rem,1.7vw,1.4rem);font-weight:500;color:var(--paper)}
+.hero-fact span{display:block;font-size:.86rem;color:rgba(246,242,233,.55);margin-top:.3rem;line-height:1.5}
+.scroll-hint{
+  position:absolute;left:50%;bottom:1.4rem;transform:translateX(-50%);z-index:3;
+  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(246,242,233,.45);
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
+}
+.scroll-hint i{width:1px;height:38px;background:linear-gradient(rgba(246,242,233,.5),transparent);animation:drop 2.2s var(--ease) infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- booking bar ---------- */
+.book-wrap{position:relative;z-index:6;margin-top:-3.6rem}
+.book{
+  background:var(--card);border:1px solid var(--hair);border-radius:3px;
+  box-shadow:0 26px 70px -30px rgba(21,29,24,.35);
+  display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0;
+}
+.book-f{padding:1.4rem 1.7rem;border-right:1px solid var(--hair);min-width:0}
+.book-f label{display:block;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:.4rem}
+.book-f input,.book-f select{
+  width:100%;border:0;background:none;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--ink);
+  font-weight:400;outline:none;cursor:pointer;
+}
+.book-btn{
+  background:var(--forest);color:var(--paper);border:0;padding:0 2.4rem;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.7rem;transition:background .4s var(--ease);
+}
+.book-btn:hover{background:var(--amber)}
+.book-btn svg{width:14px;height:14px}
+.book-note{font-size:.78rem;color:var(--muted);margin-top:.9rem;text-align:right}
+.book-note b{color:var(--moss);font-weight:500}
+
+/* ---------- intro ---------- */
+.intro-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2.5rem,6vw,6rem);align-items:center}
+.intro-imgs{position:relative}
+.intro-imgs .a{border-radius:2px;overflow:hidden;box-shadow:0 30px 70px -40px rgba(21,29,24,.5)}
+.intro-imgs .a img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.intro-imgs .b{
+  position:absolute;right:-6%;bottom:-12%;width:46%;border-radius:2px;overflow:hidden;
+  border:8px solid var(--paper);box-shadow:0 24px 50px -28px rgba(21,29,24,.45);
+}
+.intro-imgs .b img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.feat-list{margin-top:2.6rem;border-top:1px solid var(--hair)}
+.feat{display:flex;gap:1.4rem;padding:1.25rem 0;border-bottom:1px solid var(--hair);align-items:flex-start}
+.feat .n{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--amber);width:1.6rem;flex:none;padding-top:.15rem}
+.feat b{display:block;color:var(--ink);font-weight:500;font-size:1.02rem}
+.feat span{font-size:.94rem;color:var(--muted);line-height:1.6}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);margin-top:clamp(4rem,7vw,6rem)}
+.stat{background:var(--paper);padding:2.2rem 1.8rem;text-align:center}
+.stat b{display:block;font-family:'Playfair Display',serif;font-size:clamp(2rem,3.4vw,2.9rem);font-weight:500;color:var(--moss);line-height:1}
+.stat span{display:block;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.7rem;font-weight:500}
+
+/* ---------- rooms ---------- */
+.rooms{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.6rem,3vw,2.6rem);margin-top:clamp(3rem,5vw,4.5rem)}
+.room{background:var(--card);border:1px solid var(--hair);border-radius:3px;overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s var(--ease)}
+.room:hover{transform:translateY(-5px);box-shadow:0 30px 60px -34px rgba(21,29,24,.4);border-color:#CFC3AA}
+.room-img{overflow:hidden;background:var(--paper-2)}
+.room-img img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .9s var(--ease-out)}
+.room:hover .room-img img{transform:scale(1.05)}
+.room-body{padding:clamp(1.6rem,2.4vw,2.2rem);display:flex;flex-direction:column;flex:1}
+.room-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.room h3{font-size:clamp(1.35rem,2.1vw,1.7rem)}
+.room .cap{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-top:.45rem;display:block}
+.room .price{text-align:right;flex:none}
+.room .price b{display:block;font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:500;color:var(--ink);line-height:1}
+.room .price span{font-size:.74rem;color:var(--muted);display:block;margin-top:.25rem}
+.room p{font-size:.96rem;color:var(--muted);margin-top:1rem;line-height:1.65}
+.amen{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.amen span{font-size:.78rem;color:var(--text);background:var(--paper-2);border:1px solid var(--hair);padding:.34rem .8rem;border-radius:2px}
+.room .go{margin-top:auto;padding-top:1.6rem;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);font-weight:500;display:flex;align-items:center;gap:.6rem}
+.room .go svg{width:13px;height:13px;transition:transform .45s var(--ease-out)}
+.room:hover .go svg{transform:translateX(5px)}
+
+/* ---------- price table ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:clamp(3.5rem,6vw,5rem);border-bottom:1px solid var(--hair);padding-bottom:1.2rem}
+.tab{
+  background:none;border:1px solid var(--hair);border-radius:2px;padding:.7rem 1.3rem;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--muted);
+  transition:all .35s var(--ease);
+}
+.tab:hover{color:var(--ink);border-color:#CFC3AA}
+.tab.on{background:var(--forest);border-color:var(--forest);color:var(--paper)}
+.ptable{margin-top:2rem;border:1px solid var(--hair);border-radius:3px;overflow:hidden;background:var(--card)}
+.ptable-head{display:grid;grid-template-columns:2.2fr repeat(4,1fr);background:var(--forest);padding:1.05rem 1.8rem;gap:1rem}
+.ptable-head div{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,242,233,.55);font-weight:500;text-align:center}
+.ptable-head div:first-child{text-align:left;color:var(--paper)}
+.prow{display:grid;grid-template-columns:2.2fr repeat(4,1fr);padding:1.25rem 1.8rem;gap:1rem;border-bottom:1px solid var(--hair);align-items:center}
+.prow:last-child{border-bottom:0}
+.prow:nth-child(odd){background:#FBF8F1}
+.prow>div{text-align:center;font-size:1.02rem;color:var(--ink);font-weight:400}
+.prow>div:first-child{text-align:left;font-size:.98rem}
+.prow>div:first-child b{display:block;font-weight:500;color:var(--ink)}
+.prow>div:first-child small{font-size:.82rem;color:var(--muted)}
+.prow .na{color:#C4BCAB}
+.pnotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2rem}
+.pnote{border-left:2px solid var(--amber);padding-left:1.1rem}
+.pnote b{display:block;color:var(--ink);font-weight:500;font-size:.98rem}
+.pnote span{font-size:.9rem;color:var(--muted);line-height:1.6}
+.incl{display:flex;flex-wrap:wrap;gap:.6rem 1.8rem;margin-top:2rem;padding-top:1.6rem;border-top:1px solid var(--hair)}
+.incl div{display:flex;align-items:center;gap:.6rem;font-size:.92rem;color:var(--text)}
+.incl svg{width:15px;height:15px;color:var(--moss);flex:none}
+
+/* ---------- wellness (dark) ---------- */
+.dark{background:var(--forest-deep);color:rgba(246,242,233,.72)}
+.dark::before{
+  content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+  background:radial-gradient(70% 60% at 15% 10%,rgba(188,112,56,.16),transparent 70%);
+}
+.well-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(2.5rem,6vw,5.5rem);align-items:center;position:relative}
+.well-imgs{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.well-imgs .big{grid-column:1/-1;border-radius:2px;overflow:hidden}
+.well-imgs .big img{width:100%;aspect-ratio:2/1;object-fit:cover}
+.well-imgs .sm{border-radius:2px;overflow:hidden}
+.well-imgs .sm img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.well-list{margin-top:2.4rem;border-top:1px solid var(--hair-dk)}
+.wrow{display:grid;grid-template-columns:1fr auto auto;gap:1.4rem;padding:1.05rem 0;border-bottom:1px solid var(--hair-dk);align-items:baseline}
+.wrow .nm{color:var(--paper);font-weight:400;font-size:1.02rem}
+.wrow .nm small{display:block;font-size:.84rem;color:rgba(246,242,233,.45);font-weight:300;margin-top:.15rem}
+.wrow .p{font-family:'Playfair Display',serif;font-size:1.15rem;color:#EFC49A;min-width:5.4rem;text-align:right}
+.wrow .p small{font-size:.72rem;color:rgba(246,242,233,.4);font-family:'DM Sans',sans-serif;display:block;letter-spacing:.06em}
+.well-min{display:inline-flex;align-items:center;gap:.6rem;margin-top:1.8rem;font-size:.86rem;color:rgba(246,242,233,.55)}
+.well-min b{color:#EFC49A;font-weight:500}
+.well-inc{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.well-inc span{font-size:.78rem;color:rgba(246,242,233,.62);border:1px solid var(--hair-dk);padding:.32rem .78rem;border-radius:2px}
+
+/* ---------- split feature ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5.5rem);align-items:center}
+.split.rev .sp-txt{order:2}
+.sp-img{position:relative;border-radius:2px;overflow:hidden}
+.sp-img img{width:100%;object-fit:cover}
+.sp-duo{display:grid;grid-template-columns:1.15fr .85fr;gap:1rem;align-items:end}
+.sp-duo img{width:100%;border-radius:2px}
+.sp-duo .t{aspect-ratio:3/4;object-fit:cover}
+.sp-duo .s{aspect-ratio:1/1;object-fit:cover}
+.chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
+.chip{font-size:.8rem;color:var(--text);background:var(--card);border:1px solid var(--hair);padding:.42rem .95rem;border-radius:2px}
+.price-tag{
+  display:inline-flex;align-items:baseline;gap:.6rem;margin-top:2rem;
+  border:1px solid var(--hair);border-left:2px solid var(--amber);background:var(--card);padding:.9rem 1.4rem;
+}
+.price-tag b{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--ink);font-weight:500}
+.price-tag span{font-size:.86rem;color:var(--muted)}
+
+/* ---------- banner ---------- */
+.banner{position:relative;height:clamp(300px,42vw,520px);overflow:hidden}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.72)}
+.banner .q{
+  position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:0 1.5rem;
+}
+.banner .q p{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.4rem,3.2vw,2.5rem);color:var(--paper);max-width:20ch;line-height:1.32;text-shadow:0 2px 30px rgba(0,0,0,.4)}
+.banner .q span{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(246,242,233,.6);margin-top:1.4rem}
+
+/* ---------- trips ---------- */
+.trips{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2vw,1.6rem);margin-top:clamp(3rem,5vw,4rem)}
+.trip{position:relative;border-radius:2px;overflow:hidden;background:var(--forest-deep)}
+.trip img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .9s var(--ease-out),opacity .5s;opacity:.82}
+.trip:hover img{transform:scale(1.06);opacity:1}
+.trip::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(11,20,14,.85))}
+.trip .t{position:absolute;left:1.3rem;right:1.3rem;bottom:1.2rem;z-index:2}
+.trip .t b{display:block;font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:500;color:var(--paper)}
+.trip .t span{font-size:.8rem;color:rgba(246,242,233,.62)}
+.trip-more{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:2.2rem}
+.trip-more span{font-size:.82rem;color:var(--muted);background:var(--card);border:1px solid var(--hair);padding:.4rem .9rem;border-radius:2px}
+
+/* ---------- gallery ---------- */
+.gal{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem;margin-top:clamp(2.5rem,4vw,3.5rem)}
+.gal a{overflow:hidden;border-radius:2px;background:var(--paper-2)}
+.gal img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease-out),filter .5s}
+.gal a:hover img{transform:scale(1.07);filter:saturate(1.06)}
+.gal .w2{grid-column:span 2}
+.gal .w3{grid-column:span 3}
+.gal .h2{grid-row:span 2}
+.gal a{aspect-ratio:4/3}
+.gal .h2{aspect-ratio:auto}
+
+/* ---------- reservation ---------- */
+.res-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2.5rem,5vw,4.5rem)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:2.2rem}
+.fld{display:flex;flex-direction:column}
+.fld.full{grid-column:1/-1}
+.fld label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:.5rem}
+.fld input,.fld select,.fld textarea{
+  font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:var(--ink);
+  background:var(--card);border:1px solid var(--hair);border-radius:2px;padding:.85rem 1rem;outline:none;
+  transition:border-color .35s var(--ease),box-shadow .35s var(--ease);
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--moss);box-shadow:0 0 0 3px rgba(78,107,88,.1)}
+.fld textarea{resize:vertical;min-height:104px}
+.form .btn{grid-column:1/-1;justify-content:center;margin-top:.4rem}
+.form-note{font-size:.84rem;color:var(--muted);margin-top:1rem;grid-column:1/-1}
+.ccard{background:var(--card);border:1px solid var(--hair);border-radius:3px;padding:clamp(1.8rem,3vw,2.6rem);height:100%}
+.crow{display:flex;gap:1.1rem;padding:1.15rem 0;border-bottom:1px solid var(--hair);align-items:flex-start}
+.crow:first-of-type{padding-top:0}
+.crow:last-of-type{border-bottom:0}
+.crow svg{width:17px;height:17px;color:var(--amber);flex:none;margin-top:.28rem}
+.crow b{display:block;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:.28rem}
+.crow p{font-size:1.02rem;color:var(--ink);font-weight:400;line-height:1.55}
+.crow a:hover{color:var(--amber)}
+.map-btn{display:flex;align-items:center;justify-content:center;gap:.7rem;margin-top:1.6rem;padding:.95rem;border:1px solid var(--hair);border-radius:2px;
+  font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--ink);transition:all .4s var(--ease)}
+.map-btn:hover{background:var(--forest);color:var(--paper);border-color:var(--forest)}
+
+/* ---------- footer ---------- */
+.foot{background:var(--forest-deep);color:rgba(246,242,233,.6);padding:clamp(4rem,7vw,6rem) 0 2rem}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(2rem,4vw,4rem)}
+.foot h4{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--paper);font-weight:500}
+.foot .tag{font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(246,242,233,.4);margin-top:.5rem}
+.foot p{font-size:.94rem;line-height:1.75;margin-top:1.2rem;max-width:38ch}
+.foot b.lbl{display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(246,242,233,.4);font-weight:500;margin-bottom:1rem}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.foot ul a{font-size:.95rem;color:rgba(246,242,233,.7);transition:color .35s}
+.foot ul a:hover{color:#EFC49A}
+.foot-bot{margin-top:clamp(3rem,5vw,4rem);padding-top:1.6rem;border-top:1px solid var(--hair-dk);display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;font-size:.82rem;color:rgba(246,242,233,.4)}
+.foot-bot a{color:rgba(246,242,233,.65);border-bottom:1px solid rgba(246,242,233,.2)}
+.foot-bot a:hover{color:#EFC49A}
+
+/* ---------- pitch bar ---------- */
+.pitch{
+  position:fixed;right:1.4rem;bottom:1.4rem;z-index:95;display:flex;align-items:center;gap:.85rem;
+  background:var(--ink);color:var(--paper);padding:.85rem 1.35rem;border-radius:2px;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.55);
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  transition:transform .45s var(--ease),background .4s var(--ease);
+}
+.pitch:hover{background:var(--amber);transform:translateY(-3px)}
+.pitch svg{width:14px;height:14px}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.hero-bg img{animation:none;transform:none}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ---------- responsive ---------- */
+@media(max-width:1020px){
+  .nav-links,.nav-cta{display:none}
+  .burger{display:block}
+  .nav.open{background:rgba(246,242,233,.98);backdrop-filter:blur(14px)}
+  .nav.open .brand b{color:var(--ink)}
+  .nav.open .brand span{color:var(--muted)}
+  .nav.open .burger i{background:var(--ink)}
+  .mob{
+    position:fixed;inset:0;background:var(--paper);z-index:89;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem;
+    opacity:0;pointer-events:none;transition:opacity .45s var(--ease);
+  }
+  .mob.on{opacity:1;pointer-events:auto}
+  .mob a{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--ink)}
+  .mob .btn{margin-top:1rem}
+  .intro-grid,.well-grid,.split,.res-grid{grid-template-columns:1fr}
+  .split.rev .sp-txt{order:0}
+  .intro-imgs{margin-top:1rem}
+  .intro-imgs .b{position:static;width:100%;border:0;margin-top:1rem}
+  .intro-imgs .b img{aspect-ratio:16/9}
+  .rooms{grid-template-columns:1fr}
+  .trips{grid-template-columns:1fr 1fr}
+  .book{grid-template-columns:1fr 1fr}
+  .book-f:nth-child(2){border-right:0}
+  .book-f{border-bottom:1px solid var(--hair)}
+  .book-btn{grid-column:1/-1;padding:1.1rem;justify-content:center}
+  .book-note{text-align:left}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .pnotes{grid-template-columns:1fr}
+  .gal{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:640px){
+  .hero-facts{grid-template-columns:1fr;gap:0}
+  .hero-fact{padding:1rem 0;border-bottom:1px solid rgba(246,242,233,.13)}
+  .hero-fact:last-child{border-bottom:0}
+  .ptable-head{display:none}
+  .prow{grid-template-columns:1fr 1fr;padding:1.1rem 1.2rem;gap:.6rem 1rem}
+  .prow>div:first-child{grid-column:1/-1;margin-bottom:.3rem}
+  .prow>div{text-align:left;font-size:.95rem}
+  .prow>div:not(:first-child)::before{content:attr(data-l);display:block;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
+  .trips{grid-template-columns:1fr}
+  .form{grid-template-columns:1fr}
+  .gal{grid-template-columns:repeat(2,1fr)}
+  .gal .w3{grid-column:span 2}
+  .foot-grid{grid-template-columns:1fr}
+  .pitch{left:1rem;right:1rem;justify-content:center;font-size:.7rem}
+  .well-imgs{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav" id="nav">
+  <a href="#top" class="brand"><b>Penzion Palice</b><span>Cyklo &middot; Wellness &middot; J. Hradec</span></a>
+  <div class="nav-links">
+    <a href="#penzion">Penzion</a>
+    <a href="#ubytovani">Ubytování</a>
+    <a href="#wellness">Wellness</a>
+    <a href="#cyklo">Pro cyklisty</a>
+    <a href="#okoli">Okolí</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <a href="#rezervace" class="nav-cta">Rezervovat</a>
+  <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+</nav>
+
+<div class="mob" id="mob">
+  <a href="#penzion">Penzion</a>
+  <a href="#ubytovani">Ubytování</a>
+  <a href="#wellness">Wellness</a>
+  <a href="#cyklo">Pro cyklisty</a>
+  <a href="#okoli">Okolí</a>
+  <a href="#kontakt">Kontakt</a>
+  <a href="#rezervace" class="btn btn-solid">Rezervovat pobyt</a>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<header class="hero" id="top">
+  <div class="hero-bg"><img src="foto/hero-panorama.jpg" alt="Penzion Palice v Jindřichově Hradci — pohled od pole"></div>
+  <div class="hero-inner wrap">
+    <h1>Deset minut od&nbsp;centra.<br><em>Světy</em> daleko od&nbsp;shonu.</h1>
+    <p>Nově postavený penzion na okraji Jindřichova Hradce — s výhledem do polí, saunou
+    s vířivkou a zamykatelnou kolárnou hned u dveří.</p>
+    <div class="hero-btns">
+      <a href="#rezervace" class="btn btn-solid">Rezervovat pobyt
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#wellness" class="btn btn-line">Prohlédnout wellness</a>
+    </div>
+    <div class="hero-facts">
+      <div class="hero-fact"><b>10 minut pěšky</b><span>do historického centra města</span></div>
+      <div class="hero-fact"><b>Sauna &amp; vířivka</b><span>wellness jen pro vás, na objednání</span></div>
+      <div class="hero-fact"><b>Kolárna zdarma</b><span>zamykatelná, půjčovna kol v domě</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><i></i></div>
+</header>
+
+<!-- ══════════ BOOKING BAR ══════════ -->
+<div class="wrap book-wrap">
+  <form class="book" id="bookform">
+    <div class="book-f">
+      <label for="b-in">Příjezd</label>
+      <input type="date" id="b-in" required>
+    </div>
+    <div class="book-f">
+      <label for="b-out">Odjezd</label>
+      <input type="date" id="b-out" required>
+    </div>
+    <div class="book-f">
+      <label for="b-ppl">Hosté</label>
+      <select id="b-ppl">
+        <option>1 osoba</option><option selected>2 osoby</option><option>3 osoby</option><option>4 osoby</option><option>5 a více</option>
+      </select>
+    </div>
+    <button class="book-btn" type="submit">Zjistit cenu
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </form>
+  <div class="book-note">Volné termíny vidíte hned &middot; <b>bez poplatku za rezervaci</b></div>
+</div>
+
+<!-- ══════════ INTRO ══════════ -->
+<section class="sec" id="penzion">
+  <div class="wrap intro-grid">
+    <div class="rv">
+      <div class="eyebrow">Vítejte v Palici</div>
+      <h2 class="big">Penzion, kde je slyšet<br><em>jen vítr v poli</em></h2>
+      <p class="lead">Stojíme v klidné části Jindřichova Hradce — z oken vidíte lány a lesy, a přesto
+      jste za deset minut chůze na náměstí pod zámkem. Prakticky vybavené pokoje s vlastními kuchyňkami,
+      salónek s krbovými kamny, stolní tenis, venkovní posezení i bazének. A pod tím vším wellness,
+      které máte jen pro sebe.</p>
+      <div class="feat-list">
+        <div class="feat"><span class="n">01</span><div><b>Vlastní kuchyňka na pokoji</b><span>Apartmány mají linku s lednicí, mikrovlnkou i indukční plotnou. Nemusíte chodit na večeři, když nechcete.</span></div></div>
+        <div class="feat"><span class="n">02</span><div><b>Salónek s krbem</b><span>Posezení s přáteli, školení i rodinná oslava. Pro ubytované je v ceně.</span></div></div>
+        <div class="feat"><span class="n">03</span><div><b>Parkování v areálu</b><span>Auto zaparkujete v oploceném dvoře u domu — ke každému pokoji, v ceně ubytování.</span></div></div>
+      </div>
+    </div>
+    <div class="intro-imgs rv">
+      <div class="a"><img src="foto/dum-ulice.jpg" alt="Penzion Palice — pohled z ulice" loading="lazy"></div>
+      <div class="b"><img src="foto/priroda.jpg" alt="Cesta do polí u penzionu" loading="lazy"></div>
+    </div>
+  </div>
+
+  <div class="wrap stats rv">
+    <div class="stat"><b>2 &amp; 4</b><span>lůžkové pokoje</span></div>
+    <div class="stat"><b>10 min</b><span>pěšky do centra</span></div>
+    <div class="stat"><b>200 Kč</b><span>půjčovné kola / den</span></div>
+    <div class="stat"><b>Wi‑Fi</b><span>v celé budově, zdarma</span></div>
+  </div>
+</section>
+
+<!-- ══════════ UBYTOVÁNÍ ══════════ -->
+<section class="sec" id="ubytovani" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="rv" style="max-width:62ch">
+      <div class="eyebrow">Ubytování</div>
+      <h2 class="big">Dva pokoje, <em>dvě nálady</em></h2>
+      <p class="lead">Všechny pokoje mají vlastní koupelnu, televizi a připojení k internetu.
+      Parkování, Wi‑Fi i úschovna kol jsou v ceně — stejně jako DPH a městský poplatek.</p>
+    </div>
+
+    <div class="rooms">
+      <article class="room rv">
+        <div class="room-img"><img src="foto/pokoj-dvoulozko.jpg" alt="Dvoulůžkový pokoj s manželskou postelí" loading="lazy"></div>
+        <div class="room-body">
+          <div class="room-top">
+            <div>
+              <h3>Dvoulůžkový pokoj</h3>
+              <span class="cap">Manželská postel &middot; 1–2 osoby</span>
+            </div>
+            <div class="price"><b>od 950 Kč</b><span>pokoj / noc</span></div>
+          </div>
+          <p>Klidný pokoj s manželskou postelí a vlastní koupelnou. Společná, plně vybavená
+          kuchyňka je hned na patře.</p>
+          <div class="amen"><span>Vlastní koupelna</span><span>TV</span><span>Wi‑Fi</span><span>Kuchyňka na patře</span><span>Možnost postýlky</span></div>
+          <div class="go">Detail a fotky
+            <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </article>
+
+      <article class="room rv">
+        <div class="room-img"><img src="foto/apartman.jpg" alt="Apartmán s manželskou a patrovou postelí" loading="lazy"></div>
+        <div class="room-body">
+          <div class="room-top">
+            <div>
+              <h3>Rodinný apartmán</h3>
+              <span class="cap">Manželská + patrová postel &middot; 1–4 osoby</span>
+            </div>
+            <div class="price"><b>od 1 450 Kč</b><span>pokoj / noc</span></div>
+          </div>
+          <p>Prostorný pokoj pro rodinu nebo partu. Součástí je vlastní kuchyňská linka
+          s lednicí, mikrovlnkou a indukční plotnou — i stůl, u kterého se všichni sejdete.</p>
+          <div class="amen"><span>Vlastní kuchyňka</span><span>Vlastní koupelna</span><span>TV</span><span>Wi‑Fi</span><span>Jídelní stůl</span></div>
+          <div class="go">Detail a fotky
+            <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ceník -->
+    <div class="rv">
+      <div class="tabs" role="tablist">
+        <button class="tab on" data-s="zima">Zima a vedlejší sezóna</button>
+        <button class="tab" data-s="jaro">Jaro a podzim</button>
+        <button class="tab" data-s="leto">Prázdniny</button>
+        <button class="tab" data-s="svatky">Svátky</button>
+      </div>
+      <div id="tabmeta" class="lead" style="margin-top:1.2rem;font-size:.94rem">Ceny za pokoj a noc mimo hlavní sezónu.</div>
+
+      <div class="ptable">
+        <div class="ptable-head">
+          <div>Typ pokoje</div><div>1 osoba</div><div>2 osoby</div><div>3 osoby</div><div>4 osoby</div>
+        </div>
+        <div class="prow">
+          <div><b>Dvoulůžkový pokoj</b><small>manželská postel</small></div>
+          <div data-l="1 osoba" data-p="700|850|1050|1050">700 Kč</div>
+          <div data-l="2 osoby" data-p="950|1100|1250|1250">950 Kč</div>
+          <div data-l="3 osoby" class="na">—</div>
+          <div data-l="4 osoby" class="na">—</div>
+        </div>
+        <div class="prow">
+          <div><b>Rodinný apartmán</b><small>manželská + patrová postel</small></div>
+          <div data-l="1 osoba" data-p="850|950|1200|1200">850 Kč</div>
+          <div data-l="2 osoby" data-p="1050|1200|1400|1400">1 050 Kč</div>
+          <div data-l="3 osoby" data-p="1250|1450|1600|1600">1 250 Kč</div>
+          <div data-l="4 osoby" data-p="1450|1650|1800|1800">1 450 Kč</div>
+        </div>
+      </div>
+
+      <div class="pnotes">
+        <div class="pnote"><b>Snídaně formou bufetu</b><span>160 Kč dospělý &middot; 120 Kč dítě do 6 let &middot; 60 Kč dítě do 2 let. Podává se v salónku.</span></div>
+        <div class="pnote"><b>Děti do 2 let zdarma</b><span>Dětskou postýlku doplníme na vyžádání do libovolného pokoje.</span></div>
+        <div class="pnote"><b>Delší a skupinové pobyty</b><span>Firemní akce, školení a skupiny řešíme smluvní cenou — napište nám.</span></div>
+      </div>
+
+      <div class="incl">
+        <div><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Parkování v areálu</div>
+        <div><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Wi‑Fi v celé budově</div>
+        <div><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Úschovna kol</div>
+        <div><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Salónek s barem</div>
+        <div><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>DPH i městský poplatek</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WELLNESS ══════════ -->
+<section class="sec dark on-dark" id="wellness">
+  <div class="wrap well-grid">
+    <div class="rv">
+      <div class="eyebrow">Wellness</div>
+      <h2 class="big">Uděláte pro sebe<br><em>ještě něco navíc?</em></h2>
+      <p class="lead">Sauna, vířivá vana pro tři až čtyři, sprcha s jemným deštíkem
+      a polohovací lehátka v intimně osvětlené místnosti. Wellness si rezervujete
+      na konkrétní hodinu — a máte ho jen pro sebe.</p>
+
+      <div class="well-list">
+        <div class="wrow"><div class="nm">Sauna<small>1 hodina / osoba</small></div><div></div><div class="p">250 Kč</div></div>
+        <div class="wrow"><div class="nm">Sauna<small>2 hodiny / osoba</small></div><div></div><div class="p">400 Kč</div></div>
+        <div class="wrow"><div class="nm">Vířivá vana<small>1 hodina / 2 osoby</small></div><div></div><div class="p">700 Kč</div></div>
+        <div class="wrow"><div class="nm">Vířivá vana<small>2 hodiny / 2 osoby</small></div><div></div><div class="p">900 Kč</div></div>
+        <div class="wrow"><div class="nm">Relax pro 2<small>sauna + vířivka &middot; 1 h / 2 h</small></div><div></div><div class="p">800 / 1 150 Kč</div></div>
+        <div class="wrow"><div class="nm">Relax pro 3<small>sauna + vířivka &middot; 1 h / 2 h</small></div><div></div><div class="p">1 000 / 1 350 Kč</div></div>
+        <div class="wrow"><div class="nm">Relax pro 4<small>sauna + vířivka &middot; 1 h / 2 h</small></div><div></div><div class="p">1 200 / 1 550 Kč</div></div>
+      </div>
+
+      <div class="well-min">Minimální počet osob pro vstup do wellness: <b>2</b></div>
+      <div class="well-inc"><span>Ručník</span><span>Župan</span><span>Sprcha</span><span>Samostatné WC</span><span>TV</span><span>Wi‑Fi</span><span>Malé občerstvení</span></div>
+
+      <div style="margin-top:2.4rem">
+        <a href="#rezervace" class="btn btn-line">Rezervovat wellness
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="well-imgs rv">
+      <div class="big"><img src="foto/wellness.jpg" alt="Wellness centrum s vířivou vanou a saunou" loading="lazy"></div>
+      <div class="sm"><img src="foto/sauna.jpg" alt="Finská sauna" loading="lazy"></div>
+      <div class="sm"><img src="foto/sauna-detail.jpg" alt="Saunové vědro s naběračkou" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CYKLO ══════════ -->
+<section class="sec" id="cyklo">
+  <div class="wrap split">
+    <div class="sp-txt rv">
+      <div class="eyebrow">Pro cyklisty</div>
+      <h2 class="big">Greenway Praha–Vídeň<br><em>vede kolem domu</em></h2>
+      <p class="lead">Dálková cyklotrasa z Prahy do Vídně prochází přímo okolo penzionu.
+      Kolo večer zamknete v kolárně, nohy dáte do vířivky a ráno vyrazíte dál —
+      nebo si u nás půjčíte zánovní kolo a projedete Českou Kanadu.</p>
+      <div class="chips">
+        <span>Zamykatelná kolárna</span><span>Půjčovna kol</span><span>Místo na servis</span><span>Sušení výstroje</span><span>Wellness po etapě</span>
+      </div>
+      <div class="price-tag"><b>200 Kč</b><span>zapůjčení zánovního jízdního kola / den</span></div>
+    </div>
+    <div class="sp-duo rv">
+      <img class="t" src="foto/kolarna.jpg" alt="Zamykatelná kolárna penzionu" loading="lazy">
+      <img class="s" src="foto/vyhled.jpg" alt="Výhled do krajiny u penzionu" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ BANNER ══════════ -->
+<section class="banner">
+  <img src="foto/vyhled.jpg" alt="Krajina u Jindřichova Hradce" loading="lazy">
+  <div class="q">
+    <p>&bdquo;Poloha pro ty, kdo chtějí z oken vidět přírodu — a přesto být za chvíli ve městě.&ldquo;</p>
+    <span>Na Palici 347 &middot; Jindřichův Hradec</span>
+  </div>
+</section>
+
+<!-- ══════════ STRAVA & SALÓNEK ══════════ -->
+<section class="sec" id="strava">
+  <div class="wrap split rev" style="margin-bottom:clamp(4rem,8vw,7rem)">
+    <div class="sp-img rv"><img src="foto/snidane.jpg" alt="Prostřený stůl při snídani" loading="lazy" style="aspect-ratio:3/2"></div>
+    <div class="sp-txt rv">
+      <div class="eyebrow">Snídaně a strava</div>
+      <h2 class="big">Vydatná snídaně —<br><em>nebo vlastní tempo</em></h2>
+      <p class="lead">Snídani formou bufetu podáváme v salónku. Díky vybaveným kuchyňkám se ale
+      můžete stravovat úplně po svém — a do centra plného restaurací je to deset minut chůze.
+      Rozvoz pizzy, minutek nebo salátů přímo na penzion je samozřejmostí.</p>
+      <div class="chips">
+        <span>Bufet 160 Kč / dospělý</span><span>120 Kč / dítě do 6 let</span><span>60 Kč / dítě do 2 let</span><span>Nápoje na baru</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap split">
+    <div class="sp-txt rv">
+      <div class="eyebrow">Salónek &amp; společné prostory</div>
+      <h2 class="big">Místo, kde se <em>sejdete</em></h2>
+      <p class="lead">Salónek s krbovými kamny slouží k posezení s přáteli i k práci — školení,
+      semináře, besedy nebo rodinná oslava. Pro ubytované je v ceně, neubytovaní si ho mohou
+      pronajmout po domluvě. Vedle je stolní tenis a dětský koutek se stolními hrami.</p>
+      <div class="chips">
+        <span>Krbová kamna</span><span>Bar</span><span>Stolní tenis</span><span>Dětský koutek</span><span>Stolní hry zdarma</span><span>Venkovní posezení</span><span>Menší bazén</span>
+      </div>
+    </div>
+    <div class="sp-duo rv">
+      <img class="t" src="foto/krb.jpg" alt="Krbová kamna v salónku" loading="lazy">
+      <img class="s" src="foto/salonek.jpg" alt="Salónek penzionu" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ OKOLÍ ══════════ -->
+<section class="sec" id="okoli" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="rv" style="max-width:60ch">
+      <div class="eyebrow">Kam na výlet</div>
+      <h2 class="big">V Hradci a okolí<br><em>se nudit nebudete</em></h2>
+      <p class="lead">Třetí největší zámecký komplex v Čechách, vodní zámek uprostřed rybníka,
+      románský hrad na trojmezí — a k tomu úzkokolejka, rybaření a cyklostezky České Kanady.</p>
+    </div>
+
+    <div class="trips rv">
+      <a class="trip" href="#kontakt">
+        <img src="foto/vylet-zamek.jpg" alt="Státní hrad a zámek Jindřichův Hradec" loading="lazy">
+        <div class="t"><b>Hrad a zámek J. Hradec</b><span>10 minut pěšky</span></div>
+      </a>
+      <a class="trip" href="#kontakt">
+        <img src="foto/vylet-lhota.jpg" alt="Zámek Červená Lhota" loading="lazy">
+        <div class="t"><b>Červená Lhota</b><span>vodní zámek na skále</span></div>
+      </a>
+      <a class="trip" href="#kontakt">
+        <img src="foto/vylet-landstejn.jpg" alt="Hrad Landštejn" loading="lazy">
+        <div class="t"><b>Hrad Landštejn</b><span>románský klenot na trojmezí</span></div>
+      </a>
+      <a class="trip" href="#kontakt">
+        <img src="foto/vylet-jeslicky.jpg" alt="Krýzovy jesličky" loading="lazy">
+        <div class="t"><b>Krýzovy jesličky</b><span>rekord v Guinnessově knize</span></div>
+      </a>
+    </div>
+
+    <div class="trip-more">
+      <span>Úzkokolejka s parním vláčkem</span><span>Rybník Vajgar</span><span>Akvapark</span>
+      <span>Muzeum fotografie</span><span>Gobelínové dílny</span><span>Golf Nová Bystřice</span>
+      <span>Lanové centrum</span><span>Vyhlídkové lety</span><span>Rybaření</span>
+      <span>Sjezdovky Nová Bystřice</span><span>Běžky Českou Kanadou</span><span>Zámek Třeboň</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ GALERIE ══════════ -->
+<section class="sec" id="galerie">
+  <div class="wrap">
+    <div class="rv" style="max-width:56ch">
+      <div class="eyebrow">Fotogalerie</div>
+      <h2 class="big">Podívejte se <em>dovnitř</em></h2>
+    </div>
+    <div class="gal rv">
+      <a class="w3" href="foto/dum-ulice.jpg"><img src="foto/dum-ulice.jpg" alt="Penzion z ulice" loading="lazy"></a>
+      <a class="w3" href="foto/salonek-kulecnik.jpg"><img src="foto/salonek-kulecnik.jpg" alt="Salónek se stolní hrou" loading="lazy"></a>
+      <a class="w2" href="foto/pokoj-dvoulozko2.jpg"><img src="foto/pokoj-dvoulozko2.jpg" alt="Dvoulůžkový pokoj" loading="lazy"></a>
+      <a class="w2" href="foto/koupelna.jpg"><img src="foto/koupelna.jpg" alt="Koupelna" loading="lazy"></a>
+      <a class="w2" href="foto/kuchynka.jpg"><img src="foto/kuchynka.jpg" alt="Kuchyňka na pokoji" loading="lazy"></a>
+      <a class="w3" href="foto/wellness.jpg"><img src="foto/wellness.jpg" alt="Wellness s vířivkou" loading="lazy"></a>
+      <a class="w3" href="foto/vyhled-strechy.jpg"><img src="foto/vyhled-strechy.jpg" alt="Výhled z penzionu" loading="lazy"></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ REZERVACE ══════════ -->
+<section class="sec" id="rezervace" style="background:var(--paper-2)">
+  <div class="wrap res-grid">
+    <div class="rv">
+      <div class="eyebrow">Rezervace</div>
+      <h2 class="big">Napište nám —<br>ozveme se <em>do 24 hodin</em></h2>
+      <p class="lead">Vyplňte termín a my vám obratem potvrdíme volnou kapacitu i konečnou cenu.
+      Rezervace je nezávazná, dokud ji nepotvrdíme.</p>
+
+      <form class="form" id="resform">
+        <div class="fld"><label for="f-name">Jméno a příjmení</label><input id="f-name" type="text" required></div>
+        <div class="fld"><label for="f-mail">E‑mail</label><input id="f-mail" type="email" required></div>
+        <div class="fld"><label for="f-in">Příjezd</label><input id="f-in" type="date" required></div>
+        <div class="fld"><label for="f-out">Odjezd</label><input id="f-out" type="date" required></div>
+        <div class="fld"><label for="f-room">Pokoj</label>
+          <select id="f-room"><option>Dvoulůžkový pokoj</option><option>Rodinný apartmán</option><option>Nevím, poraďte mi</option></select>
+        </div>
+        <div class="fld"><label for="f-ppl">Počet osob</label>
+          <select id="f-ppl"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5 a více</option></select>
+        </div>
+        <div class="fld full"><label for="f-extra">Doplňky a poznámka</label>
+          <textarea id="f-extra" placeholder="Zajímá mě wellness (sauna + vířivka), snídaně pro 2, půjčení kol…"></textarea></div>
+        <button class="btn btn-solid" type="submit">Odeslat poptávku
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="form-note" id="resnote">Nebo rovnou zavolejte na <a href="tel:+420720964090" style="color:var(--moss);font-weight:500">+420 720 964 090</a>.</div>
+      </form>
+    </div>
+
+    <div class="rv" id="kontakt">
+      <div class="ccard">
+        <div class="eyebrow">Kde nás najdete</div>
+        <div class="crow">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 14.5s5-4.2 5-8a5 5 0 10-10 0c0 3.8 5 8 5 8z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6.4" r="1.9" stroke="currentColor" stroke-width="1.3"/></svg>
+          <div><b>Adresa</b><p>Penzion Palice<br>Na Palici 347<br>377 01 Jindřichův Hradec</p></div>
+        </div>
+        <div class="crow">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3 4.2c0-.7.6-1.2 1.2-1.2h1.5c.5 0 1 .4 1.1.9l.5 2c.1.5-.1 1-.5 1.2l-1 .6a9 9 0 004 4l.6-1c.3-.4.8-.6 1.2-.5l2 .5c.5.1.9.6.9 1.1v1.5c0 .7-.6 1.2-1.2 1.2C6.6 14.5 3 10.9 3 4.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <div><b>Telefon</b><p><a href="tel:+420720964090">+420 720 964 090</a></p></div>
+        </div>
+        <div class="crow">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="12" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M2.6 4.6L8 8.6l5.4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <div><b>E‑mail</b><p><a href="mailto:penzionpalice@seznam.cz">penzionpalice@seznam.cz</a></p></div>
+        </div>
+        <div class="crow">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.6V8l2.3 1.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <div><b>Check‑in / check‑out</b><p>od 14:00 &middot; do 10:00<br><span style="font-size:.88rem;color:var(--muted)">jiný čas rádi domluvíme</span></p></div>
+        </div>
+        <a class="map-btn" href="https://mapy.cz/zakladni?q=Na%20Palici%20347%2C%20Jind%C5%99ich%C5%AFv%20Hradec" target="_blank" rel="noopener">
+          Otevřít v mapě
+          <svg viewBox="0 0 16 16" fill="none" style="width:13px;height:13px"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div>
+      <h4>Penzion Palice</h4>
+      <div class="tag">Cyklo &middot; Wellness &middot; Jindřichův Hradec</div>
+      <p>Nově postavený penzion s wellness, kolárnou a výhledem do polí — deset minut
+      pěšky od historického centra Jindřichova Hradce.</p>
+    </div>
+    <div>
+      <b class="lbl">Penzion</b>
+      <ul>
+        <li><a href="#penzion">O penzionu</a></li>
+        <li><a href="#ubytovani">Ubytování a ceník</a></li>
+        <li><a href="#wellness">Wellness</a></li>
+        <li><a href="#cyklo">Pro cyklisty</a></li>
+        <li><a href="#galerie">Fotogalerie</a></li>
+      </ul>
+    </div>
+    <div>
+      <b class="lbl">Kontakt</b>
+      <ul>
+        <li><a href="tel:+420720964090">+420 720 964 090</a></li>
+        <li><a href="mailto:penzionpalice@seznam.cz">penzionpalice@seznam.cz</a></li>
+        <li>Na Palici 347<br>377 01 Jindřichův Hradec</li>
+        <li><a href="#rezervace">Rezervace pobytu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bot">
+    <div>© 2026 Penzion Palice · všechna práva vyhrazena</div>
+    <div>Ukázkový návrh webu — <a href="https://ksh-partners.cz" target="_blank" rel="noopener">KSH Partners</a></div>
+  </div>
+</footer>
+
+<a class="pitch" href="nabidka.html">
+  <svg viewBox="0 0 16 16" fill="none"><path d="M3 2.5h7l3 3v8h-10z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.6 2.5v3.4h3.2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+  Cenová nabídka
+</a>
+
+<script>
+(function(){
+  /* --- nav --- */
+  var nav=document.getElementById('nav'),mob=document.getElementById('mob'),burger=document.getElementById('burger');
+  function onScroll(){nav.classList.toggle('stuck',window.scrollY>60)}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  burger.addEventListener('click',function(){
+    var open=nav.classList.toggle('open');mob.classList.toggle('on',open);
+    document.body.style.overflow=open?'hidden':'';
+  });
+  mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){
+    nav.classList.remove('open');mob.classList.remove('on');document.body.style.overflow='';
+  })});
+
+  /* --- reveal --- */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e,i){if(e.isIntersecting){
+      setTimeout(function(){e.target.classList.add('in')},i*90);io.unobserve(e.target);
+    }})
+  },{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+
+  /* --- ceník: sezónní přepínač --- */
+  var IDX={zima:0,jaro:1,leto:2,svatky:3};
+  var META={
+    zima:'Ceny za pokoj a noc mimo hlavní sezónu — listopad až březen.',
+    jaro:'Jaro a podzim: 1. 4. – 30. 6. a 1. 9. – 31. 10.',
+    leto:'Hlavní prázdninová sezóna: 1. 7. – 31. 8.',
+    svatky:'Státní svátky a prodloužené víkendy.'
+  };
+  function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' Kč'}
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+      t.classList.add('on');
+      var s=t.dataset.s,i=IDX[s];
+      document.getElementById('tabmeta').textContent=META[s];
+      document.querySelectorAll('.prow [data-p]').forEach(function(c){
+        c.textContent=fmt(c.dataset.p.split('|')[i]);
+      });
+    });
+  });
+
+  /* --- formuláře (demo) --- */
+  var today=new Date().toISOString().split('T')[0];
+  document.querySelectorAll('input[type=date]').forEach(function(d){d.min=today});
+  document.getElementById('bookform').addEventListener('submit',function(e){
+    e.preventDefault();document.getElementById('rezervace').scrollIntoView({behavior:'smooth'});
+  });
+  document.getElementById('resform').addEventListener('submit',function(e){
+    e.preventDefault();
+    var n=document.getElementById('resnote');
+    n.innerHTML='<b style="color:var(--moss)">Děkujeme!</b> V ostré verzi vám poptávka dorazí do e‑mailu a hostovi odejde potvrzení.';
+  });
+})();
+</script>
+</body>
+</html>

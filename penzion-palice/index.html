@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSH Partners — reference a ceník pro Penzion Palice</title>
+<meta name="description" content="Weby, rezervační systémy a aplikace na míru. Reference z produkce a orientační ceník pro Cyklo Wellness Penzion Palice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#e8e4df;
+  --surface:#f2efeb;
+  --card:#fbf9f7;
+  --coral:#F07070;
+  --coral-dk:#D85555;
+  --text:#1a1a1a;
+  --body:#3c3833;
+  --muted:#7a7570;
+  --hair:#d5cfc7;
+  --ink:#141312;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--body);
+  font-family:'Inter',-apple-system,sans-serif;font-weight:300;
+  font-size:clamp(1rem,1.05vw,1.0625rem);line-height:1.72;
+  font-feature-settings:"kern" 1,"liga" 1;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;color:var(--text);letter-spacing:-.03em;line-height:1.08;font-weight:500}
+strong,b{font-weight:600;color:var(--text)}
+::selection{background:var(--coral);color:#fff}
+
+.wrap{width:min(1220px,90vw);margin:0 auto}
+.sec{padding:clamp(4.5rem,9vw,8.5rem) 0;position:relative}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.7rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--coral-dk);margin-bottom:1.25rem;
+}
+.eyebrow::before{content:"";width:26px;height:2px;background:currentColor}
+h2.big{font-size:clamp(2.1rem,4.6vw,3.6rem)}
+h2.big span{color:var(--coral-dk)}
+.lead{max-width:62ch;font-size:clamp(1rem,1.25vw,1.15rem);color:var(--muted);margin-top:1.3rem;line-height:1.75}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.65rem;
+  font-family:'Space Grotesk',sans-serif;
+  padding:1rem 1.9rem;border-radius:100px;border:1.5px solid transparent;
+  font-size:.85rem;font-weight:600;letter-spacing:.01em;cursor:pointer;
+  transition:background .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease);
+}
+.btn svg{width:15px;height:15px;transition:transform .4s var(--ease-out)}
+.btn:hover svg{transform:translateX(4px)}
+.btn-solid{background:var(--coral);color:#fff}
+.btn-solid:hover{background:var(--ink);transform:translateY(-2px);box-shadow:0 14px 30px -14px rgba(20,19,18,.5)}
+.btn-line{border-color:var(--text);color:var(--text)}
+.btn-line:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+
+/* ══ nav ══ */
+.nav{
+  position:sticky;top:0;z-index:60;background:rgba(232,228,223,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .4s,box-shadow .4s;
+}
+.nav.stuck{border-bottom-color:var(--hair);box-shadow:0 1px 20px rgba(20,19,18,.04)}
+.nav-in{display:flex;align-items:center;gap:1.5rem;padding:1.05rem 0}
+.logo{display:flex;align-items:center;gap:.6rem;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:var(--text)}
+.logo i{width:9px;height:9px;border-radius:50%;background:var(--coral);display:block}
+.logo em{font-style:normal;font-weight:400;color:var(--muted);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-left:.35rem}
+.nav-links{display:flex;gap:1.9rem;margin-left:auto}
+.nav-links a{
+  font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:500;color:var(--body);padding-bottom:2px;
+  background-image:linear-gradient(var(--coral),var(--coral));background-size:0% 1.5px;background-repeat:no-repeat;background-position:0 100%;
+  transition:background-size .4s var(--ease-out),color .3s;
+}
+.nav-links a:hover{background-size:100% 1.5px;color:var(--text)}
+.nav .btn{padding:.65rem 1.35rem;font-size:.8rem}
+
+/* ══ hero ══ */
+.hero{padding:clamp(3.5rem,7vw,6rem) 0 clamp(3rem,6vw,5rem);position:relative;overflow:hidden}
+.hero::after{
+  content:"";position:absolute;right:-14vw;top:-16vw;width:46vw;height:46vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,112,112,.16),transparent 66%);pointer-events:none;
+}
+.for-badge{
+  display:inline-flex;align-items:center;gap:.7rem;background:var(--card);border:1px solid var(--hair);
+  border-radius:100px;padding:.5rem 1.15rem .5rem .6rem;font-size:.82rem;color:var(--body);margin-bottom:1.9rem;
+}
+.for-badge i{background:var(--coral);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:.62rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;padding:.3rem .7rem;border-radius:100px;font-style:normal}
+.for-badge b{font-weight:600}
+.hero h1{font-size:clamp(2.5rem,6.4vw,5.3rem);line-height:1.02;max-width:17ch;position:relative}
+.hero h1 span{color:var(--coral-dk)}
+.hero p.sub{max-width:56ch;margin-top:1.7rem;font-size:clamp(1.02rem,1.35vw,1.22rem);color:var(--muted);line-height:1.7;position:relative}
+.hero-btns{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.3rem;position:relative}
+
+.collage{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-top:clamp(3rem,5vw,4.5rem)}
+.collage figure{border-radius:8px;overflow:hidden;background:var(--card);border:1px solid var(--hair);position:relative}
+.collage img{width:100%;aspect-ratio:16/11;object-fit:cover;object-position:top center;transition:transform .8s var(--ease-out)}
+.collage figure:hover img{transform:scale(1.04)}
+.collage figcaption{
+  position:absolute;left:.7rem;bottom:.7rem;background:rgba(20,19,18,.78);backdrop-filter:blur(6px);color:#fff;
+  font-family:'Space Grotesk',sans-serif;font-size:.66rem;font-weight:500;letter-spacing:.03em;padding:.3rem .7rem;border-radius:100px;
+}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-top:clamp(3rem,5vw,4.5rem)}
+.kpi{background:var(--bg);padding:1.9rem 1.5rem}
+.kpi b{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(1.9rem,3.2vw,2.7rem);font-weight:600;color:var(--text);line-height:1;letter-spacing:-.04em}
+.kpi span{display:block;font-size:.85rem;color:var(--muted);margin-top:.55rem;line-height:1.5}
+
+/* ══ audit ══ */
+.audit{background:var(--ink);color:rgba(255,255,255,.68)}
+.audit h2.big,.audit h3{color:#fff}
+.audit .eyebrow{color:#F79191}
+.audit .lead{color:rgba(255,255,255,.6)}
+.audit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.2rem,2.5vw,2rem);margin-top:clamp(2.6rem,4vw,3.6rem)}
+.acard{border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:1.9rem 1.7rem;background:rgba(255,255,255,.03)}
+.acard .n{font-family:'Space Grotesk',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.2em;color:#F79191;margin-bottom:1rem;display:block}
+.acard h3{font-size:1.22rem;margin-bottom:.6rem}
+.acard p{font-size:.94rem;line-height:1.66;color:rgba(255,255,255,.58)}
+.audit-note{margin-top:2.4rem;padding-top:1.8rem;border-top:1px solid rgba(255,255,255,.13);font-size:.95rem;color:rgba(255,255,255,.55);max-width:74ch}
+.audit-note b{color:#fff}
+
+/* ══ reference — feature rows ══ */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;margin-top:clamp(3rem,5vw,4.5rem)}
+.feat.rev .f-txt{order:2}
+.f-shot{border-radius:10px;overflow:hidden;border:1px solid var(--hair);background:var(--card);box-shadow:0 26px 60px -34px rgba(20,19,18,.4);
+  transition:transform .55s var(--ease),box-shadow .55s var(--ease)}
+.f-shot:hover{transform:translateY(-4px);box-shadow:0 34px 70px -34px rgba(20,19,18,.48)}
+.f-shot img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top center}
+.f-tag{display:inline-flex;align-items:center;gap:.5rem;font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--coral-dk);margin-bottom:.9rem}
+.f-tag i{width:6px;height:6px;border-radius:50%;background:#41A85F;display:block}
+.f-txt h3{font-size:clamp(1.7rem,3vw,2.4rem);margin-bottom:.35rem}
+.f-url{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:500;color:var(--coral-dk);border-bottom:1.5px solid rgba(240,112,112,.35);transition:border-color .3s}
+.f-url:hover{border-bottom-color:var(--coral)}
+.f-txt p{margin-top:1.1rem;max-width:48ch;color:var(--muted);font-size:1.02rem}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.tags span{font-size:.8rem;color:var(--body);background:var(--card);border:1px solid var(--hair);padding:.36rem .85rem;border-radius:100px}
+.tags span.hi{background:rgba(240,112,112,.1);border-color:rgba(240,112,112,.32);color:var(--coral-dk);font-weight:500}
+
+/* ══ reference — grid ══ */
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.2rem,2.4vw,2rem);margin-top:clamp(3rem,5vw,4rem)}
+.rcard{background:var(--card);border:1px solid var(--hair);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s var(--ease)}
+.rcard:hover{transform:translateY(-5px);box-shadow:0 26px 54px -30px rgba(20,19,18,.36);border-color:#c5bdb3}
+.rcard .im{overflow:hidden;background:var(--surface)}
+.rcard .im img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top center;transition:transform .8s var(--ease-out)}
+.rcard:hover .im img{transform:scale(1.05)}
+.rcard .bd{padding:1.5rem 1.5rem 1.7rem;display:flex;flex-direction:column;flex:1}
+.rcard h4{font-size:1.2rem;margin-bottom:.15rem}
+.rcard .u{font-family:'Space Grotesk',sans-serif;font-size:.82rem;color:var(--coral-dk);font-weight:500}
+.rcard p{font-size:.93rem;color:var(--muted);margin-top:.8rem;line-height:1.62}
+.rcard .mt{margin-top:auto;padding-top:1.2rem;font-size:.78rem;color:var(--muted);font-family:'Space Grotesk',sans-serif;letter-spacing:.02em}
+.state{display:inline-flex;align-items:center;gap:.42rem;font-size:.7rem;font-family:'Space Grotesk',sans-serif;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:#3E7A50;margin-bottom:.7rem}
+.state i{width:6px;height:6px;border-radius:50%;background:#41A85F;display:block}
+.state.soon{color:#9C7A2E}.state.soon i{background:#D9A63C}
+
+/* ══ služby ══ */
+.srv{border-top:1px solid var(--hair);margin-top:clamp(2.6rem,4vw,3.6rem)}
+.srow{display:grid;grid-template-columns:3.2rem 1fr 1.5fr;gap:1.5rem;padding:1.55rem 0;border-bottom:1px solid var(--hair);align-items:baseline;
+  transition:background .35s var(--ease),padding .35s var(--ease)}
+.srow:hover{background:rgba(251,249,247,.7)}
+.srow .no{font-family:'Space Grotesk',sans-serif;font-size:.86rem;color:var(--coral-dk);font-weight:600}
+.srow h4{font-size:1.18rem}
+.srow p{font-size:.96rem;color:var(--muted);line-height:1.62}
+
+/* ══ ceník ══ */
+.pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.2rem,2.2vw,1.8rem);margin-top:clamp(2.8rem,4vw,3.8rem);align-items:stretch}
+.pkg{background:var(--card);border:1px solid var(--hair);border-radius:12px;display:flex;flex-direction:column;position:relative;overflow:hidden;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.pkg:hover{transform:translateY(-4px);box-shadow:0 26px 56px -32px rgba(20,19,18,.34)}
+.pkg.star{border:2px solid var(--coral);box-shadow:0 20px 44px -26px rgba(240,112,112,.5)}
+.pkg-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--coral);color:#fff;
+  font-family:'Space Grotesk',sans-serif;font-size:.64rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  padding:.42rem 1.1rem;border-radius:0 0 8px 8px}
+.pkg-h{padding:2.5rem 1.7rem 1.5rem;border-bottom:1px solid var(--hair)}
+.pkg-n{font-family:'Space Grotesk',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.85rem}
+.pkg-p{font-family:'Space Grotesk',sans-serif;font-size:2.35rem;font-weight:600;color:var(--text);line-height:1;letter-spacing:-.04em}
+.pkg-p small{font-size:1rem;font-weight:400;color:var(--muted);letter-spacing:0}
+.pkg-p em{font-size:1.05rem;font-style:normal;font-weight:400;color:var(--muted)}
+.pkg-d{font-size:.92rem;color:var(--muted);margin-top:.85rem;line-height:1.55}
+.pkg-f{padding:1.5rem 1.7rem 2rem;list-style:none;display:flex;flex-direction:column;gap:.85rem;flex:1}
+.pkg-f li{position:relative;padding-left:1.7rem;font-size:.94rem;line-height:1.55;color:var(--body)}
+.pkg-f li::before{content:"";position:absolute;left:0;top:.42rem;width:14px;height:14px;border-radius:50%;
+  background:rgba(240,112,112,.16);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5l2.2 2.2L8 3' stroke='%23D85555' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size:9px;background-repeat:no-repeat;background-position:center}
+.pkg-f li.off{color:#a9a29a}
+.pkg-f li.off::before{background-color:#e4ded7;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 3l4 4M7 3l-4 4' stroke='%23a9a29a' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")}
+.pkg-f li b{font-weight:600}
+
+.tbl{margin-top:clamp(2.5rem,4vw,3.4rem);border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:var(--card)}
+.tbl-h{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--ink);padding:1rem 1.6rem;gap:1rem}
+.tbl-h div{font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);text-align:center}
+.tbl-h div:first-child{text-align:left;color:#fff}
+.tbl-h .hl{color:#F79191}
+.trow{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:1.15rem 1.6rem;gap:1rem;border-bottom:1px solid var(--hair);align-items:center}
+.trow:last-child{border-bottom:0}
+.trow:nth-child(even){background:var(--surface)}
+.trow>div{text-align:center;font-size:.98rem}
+.trow>div:first-child{text-align:left;font-size:.96rem;color:var(--text);font-weight:500}
+.trow small{display:block;font-size:.83rem;color:var(--muted);font-weight:300}
+.trow .pb{font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--text)}
+.trow .inc{color:#3E7A50;font-weight:500}
+.trow .dim{color:var(--muted);font-weight:300}
+.trow.sum{background:rgba(240,112,112,.07)}
+.tnote{font-size:.88rem;color:var(--muted);margin-top:1.1rem;line-height:1.65;max-width:88ch}
+
+.addons{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:clamp(2.4rem,3.5vw,3rem)}
+.addon{background:var(--card);border:1px solid var(--hair);border-radius:10px;padding:1.6rem 1.7rem;display:flex;gap:1.3rem;align-items:flex-start}
+.addon .tx{flex:1;min-width:0}
+.addon h4{font-size:1.06rem;margin-bottom:.35rem}
+.addon p{font-size:.92rem;color:var(--muted);line-height:1.6}
+.addon .pr{font-family:'Space Grotesk',sans-serif;font-size:1.12rem;font-weight:600;color:var(--coral-dk);white-space:nowrap;text-align:right}
+.addon .pr small{display:block;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:300;color:var(--muted);margin-top:.2rem;white-space:normal;max-width:11rem}
+
+/* ══ proces ══ */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2vw,1.6rem);margin-top:clamp(2.6rem,4vw,3.4rem)}
+.step{background:var(--card);border:1px solid var(--hair);border-radius:10px;padding:1.8rem 1.5rem}
+.step .n{font-family:'Space Grotesk',sans-serif;font-size:2.1rem;font-weight:600;color:rgba(240,112,112,.35);line-height:1;letter-spacing:-.04em;margin-bottom:.9rem}
+.step h4{font-size:1.08rem;margin-bottom:.45rem}
+.step p{font-size:.92rem;color:var(--muted);line-height:1.6}
+
+/* ══ faq ══ */
+.faq{margin-top:clamp(2.4rem,4vw,3.2rem);border-top:1px solid var(--hair)}
+.qa{border-bottom:1px solid var(--hair);padding:1.5rem 0}
+.qa h4{font-size:1.08rem;margin-bottom:.45rem}
+.qa p{font-size:.96rem;color:var(--muted);line-height:1.66;max-width:82ch}
+
+/* ══ cta ══ */
+.cta{background:var(--ink);color:rgba(255,255,255,.7);border-radius:0}
+.cta h2{color:#fff;font-size:clamp(2rem,4.4vw,3.4rem);max-width:20ch}
+.cta h2 span{color:#F79191}
+.cta .eyebrow{color:#F79191}
+.cta p{max-width:56ch;margin-top:1.4rem;color:rgba(255,255,255,.6);font-size:1.08rem}
+.who{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:clamp(2.6rem,4vw,3.4rem);max-width:720px}
+.pers{border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:1.6rem 1.7rem;background:rgba(255,255,255,.03)}
+.pers b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.16rem;color:#fff;font-weight:600;letter-spacing:-.02em}
+.pers .r{font-size:.8rem;color:rgba(255,255,255,.45);margin-top:.15rem}
+.pers a{display:block;font-size:.98rem;color:#F79191;margin-top:.9rem}
+.pers a:hover{color:#fff}
+.pers .t{font-size:.98rem;color:rgba(255,255,255,.75);margin-top:.2rem}
+.cta-btns{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.4rem}
+.cta .btn-line{border-color:rgba(255,255,255,.35);color:#fff}
+.cta .btn-line:hover{background:#fff;color:var(--ink);border-color:#fff}
+
+/* ══ footer ══ */
+.foot{padding:2.4rem 0;font-size:.86rem;color:var(--muted)}
+.foot-in{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
+.foot a{color:var(--coral-dk);border-bottom:1px solid rgba(240,112,112,.35)}
+
+/* ══ reveal ══ */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease-out),transform .85s var(--ease-out)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ══ responsive ══ */
+@media(max-width:1020px){
+  .nav-links{display:none}
+  .nav .btn{margin-left:auto}
+  .collage{grid-template-columns:1fr 1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .audit-grid,.rgrid,.pkgs,.steps{grid-template-columns:1fr}
+  .feat,.feat.rev{grid-template-columns:1fr}
+  .feat.rev .f-txt{order:0}
+  .f-txt{margin-bottom:.5rem}
+  .srow{grid-template-columns:2.4rem 1fr;gap:1rem .9rem}
+  .srow p{grid-column:2/-1;margin-top:.2rem}
+  .addons{grid-template-columns:1fr}
+  .who{grid-template-columns:1fr}
+  .tbl-h{display:none}
+  .trow{grid-template-columns:1fr 1fr;padding:1.15rem 1.2rem;gap:.7rem 1rem}
+  .trow>div:first-child{grid-column:1/-1;margin-bottom:.25rem}
+  .trow>div{text-align:left}
+  .trow>div:not(:first-child)::before{content:attr(data-l);display:block;font-family:'Space Grotesk',sans-serif;
+    font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.1rem;font-weight:600}
+}
+@media(max-width:600px){
+  .collage{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr}
+  .addon{flex-direction:column;gap:.9rem}
+  .addon .pr{text-align:left}
+  .addon .pr small{max-width:none}
+}
+
+/* ══ print ══ */
+@media print{
+  body{background:#fff}
+  .nav,.hero-btns,.cta-btns,.pdf{display:none!important}
+  .rv{opacity:1!important;transform:none!important}
+  .sec{padding:2rem 0;page-break-inside:avoid}
+  .pkg,.rcard,.addon,.acard,.step,.feat{page-break-inside:avoid}
+  .audit,.cta{background:#141312!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.pdf{position:fixed;right:1.3rem;bottom:1.3rem;z-index:80;display:flex;align-items:center;gap:.6rem;
+  background:var(--ink);color:#fff;padding:.8rem 1.3rem;border-radius:100px;border:0;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;
+  box-shadow:0 16px 34px -16px rgba(20,19,18,.6);transition:background .35s,transform .35s var(--ease)}
+.pdf:hover{background:var(--coral);transform:translateY(-2px)}
+.pdf svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="logo"><i></i>KSH<em>Partners</em></a>
+    <div class="nav-links">
+      <a href="#reference">Reference</a>
+      <a href="#umime">Co umíme</a>
+      <a href="#cenik">Ceník</a>
+      <a href="#proces">Jak to probíhá</a>
+    </div>
+    <a href="#kontakt" class="btn btn-solid">Ozvat se</a>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="for-badge"><i>Připraveno pro</i> <b>Cyklo Wellness Penzion Palice</b>&nbsp;· Jindřichův Hradec</div>
+    <h1>Weby, které <span>vydělávají</span> — a systémy, které vám ušetří čas.</h1>
+    <p class="sub">Jsme KSH Partners. Navrhujeme, stavíme a dlouhodobě provozujeme weby, rezervační
+    systémy a aplikace na míru — pro hotely, penziony, restaurace i firmy po celé republice.
+    Tady je to, co jsme reálně postavili, a kolik to zhruba stojí.</p>
+    <div class="hero-btns">
+      <a href="#reference" class="btn btn-solid">Prohlédnout reference
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#cenik" class="btn btn-line">Rovnou na ceny</a>
+    </div>
+
+    <div class="collage rv">
+      <figure><img src="ref/hoteldyje.jpg" alt="Hotel Dyje — web"><figcaption>Hotel Dyje</figcaption></figure>
+      <figure><img src="ref/karavan.jpg" alt="Leština U rybníčka — web"><figcaption>Leština U rybníčka</figcaption></figure>
+      <figure><img src="ref/ceskakanada.jpg" alt="Restaurace Česká Kanada — web"><figcaption>Restaurace Česká Kanada</figcaption></figure>
+      <figure><img src="ref/cemaservis.jpg" alt="CEMA servis — web"><figcaption>CEMA servis</figcaption></figure>
+    </div>
+
+    <div class="kpis rv">
+      <div class="kpi"><b>12+</b><span>projektů v produkci</span></div>
+      <div class="kpi"><b>3</b><span>vlastní produkty <br>(SaaS &amp; aplikace)</span></div>
+      <div class="kpi"><b>0</b><span>šablon — vše na míru</span></div>
+      <div class="kpi"><b>ČR</b><span>klienti od jižních Čech <br>po Prahu</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ AUDIT ══════════ -->
+<section class="sec audit">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Než začneme</div>
+      <h2 class="big">Prošli jsme si váš web.<br>Máte skvělý penzion — <span style="color:#F79191">a web z roku 2016</span>.</h2>
+      <p class="lead">Nic proti němu: obsah máte poctivý a ceník úplný. Jenže hosté dnes hledají
+      ubytování v mobilu, večer, v posteli — a rozhodují se během osmi sekund.</p>
+    </div>
+    <div class="audit-grid rv">
+      <div class="acard">
+        <span class="n">01</span>
+        <h3>Nefunguje v mobilu</h3>
+        <p>Web není responzivní. Přes 70 % hostů dnes hledá ubytování na telefonu — a stránku,
+        na které musí přibližovat prsty, zavřou dřív, než najdou ceník.</p>
+      </div>
+      <div class="acard">
+        <span class="n">02</span>
+        <h3>Nejde u vás rezervovat</h3>
+        <p>Stránka „Rezervace a obsazenost" je prázdná. Host, který chce zamluvit pokoj ve 23:00,
+        vám nezavolá — jde na Booking, kde zaplatíte provizi, nebo ke konkurenci.</p>
+      </div>
+      <div class="acard">
+        <span class="n">03</span>
+        <h3>Wellness není vidět</h3>
+        <p>Sauna s vířivkou je vaše největší výhoda proti běžnému penzionu. Na webu je schovaná
+        v podstránce — a nejde si ji online objednat na konkrétní hodinu.</p>
+      </div>
+    </div>
+    <p class="audit-note"><b>Tři místa, kde vám dnes utíkají peníze.</b> Všechna tři jsme už řešili
+    u jiných klientů — níže uvidíte přesně jak.</p>
+  </div>
+</section>
+
+<!-- ══════════ REFERENCE ══════════ -->
+<section class="sec" id="reference">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Reference z produkce</div>
+      <h2 class="big">Co jsme <span>reálně postavili</span></h2>
+      <p class="lead">Všechny projekty níže jsme navrhli, naprogramovali a nasadili sami —
+      a většinu z nich dodnes provozujeme na vlastních serverech. Klikněte a prohlédněte si je živě.</p>
+    </div>
+
+    <!-- Hotel Dyje -->
+    <div class="feat rv">
+      <div class="f-txt">
+        <div class="f-tag"><i></i>Nejblíž vašemu projektu</div>
+        <h3>Hotel Dyje</h3>
+        <a class="f-url" href="https://hoteldyje.cz" target="_blank" rel="noopener">hoteldyje.cz →</a>
+        <p>Rodinný hotel s restaurací v centru Dačic. Postavili jsme web s rezervací pokojů,
+        denním menu a vlastním admin panelem — majitel si sám mění ceny, obsazenost, menu i fotky,
+        aniž by nás musel kdykoli kontaktovat. Celý systém běží na našem serveru včetně databáze
+        a záloh.</p>
+        <div class="tags">
+          <span class="hi">Rezervace pokojů</span><span class="hi">Správa obsazenosti</span>
+          <span>Denní menu</span><span>Admin panel</span><span>Galerie</span><span>Vlastní backend</span>
+        </div>
+      </div>
+      <a class="f-shot" href="https://hoteldyje.cz" target="_blank" rel="noopener"><img src="ref/hoteldyje.jpg" alt="Web Hotelu Dyje"></a>
+    </div>
+
+    <!-- Leština -->
+    <div class="feat rev rv">
+      <div class="f-txt">
+        <div class="f-tag"><i></i>Ubytování v přírodě</div>
+        <h3>Leština U rybníčka</h3>
+        <a class="f-url" href="https://karavan-lestina.cz" target="_blank" rel="noopener">karavan-lestina.cz →</a>
+        <p>Kempové stání pro obytné vozy a karavany uprostřed České Kanady. Web postavený kolem
+        atmosféry místa — dronové video, galerie, vybavení, ceník a rezervační formulář, který
+        majitelům chodí rovnou do e-mailu. Přesně ten typ ubytování, kde o hosta rozhodne
+        první dojem z fotky.</p>
+        <div class="tags">
+          <span class="hi">Rezervační formulář</span><span>Dronové video</span><span>Ceník</span>
+          <span>Galerie</span><span>Tipy na výlety</span><span>SEO</span>
+        </div>
+      </div>
+      <a class="f-shot" href="https://karavan-lestina.cz" target="_blank" rel="noopener"><img src="ref/karavan.jpg" alt="Web Leština U rybníčka"></a>
+    </div>
+
+    <!-- CEMA -->
+    <div class="feat rv">
+      <div class="f-txt">
+        <div class="f-tag"><i></i>Web + systém na míru</div>
+        <h3>CEMA servis</h3>
+        <a class="f-url" href="https://cemaservis.cz" target="_blank" rel="noopener">cemaservis.cz →</a>
+        <p>Prodej a servis zemědělské, lesnické a komunální techniky — 13 a více značek.
+        Kompletní katalog strojů, bazar použité techniky, aktuality a akční nabídky.
+        K tomu admin panel, ve kterém si firma sama zakládá stroje, mění ceny a nahrává fotky.
+        Ukázka toho, že „web na míru" u nás znamená i systém, který za vámi běží.</p>
+        <div class="tags">
+          <span class="hi">Admin panel</span><span>Katalog produktů</span><span>Bazar</span>
+          <span>Aktuality</span><span>Poptávkové formuláře</span>
+        </div>
+      </div>
+      <a class="f-shot" href="https://cemaservis.cz" target="_blank" rel="noopener"><img src="ref/cemaservis.jpg" alt="Web CEMA servis"></a>
+    </div>
+
+    <!-- grid dalších -->
+    <div class="rgrid rv">
+      <a class="rcard" href="https://restauraceceskakanada.cz" target="_blank" rel="noopener">
+        <div class="im"><img src="ref/ceskakanada.jpg" alt="Restaurace Česká Kanada"></div>
+        <div class="bd">
+          <span class="state"><i></i>V produkci</span>
+          <h4>Restaurace Česká Kanada</h4>
+          <span class="u">restauraceceskakanada.cz</span>
+          <p>Restaurace v autokempu u rybníka Zvůle. Denní menu s vlastním admin rozhraním
+          a tiskem lístku, galerie a rezervace stolů.</p>
+          <div class="mt">Web · denní menu · admin panel</div>
+        </div>
+      </a>
+
+      <a class="rcard" href="https://nakovarnemrakotin.cz" target="_blank" rel="noopener">
+        <div class="im"><img src="ref/kovarna.jpg" alt="Na Kovárně Mrákotín"></div>
+        <div class="bd">
+          <span class="state"><i></i>V produkci</span>
+          <h4>Na Kovárně Mrákotín</h4>
+          <span class="u">nakovarnemrakotin.cz</span>
+          <p>Tradiční restaurace na Vysočině, od roku 1793. Denní menu přes admin panel,
+          jídelní lístek, svatby, oslavy a catering.</p>
+          <div class="mt">Web · denní menu · admin panel</div>
+        </div>
+      </a>
+
+      <a class="rcard" href="https://revize-tabor.cz" target="_blank" rel="noopener">
+        <div class="im"><img src="ref/revizetabor.jpg" alt="Revize Tábor"></div>
+        <div class="bd">
+          <span class="state"><i></i>V produkci</span>
+          <h4>Revize Tábor</h4>
+          <span class="u">revize-tabor.cz</span>
+          <p>Prezentace revizního technika s 20 lety praxe. Ceník, reference a poptávkový
+          formulář, který přivádí nové zakázky.</p>
+          <div class="mt">Web · poptávky · SEO</div>
+        </div>
+      </a>
+
+      <a class="rcard" href="https://impastory.com" target="_blank" rel="noopener">
+        <div class="im"><img src="ref/impastory.jpg" alt="Impastory"></div>
+        <div class="bd">
+          <span class="state"><i></i>V produkci</span>
+          <h4>Impastory</h4>
+          <span class="u">impastory.com</span>
+          <p>Vlastní e-shop s digitálními tapetami ve stylu olejomalby. Čtyři kolekce ve 4K,
+          mezinárodní trh, platby a doručení automaticky.</p>
+          <div class="mt">E-shop · digitální produkt · platební brána</div>
+        </div>
+      </a>
+
+      <a class="rcard" href="https://pml-system.cz" target="_blank" rel="noopener">
+        <div class="im"><img src="ref/pml.jpg" alt="PML Systém"></div>
+        <div class="bd">
+          <span class="state"><i></i>Vlastní produkt</span>
+          <h4>PML Systém</h4>
+          <span class="u">pml-system.cz</span>
+          <p>Systém pro legální prodej psychomodulačních látek dle vyhlášky 448/2025 Sb.
+          Pokladna, sklad se šaržemi, inventury a auditní stopa.</p>
+          <div class="mt">SaaS · pokladna · sklad · legislativa</div>
+        </div>
+      </a>
+
+      <div class="rcard">
+        <div class="im"><img src="ref/smenky.jpg" alt="Směny"></div>
+        <div class="bd">
+          <span class="state"><i></i>Vlastní produkt</span>
+          <h4>Směny</h4>
+          <span class="u">20+ aktivních uživatelů</span>
+          <p>Aplikace pro plánování směn v kavárnách a malých provozech. Zaměstnanci se na směny
+          hlásí sami, manažer jen schvaluje — plus docházka a podklady pro výplaty.</p>
+          <div class="mt">SaaS · plánování směn · docházka</div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <div class="im"><img src="ref/stavebnidenik.jpg" alt="Stavební deník"></div>
+        <div class="bd">
+          <span class="state"><i></i>Aplikace na míru</span>
+          <h4>Stavební deník</h4>
+          <span class="u">I. Kamenická s.r.o.</span>
+          <p>Digitální vedení stavebního deníku — denní záznamy z každé stavby, dvě uživatelské
+          role a export do PDF pro investora.</p>
+          <div class="mt">Aplikace · role · export do PDF</div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <div class="im"><img src="ref/pekarna.jpg" alt="Pekařství Jako dřív"></div>
+        <div class="bd">
+          <span class="state soon"><i></i>Před spuštěním</span>
+          <h4>Pekařství Jako dřív</h4>
+          <span class="u">Jindřichův Hradec</span>
+          <p>Rodinná pekárna v Hradci. Tabule „co dnes voní", kompletní ceník, příběh rodiny
+          a sezónní předobjednávkový modul na Vánoce.</p>
+          <div class="mt">Web · ceník · sezónní objednávky</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CO UMÍME ══════════ -->
+<section class="sec" id="umime" style="background:var(--surface)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Co pro penzion umíme</div>
+      <h2 class="big">Od webu po systém,<br>který <span>za vás pracuje</span></h2>
+      <p class="lead">Nedodáváme šablonu a nezmizíme. Postavíme web na míru, napojíme ho
+      na systém, který vám ubere práci — a pak ho dlouhodobě provozujeme a spravujeme.</p>
+    </div>
+
+    <div class="srv rv">
+      <div class="srow"><span class="no">01</span><h4>Web na míru</h4>
+        <p>Žádný WordPress ani šablona. Rychlý, mobilní web postavený kolem vašich fotek a vaší nabídky — s wellness a kolárnou na první obrazovce, ne schovanými v podstránce.</p></div>
+      <div class="srow"><span class="no">02</span><h4>Online rezervace &amp; obsazenost</h4>
+        <p>Kalendář volných termínů, rezervace pokoje na pár kliknutí, automatické potvrzení hostovi i vám do e-mailu. Žádná provize třetí straně za rezervaci, která přišla přímo k vám.</p></div>
+      <div class="srow"><span class="no">03</span><h4>Rezervace wellness na hodinu</h4>
+        <p>Host si sám vybere volný slot sauny nebo vířivky, systém hlídá kapacitu a minimální počet osob. Vy jen ráno otevřete přehled a víte, kdo kdy přijde.</p></div>
+      <div class="srow"><span class="no">04</span><h4>Admin panel — vše si měníte sami</h4>
+        <p>Ceny, sezóny, obsazenost, fotky, texty i snídaně. Bez programátora, bez faktury za změnu jednoho čísla. K tomu zaškolení a videonávod.</p></div>
+      <div class="srow"><span class="no">05</span><h4>Cizojazyčné verze</h4>
+        <p>Greenway Praha–Vídeň vede kolem vašeho domu. Německá a anglická verze webu z vás udělá první volbu i pro rakouské a německé cyklisty.</p></div>
+      <div class="srow"><span class="no">06</span><h4>Hosting, zálohy a dlouhodobá správa</h4>
+        <p>Weby provozujeme na vlastní infrastruktuře — doména, SSL, denní zálohy, aktualizace i drobné úpravy po spuštění. Jeden kontakt na všechno.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CENÍK ══════════ -->
+<section class="sec" id="cenik">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Orientační ceník</div>
+      <h2 class="big">Kolik to zhruba <span>stojí</span></h2>
+      <p class="lead">Ceny níže jsou orientační — dávají představu o řádu, ve kterém se projekt pohybuje.
+      Konečnou cenu vždy potvrdíme po nezávazné konzultaci, kdy víme přesný rozsah.
+      Tvorbu platíte jednou, dál už jen provoz.</p>
+    </div>
+
+    <div class="pkgs rv">
+      <div class="pkg">
+        <div class="pkg-h">
+          <div class="pkg-n">Nový web</div>
+          <div class="pkg-p">24 900 <small>Kč</small></div>
+          <p class="pkg-d">Moderní web na míru místo toho současného. Rezervace přes formulář.</p>
+        </div>
+        <ul class="pkg-f">
+          <li>Kompletní web na míru — penzion, pokoje, <b>wellness</b>, cyklo, okolí, kontakt</li>
+          <li>Perfektní na mobilu i tabletu</li>
+          <li>Ceník se sezónami, který si upravíme na jedno zavolání</li>
+          <li>Poptávkový a rezervační formulář — chodí vám do e-mailu</li>
+          <li>Fotogalerie</li>
+          <li>SEO základ + Google profil a mapa</li>
+          <li><b>Doména, hosting a SSL první rok v ceně</b></li>
+          <li class="off">Online kalendář obsazenosti</li>
+          <li class="off">Admin panel</li>
+        </ul>
+      </div>
+
+      <div class="pkg star">
+        <div class="pkg-badge">Doporučujeme</div>
+        <div class="pkg-h">
+          <div class="pkg-n">Web + rezervační systém</div>
+          <div class="pkg-p">44 900 <small>Kč</small></div>
+          <p class="pkg-d">Host si zarezervuje sám, i o půlnoci. Vy si všechno spravujete sami.</p>
+        </div>
+        <ul class="pkg-f">
+          <li>Vše z varianty <b>Nový web</b></li>
+          <li><b>Kalendář obsazenosti</b> — host vidí volné termíny online</li>
+          <li><b>Online rezervace pokoje</b> s automatickým potvrzením oběma stranám</li>
+          <li><b>Rezervace wellness na konkrétní hodinu</b> — sauna i vířivka</li>
+          <li>Admin panel: ceny, sezóny, obsazenost, texty, fotky, snídaně</li>
+          <li>Přehled rezervací a hostů na jednom místě</li>
+          <li>Zaškolení + videonávod</li>
+          <li>Prioritní podpora do 24 hodin</li>
+        </ul>
+      </div>
+
+      <div class="pkg">
+        <div class="pkg-h">
+          <div class="pkg-n">Penzion online kompletní</div>
+          <div class="pkg-p"><em>od</em> 69 900 <small>Kč</small></div>
+          <p class="pkg-d">Pro ty, kdo to chtějí celé — včetně zahraničních hostů a napojení na portály.</p>
+        </div>
+        <ul class="pkg-f">
+          <li>Vše z varianty <b>Web + rezervační systém</b></li>
+          <li><b>Německá a anglická verze</b> webu i rezervací</li>
+          <li><b>Napojení na Booking.com a hotel.cz</b> — termíny se synchronizují, žádné dvojité rezervace</li>
+          <li>Online platba zálohy kartou</li>
+          <li><b>Dárkové poukazy na wellness</b> — prodej přímo z webu</li>
+          <li>Statistiky obsazenosti a tržeb</li>
+          <li>Automatické e-maily hostům (potvrzení, připomenutí, poděkování)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- provoz -->
+    <div class="rv">
+      <div class="tbl">
+        <div class="tbl-h">
+          <div>Položka</div><div>Nový web</div><div class="hl">Web + rezervace ★</div><div>Kompletní</div>
+        </div>
+        <div class="trow">
+          <div>Tvorba (jednorázově)</div>
+          <div class="pb" data-l="Nový web">24 900 Kč</div>
+          <div class="pb" data-l="Web + rezervace">44 900 Kč</div>
+          <div class="pb" data-l="Kompletní">od 69 900 Kč</div>
+        </div>
+        <div class="trow">
+          <div>Doména, hosting, SSL a zálohy<small>první rok</small></div>
+          <div class="inc" data-l="Nový web">v ceně</div>
+          <div class="inc" data-l="Web + rezervace">v ceně</div>
+          <div class="inc" data-l="Kompletní">v ceně</div>
+        </div>
+        <div class="trow sum">
+          <div><b>Celkem první rok</b></div>
+          <div class="pb" data-l="Nový web">24 900 Kč</div>
+          <div class="pb" data-l="Web + rezervace">44 900 Kč</div>
+          <div class="pb" data-l="Kompletní">od 69 900 Kč</div>
+        </div>
+        <div class="trow">
+          <div>Provoz každý další rok<small>tvorbu platíte jen jednou</small></div>
+          <div class="dim" data-l="Nový web">3 900 Kč / rok</div>
+          <div class="dim" data-l="Web + rezervace">890 Kč / měsíc</div>
+          <div class="dim" data-l="Kompletní">890 Kč / měsíc</div>
+        </div>
+      </div>
+      <p class="tnote">Provoz zahrnuje doménu, SSL certifikát, denní zálohy, aktualizace a technickou podporu.
+      U variant s rezervačním systémem navíc běh databáze, odesílání potvrzovacích e-mailů a dohled nad systémem.
+      Web lze nasadit i k vlastnímu poskytovateli — pak nám za provoz neplatíte nic.
+      <b>Ceny jsou konečné, nejsme plátci DPH.</b></p>
+    </div>
+
+    <!-- doplňky -->
+    <div class="rv" style="margin-top:clamp(3.5rem,6vw,5rem)">
+      <div class="eyebrow">Doplňky</div>
+      <h2 class="big" style="font-size:clamp(1.8rem,3.4vw,2.6rem)">Přidat můžete kdykoli — i&nbsp;<span>po spuštění</span></h2>
+
+      <div class="addons">
+        <div class="addon">
+          <div class="tx">
+            <h4>Nafocení penzionu a úprava fotek</h4>
+            <p>Přijedeme na půl dne, nafotíme pokoje, wellness, salónek i exteriér v nejlepším světle
+            a fotky kompletně upravíme. Použijete je i na Booking a Facebook. Dodáme 40+ hotových fotografií.</p>
+          </div>
+          <div class="pr">6 900 Kč<small>4 900 Kč při objednávce webu</small></div>
+        </div>
+        <div class="addon">
+          <div class="tx">
+            <h4>Texty na míru</h4>
+            <p>Sepíšeme texty, které prodávají — o penzionu, wellness, okolí i snídaních.
+            Vy jen řeknete, co je na vás výjimečné.</p>
+          </div>
+          <div class="pr">4 900 Kč</div>
+        </div>
+        <div class="addon">
+          <div class="tx">
+            <h4>Cizojazyčná verze</h4>
+            <p>Kompletní překlad webu i rezervací do němčiny nebo angličtiny.
+            Pro cyklisty z Greenway Praha–Vídeň zásadní.</p>
+          </div>
+          <div class="pr">8 900 Kč<small>za jeden jazyk</small></div>
+        </div>
+        <div class="addon">
+          <div class="tx">
+            <h4>Dárkové poukazy na wellness</h4>
+            <p>Prodej poukazů přímo z webu, generování PDF s kódem, evidence uplatnění.
+            Nejrychlejší způsob, jak z wellness udělat další příjem.</p>
+          </div>
+          <div class="pr">od 9 900 Kč</div>
+        </div>
+        <div class="addon">
+          <div class="tx">
+            <h4>Napojení na Booking.com a hotel.cz</h4>
+            <p>Obousměrná synchronizace termínů. Když se pokoj obsadí u nás, zmizí i tam — a naopak.
+            Konec dvojitým rezervacím.</p>
+          </div>
+          <div class="pr">12 900 Kč</div>
+        </div>
+        <div class="addon">
+          <div class="tx">
+            <h4>Správa obsahu za vás</h4>
+            <p>Nechcete nic řešit? Změny textů, cen a fotek děláme za vás.
+            Prioritní odpověď do 24 hodin.</p>
+          </div>
+          <div class="pr">1 290 Kč / měs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROCES ══════════ -->
+<section class="sec" id="proces" style="background:var(--surface)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Jak to probíhá</div>
+      <h2 class="big">Od zavolání po <span>spuštění</span></h2>
+      <p class="lead">U webu bez rezervačního systému bývá hotovo do tří týdnů,
+      s rezervacemi počítejte zhruba měsíc a půl.</p>
+    </div>
+    <div class="steps rv">
+      <div class="step"><div class="n">1</div><h4>Konzultace zdarma</h4>
+        <p>Sejdeme se u vás v penzionu nebo si zavoláme. Projdeme, co potřebujete, a řekneme přesnou cenu.</p></div>
+      <div class="step"><div class="n">2</div><h4>Návrh webu</h4>
+        <p>Připravíme grafický návrh přímo pro Palici — uvidíte ho živě v mobilu i počítači, ještě než něco platíte naplno. Záloha 50 %.</p></div>
+      <div class="step"><div class="n">3</div><h4>Vývoj a připomínky</h4>
+        <p>Postavíme web i systém, doplníme fotky a texty. Připomínky zapracováváme, dokud nejste spokojení.</p></div>
+      <div class="step"><div class="n">4</div><h4>Spuštění a zaškolení</h4>
+        <p>Nasadíme na vaši doménu, ukážeme vám administraci a předáme přístupy. Web je od té chvíle váš.</p></div>
+    </div>
+
+    <div class="rv" style="margin-top:clamp(3rem,5vw,4rem)">
+      <div class="eyebrow">Časté otázky</div>
+      <div class="faq">
+        <div class="qa"><h4>Budeme na vás závislí při každé změně?</h4>
+          <p>Ne. U variant s admin panelem si ceny, obsazenost, fotky i texty měníte sami.
+          A i kdybyste chtěli spolupráci ukončit — web i zdrojové soubory jsou vaše, může v nich pokračovat kdokoli.</p></div>
+        <div class="qa"><h4>Musíme mít hosting u vás?</h4>
+          <p>Nemusíte. Náš hosting je pohodlné řešení bez starostí (doména, SSL, denní zálohy, dohled),
+          ale web rádi nasadíme i k vašemu současnému poskytovateli.</p></div>
+        <div class="qa"><h4>Co se stane se současnou doménou a e-maily?</h4>
+          <p>Zůstávají vám. Doménu <b>cyklo-wellness-penzion-palice.cz</b> převedeme beze změny a e-maily se nedotkneme —
+          web se přepne během jednoho večera, ideálně mimo sezónu.</p></div>
+        <div class="qa"><h4>Je to šablona?</h4>
+          <p>Ne. Každý web navrhujeme od nuly podle konkrétního podniku. Žádný jiný penzion nebude mít stejný web jako vy.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="sec cta" id="kontakt">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">Další krok</div>
+      <h2>Pojďme se sejít —<br>konzultace je <span>zdarma</span>.</h2>
+      <p>Přijedeme do Hradce, projdeme si penzion a řekneme vám na rovinu, co má smysl
+      udělat hned a co může počkat.</p>
+      <div class="who" style="grid-template-columns:1fr;max-width:420px">
+        <div class="pers">
+          <b>Záviš Čuchna</b>
+          <div class="r">KSH Partners · kontaktní osoba</div>
+          <a href="mailto:cuchna@ksh-partners.cz">cuchna@ksh-partners.cz</a>
+          <div class="t">+420 725 703 243</div>
+        </div>
+      </div>
+      <div class="cta-btns">
+        <a href="mailto:cuchna@ksh-partners.cz?subject=Penzion%20Palice%20—%20konzultace" class="btn btn-solid">Napsat e-mail
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="https://ksh-partners.cz" target="_blank" rel="noopener" class="btn btn-line">ksh-partners.cz</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>© 2026 <b>KSH Partners s.r.o.</b> · Chudenická 1059/30, Praha 10 · IČO 23990368</div>
+    <div>Ceny jsou orientační a platí 30 dní · <a href="https://ksh-partners.cz" target="_blank" rel="noopener">ksh-partners.cz</a></div>
+  </div>
+</footer>
+
+<button class="pdf" onclick="window.print()">
+  <svg viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l3-3m-3 3L5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5v2h11v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  Uložit jako PDF
+</button>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  function s(){nav.classList.toggle('stuck',window.scrollY>20)}
+  window.addEventListener('scroll',s,{passive:true});s();
+
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e,i){if(e.isIntersecting){
+      setTimeout(function(){e.target.classList.add('in')},i*80);io.unobserve(e.target);
+    }})
+  },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>
