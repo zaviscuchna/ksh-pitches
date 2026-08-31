@@ -169,6 +169,17 @@ h2.big span{color:var(--coral-dk)}
 .state i{width:6px;height:6px;border-radius:50%;background:#41A85F;display:block}
 .state.soon{color:#9C7A2E}.state.soon i{background:#D9A63C}
 
+.f-price{display:inline-flex;align-items:baseline;gap:.6rem;margin-top:1.6rem;
+  border:1px solid var(--hair);border-left:2px solid var(--coral);background:var(--card);
+  padding:.75rem 1.2rem;border-radius:4px}
+.f-price b{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:600;color:var(--text);letter-spacing:-.03em}
+.f-price span{font-size:.82rem;color:var(--muted)}
+.rcard .mt{display:flex;justify-content:space-between;align-items:baseline;gap:.9rem}
+.rcard .mt b{font-family:'Space Grotesk',sans-serif;font-size:.98rem;font-weight:600;color:var(--coral-dk);white-space:nowrap;letter-spacing:-.02em}
+.ref-note{margin-top:clamp(2.2rem,3.5vw,3rem);padding-top:1.6rem;border-top:1px solid var(--hair);
+  font-size:.9rem;color:var(--muted);line-height:1.7;max-width:84ch}
+.ref-note b{color:var(--text)}
+
 /* ══ služby ══ */
 .srv{border-top:1px solid var(--hair);margin-top:clamp(2.6rem,4vw,3.6rem)}
 .srow{display:grid;grid-template-columns:3.2rem 1fr 1.5fr;gap:1.5rem;padding:1.55rem 0;border-bottom:1px solid var(--hair);align-items:baseline;
@@ -179,7 +190,7 @@ h2.big span{color:var(--coral-dk)}
 .srow p{font-size:.96rem;color:var(--muted);line-height:1.62}
 
 /* ══ ceník ══ */
-.pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.2rem,2.2vw,1.8rem);margin-top:clamp(2.8rem,4vw,3.8rem);align-items:stretch}
+.pkgs{display:grid;grid-template-columns:repeat(2,1fr);max-width:900px;gap:clamp(1.2rem,2.2vw,1.8rem);margin-top:clamp(2.8rem,4vw,3.8rem);align-items:stretch}
 .pkg{background:var(--card);border:1px solid var(--hair);border-radius:12px;display:flex;flex-direction:column;position:relative;overflow:hidden;
   transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
 .pkg:hover{transform:translateY(-4px);box-shadow:0 26px 56px -32px rgba(20,19,18,.34)}
@@ -204,11 +215,11 @@ h2.big span{color:var(--coral-dk)}
 .pkg-f li b{font-weight:600}
 
 .tbl{margin-top:clamp(2.5rem,4vw,3.4rem);border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:var(--card)}
-.tbl-h{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:var(--ink);padding:1rem 1.6rem;gap:1rem}
+.tbl-h{display:grid;grid-template-columns:2.4fr 1fr 1fr;background:var(--ink);padding:1rem 1.6rem;gap:1rem}
 .tbl-h div{font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);text-align:center}
 .tbl-h div:first-child{text-align:left;color:#fff}
 .tbl-h .hl{color:#F79191}
-.trow{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:1.15rem 1.6rem;gap:1rem;border-bottom:1px solid var(--hair);align-items:center}
+.trow{display:grid;grid-template-columns:2.4fr 1fr 1fr;padding:1.15rem 1.6rem;gap:1rem;border-bottom:1px solid var(--hair);align-items:center}
 .trow:last-child{border-bottom:0}
 .trow:nth-child(even){background:var(--surface)}
 .trow>div{text-align:center;font-size:.98rem}
@@ -423,6 +434,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="hi">Rezervace pokojů</span><span class="hi">Správa obsazenosti</span>
           <span>Denní menu</span><span>Admin panel</span><span>Galerie</span><span>Vlastní backend</span>
         </div>
+        <div class="f-price"><b>32 000 Kč</b><span>web, rezervace a admin panel</span></div>
       </div>
       <a class="f-shot" href="https://hoteldyje.cz" target="_blank" rel="noopener"><img src="ref/hoteldyje.jpg" alt="Web Hotelu Dyje"></a>
     </div>
@@ -441,6 +453,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="hi">Rezervační formulář</span><span>Dronové video</span><span>Ceník</span>
           <span>Galerie</span><span>Tipy na výlety</span><span>SEO</span>
         </div>
+        <div class="f-price"><b>24 000 Kč</b><span>web, galerie a rezervace</span></div>
       </div>
       <a class="f-shot" href="https://karavan-lestina.cz" target="_blank" rel="noopener"><img src="ref/karavan.jpg" alt="Web Leština U rybníčka"></a>
     </div>
@@ -459,6 +472,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="hi">Admin panel</span><span>Katalog produktů</span><span>Bazar</span>
           <span>Aktuality</span><span>Poptávkové formuláře</span>
         </div>
+        <div class="f-price"><b>58 000 Kč</b><span>web, katalog a systém na míru</span></div>
       </div>
       <a class="f-shot" href="https://cemaservis.cz" target="_blank" rel="noopener"><img src="ref/cemaservis.jpg" alt="Web CEMA servis"></a>
     </div>
@@ -473,7 +487,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">restauraceceskakanada.cz</span>
           <p>Restaurace v autokempu u rybníka Zvůle. Denní menu s vlastním admin rozhraním
           a tiskem lístku, galerie a rezervace stolů.</p>
-          <div class="mt">Web · denní menu · admin panel</div>
+          <div class="mt"><span>Web · denní menu · admin panel</span><b>27 000 Kč</b></div>
         </div>
       </a>
 
@@ -485,7 +499,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">nakovarnemrakotin.cz</span>
           <p>Tradiční restaurace na Vysočině, od roku 1793. Denní menu přes admin panel,
           jídelní lístek, svatby, oslavy a catering.</p>
-          <div class="mt">Web · denní menu · admin panel</div>
+          <div class="mt"><span>Web · denní menu · admin panel</span><b>25 000 Kč</b></div>
         </div>
       </a>
 
@@ -497,7 +511,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">revize-tabor.cz</span>
           <p>Prezentace revizního technika s 20 lety praxe. Ceník, reference a poptávkový
           formulář, který přivádí nové zakázky.</p>
-          <div class="mt">Web · poptávky · SEO</div>
+          <div class="mt"><span>Web · poptávky · SEO</span><b>19 000 Kč</b></div>
         </div>
       </a>
 
@@ -509,7 +523,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">impastory.com</span>
           <p>Vlastní e-shop s digitálními tapetami ve stylu olejomalby. Čtyři kolekce ve 4K,
           mezinárodní trh, platby a doručení automaticky.</p>
-          <div class="mt">E-shop · digitální produkt · platební brána</div>
+          <div class="mt"><span>E-shop · digitální produkt · platební brána</span><b style="color:var(--muted);font-weight:400">vlastní produkt</b></div>
         </div>
       </a>
 
@@ -521,7 +535,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">pml-system.cz</span>
           <p>Systém pro legální prodej psychomodulačních látek dle vyhlášky 448/2025 Sb.
           Pokladna, sklad se šaržemi, inventury a auditní stopa.</p>
-          <div class="mt">SaaS · pokladna · sklad · legislativa</div>
+          <div class="mt"><span>SaaS · pokladna · sklad · legislativa</span><b style="color:var(--muted);font-weight:400">vlastní produkt</b></div>
         </div>
       </a>
 
@@ -533,7 +547,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">20+ aktivních uživatelů</span>
           <p>Aplikace pro plánování směn v kavárnách a malých provozech. Zaměstnanci se na směny
           hlásí sami, manažer jen schvaluje — plus docházka a podklady pro výplaty.</p>
-          <div class="mt">SaaS · plánování směn · docházka</div>
+          <div class="mt"><span>SaaS · plánování směn · docházka</span><b style="color:var(--muted);font-weight:400">vlastní produkt</b></div>
         </div>
       </div>
 
@@ -545,7 +559,7 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">I. Kamenická s.r.o.</span>
           <p>Digitální vedení stavebního deníku — denní záznamy z každé stavby, dvě uživatelské
           role a export do PDF pro investora.</p>
-          <div class="mt">Aplikace · role · export do PDF</div>
+          <div class="mt"><span>Aplikace · role · export do PDF</span><b>46 000 Kč</b></div>
         </div>
       </div>
 
@@ -557,10 +571,13 @@ h2.big span{color:var(--coral-dk)}
           <span class="u">Jindřichův Hradec</span>
           <p>Rodinná pekárna v Hradci. Tabule „co dnes voní", kompletní ceník, příběh rodiny
           a sezónní předobjednávkový modul na Vánoce.</p>
-          <div class="mt">Web · ceník · sezónní objednávky</div>
+          <div class="mt"><span>Web · ceník · sezónní objednávky</span><b>41 000 Kč</b></div>
         </div>
       </div>
     </div>
+    <p class="ref-note rv"><b>Uvedené částky jsou orientační ceny projektů podobného rozsahu.</b>
+    Konkrétní cena vždy závisí na počtu stránek, na tom, kolik systému za webem běží, a na tom,
+    kolik podkladů dodá klient sám. U vlastních produktů cenu neuvádíme — ty provozujeme my.</p>
   </div>
 </section>
 
@@ -636,25 +653,11 @@ h2.big span{color:var(--coral-dk)}
           <li><b>Rezervace wellness na konkrétní hodinu</b> — sauna i vířivka</li>
           <li>Admin panel: ceny, sezóny, obsazenost, texty, fotky, snídaně</li>
           <li>Přehled rezervací a hostů na jednom místě</li>
+          <li><b>Online platba zálohy kartou</b></li>
+          <li><b>Automatické e-maily hostům</b> — potvrzení, připomenutí před příjezdem, poděkování</li>
+          <li>Statistiky obsazenosti a tržeb</li>
           <li>Zaškolení + videonávod</li>
           <li>Prioritní podpora do 24 hodin</li>
-        </ul>
-      </div>
-
-      <div class="pkg">
-        <div class="pkg-h">
-          <div class="pkg-n">Penzion online kompletní</div>
-          <div class="pkg-p"><em>od</em> 54 900 <small>Kč</small></div>
-          <p class="pkg-d">Pro ty, kdo to chtějí celé — včetně zahraničních hostů a napojení na portály.</p>
-        </div>
-        <ul class="pkg-f">
-          <li>Vše z varianty <b>Web + rezervační systém</b></li>
-          <li><b>Německá a anglická verze</b> webu i rezervací</li>
-          <li><b>Napojení na Booking.com a hotel.cz</b> přes channel manager — termíny se synchronizují v reálném čase, žádné dvojité rezervace</li>
-          <li>Online platba zálohy kartou</li>
-          <li><b>Dárkové poukazy na wellness</b> — prodej přímo z webu</li>
-          <li>Statistiky obsazenosti a tržeb</li>
-          <li>Automatické e-maily hostům (potvrzení, připomenutí, poděkování)</li>
         </ul>
       </div>
     </div>
@@ -663,31 +666,27 @@ h2.big span{color:var(--coral-dk)}
     <div class="rv">
       <div class="tbl">
         <div class="tbl-h">
-          <div>Položka</div><div>Nový web</div><div class="hl">Web + rezervace ★</div><div>Kompletní</div>
+          <div>Položka</div><div>Nový web</div><div class="hl">Web + rezervace ★</div>
         </div>
         <div class="trow">
           <div>Tvorba (jednorázově)</div>
           <div class="pb" data-l="Nový web">24 900 Kč</div>
           <div class="pb" data-l="Web + rezervace">39 900 Kč</div>
-          <div class="pb" data-l="Kompletní">od 54 900 Kč</div>
         </div>
         <div class="trow">
           <div>Doména, hosting, SSL a zálohy<small>první rok</small></div>
           <div class="inc" data-l="Nový web">v ceně</div>
           <div class="inc" data-l="Web + rezervace">v ceně</div>
-          <div class="inc" data-l="Kompletní">v ceně</div>
         </div>
         <div class="trow sum">
           <div><b>Celkem první rok</b></div>
           <div class="pb" data-l="Nový web">24 900 Kč</div>
           <div class="pb" data-l="Web + rezervace">39 900 Kč</div>
-          <div class="pb" data-l="Kompletní">od 54 900 Kč</div>
         </div>
         <div class="trow">
           <div>Provoz každý další rok<small>tvorbu platíte jen jednou</small></div>
           <div class="dim" data-l="Nový web">3 900 Kč / rok</div>
           <div class="dim" data-l="Web + rezervace">890 Kč / měsíc</div>
-          <div class="dim" data-l="Kompletní">890 Kč / měsíc</div>
         </div>
       </div>
       <p class="tnote">Provoz zahrnuje doménu, SSL certifikát, denní zálohy, aktualizace a technickou podporu.
@@ -736,15 +735,6 @@ h2.big span{color:var(--coral-dk)}
         </div>
         <div class="addon">
           <div class="tx">
-            <h4>Napojení na Booking.com a hotel.cz</h4>
-            <p>Náš rezervační systém propojíme s channel managerem (např. Previo), který už portály
-            obsluhuje. Když se pokoj obsadí u nás, zmizí i tam — a naopak. Konec dvojitým rezervacím.
-            Měsíční poplatek channel manageru platíte přímo jeho poskytovateli.</p>
-          </div>
-          <div class="pr">7 900 Kč</div>
-        </div>
-        <div class="addon">
-          <div class="tx">
             <h4>Správa obsahu za vás</h4>
             <p>Nechcete nic řešit? Změny textů, cen a fotek děláme za vás.
             Prioritní odpověď do 24 hodin.</p>
@@ -788,11 +778,6 @@ h2.big span{color:var(--coral-dk)}
         <div class="qa"><h4>Co se stane se současnou doménou a e-maily?</h4>
           <p>Zůstávají vám. Doménu <b>cyklo-wellness-penzion-palice.cz</b> převedeme beze změny a e-maily se nedotkneme —
           web se přepne během jednoho večera, ideálně mimo sezónu.</p></div>
-        <div class="qa"><h4>Půjde napojit na Booking.com?</h4>
-          <p>Ano. Nejde to napřímo — Booking pouští do svého API jen certifikované partnery — ale řeší se to
-          přes channel manager (v Česku nejčastěji Previo, který obsluhuje i hotel.cz). Náš rezervační systém
-          se napojí na něj a termíny si sedí v reálném čase. Levnější variantou je sdílení kalendáře přes iCal,
-          to má ale několikahodinové zpoždění a Booking ho povoluje jen některým typům ubytování — probereme na konzultaci.</p></div>
         <div class="qa"><h4>Je to šablona?</h4>
           <p>Ne. Každý web navrhujeme od nuly podle konkrétního podniku. Žádný jiný penzion nebude mít stejný web jako vy.</p></div>
       </div>
