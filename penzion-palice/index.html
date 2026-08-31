@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KSH Partners — reference a ceník pro Penzion Palice</title>
 <meta name="description" content="Weby, rezervační systémy a aplikace na míru. Reference z produkce a orientační ceník pro Cyklo Wellness Penzion Palice.">
+<link rel="icon" href="brand/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -75,8 +76,8 @@ h2.big span{color:var(--coral-dk)}
 }
 .nav.stuck{border-bottom-color:var(--hair);box-shadow:0 1px 20px rgba(20,19,18,.04)}
 .nav-in{display:flex;align-items:center;gap:1.5rem;padding:1.05rem 0}
-.logo{display:flex;align-items:center;gap:.6rem;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:var(--text)}
-.logo i{width:9px;height:9px;border-radius:50%;background:var(--coral);display:block}
+.logo{display:flex;align-items:center;gap:.62rem;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:var(--text)}
+.logo img{height:30px;width:auto}
 .logo em{font-style:normal;font-weight:400;color:var(--muted);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-left:.35rem}
 .nav-links{display:flex;gap:1.9rem;margin-left:auto}
 .nav-links a{
@@ -256,6 +257,10 @@ h2.big span{color:var(--coral-dk)}
 .cta-btns{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.4rem}
 .cta .btn-line{border-color:rgba(255,255,255,.35);color:#fff}
 .cta .btn-line:hover{background:#fff;color:var(--ink);border-color:#fff}
+.cta-mark{position:absolute;right:5vw;top:50%;transform:translateY(-50%);width:min(30vw,340px);opacity:.07;pointer-events:none}
+@media(max-width:1020px){.cta-mark{display:none}}
+.foot-mark{height:26px;width:auto;opacity:.7}
+.foot-in .who-f{display:flex;align-items:center;gap:.7rem}
 
 /* ══ footer ══ */
 .foot{padding:2.4rem 0;font-size:.86rem;color:var(--muted)}
@@ -319,7 +324,7 @@ h2.big span{color:var(--coral-dk)}
 <!-- ══════════ NAV ══════════ -->
 <nav class="nav" id="nav">
   <div class="wrap nav-in">
-    <a href="#top" class="logo"><i></i>KSH<em>Partners</em></a>
+    <a href="#top" class="logo"><img src="brand/ksh-mark.png" alt="KSH Partners">KSH<em>Partners</em></a>
     <div class="nav-links">
       <a href="#reference">Reference</a>
       <a href="#umime">Co umíme</a>
@@ -621,7 +626,7 @@ h2.big span{color:var(--coral-dk)}
         <div class="pkg-badge">Doporučujeme</div>
         <div class="pkg-h">
           <div class="pkg-n">Web + rezervační systém</div>
-          <div class="pkg-p">44 900 <small>Kč</small></div>
+          <div class="pkg-p">39 900 <small>Kč</small></div>
           <p class="pkg-d">Host si zarezervuje sám, i o půlnoci. Vy si všechno spravujete sami.</p>
         </div>
         <ul class="pkg-f">
@@ -639,7 +644,7 @@ h2.big span{color:var(--coral-dk)}
       <div class="pkg">
         <div class="pkg-h">
           <div class="pkg-n">Penzion online kompletní</div>
-          <div class="pkg-p"><em>od</em> 69 900 <small>Kč</small></div>
+          <div class="pkg-p"><em>od</em> 54 900 <small>Kč</small></div>
           <p class="pkg-d">Pro ty, kdo to chtějí celé — včetně zahraničních hostů a napojení na portály.</p>
         </div>
         <ul class="pkg-f">
@@ -663,8 +668,8 @@ h2.big span{color:var(--coral-dk)}
         <div class="trow">
           <div>Tvorba (jednorázově)</div>
           <div class="pb" data-l="Nový web">24 900 Kč</div>
-          <div class="pb" data-l="Web + rezervace">44 900 Kč</div>
-          <div class="pb" data-l="Kompletní">od 69 900 Kč</div>
+          <div class="pb" data-l="Web + rezervace">39 900 Kč</div>
+          <div class="pb" data-l="Kompletní">od 54 900 Kč</div>
         </div>
         <div class="trow">
           <div>Doména, hosting, SSL a zálohy<small>první rok</small></div>
@@ -675,8 +680,8 @@ h2.big span{color:var(--coral-dk)}
         <div class="trow sum">
           <div><b>Celkem první rok</b></div>
           <div class="pb" data-l="Nový web">24 900 Kč</div>
-          <div class="pb" data-l="Web + rezervace">44 900 Kč</div>
-          <div class="pb" data-l="Kompletní">od 69 900 Kč</div>
+          <div class="pb" data-l="Web + rezervace">39 900 Kč</div>
+          <div class="pb" data-l="Kompletní">od 54 900 Kč</div>
         </div>
         <div class="trow">
           <div>Provoz každý další rok<small>tvorbu platíte jen jednou</small></div>
@@ -735,7 +740,7 @@ h2.big span{color:var(--coral-dk)}
             <p>Obousměrná synchronizace termínů. Když se pokoj obsadí u nás, zmizí i tam — a naopak.
             Konec dvojitým rezervacím.</p>
           </div>
-          <div class="pr">12 900 Kč</div>
+          <div class="pr">7 900 Kč</div>
         </div>
         <div class="addon">
           <div class="tx">
@@ -790,7 +795,8 @@ h2.big span{color:var(--coral-dk)}
 </section>
 
 <!-- ══════════ CTA ══════════ -->
-<section class="sec cta" id="kontakt">
+<section class="sec cta" id="kontakt" style="overflow:hidden">
+  <img class="cta-mark" src="brand/ksh-mark-light.png" alt="">
   <div class="wrap">
     <div class="rv">
       <div class="eyebrow">Další krok</div>
@@ -816,7 +822,8 @@ h2.big span{color:var(--coral-dk)}
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <div>© 2026 <b>KSH Partners s.r.o.</b> · Chudenická 1059/30, Praha 10 · IČO 23990368</div>
+    <div class="who-f"><img class="foot-mark" src="brand/ksh-mark.png" alt="KSH Partners">
+      <span>© 2026 <b>KSH Partners s.r.o.</b> · Chudenická 1059/30, Praha 10 · IČO 23990368</span></div>
     <div>Ceny jsou orientační a platí 30 dní · <a href="https://ksh-partners.cz" target="_blank" rel="noopener">ksh-partners.cz</a></div>
   </div>
 </footer>
