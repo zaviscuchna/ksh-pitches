@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kontakt &amp; poptávka — Projekční kancelář Michálek Dačice</title>
+<meta name="description" content="Kontaktujte projekční kancelář Michálek — Ing. Ondřej Michálek, Dolní Němčice 90, Dačice. Nezávazná konzultace záměru." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css?v=4" />
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a href="index.html" class="brand">
+      <img src="img/logo.png?v=4" alt="Logo Projekční kancelář Michálek" />
+      <span class="brand-txt">Projekční kancelář<br/>Michálek <small>Dačice</small></span>
+    </a>
+    <nav class="main">
+      <a href="o-nas.html">O nás</a>
+      <div class="nav-item"><a href="projekty.html">Projekty</a><div class="dropdown">
+        <a href="projekty.html#rodinne">Rodinné domy</a>
+        <a href="projekty.html#rekreacni">Rekreační objekty</a>
+        <a href="projekty.html#obcanska">Občanská vybavenost</a>
+      </div></div>
+      <a href="sluzby.html">Služby</a>
+      <a href="kontakt.html#poptavka">Poptávka</a>
+      <a href="kontakt.html#kontakt" class="active">Kontakt</a>
+    </nav>
+    <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-nav">
+  <a href="o-nas.html">O nás</a>
+  <a href="projekty.html">Projekty</a>
+  <a href="sluzby.html">Služby</a>
+  <a href="kontakt.html#poptavka">Poptávka</a>
+  <a href="kontakt.html#kontakt" class="active">Kontakt</a>
+</div>
+
+<div class="wrap page-head" id="kontakt">
+  <div class="kicker">Kontakt</div>
+  <h1>Kde nás najdete</h1>
+  <p>Sídlíme v Dolních Němčicích u Dačic. Zastavte se na kávu, nebo se ozvěte telefonem či e-mailem — jsme k zastižení v pracovní dny.</p>
+</div>
+
+<!-- KONTAKT — vizitka + mapa -->
+<section>
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="card rv">
+        <i class="edge"></i>
+        <div class="card-top">
+          <div>
+            <h3>Ing. Ondřej Michálek</h3>
+            <div class="sub">— projektant pozemních staveb</div>
+          </div>
+          <img class="mark" src="img/logo.png?v=4" alt="" />
+        </div>
+        <ul>
+          <li><b>Tel.</b> <a href="tel:+420724765254" data-pkm="tel">724 765 254</a></li>
+          <li><b>E-mail</b> <a href="mailto:ondramichalek@seznam.cz" data-pkm="email">ondramichalek@seznam.cz</a></li>
+          <li><b>Adresa</b> <span data-pkm="adresa">Dolní Němčice 90, 380 01 Dačice</span></li>
+          <li><b>IČO</b> <span data-pkm="ico">04954335</span></li>
+          <li><b>Facebook</b> <a href="https://www.facebook.com/p/Projek%C4%8Dn%C3%AD-kancel%C3%A1%C5%99-Mich%C3%A1lek-Da%C4%8Dice-100091932622442/" target="_blank" rel="noopener" data-pkm="fb">Projekční kancelář Michálek</a></li>
+        </ul>
+      </div>
+      <div class="mapbox rv">
+        <iframe src="https://maps.google.com/maps?q=Doln%C3%AD%20N%C4%9Bm%C4%8Dice%2090%2C%20Da%C4%8Dice&z=13&output=embed" title="Mapa — Dolní Němčice 90, Dačice" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPTÁVKA -->
+<section id="poptavka" class="proj">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="kicker rv">Poptávka</div>
+      <h2 class="h-up rv">Pojďme probrat váš záměr</h2>
+      <p class="rv">Ozveme se do druhého pracovního dne. Konzultace záměru je nezávazná a nic nestojí.</p>
+    </div>
+    <form class="form narrow rv" onsubmit="event.preventDefault(); this.querySelector('button').textContent='✓ Odesláno (ukázka)';">
+      <label>Jméno a příjmení
+        <input type="text" name="jmeno" autocomplete="name" required />
+      </label>
+      <label>Telefon nebo e-mail
+        <input type="text" name="kontakt" autocomplete="email" required />
+      </label>
+      <label>S čím potřebujete pomoct?
+        <textarea name="zprava" placeholder="Např. novostavba RD na pozemku v Dačicích…"></textarea>
+      </label>
+      <button type="submit" class="btn">Odeslat nezávaznou poptávku</button>
+      <span class="form-note">Odesláním souhlasíte se zpracováním údajů pro účely vyřízení poptávky.</span>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span class="brand-txt">Projekční kancelář Michálek</span>
+    <nav class="fnav">
+      <a href="o-nas.html">O nás</a>
+      <a href="projekty.html">Projekty</a>
+      <a href="sluzby.html">Služby</a>
+      <a href="kontakt.html#kontakt">Kontakt</a>
+    </nav>
+    <span><a href="https://www.facebook.com/p/Projek%C4%8Dn%C3%AD-kancel%C3%A1%C5%99-Mich%C3%A1lek-Da%C4%8Dice-100091932622442/" target="_blank" rel="noopener" data-pkm="fb">Facebook</a> · © 2026 · <a href="#">pkmdacice.cz</a> · <a href="admin.html">Administrace</a></span>
+  </div>
+</footer>
+
+<script src="js/main.js?v=4"></script>
+</body>
+</html>

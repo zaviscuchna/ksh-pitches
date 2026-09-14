@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projekty — Projekční kancelář Michálek Dačice</title>
+<meta name="description" content="Realizace a vizualizace projekční kanceláře Michálek — rodinné domy, rekreační objekty, občanská vybavenost." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css?v=4" />
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a href="index.html" class="brand">
+      <img src="img/logo.png?v=4" alt="Logo Projekční kancelář Michálek" />
+      <span class="brand-txt">Projekční kancelář<br/>Michálek <small>Dačice</small></span>
+    </a>
+    <nav class="main">
+      <a href="o-nas.html">O nás</a>
+      <div class="nav-item"><a href="projekty.html" class="active">Projekty</a><div class="dropdown">
+        <a href="projekty.html#rodinne">Rodinné domy</a>
+        <a href="projekty.html#rekreacni">Rekreační objekty</a>
+        <a href="projekty.html#obcanska">Občanská vybavenost</a>
+      </div></div>
+      <a href="sluzby.html">Služby</a>
+      <a href="kontakt.html#poptavka">Poptávka</a>
+      <a href="kontakt.html#kontakt">Kontakt</a>
+    </nav>
+    <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-nav">
+  <a href="o-nas.html">O nás</a>
+  <a href="projekty.html" class="active">Projekty</a>
+  <a href="sluzby.html">Služby</a>
+  <a href="kontakt.html#poptavka">Poptávka</a>
+  <a href="kontakt.html#kontakt">Kontakt</a>
+</div>
+
+<div class="wrap page-head">
+  <div class="kicker">Naše práce</div>
+  <h1>Projekty</h1>
+  <p>Realizace a vizualizace z posledních let. Kliknutím otevřete detail projektu; u fotek se štítkem „Výkres ↔ dům" najeďte myší a uvidíte projekt tak, jak vznikal na papíře.</p>
+</div>
+
+<section class="proj" style="background:transparent;border:none">
+  <div class="wrap">
+    <div class="proj-head">
+      <div class="filter">
+        <button class="on" data-f="all">Vše</button>
+        <button data-f="rodinne">Rodinné domy</button>
+        <button data-f="rekreacni">Rekreační</button>
+        <button data-f="obcanska">Občanská vybavenost</button>
+      </div>
+    </div>
+    <div class="pgrid" id="pgrid" data-dynamic></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX detail projektu -->
+<div class="lb" id="lb" aria-hidden="true">
+  <button class="lb-x" aria-label="Zavřít">×</button>
+  <button class="lb-prev" aria-label="Předchozí">←</button>
+  <button class="lb-next" aria-label="Další">→</button>
+  <div class="lb-inner">
+    <img src="" alt="" />
+    <div class="lb-cap">
+      <span class="lb-meta"></span>
+      <h3></h3>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+<!-- VIP -->
+<section class="vip">
+  <div class="wrap vip-grid">
+    <div class="photo ri">
+      <img src="img/vip-partlova.jpg?v=4" alt="Rekonstruovaná zemědělská usedlost" loading="lazy" />
+    </div>
+    <div>
+      <div class="kicker rv">Psali o nás</div>
+      <h2 class="rv">Z chátrajícího statku <em>luxusní sídlo</em>. Projekt, o kterém psala média.</h2>
+      <p class="rv">Pro zpěvačku Martinu Pártlovou jsme zpracovali dokumentaci pro společné povolení a kompletní inženýring stavebních úprav zemědělské usedlosti. O proměně informovala celostátní média.</p>
+      <div class="media rv"><span>Super.cz</span><span>Extra.cz</span><span>Nejzprávy.cz</span></div>
+    </div>
+  </div>
+</section>
+
+<a class="cta-band" href="kontakt.html">
+  <div class="wrap in-band">
+    <div>
+      <h2>Máte podobný záměr?</h2>
+      <p>Domluvte si nezávaznou konzultaci.</p>
+    </div>
+    <span class="arrow-link">Nezávazná poptávka</span>
+  </div>
+</a>
+
+<footer>
+  <div class="wrap foot">
+    <span class="brand-txt">Projekční kancelář Michálek</span>
+    <nav class="fnav">
+      <a href="o-nas.html">O nás</a>
+      <a href="projekty.html">Projekty</a>
+      <a href="sluzby.html">Služby</a>
+      <a href="kontakt.html">Kontakt</a>
+    </nav>
+    <span><a href="https://www.facebook.com/p/Projek%C4%8Dn%C3%AD-kancel%C3%A1%C5%99-Mich%C3%A1lek-Da%C4%8Dice-100091932622442/" target="_blank" rel="noopener" data-pkm="fb">Facebook</a> · © 2026 · <a href="#">pkmdacice.cz</a> · <a href="admin.html">Administrace</a></span>
+  </div>
+</footer>
+
+<script src="js/projects-data.js?v=4"></script>
+<script src="js/main.js?v=4"></script>
+</body>
+</html>

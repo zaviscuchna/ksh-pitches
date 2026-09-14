@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Administrace — Projekční kancelář Michálek</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:#F4F3EF; --panel:#FCFBF8; --ink:#121215; --blue:#1C449F; --blue-deep:#17367C;
+    --muted:#716c62; --line:rgba(18,18,21,0.1); --ok:#1E7B44; --danger:#B4232A;
+    --ease:cubic-bezier(0.22,1,0.36,1);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-size:0.94rem;line-height:1.6;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;}
+  button{font-family:inherit;cursor:pointer;}
+  img{display:block;max-width:100%;}
+
+  /* ====== layout ====== */
+  .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh;}
+
+  /* sidebar */
+  aside{background:var(--ink);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+  .sb-brand{display:flex;align-items:center;gap:0.75rem;padding:1.3rem 1.4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .sb-brand img{height:30px;filter:invert(1);}
+  .sb-brand div{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;line-height:1.3;}
+  .sb-brand small{display:block;font-weight:500;font-size:0.56rem;letter-spacing:0.28em;color:#A9C0F5;}
+  .sb-nav{padding:1rem 0.8rem;display:grid;gap:0.2rem;flex:1;align-content:start;}
+  .sb-nav button{
+    display:flex;align-items:center;gap:0.8rem;width:100%;
+    background:none;border:none;color:rgba(255,255,255,0.65);
+    padding:0.75rem 0.9rem;font-size:0.86rem;font-weight:500;text-align:left;
+    border-radius:6px;transition:background 0.25s ease,color 0.25s ease;
+  }
+  .sb-nav button svg{width:17px;height:17px;flex-shrink:0;}
+  .sb-nav button:hover{background:rgba(255,255,255,0.07);color:#fff;}
+  .sb-nav button.on{background:var(--blue);color:#fff;}
+  .sb-nav .badge{margin-left:auto;background:rgba(255,255,255,0.14);font-size:0.66rem;padding:0.1rem 0.5rem;border-radius:99px;}
+  .sb-foot{padding:1.1rem 1.4rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.78rem;}
+  .sb-foot b{display:block;font-size:0.82rem;}
+  .sb-foot span{color:rgba(255,255,255,0.45);}
+  .sb-foot a{color:#A9C0F5;text-decoration:none;font-size:0.75rem;}
+  .sb-foot a:hover{text-decoration:underline;}
+
+  /* main */
+  main{padding:0 clamp(1.2rem,3vw,2.6rem) 3rem;}
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+    padding:1.2rem 0;border-bottom:1px solid var(--line);margin-bottom:1.8rem;
+  }
+  .topbar h1{font-size:1.35rem;font-weight:600;letter-spacing:0.02em;}
+  .topbar .crumb{font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);display:block;}
+  .top-actions{display:flex;gap:0.6rem;align-items:center;}
+  .demo-pill{font-size:0.68rem;letter-spacing:0.12em;background:#FFF3D6;color:#8a6100;border:1px solid #eddcae;padding:0.3rem 0.7rem;border-radius:99px;font-weight:600;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:0.5rem;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.82rem;
+    background:var(--blue);color:#fff;border:none;padding:0.7rem 1.25rem;border-radius:6px;
+    transition:background 0.25s ease,transform 0.25s var(--ease),box-shadow 0.25s ease;
+  }
+  .btn:hover{background:var(--blue-deep);transform:translateY(-1px);box-shadow:0 8px 20px rgba(23,54,124,0.22);}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--ink);box-shadow:none;}
+  .btn.danger{background:transparent;color:var(--danger);border:1px solid transparent;padding:0.5rem 0.7rem;}
+  .btn.danger:hover{background:#fbeaea;box-shadow:none;transform:none;}
+  .btn.sm{padding:0.5rem 0.85rem;font-size:0.76rem;}
+  .btn.icon{padding:0.45rem 0.55rem;background:#fff;color:var(--muted);border:1px solid var(--line);}
+  .btn.icon:hover{color:var(--ink);border-color:var(--ink);box-shadow:none;transform:none;}
+
+  section.view{display:none;}
+  section.view.on{display:block;animation:vIn 0.35s var(--ease);}
+  @keyframes vIn{from{opacity:0;transform:translateY(10px);}}
+
+  /* ====== přehled ====== */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-bottom:1.6rem;}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:1.3rem 1.4rem;position:relative;overflow:hidden;}
+  .kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue);}
+  .kpi .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;line-height:1.1;}
+  .kpi .l{font-size:0.76rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.2rem;}
+  .kpi.gold::after{background:#C8912E;}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:1.5rem;margin-bottom:1.2rem;}
+  .panel h2{font-size:0.95rem;font-weight:600;letter-spacing:0.04em;margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem;}
+  .quick{display:flex;gap:0.7rem;flex-wrap:wrap;}
+  .recent{display:grid;gap:0.6rem;}
+  .recent a{display:flex;align-items:center;gap:0.9rem;text-decoration:none;color:inherit;padding:0.45rem;border-radius:6px;transition:background 0.2s ease;}
+  .recent a:hover{background:rgba(28,68,159,0.05);}
+  .recent img{width:56px;height:40px;object-fit:cover;border-radius:4px;}
+  .recent b{font-size:0.86rem;font-weight:600;}
+  .recent span{font-size:0.72rem;color:var(--muted);display:block;}
+  .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:1.2rem;align-items:start;}
+  @media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
+  .tip{font-size:0.84rem;color:var(--muted);display:grid;gap:0.55rem;}
+  .tip li{margin-left:1.1rem;}
+
+  /* ====== realizace ====== */
+  .toolbar{display:flex;gap:0.7rem;align-items:center;flex-wrap:wrap;margin-bottom:1.2rem;}
+  .search{flex:1;min-width:200px;position:relative;}
+  .search input{
+    width:100%;background:#fff;border:1px solid var(--line);border-radius:6px;
+    padding:0.7rem 1rem 0.7rem 2.4rem;font-size:0.88rem;font-family:'Inter',sans-serif;
+  }
+  .search input:focus{outline:2px solid var(--blue);}
+  .search svg{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);width:15px;color:var(--muted);}
+  .chips{display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .chips button{
+    font-size:0.74rem;font-weight:500;letter-spacing:0.05em;
+    background:#fff;border:1px solid var(--line);color:var(--muted);
+    padding:0.5rem 0.9rem;border-radius:99px;transition:all 0.2s ease;
+  }
+  .chips button:hover{border-color:var(--ink);color:var(--ink);}
+  .chips button.on{background:var(--ink);border-color:var(--ink);color:#fff;}
+
+  .rows{display:grid;gap:0.65rem;}
+  .row{
+    display:grid;grid-template-columns:120px 1fr auto;gap:1.1rem;align-items:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:0.7rem 0.9rem;
+    transition:box-shadow 0.25s ease,border-color 0.25s ease;
+  }
+  .row:hover{border-color:rgba(28,68,159,0.4);box-shadow:0 8px 24px rgba(18,18,21,0.06);}
+  .row img{width:120px;height:78px;object-fit:cover;border-radius:5px;}
+  .row h3{font-size:0.95rem;font-weight:600;}
+  .row .meta{display:flex;gap:0.5rem;margin-top:0.35rem;flex-wrap:wrap;}
+  .pill{font-size:0.64rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.6rem;border-radius:99px;}
+  .pill.cat{background:rgba(28,68,159,0.09);color:var(--blue);}
+  .pill.real{background:rgba(30,123,68,0.1);color:var(--ok);}
+  .pill.viz{background:#FFF3D6;color:#8a6100;}
+  .row .btns{display:flex;gap:0.4rem;align-items:center;}
+  .empty{text-align:center;color:var(--muted);padding:3rem 1rem;border:2px dashed var(--line);border-radius:8px;}
+  @media(max-width:640px){.row{grid-template-columns:88px 1fr;}.row .btns{grid-column:1/-1;justify-content:flex-end;}}
+
+  /* ====== tým / kontakty ====== */
+  .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;}
+  .tcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:1.2rem;display:grid;gap:0.7rem;}
+  .tcard .ph{
+    aspect-ratio:1/1;border-radius:8px;background:#ECEAE3;overflow:hidden;position:relative;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.78rem;text-align:center;
+    border:2px dashed var(--line);transition:border-color 0.25s ease;
+  }
+  .tcard .ph:hover{border-color:var(--blue);color:var(--blue);}
+  .tcard .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .field{display:grid;gap:0.35rem;font-family:'Space Grotesk',sans-serif;font-size:0.64rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);}
+  .field input,.field textarea,.field select{
+    background:#fff;border:1px solid var(--line);border-radius:6px;color:var(--ink);
+    padding:0.75rem 0.9rem;font-family:'Inter',sans-serif;font-size:0.92rem;
+  }
+  .field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--blue);}
+  .contact-form{max-width:520px;display:grid;gap:0.9rem;}
+
+  /* ====== modal ====== */
+  .modal{position:fixed;inset:0;z-index:400;background:rgba(18,18,21,0.55);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:3.5rem 1rem;overflow:auto;}
+  .modal.open{display:flex;}
+  .modal-in{background:var(--bg);width:min(600px,100%);border-radius:10px;overflow:hidden;animation:vIn 0.3s var(--ease);}
+  .modal-head{background:var(--ink);color:#fff;padding:1.1rem 1.6rem;display:flex;justify-content:space-between;align-items:center;}
+  .modal-head h2{font-size:1rem;font-weight:600;letter-spacing:0.04em;}
+  .modal-head button{background:none;border:none;color:#fff;font-size:1.5rem;opacity:0.7;}
+  .modal-head button:hover{opacity:1;}
+  .modal-body{padding:1.6rem;display:grid;gap:0.9rem;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;}
+  @media(max-width:560px){.two{grid-template-columns:1fr;}}
+  .drop{
+    border:2px dashed var(--line);border-radius:8px;padding:1.1rem;text-align:center;cursor:pointer;
+    font-size:0.84rem;color:var(--muted);transition:border-color 0.25s ease,color 0.25s ease;
+  }
+  .drop:hover{border-color:var(--blue);color:var(--blue);}
+  .drop img{max-height:150px;margin:0.8rem auto 0;border-radius:6px;}
+  .modal-btns{display:flex;gap:0.7rem;justify-content:flex-end;}
+
+  /* ====== toast ====== */
+  .toast{
+    position:fixed;right:1.4rem;bottom:1.4rem;z-index:600;
+    background:var(--ink);color:#fff;padding:0.85rem 1.3rem;border-radius:8px;
+    font-size:0.86rem;display:flex;align-items:center;gap:0.6rem;
+    box-shadow:0 14px 34px rgba(0,0,0,0.3);
+    opacity:0;transform:translateY(12px);transition:opacity 0.3s ease,transform 0.3s var(--ease);
+    pointer-events:none;
+  }
+  .toast.show{opacity:1;transform:none;}
+  .toast .dot{width:8px;height:8px;border-radius:50%;background:#4CC97B;}
+
+  /* ====== login ====== */
+  .login{position:fixed;inset:0;z-index:500;display:grid;grid-template-columns:1fr 1fr;background:var(--ink);}
+  .login-img{position:relative;overflow:hidden;}
+  .login-img img{width:100%;height:100%;object-fit:cover;opacity:0.9;}
+  .login-img::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(23,54,124,0.35),transparent 60%);}
+  .login-form{display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg);}
+  .login-in{width:min(360px,100%);}
+  .login-in img{height:46px;margin-bottom:1.4rem;}
+  .login-in h1{font-size:1.05rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;}
+  .login-in p{font-size:0.8rem;color:var(--muted);margin:0.4rem 0 1.6rem;}
+  .login-in .field{margin-bottom:0.9rem;}
+  .login-in .btn{width:100%;}
+  .login-note{margin-top:1.2rem;font-size:0.72rem;color:var(--muted);text-align:center;}
+  @media(max-width:800px){.login{grid-template-columns:1fr;}.login-img{display:none;}}
+  body.locked .app{display:none;}
+
+  @media(max-width:900px){
+    .app{grid-template-columns:1fr;}
+    aside{position:static;height:auto;}
+    .sb-nav{display:flex;flex-wrap:wrap;}
+    .sb-nav button{width:auto;}
+    .sb-foot{display:none;}
+  }
+</style>
+</head>
+<body class="locked">
+
+<!-- ============ LOGIN ============ -->
+<div class="login" id="login">
+  <div class="login-img"><img src="img/bp-naves.jpg?v=4" alt="" /></div>
+  <div class="login-form">
+    <div class="login-in">
+      <img src="img/logo.png?v=4" alt="PKM" />
+      <h1>Administrace webu</h1>
+      <p>Projekční kancelář Michálek · Dačice</p>
+      <label class="field">Přihlašovací e-mail
+        <input type="email" value="ondramichalek@seznam.cz" />
+      </label>
+      <label class="field">Heslo
+        <input type="password" id="pass" placeholder="•••••••" autofocus />
+      </label>
+      <button class="btn" id="loginBtn">Přihlásit se</button>
+      <div class="login-note">DEMO režim — vstoupíte jakýmkoli heslem.<br/>Ostrá verze poběží se zabezpečeným přihlášením.</div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside>
+    <div class="sb-brand">
+      <img src="img/logo.png?v=4" alt="" />
+      <div>Michálek<small>Administrace</small></div>
+    </div>
+    <nav class="sb-nav" id="sbnav">
+      <button data-v="prehled" class="on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        Přehled
+      </button>
+      <button data-v="realizace">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
+        Realizace <span class="badge" id="cnt">0</span>
+      </button>
+      <button data-v="tym">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.7 3.4-5.5 6.5-5.5s5.7 1.8 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.6c2.7.2 4.9 1.8 5.5 4.9"/></svg>
+        Tým
+      </button>
+      <button data-v="kontakty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M4 7l8 6 8-6"/></svg>
+        Kontaktní údaje
+      </button>
+    </nav>
+    <div class="sb-foot">
+      <b>Ing. Ondřej Michálek</b>
+      <span>správce webu</span><br/>
+      <a href="index.html">Odhlásit se ↗</a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+    <div class="topbar">
+      <div>
+        <span class="crumb" id="crumb">Administrace</span>
+        <h1 id="viewTitle">Přehled</h1>
+      </div>
+      <div class="top-actions">
+        <span class="demo-pill">DEMO</span>
+        <a class="btn ghost" href="projekty.html" target="_blank">Zobrazit web ↗</a>
+      </div>
+    </div>
+
+    <!-- ————— PŘEHLED ————— -->
+    <section class="view on" id="v-prehled">
+      <div class="cards">
+        <div class="kpi"><div class="n" id="kReal">0</div><div class="l">realizací na webu</div></div>
+        <div class="kpi"><div class="n" id="kViz">0</div><div class="l">vizualizací</div></div>
+        <div class="kpi"><div class="n" id="kTeam">0/3</div><div class="l">fotek týmu</div></div>
+        <div class="kpi gold"><div class="n">99 %</div><div class="l">spokojenost (Poptávej.cz)</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <h2>Naposledy přidané projekty</h2>
+          <div class="recent" id="recent"></div>
+        </div>
+        <div>
+          <div class="panel">
+            <h2>Rychlé akce</h2>
+            <div class="quick">
+              <button class="btn sm" onclick="go('realizace');openModal('Přidat realizaci')">+ Přidat realizaci</button>
+              <button class="btn sm ghost" onclick="go('tym')">Upravit tým</button>
+              <button class="btn sm ghost" onclick="go('kontakty')">Kontaktní údaje</button>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>💡 Jak to funguje</h2>
+            <ul class="tip">
+              <li>Cokoliv tady změníte, se ihned projeví na webu.</li>
+              <li>Fotky nahrávejte ideálně na šířku, min. 1200 px.</li>
+              <li>V DEMO režimu se změny ukládají jen ve vašem prohlížeči.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ————— REALIZACE ————— -->
+    <section class="view" id="v-realizace">
+      <div class="toolbar">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input type="search" id="q" placeholder="Hledat projekt…" />
+        </div>
+        <div class="chips" id="chips">
+          <button data-c="all" class="on">Vše</button>
+          <button data-c="rodinne">Rodinné domy</button>
+          <button data-c="rekreacni">Rekreační</button>
+          <button data-c="obcanska">Občanská</button>
+        </div>
+        <button class="btn" onclick="openModal('Přidat realizaci')">+ Přidat</button>
+        <button class="btn ghost sm" id="resetBtn" title="Vrátí galerii do výchozího stavu">Obnovit výchozí</button>
+      </div>
+      <div class="rows" id="list"></div>
+    </section>
+
+    <!-- ————— TÝM ————— -->
+    <section class="view" id="v-tym">
+      <div class="panel" style="margin-bottom:1rem"><h2>Členové týmu</h2>
+        <p style="font-size:0.84rem;color:var(--muted);margin-top:-0.6rem">Fotky a jména se zobrazí na stránce „O nás". Klikněte na fotografii pro nahrání.</p>
+      </div>
+      <div class="team-grid" id="teamGrid"></div>
+      <div style="margin-top:1.2rem"><button class="btn" id="saveTeam">Uložit tým</button></div>
+    </section>
+
+    <!-- ————— KONTAKTY ————— -->
+    <section class="view" id="v-kontakty">
+      <div class="panel">
+        <h2>Kontaktní údaje na webu</h2>
+        <div class="contact-form" id="contactForm">
+          <label class="field">Telefon<input type="tel" data-k="tel" /></label>
+          <label class="field">E-mail<input type="email" data-k="email" /></label>
+          <label class="field">Adresa<input type="text" data-k="adresa" /></label>
+          <label class="field">IČO<input type="text" data-k="ico" /></label>
+          <label class="field">Odkaz na Facebook<input type="url" data-k="fb" /></label>
+          <div><button class="btn" id="saveContact">Uložit kontakty</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ MODAL realizace ============ -->
+<div class="modal" id="modal">
+  <div class="modal-in">
+    <div class="modal-head">
+      <h2 id="modalTitle">Přidat realizaci</h2>
+      <button type="button" id="closeModal" aria-label="Zavřít">×</button>
+    </div>
+    <form class="modal-body" id="form">
+      <label class="field">Název projektu
+        <input type="text" id="fTitle" required placeholder="Např. Novostavba RD Dačice" />
+      </label>
+      <div class="two">
+        <label class="field">Kategorie
+          <select id="fCat">
+            <option value="rodinne">Rodinné domy</option>
+            <option value="rekreacni">Rekreační objekty</option>
+            <option value="obcanska">Občanská vybavenost</option>
+          </select>
+        </label>
+        <label class="field">Typ
+          <select id="fTag">
+            <option>Realizace</option>
+            <option>Vizualizace</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">Popis projektu
+        <textarea id="fDesc" rows="3" placeholder="Krátký popis, který se zobrazí v detailu…"></textarea>
+      </label>
+      <div class="drop" id="drop">
+        <span id="dropTxt">📷 Klikněte a vyberte fotografii</span>
+        <input type="file" id="fImg" accept="image/*" hidden />
+        <img id="preview" style="display:none" alt="" />
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn ghost" id="cancelBtn">Zrušit</button>
+        <button type="submit" class="btn">Uložit projekt</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastTxt">Uloženo</span></div>
+
+<script src="js/projects-data.js?v=4"></script>
+<script>
+  // ============ pomocné ============
+  const $ = s => document.querySelector(s);
+  const TEAM_KEY = 'pkm_team_v1', CONTACT_KEY = 'pkm_contact_v1';
+  const DEFAULT_TEAM = [
+    { name:'Ing. Ondřej Michálek', role:'projektant pozemních staveb', photo:'' },
+    { name:'Jméno kolegy',         role:'projektant',                  photo:'' },
+    { name:'Jméno kolegyně',       role:'projektantka',                photo:'' },
+  ];
+  const DEFAULT_CONTACT = { tel:'724 765 254', email:'ondramichalek@seznam.cz', adresa:'Dolní Němčice 90, 380 01 Dačice', ico:'04954335', fb:'https://www.facebook.com/p/Projek%C4%8Dn%C3%AD-kancel%C3%A1%C5%99-Mich%C3%A1lek-Da%C4%8Dice-100091932622442/' };
+  const load = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v || JSON.parse(JSON.stringify(d)); } catch(e){ return JSON.parse(JSON.stringify(d)); } };
+
+  let items = pkmLoad();
+  let team = load(TEAM_KEY, DEFAULT_TEAM);
+  let contact = load(CONTACT_KEY, DEFAULT_CONTACT);
+  let editIdx = null, imgData = null, filter = 'all', query = '';
+
+  function toast(msg){ $('#toastTxt').textContent = msg; $('#toast').classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => $('#toast').classList.remove('show'), 2400); }
+  function shrink(file, cb, max = 1400){
+    const r = new FileReader();
+    r.onload = () => { const im = new Image(); im.onload = () => {
+      const c = document.createElement('canvas'); const s = Math.min(1, max / im.width);
+      c.width = im.width * s; c.height = im.height * s;
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+      cb(c.toDataURL('image/jpeg', 0.82));
+    }; im.src = r.result; };
+    r.readAsDataURL(file);
+  }
+
+  // ============ login ============
+  const unlock = () => { document.body.classList.remove('locked'); $('#login').style.display = 'none'; toast('Přihlášeno jako správce'); };
+  $('#loginBtn').addEventListener('click', unlock);
+  $('#pass').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+
+  // ============ navigace ============
+  const TITLES = { prehled:'Přehled', realizace:'Realizace na webu', tym:'Tým', kontakty:'Kontaktní údaje' };
+  function go(v){
+    document.querySelectorAll('.sb-nav button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    document.querySelectorAll('.view').forEach(s => s.classList.toggle('on', s.id === 'v-' + v));
+    $('#viewTitle').textContent = TITLES[v];
+    $('#crumb').textContent = 'Administrace · ' + TITLES[v];
+  }
+  $('#sbnav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(b.dataset.v); });
+
+  // ============ přehled ============
+  function renderKpi(){
+    $('#kReal').textContent = items.filter(p => p.tag === 'Realizace').length;
+    $('#kViz').textContent = items.filter(p => p.tag === 'Vizualizace').length;
+    $('#kTeam').textContent = team.filter(t => t.photo).length + '/3';
+    $('#cnt').textContent = items.length;
+    $('#recent').innerHTML = items.slice(0, 4).map((p, i) => `
+      <a href="#" onclick="go('realizace');event.preventDefault()">
+        <img src="${p.img.startsWith('data:') ? p.img : p.img + '?v=4'}" alt="" />
+        <div><b>${p.title}</b><span>${CAT_LABELS[p.cat] || ''} · ${p.tag}</span></div>
+      </a>`).join('');
+  }
+
+  // ============ realizace ============
+  function renderList(){
+    const q = query.toLowerCase();
+    const vis = items.map((p, i) => ({ p, i })).filter(({ p }) =>
+      (filter === 'all' || p.cat === filter) && (!q || p.title.toLowerCase().includes(q)));
+    $('#list').innerHTML = vis.length ? vis.map(({ p, i }) => `
+      <div class="row">
+        <img src="${p.img.startsWith('data:') ? p.img : p.img + '?v=4'}" alt="" />
+        <div>
+          <h3>${p.title}</h3>
+          <div class="meta">
+            <span class="pill cat">${CAT_LABELS[p.cat] || p.cat}</span>
+            <span class="pill ${p.tag === 'Vizualizace' ? 'viz' : 'real'}">${p.tag}</span>
+          </div>
+        </div>
+        <div class="btns">
+          <button class="btn icon" title="Posunout výš" onclick="moveItem(${i},-1)">↑</button>
+          <button class="btn icon" title="Posunout níž" onclick="moveItem(${i},1)">↓</button>
+          <button class="btn ghost sm" onclick="editItem(${i})">Upravit</button>
+          <button class="btn danger sm" onclick="delItem(${i})">Smazat</button>
+        </div>
+      </div>`).join('')
+      : '<div class="empty">Žádný projekt neodpovídá filtru.<br/><br/><button class="btn sm" onclick="openModal(\'Přidat realizaci\')">+ Přidat první realizaci</button></div>';
+    renderKpi();
+  }
+  window.moveItem = (i, d) => {
+    const j = i + d; if (j < 0 || j >= items.length) return;
+    [items[i], items[j]] = [items[j], items[i]];
+    pkmSave(items); renderList(); toast('Pořadí změněno');
+  };
+  window.editItem = (i) => {
+    editIdx = i; const p = items[i];
+    $('#fTitle').value = p.title; $('#fCat').value = p.cat; $('#fTag').value = p.tag; $('#fDesc').value = p.desc || '';
+    $('#preview').src = p.img.startsWith('data:') ? p.img : p.img + '?v=4';
+    $('#preview').style.display = 'block';
+    openModal('Upravit realizaci');
+  };
+  window.delItem = (i) => {
+    if (!confirm(`Opravdu smazat „${items[i].title}"?`)) return;
+    items.splice(i, 1); pkmSave(items); renderList(); toast('Projekt smazán');
+  };
+  $('#q').addEventListener('input', e => { query = e.target.value; renderList(); });
+  $('#chips').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#chips button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on'); filter = b.dataset.c; renderList();
+  });
+  $('#resetBtn').addEventListener('click', () => {
+    if (!confirm('Vrátit galerii do výchozího stavu? Vlastní úpravy se smažou.')) return;
+    pkmReset(); items = pkmLoad(); renderList(); toast('Obnoveno do výchozího stavu');
+  });
+
+  // ============ modal ============
+  const modal = $('#modal');
+  window.openModal = (title) => { $('#modalTitle').textContent = title; modal.classList.add('open'); };
+  function closeM(){
+    modal.classList.remove('open'); $('#form').reset();
+    $('#preview').style.display = 'none';
+    $('#dropTxt').textContent = '📷 Klikněte a vyberte fotografii';
+    imgData = null; editIdx = null;
+  }
+  $('#closeModal').addEventListener('click', closeM);
+  $('#cancelBtn').addEventListener('click', closeM);
+  modal.addEventListener('click', e => { if (e.target === modal) closeM(); });
+
+  $('#drop').addEventListener('click', () => $('#fImg').click());
+  $('#fImg').addEventListener('change', () => {
+    const f = $('#fImg').files[0]; if (!f) return;
+    shrink(f, data => {
+      imgData = data; $('#preview').src = data; $('#preview').style.display = 'block';
+      $('#dropTxt').textContent = '✓ Fotografie vybrána — klikněte pro změnu';
+    });
+  });
+
+  $('#form').addEventListener('submit', e => {
+    e.preventDefault();
+    const data = {
+      title: $('#fTitle').value.trim(), cat: $('#fCat').value, tag: $('#fTag').value,
+      desc: $('#fDesc').value.trim(),
+      img: imgData || (editIdx !== null ? items[editIdx].img : ''),
+    };
+    if (editIdx !== null && items[editIdx].bp) data.bp = items[editIdx].bp;
+    if (!data.img) { alert('Vyberte prosím fotografii.'); return; }
+    if (editIdx !== null) items[editIdx] = data; else items.unshift(data);
+    try { pkmSave(items); } catch (err) { alert('Úložiště prohlížeče je plné — smažte některé demo položky.'); return; }
+    renderList(); closeM(); toast(editIdx !== null ? 'Projekt upraven' : 'Projekt přidán na web');
+  });
+
+  // ============ tým ============
+  function renderTeam(){
+    $('#teamGrid').innerHTML = team.map((t, i) => `
+      <div class="tcard">
+        <div class="ph" onclick="pickTeam(${i})">
+          ${t.photo ? `<img src="${t.photo}" alt="" />` : '📷 Nahrát fotografii'}
+        </div>
+        <label class="field">Jméno<input type="text" value="${t.name.replace(/"/g,'&quot;')}" data-t="${i}" data-f="name" /></label>
+        <label class="field">Pozice<input type="text" value="${t.role.replace(/"/g,'&quot;')}" data-t="${i}" data-f="role" /></label>
+      </div>`).join('');
+    renderKpi();
+  }
+  window.pickTeam = (i) => {
+    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+    inp.onchange = () => { if (inp.files[0]) shrink(inp.files[0], d => { team[i].photo = d; renderTeam(); }, 700); };
+    inp.click();
+  };
+  $('#saveTeam').addEventListener('click', () => {
+    document.querySelectorAll('#teamGrid input').forEach(inp => { team[+inp.dataset.t][inp.dataset.f] = inp.value; });
+    try { localStorage.setItem(TEAM_KEY, JSON.stringify(team)); } catch (e) { alert('Úložiště je plné.'); return; }
+    toast('Tým uložen — zobrazí se na stránce O nás');
+  });
+
+  // ============ kontakty ============
+  document.querySelectorAll('#contactForm input').forEach(inp => { inp.value = contact[inp.dataset.k] || ''; });
+  $('#saveContact').addEventListener('click', () => {
+    document.querySelectorAll('#contactForm input').forEach(inp => { contact[inp.dataset.k] = inp.value.trim(); });
+    localStorage.setItem(CONTACT_KEY, JSON.stringify(contact));
+    toast('Kontakty uloženy — projeví se na webu');
+  });
+
+  // ============ start ============
+  renderList(); renderTeam();
+</script>
+</body>
+</html>
