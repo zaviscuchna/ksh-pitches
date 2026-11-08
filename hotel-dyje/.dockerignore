@@ -1,0 +1,10 @@
+Dockerfile
+.dockerignore
+docker-compose.yaml
+docker-compose.yml
+.env
+.env.*
+.nixpacks
+.DS_Store
+migration-backup
+nabidka.html
