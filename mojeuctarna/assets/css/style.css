@@ -287,7 +287,7 @@ textarea:focus-visible {
 .client-link:hover {
   background: #393833;
 }
-.client-link svg {
+.client-link > svg {
   width: 15px;
   height: 17px;
   fill: none;
@@ -1514,7 +1514,7 @@ details[open] summary > span {
   line-height: 1.9;
   margin-top: 35px;
 }
-.office-address svg {
+.office-address > svg {
   width: 22px;
   height: 24px;
   flex-shrink: 0;
@@ -1881,7 +1881,7 @@ fieldset legend {
     font-size: 13.5px;
     padding-inline: 13px;
   }
-  .client-link svg {
+  .client-link > svg {
     display: none;
   }
   .is-scrolled .header-main > .brand {
@@ -3896,4 +3896,20 @@ h3 { font-weight: 600; letter-spacing: -0.015em; }
   .mobile-cta {
     display: none !important;
   }
+}
+
+/* Šipky ↗ jako SVG: znak U+2197 v písmu chybí a iPhone ho kreslil jako barevný emoji */
+.ico-sipka {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4px;
+  stroke-linecap: square;
+  overflow: visible;
+}
+.ico-sipka path {
+  vector-effect: non-scaling-stroke;
 }
