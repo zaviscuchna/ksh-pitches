@@ -256,6 +256,28 @@
     }
   }
 
+  // Rychlý kontakt na telefonu: lišta Zavolat / Napsat nám se ukáže, až je úvod
+  // pryč z obrazovky, a schová se, když je vidět kontakt nebo patička.
+  const quick = $(".mobile-cta");
+  const phoneWidth = window.matchMedia("(max-width: 560px)");
+  if (quick && "IntersectionObserver" in window) {
+    const watched = [$(".hero"), $("#kontakt"), $(".site-footer")].filter(Boolean);
+    const inView = new Set();
+    const update = () => {
+      const show = phoneWidth.matches && watched.length === 3 && inView.size === 0;
+      quick.classList.toggle("is-visible", show);
+    };
+    const quickObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) inView.add(entry.target);
+        else inView.delete(entry.target);
+      });
+      update();
+    });
+    watched.forEach((section) => quickObserver.observe(section));
+    phoneWidth.addEventListener("change", update);
+  }
+
   const steps = $$(".workflow-step");
   if (steps.length) {
     let step = 0;
