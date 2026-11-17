@@ -3913,3 +3913,348 @@ h3 { font-weight: 600; letter-spacing: -0.015em; }
 .ico-sipka path {
   vector-effect: non-scaling-stroke;
 }
+
+/* ===== Martinovy úpravy textů v5 (17. 11. 2026) ===== */
+
+/* Zkušenosti: „31 let“ – číslo dopočítá main.js z data-od-roku */
+.since {
+  margin: 0;
+}
+.since strong {
+  display: flex;
+  align-items: baseline;
+  gap: 0.14em;
+  margin-top: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+.since-let {
+  font-size: 0.4em;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.since > span {
+  display: block;
+  max-width: none;
+  margin-top: 12px;
+}
+.since small {
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* Naši klienti: 8 oborů + věta pod seznamem */
+.client-list li {
+  font-size: clamp(19px, 1.75vw, 25px);
+  padding-block: 12px;
+}
+/* odrážka na středu prvního řádku (line-height 1.4 → střed 0.7em pod horním odsazením) */
+.client-list li::before {
+  top: calc(12px + 0.7em - 2px);
+}
+.client-list li:first-child::before {
+  top: calc(0.7em - 2px);
+}
+.clients-body > .client-more {
+  grid-column: 3;
+  grid-row: 4;
+  padding-left: 35px;
+  max-width: 52ch;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--body);
+}
+.client-more a {
+  font-weight: 600;
+}
+/* „e-shopy“ je jen nezlomitelné slovo v názvu oboru, ne podtitulek */
+.client-list li span.nowrap {
+  display: inline;
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+/* Služby: 4 rostoucí sloupce (Firmy → Mzdy → DPH → Investoři), živnostníci jako nižší pás pod nimi */
+.service-ledger {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.service {
+  min-height: 440px;
+  padding: 40px clamp(24px, 2.6vw, 46px) 52px;
+}
+.service-company {
+  background: var(--teal);
+  min-height: 440px;
+}
+.service-payroll {
+  background: var(--green);
+  min-height: 500px;
+}
+.service-vat {
+  background: var(--orange);
+  min-height: 560px;
+}
+.service-invest {
+  background: var(--ink);
+  color: var(--white);
+  min-height: 620px;
+}
+.service-name h3 {
+  font-size: clamp(30px, 2.5vw, 40px);
+}
+.service-name p {
+  max-width: 26ch;
+}
+.service-lead {
+  font-size: 15.5px;
+  line-height: 1.75;
+  margin-top: 18px;
+}
+.service-more {
+  margin: 24px 0 28px;
+  border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+}
+.service-more summary {
+  padding-top: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.service .service-more ul {
+  margin: 12px 0 0;
+}
+.service-action {
+  border-top-color: color-mix(in srgb, currentColor 30%, transparent);
+}
+.service-action > span:last-child {
+  border-color: color-mix(in srgb, currentColor 50%, transparent);
+}
+.service-invest a:focus-visible,
+.service-invest summary:focus-visible {
+  outline-color: var(--white);
+}
+.service-person {
+  grid-column: 1 / -1;
+  min-height: 0;
+  margin: 18px clamp(0px, 3vw, 48px) 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--teal);
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr) minmax(0, 0.7fr);
+  column-gap: clamp(24px, 4vw, 64px);
+  padding: 32px clamp(24px, 3.5vw, 56px) 30px;
+}
+.service-person::after {
+  display: none;
+}
+.service-person .service-name {
+  grid-row: 1 / 3;
+}
+.service-person .service-lead {
+  grid-column: 2;
+  margin-top: 4px;
+}
+.service-person .service-more {
+  grid-column: 2;
+  margin-bottom: 0;
+}
+.service-person .service-action {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: end;
+  margin-top: 0;
+}
+
+/* Reporting: přehled o firmě, graf z pruhů loga */
+.reporting {
+  display: grid;
+  grid-template-columns: 0.9fr 1.6fr;
+  gap: 8%;
+  align-items: center;
+  padding-block: 96px 20px;
+}
+.reporting-chart {
+  display: block;
+  width: min(100%, 290px);
+  height: auto;
+}
+.reporting h2 {
+  font-size: clamp(36px, 3.2vw, 47px);
+}
+.reporting-body p {
+  max-width: 62ch;
+  margin-top: 22px;
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--body);
+}
+
+/* Jak začneme: přechod od jiné účetní ve třech krocích */
+.start-section {
+  border-top: 1px solid var(--line);
+  padding-top: 80px;
+}
+.start-section h2 {
+  font-size: clamp(38px, 4vw, 58px);
+}
+.start-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 3.5vw, 56px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.start-steps li {
+  border-top: 4px solid var(--teal);
+  padding-top: 22px;
+}
+.start-steps li:nth-child(2) {
+  border-top-color: var(--green);
+}
+.start-steps li:nth-child(3) {
+  border-top-color: var(--orange);
+}
+.start-number {
+  display: block;
+  font: 600 52px/1 var(--sans);
+  color: var(--teal-dark);
+}
+.start-steps li:nth-child(2) .start-number {
+  color: var(--green-dark);
+}
+.start-steps li:nth-child(3) .start-number {
+  color: var(--orange-dark);
+}
+.start-steps h3 {
+  margin-top: 16px;
+  font-size: 25px;
+  line-height: 1.25;
+}
+.start-steps p {
+  margin-top: 10px;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--body);
+}
+.start-button {
+  margin-top: 44px;
+}
+
+@media (max-width: 1250px) {
+  .clients-body > .client-more {
+    padding-left: 27px;
+  }
+}
+@media (max-width: 1050px) {
+  .clients-body > .client-more {
+    grid-column: 2;
+    grid-row: 5;
+  }
+  .service-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+  .service,
+  .service-company,
+  .service-payroll,
+  .service-vat,
+  .service-invest {
+    min-height: 0;
+    padding: 36px 28px 46px;
+  }
+  .service-person {
+    margin: 18px 0 0;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  }
+  .service-person .service-action {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    margin-top: 22px;
+  }
+  .reporting {
+    grid-template-columns: 0.7fr 1.6fr;
+    gap: 6%;
+  }
+}
+@media (max-width: 760px) {
+  .service-ledger {
+    grid-template-columns: 1fr;
+  }
+  .service,
+  .service-company,
+  .service-payroll,
+  .service-vat,
+  .service-invest,
+  .service-person {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 0;
+    padding: 34px max(25px, calc((100vw - 640px) / 2)) 44px;
+  }
+  .service-person {
+    margin: 0;
+    border-width: 1px 0 1px 6px;
+  }
+  .service-person .service-action {
+    margin-top: 24px;
+    align-self: stretch;
+  }
+  .service-lead {
+    margin-top: 16px;
+  }
+  .reporting {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 28px;
+    padding-block: 64px 10px;
+  }
+  .reporting-chart {
+    width: 200px;
+  }
+  .start-section {
+    padding-top: 60px;
+  }
+  .start-steps {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .start-button {
+    margin-top: 34px;
+  }
+}
+@media (max-width: 560px) {
+  .since {
+    display: block;
+  }
+  .since > span {
+    max-width: none;
+    font-size: 17px;
+  }
+  .clients-body > .client-more {
+    margin-top: 22px;
+    padding-left: 0;
+  }
+  .client-list li:first-child::before {
+    top: calc(17px + 0.7em - 2px);
+  }
+  .reporting h2,
+  .start-section h2 {
+    font-size: clamp(34px, 9.5vw, 42px);
+  }
+  .start-section h2 br {
+    display: none;
+  }
+  .start-number {
+    font-size: 42px;
+  }
+  .start-button {
+    width: 100%;
+  }
+}

@@ -6,6 +6,12 @@
     ...root.querySelectorAll(selector),
   ];
 
+  // Roky praxe se dopočítají samy (v HTML zůstává hodnota pro rok 2026 jako záloha bez JS).
+  $$("[data-od-roku]").forEach((el) => {
+    const roky = new Date().getFullYear() - Number(el.dataset.odRoku);
+    if (roky > 0) el.textContent = String(roky);
+  });
+
   const header = $(".site-header");
   if (header) {
     let compact = false;
